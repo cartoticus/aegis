@@ -1,0 +1,17 @@
+{
+  "name": "AEGIS — Cybersecurity Learning System",
+  "short_name": "AEGIS",
+  "description": "ISC2-aligned cybersecurity range: in-app lessons, hands-on browser trainers, and 80%-gated domain quizzes for the Certified in Cybersecurity domains.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0B0E1A",
+  "theme_color": "#0B0E1A",
+  "categories": ["education", "productivity"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

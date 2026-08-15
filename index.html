@@ -1,0 +1,2323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>AEGIS — ISC2-Aligned Cybersecurity Learning System</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0B0E1A">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="AEGIS">
+<meta name="description" content="ISC2-aligned cybersecurity range: lessons, hands-on browser trainers, and 80%-gated domain quizzes.">
+<link rel="icon" href="icons/favicon-64.png">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0B0E1A;
+  --ink-2:#0E1322;
+  --panel:#141A2C;
+  --panel-2:#1A2238;
+  --line:#26314E;
+  --line-soft:#1E2740;
+  --gold:#E8B04B;
+  --gold-dim:#9C7A3A;
+  --gold-deep:#C9912F;
+  --cyan:#4FD7C9;
+  --steel:#7FA2E0;
+  --alert:#F0586B;
+  --green:#5BD6A0;
+  --text:#E7ECF7;
+  --muted:#93A0BD;
+  --muted-2:#6C7794;
+  --radius:14px;
+  --radius-sm:9px;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --disp:'Space Grotesk','Inter',system-ui,sans-serif;
+  --body:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:
+    radial-gradient(1200px 600px at 85% -10%, rgba(79,215,201,.06), transparent 60%),
+    radial-gradient(1000px 500px at 0% 0%, rgba(232,176,75,.05), transparent 55%),
+    var(--ink);
+  color:var(--text);font-family:var(--body);font-size:15px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--cyan);text-decoration:none}
+a:hover{text-decoration:underline}
+h1,h2,h3,h4{font-family:var(--disp);font-weight:600;letter-spacing:-.01em;margin:0}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-2)}
+.mono{font-family:var(--mono)}
+.muted{color:var(--muted)}
+button{font-family:var(--body);cursor:pointer}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;border-radius:6px}
+
+/* ---------- Layout ---------- */
+.wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+header.top{
+  position:sticky;top:0;z-index:40;
+  background:linear-gradient(180deg,rgba(11,14,26,.96),rgba(11,14,26,.82));
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line-soft);
+}
+.topbar{display:flex;align-items:center;gap:18px;padding:13px 0}
+.brand{display:flex;align-items:center;gap:13px;min-width:0}
+.shield-emblem{width:42px;height:50px;flex:none}
+.wordmark{display:flex;flex-direction:column;line-height:1.05}
+.wordmark .name{font-family:var(--disp);font-weight:700;font-size:21px;letter-spacing:.02em}
+.wordmark .name b{color:var(--gold)}
+.wordmark .sub{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;color:var(--muted-2);text-transform:uppercase}
+.top-spacer{flex:1}
+.rank-chip{
+  display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line);
+  border-radius:999px;padding:6px 7px 6px 14px;
+}
+.rank-chip .rk-label{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+.rank-chip .rk-name{font-family:var(--disp);font-weight:600;font-size:13px;color:var(--gold)}
+.streak{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:12px;color:var(--muted);
+  background:var(--ink-2);border:1px solid var(--line);border-radius:999px;padding:7px 12px}
+.streak b{color:var(--text)}
+.ring{position:relative;width:38px;height:38px;flex:none}
+.ring svg{transform:rotate(-90deg)}
+.ring .pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:10px;font-weight:700;color:var(--gold)}
+
+/* nav */
+nav.tabs{display:flex;gap:4px;overflow-x:auto;padding:2px 0 0;scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+.tab{
+  flex:none;background:transparent;border:none;color:var(--muted);
+  font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+  padding:11px 14px;border-bottom:2px solid transparent;white-space:nowrap;transition:.15s;
+}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.tab .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--line);margin-left:7px;vertical-align:middle}
+.tab.active .dot{background:var(--gold)}
+
+main{padding:34px 0 90px}
+.view{display:none;animation:fade .35s ease}
+.view.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ---------- Generic blocks ---------- */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px}
+.card+.card{margin-top:16px}
+.grid{display:grid;gap:16px}
+.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:0 0 18px}
+.section-head h2{font-size:25px}
+.section-head .lead{color:var(--muted);max-width:560px;margin-top:6px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;
+  text-transform:uppercase;padding:4px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.pill.gold{color:var(--gold);border-color:rgba(232,176,75,.4);background:rgba(232,176,75,.08)}
+.pill.cyan{color:var(--cyan);border-color:rgba(79,215,201,.35);background:rgba(79,215,201,.07)}
+.pill.alert{color:var(--alert);border-color:rgba(240,88,107,.4);background:rgba(240,88,107,.08)}
+/* level badges (beginner / intermediate / advanced) */
+.lvl{font-family:var(--mono);font-size:8.5px;letter-spacing:.09em;text-transform:uppercase;padding:2px 6px;border-radius:5px;border:1px solid;line-height:1.35;white-space:nowrap;flex:none}
+.lvl.b{color:var(--green);border-color:rgba(91,214,160,.4);background:rgba(91,214,160,.08)}
+.lvl.i{color:var(--steel);border-color:rgba(127,162,224,.4);background:rgba(127,162,224,.08)}
+.lvl.a{color:var(--gold);border-color:rgba(232,176,75,.4);background:rgba(232,176,75,.08)}
+.lvl-legend{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:16px;font-size:11px;color:var(--muted-2);font-family:var(--mono)}
+.lvl-filter{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:20px}
+.lvl-chip{background:var(--ink-2);border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:7px 12px;font-family:var(--mono);font-size:11px;letter-spacing:.04em;transition:.14s}
+.lvl-chip:hover{color:var(--text);border-color:var(--gold)}
+.lvl-chip.active{background:rgba(232,176,75,.1);color:var(--gold);border-color:var(--gold)}
+.obj .lvl{margin-left:auto;align-self:flex-start;margin-top:1px}
+li.hidden{display:none}
+/* certification map */
+.cert-tier{margin-bottom:26px}
+.cert-tier .tier-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.cert-tier .tier-head h3{font-size:17px}
+.cert-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cert{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:20px;position:relative}
+.cert.target{border-color:var(--gold);box-shadow:0 0 0 1px rgba(232,176,75,.25)}
+.cert .cert-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:4px}
+.cert h4{font-size:16px}
+.cert .issuer{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--muted-2);text-transform:uppercase;margin-top:2px}
+.cert .tagline{color:var(--muted);font-size:13px;margin:10px 0 14px}
+.cert .cert-meta{display:flex;flex-direction:column;gap:6px;margin-bottom:13px}
+.cert .cert-meta div{font-size:12.5px;color:var(--muted);display:flex;gap:8px}
+.cert .cert-meta b{color:var(--text);font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;flex:none;width:74px;padding-top:2px}
+.cert .doms-label{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2);margin-bottom:7px}
+.cert .doms{display:flex;flex-wrap:wrap;gap:6px}
+.cert .doms span{font-size:11.5px;background:var(--ink-2);border:1px solid var(--line-soft);border-radius:6px;padding:4px 9px;color:var(--muted)}
+.cert .target-flag{position:absolute;top:-9px;left:18px;background:var(--gold);color:#1a1304;font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:6px;font-weight:700}
+/* in-app lessons */
+.learn-btn{flex:none;background:rgba(79,215,201,.1);border:1px solid rgba(79,215,201,.35);color:var(--cyan);
+  font-family:var(--mono);font-size:10px;letter-spacing:.05em;padding:4px 9px;border-radius:7px;cursor:pointer;margin-top:1px;margin-left:8px;transition:.14s;white-space:nowrap}
+.learn-btn:hover{background:rgba(79,215,201,.22)}
+.learn-btn.read{background:rgba(91,214,160,.1);border-color:rgba(91,214,160,.35);color:var(--green)}
+.lesson-overlay{position:fixed;inset:0;background:rgba(6,9,18,.8);backdrop-filter:blur(4px);z-index:100;
+  display:none;align-items:flex-start;justify-content:center;padding:40px 18px;overflow-y:auto}
+.lesson-overlay.show{display:flex}
+.lesson-modal{background:var(--panel);border:1px solid var(--line);border-radius:16px;max-width:660px;width:100%;
+  position:relative;box-shadow:0 30px 80px rgba(0,0,0,.6);animation:fade .3s ease;margin:auto}
+.lesson-close{position:absolute;top:14px;right:14px;background:var(--ink-2);border:1px solid var(--line);color:var(--muted);
+  width:34px;height:34px;border-radius:9px;font-size:15px;cursor:pointer;z-index:2}
+.lesson-close:hover{color:var(--text);border-color:var(--gold)}
+.lesson-content{padding:30px 30px 8px}
+.lesson-content .l-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted-2)}
+.lesson-content h3{font-size:23px;margin:8px 0 12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-family:var(--disp)}
+.lesson-content h4{font-size:13px;color:var(--gold);margin:20px 0 8px;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.lesson-content p{font-size:14.5px;line-height:1.7;color:var(--text);margin:0 0 12px}
+.lesson-content ul{margin:0 0 12px;padding-left:0;list-style:none}
+.lesson-content ul li{font-size:14px;line-height:1.6;color:var(--muted);padding:5px 0 5px 20px;position:relative}
+.lesson-content ul li::before{content:"▸";position:absolute;left:2px;color:var(--cyan)}
+.lesson-content ul li b{color:var(--text)}
+.lesson-content .l-diagram{background:#070A14;border:1px solid var(--line);border-radius:10px;padding:14px 16px;
+  font-family:var(--mono);font-size:12px;line-height:1.55;color:#a9c7e6;white-space:pre;overflow-x:auto;margin:0 0 14px}
+.lesson-content .l-eg{background:rgba(232,176,75,.06);border-left:3px solid var(--gold);border-radius:0 9px 9px 0;
+  padding:12px 15px;font-size:13.5px;line-height:1.6;color:var(--muted);margin:2px 0 14px}
+.lesson-content .l-eg b{color:var(--gold);font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:4px}
+.lesson-foot{padding:16px 30px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line-soft);margin-top:14px}
+.lesson-foot span{font-size:12px;color:var(--muted-2);font-family:var(--mono)}
+@media(max-width:880px){.lesson-content{padding:24px 20px 6px}.lesson-foot{padding:14px 20px 20px;flex-direction:column;align-items:stretch}}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:#1a1304;border:none;
+  font-weight:600;font-size:13.5px;padding:10px 16px;border-radius:10px;transition:.15s}
+.btn:hover{background:#f2bd60;transform:translateY(-1px)}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+.btn.ghost:hover{background:var(--panel-2);border-color:var(--gold)}
+.btn.cyan{background:var(--cyan);color:#06231f}
+.btn.cyan:hover{background:#67e6d8}
+.btn.sm{padding:7px 12px;font-size:12px;border-radius:8px}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+
+/* progress bar */
+.bar{height:7px;border-radius:99px;background:var(--line-soft);overflow:hidden}
+.bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--gold-deep),var(--gold));border-radius:99px;transition:width .5s}
+
+/* ---------- Dashboard ---------- */
+.hero{position:relative;overflow:hidden;border-radius:18px;border:1px solid var(--line);
+  background:linear-gradient(135deg,#10182c,#0c1120);padding:34px 30px;margin-bottom:22px}
+.hero::after{content:"";position:absolute;right:-60px;top:-60px;width:340px;height:340px;
+  background:radial-gradient(circle,rgba(232,176,75,.16),transparent 65%);pointer-events:none}
+.hero h1{font-size:32px;line-height:1.12;max-width:640px}
+.hero h1 em{font-style:normal;color:var(--gold)}
+.hero p{color:var(--muted);max-width:600px;margin:14px 0 0;font-size:15.5px}
+.loop{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.loop-step{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.025);
+  border:1px solid var(--line);border-radius:12px;padding:11px 15px}
+.loop-step .n{font-family:var(--mono);font-size:11px;color:var(--gold);border:1px solid var(--gold);
+  width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.loop-step b{font-family:var(--disp);font-size:14px}
+.loop-step span{color:var(--muted);font-size:12.5px;margin-left:2px}
+.loop-arrow{color:var(--muted-2);align-self:center;font-family:var(--mono)}
+
+.dash-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:16px}
+.domain-rows{display:flex;flex-direction:column;gap:11px}
+.d-row{display:flex;align-items:center;gap:14px;background:var(--ink-2);border:1px solid var(--line-soft);
+  border-radius:11px;padding:13px 15px;cursor:pointer;transition:.15s}
+.d-row:hover{border-color:var(--gold);transform:translateX(2px)}
+.d-row .idx{font-family:var(--mono);font-size:12px;color:var(--gold);width:30px;flex:none}
+.d-row .d-main{flex:1;min-width:0}
+.d-row .d-main b{font-family:var(--disp);font-weight:600;font-size:14px;display:block}
+.d-row .d-main .bar{margin-top:8px;max-width:280px}
+.d-row .d-pct{font-family:var(--mono);font-size:13px;color:var(--muted);width:42px;text-align:right}
+
+.stat-card .big{font-family:var(--disp);font-weight:700;font-size:40px;line-height:1;color:var(--gold)}
+.stat-card .lbl{color:var(--muted);font-size:13px;margin-top:6px}
+.ladder{display:flex;flex-direction:column;gap:0}
+.lad-step{display:flex;gap:13px;padding:10px 0;border-bottom:1px dashed var(--line-soft)}
+.lad-step:last-child{border-bottom:none}
+.lad-step .marker{width:11px;height:11px;border-radius:50%;border:2px solid var(--line);margin-top:5px;flex:none}
+.lad-step.now .marker{background:var(--gold);border-color:var(--gold);box-shadow:0 0 0 4px rgba(232,176,75,.18)}
+.lad-step b{font-family:var(--disp);font-size:14px}
+.lad-step .meta{font-size:12.5px;color:var(--muted);margin-top:2px}
+
+/* ---------- Domain detail ---------- */
+.dom-select{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.dom-tab{background:var(--ink-2);border:1px solid var(--line);color:var(--muted);border-radius:10px;
+  padding:9px 13px;font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;transition:.15s}
+.dom-tab:hover{color:var(--text);border-color:var(--gold)}
+.dom-tab.active{background:rgba(232,176,75,.1);color:var(--gold);border-color:var(--gold)}
+.dom-tab small{display:block;color:var(--muted-2);font-size:9px;letter-spacing:.12em;margin-top:2px}
+.dom-panel{display:none}
+.dom-panel.active{display:block}
+.dom-head{display:flex;align-items:flex-start;gap:18px;margin-bottom:8px}
+.dom-head .num{font-family:var(--disp);font-weight:700;font-size:44px;color:var(--line);line-height:.9;flex:none}
+.three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:18px}
+.lp-card{background:var(--ink-2);border:1px solid var(--line-soft);border-radius:12px;padding:18px;display:flex;flex-direction:column}
+.lp-card h4{font-size:15px;display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.lp-card .lp-ico{width:24px;height:24px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;font-family:var(--mono)}
+.lp-learn .lp-ico{background:rgba(127,162,224,.16);color:var(--steel)}
+.lp-drill .lp-ico{background:rgba(79,215,201,.16);color:var(--cyan)}
+.lp-prove .lp-ico{background:rgba(232,176,75,.16);color:var(--gold)}
+.lp-card p.k{color:var(--muted);font-size:12.5px;margin:0 0 12px}
+.obj-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:7px;flex:1}
+.obj{display:flex;gap:9px;align-items:flex-start;font-size:13px;cursor:pointer;color:var(--text);line-height:1.45}
+.obj input{appearance:none;width:17px;height:17px;border:1.5px solid var(--line);border-radius:5px;flex:none;margin-top:2px;position:relative;transition:.15s;background:var(--ink)}
+.obj input:checked{background:var(--gold);border-color:var(--gold)}
+.obj input:checked::after{content:"✓";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:#1a1304;font-weight:700}
+.obj.done span{color:var(--muted-2);text-decoration:line-through}
+.res-link{display:flex;align-items:center;gap:8px;font-size:13px;padding:6px 0;border-bottom:1px solid var(--line-soft)}
+.res-link:last-child{border:none}
+.res-link .tag{font-family:var(--mono);font-size:9px;padding:2px 6px;border-radius:5px;background:var(--panel-2);color:var(--muted);letter-spacing:.06em;flex:none}
+.ai-note{margin-top:14px;background:rgba(127,162,224,.07);border:1px solid rgba(127,162,224,.22);border-radius:10px;padding:12px 14px;font-size:12.5px;color:var(--muted)}
+.ai-note b{color:var(--steel);font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:3px}
+
+/* ---------- Range / trainers ---------- */
+.range-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
+.trainer-card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:18px;cursor:pointer;
+  transition:.18s;position:relative;overflow:hidden}
+.trainer-card:hover{border-color:var(--gold);transform:translateY(-3px)}
+.trainer-card .t-ico{width:38px;height:38px;border-radius:10px;background:var(--ink-2);border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:13px}
+.trainer-card h4{font-size:15.5px;margin-bottom:5px}
+.trainer-card p{color:var(--muted);font-size:12.5px;margin:0}
+.trainer-card .t-foot{display:flex;align-items:center;justify-content:space-between;margin-top:14px}
+.trainer-card.locked{opacity:.55}
+.trainer-card.locked:hover{transform:none;border-color:var(--line)}
+
+.stage{display:none}
+.stage.active{display:block}
+.stage-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.stage-head .back{background:var(--panel);border:1px solid var(--line);color:var(--muted);border-radius:9px;
+  padding:8px 12px;font-family:var(--mono);font-size:12px}
+.stage-head .back:hover{color:var(--gold);border-color:var(--gold)}
+
+/* terminal */
+.terminal{background:#070A14;border:1px solid var(--line);border-radius:12px;overflow:hidden;font-family:var(--mono)}
+.term-bar{display:flex;align-items:center;gap:7px;padding:9px 13px;background:#0c1120;border-bottom:1px solid var(--line)}
+.term-bar .lights{display:flex;gap:6px}
+.term-bar .lights i{width:11px;height:11px;border-radius:50%;display:block}
+.term-bar .title{font-size:11px;color:var(--muted);margin-left:8px}
+.term-body{padding:15px;height:330px;overflow-y:auto;font-size:13px;line-height:1.55}
+.term-body .out{white-space:pre-wrap;word-break:break-word}
+.term-line{display:flex;gap:8px}
+.term-prompt{color:var(--cyan);flex:none}
+.term-input{background:transparent;border:none;color:var(--text);font-family:var(--mono);font-size:13px;flex:1;outline:none}
+.term-c-cyan{color:var(--cyan)}.term-c-gold{color:var(--gold)}.term-c-alert{color:var(--alert)}.term-c-green{color:var(--green)}.term-c-muted{color:var(--muted)}
+.mission-box{background:var(--ink-2);border:1px solid var(--line);border-radius:11px;padding:15px 17px;margin-bottom:14px}
+.mission-box h4{font-size:14px;margin-bottom:9px;display:flex;align-items:center;gap:8px}
+.mtask{display:flex;gap:9px;align-items:flex-start;font-size:13px;padding:4px 0;color:var(--muted)}
+.mtask .chk{width:16px;height:16px;border-radius:5px;border:1.5px solid var(--line);flex:none;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:10px}
+.mtask.done{color:var(--text)}
+.mtask.done .chk{background:var(--green);border-color:var(--green);color:#06231f}
+.mtask.done .mt-txt{text-decoration:line-through;color:var(--muted-2)}
+
+/* quiz / generic interactive */
+.q-stage{max-width:720px;margin:0 auto}
+.q-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-family:var(--mono);font-size:12px;color:var(--muted)}
+.q-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:26px}
+.q-domain{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.q-text{font-family:var(--disp);font-size:18.5px;line-height:1.4;margin-bottom:20px}
+.opt{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;background:var(--ink-2);
+  border:1px solid var(--line);border-radius:11px;padding:13px 15px;margin-bottom:9px;color:var(--text);font-size:14px;transition:.13s}
+.opt:hover:not(:disabled){border-color:var(--gold)}
+.opt .key{font-family:var(--mono);font-size:12px;color:var(--muted);border:1px solid var(--line);width:24px;height:24px;
+  border-radius:6px;display:flex;align-items:center;justify-content:center;flex:none}
+.opt.correct{border-color:var(--green);background:rgba(91,214,160,.08)}
+.opt.correct .key{background:var(--green);color:#06231f;border-color:var(--green)}
+.opt.wrong{border-color:var(--alert);background:rgba(240,88,107,.08)}
+.opt.wrong .key{background:var(--alert);color:#fff;border-color:var(--alert)}
+.explain{margin-top:14px;padding:14px;background:var(--ink-2);border-left:3px solid var(--gold);border-radius:0 9px 9px 0;font-size:13.5px;color:var(--muted);display:none}
+.explain.show{display:block}
+.explain b{color:var(--text)}
+
+/* scenario / IR sim */
+.scn{max-width:760px;margin:0 auto}
+.scn-stage{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:24px}
+.scn-phase{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);margin-bottom:10px}
+.scn-text{font-size:15px;line-height:1.6;margin-bottom:20px}
+.scn-text .term-c-alert{color:var(--alert);font-family:var(--mono)}
+.choice{display:block;width:100%;text-align:left;background:var(--ink-2);border:1px solid var(--line);border-radius:11px;
+  padding:14px 16px;margin-bottom:10px;color:var(--text);font-size:14px;transition:.13s}
+.choice:hover{border-color:var(--gold);background:var(--panel-2)}
+.scn-feedback{padding:16px;border-radius:11px;margin-bottom:18px;font-size:14px;display:none}
+.scn-feedback.show{display:block}
+.scn-feedback.good{background:rgba(91,214,160,.08);border:1px solid rgba(91,214,160,.35)}
+.scn-feedback.bad{background:rgba(240,88,107,.08);border:1px solid rgba(240,88,107,.35)}
+.scn-feedback h4{font-size:14px;margin-bottom:6px}
+.scn-score{display:flex;gap:10px;align-items:center;font-family:var(--mono);font-size:13px;color:var(--muted)}
+
+/* access control drill */
+.acl-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.perm{display:flex;align-items:center;gap:11px;background:var(--ink-2);border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin-bottom:8px;cursor:pointer}
+.perm:hover{border-color:var(--gold)}
+.perm .tgl{width:38px;height:21px;border-radius:99px;background:var(--line);position:relative;flex:none;transition:.15s}
+.perm .tgl::after{content:"";position:absolute;width:15px;height:15px;border-radius:50%;background:#fff;top:3px;left:3px;transition:.18s}
+.perm.on .tgl{background:var(--gold)}
+.perm.on .tgl::after{left:20px}
+.perm .p-name{font-size:13.5px}
+.perm .p-sub{font-size:11px;color:var(--muted-2);font-family:var(--mono)}
+.perm.danger.on .tgl{background:var(--alert)}
+
+/* phishing */
+.mail{background:#fbfcfe;color:#1a2236;border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+.mail-head{background:#eef1f7;padding:14px 18px;border-bottom:1px solid #d8deea}
+.mail-head .from{font-weight:600;font-size:14px;color:#0d1a33}
+.mail-head .addr{font-family:var(--mono);font-size:12px;color:#5a6a8a}
+.mail-head .subj{font-size:14px;margin-top:6px;font-weight:600}
+.mail-body{padding:18px;font-size:14px;line-height:1.6;color:#2a3450}
+.mail-body a{color:#2b6fd6}
+.flag-row{display:flex;gap:10px;margin-top:16px;justify-content:center}
+
+/* ---------- Ethics ---------- */
+.canon-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+.canon{background:var(--ink-2);border:1px solid var(--line);border-radius:13px;padding:20px;position:relative}
+.canon .rom{font-family:var(--disp);font-weight:700;font-size:13px;color:var(--gold);letter-spacing:.1em;
+  border:1px solid rgba(232,176,75,.4);border-radius:7px;padding:3px 9px;display:inline-block;margin-bottom:11px}
+.canon h4{font-size:15.5px;line-height:1.35;margin-bottom:8px}
+.canon p{color:var(--muted);font-size:13px;margin:0}
+.canon .prio{position:absolute;top:18px;right:18px;font-family:var(--mono);font-size:10px;color:var(--muted-2)}
+.preamble{background:linear-gradient(135deg,rgba(232,176,75,.07),rgba(11,14,26,0));border:1px solid rgba(232,176,75,.25);
+  border-radius:13px;padding:22px;font-size:15px;line-height:1.65;color:var(--text);font-style:italic}
+.preamble .q{font-family:var(--disp);font-size:17px}
+.gate-box{background:var(--panel);border:1px solid var(--gold);border-radius:13px;padding:22px;margin-top:18px}
+.gate-box.accepted{border-color:var(--green)}
+.gate-check{display:flex;gap:12px;align-items:flex-start;cursor:pointer;margin-bottom:16px}
+.gate-check input{appearance:none;width:22px;height:22px;border:2px solid var(--gold);border-radius:6px;flex:none;margin-top:1px;position:relative}
+.gate-check input:checked{background:var(--green);border-color:var(--green)}
+.gate-check input:checked::after{content:"✓";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#06231f;font-weight:700;font-size:13px}
+
+/* labs */
+.lab-cat{margin-bottom:26px}
+.lab-cat h3{font-size:16px;display:flex;align-items:center;gap:10px;margin-bottom:13px}
+.lab-cat h3 .dom-ref{font-family:var(--mono);font-size:10px;color:var(--muted-2);letter-spacing:.1em;border:1px solid var(--line);border-radius:6px;padding:2px 7px}
+.lab-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.lab{display:flex;gap:13px;background:var(--ink-2);border:1px solid var(--line-soft);border-radius:12px;padding:15px}
+.lab .lab-ico{width:40px;height:40px;border-radius:10px;background:var(--panel-2);display:flex;align-items:center;justify-content:center;font-size:18px;flex:none}
+.lab .lab-body{flex:1;min-width:0}
+.lab .lab-body h4{font-size:14.5px;display:flex;align-items:center;gap:8px}
+.lab .lab-body p{font-size:12.5px;color:var(--muted);margin:5px 0 9px}
+.lab .free{font-family:var(--mono);font-size:9px;padding:2px 6px;border-radius:5px;letter-spacing:.06em}
+.lab .free.f{background:rgba(91,214,160,.13);color:var(--green)}
+.lab .free.p{background:rgba(232,176,75,.13);color:var(--gold)}
+
+/* templates */
+.tpl-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.tpl-tab{background:var(--ink-2);border:1px solid var(--line);color:var(--muted);border-radius:9px;padding:8px 13px;font-family:var(--mono);font-size:11.5px}
+.tpl-tab.active{background:rgba(232,176,75,.1);color:var(--gold);border-color:var(--gold)}
+.tpl-view{display:none}
+.tpl-view.active{display:block}
+.tpl-pre{background:#070A14;border:1px solid var(--line);border-radius:11px;padding:18px;font-family:var(--mono);
+  font-size:12.5px;line-height:1.65;color:#c8d2e8;white-space:pre-wrap;overflow-x:auto;max-height:440px;overflow-y:auto}
+
+/* progress view */
+.prog-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:22px}
+.pc{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;text-align:center}
+.pc .v{font-family:var(--disp);font-weight:700;font-size:30px;color:var(--gold)}
+.pc .l{font-size:11.5px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.08em;font-family:var(--mono)}
+.srs-list{display:flex;flex-direction:column;gap:8px}
+.srs-item{display:flex;align-items:center;gap:12px;background:var(--ink-2);border:1px solid var(--line-soft);border-radius:10px;padding:11px 14px}
+.srs-item .s-txt{flex:1;font-size:13.5px}
+.notes-area{width:100%;min-height:180px;background:#070A14;border:1px solid var(--line);border-radius:11px;
+  padding:15px;color:var(--text);font-family:var(--mono);font-size:13px;line-height:1.6;resize:vertical}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--panel);
+  border:1px solid var(--gold);border-radius:11px;padding:13px 20px;font-size:13.5px;opacity:0;pointer-events:none;
+  transition:.3s;z-index:90;box-shadow:0 12px 40px rgba(0,0,0,.5)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast b{color:var(--gold)}
+
+.foot{border-top:1px solid var(--line-soft);margin-top:40px;padding:24px 0;color:var(--muted-2);font-size:12px;text-align:center;font-family:var(--mono)}
+
+@media(max-width:880px){
+  .dash-grid,.three-col,.range-grid,.acl-grid,.canon-grid,.lab-grid{grid-template-columns:1fr}
+  .prog-cards{grid-template-columns:1fr 1fr}
+  .hero h1{font-size:25px}
+  .section-head{flex-direction:column;align-items:flex-start}
+  .rank-chip .rk-label{display:none}
+}
+/* PWA: honor phone safe areas (status bar / nav bar / notch) */
+@supports(padding:env(safe-area-inset-top)){
+  header.top{padding-top:env(safe-area-inset-top)}
+  main{padding-left:max(0px,env(safe-area-inset-left));padding-right:max(0px,env(safe-area-inset-right))}
+  .foot{padding-bottom:calc(24px + env(safe-area-inset-bottom))}
+}
+.install-chip{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:95;
+  display:none;align-items:center;gap:8px;background:var(--gold);color:#1a1304;border:none;font-family:var(--body);
+  font-weight:600;font-size:13.5px;padding:11px 16px;border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.5);cursor:pointer}
+.install-chip.show{display:inline-flex}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <svg class="shield-emblem" viewBox="0 0 42 50" aria-hidden="true">
+          <defs>
+            <clipPath id="shieldClip"><path d="M21 1 L40 8 V24 C40 37 32 45 21 49 C10 45 2 37 2 24 V8 Z"/></clipPath>
+            <linearGradient id="fillGrad" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0" stop-color="#C9912F"/><stop offset="1" stop-color="#E8B04B"/>
+            </linearGradient>
+          </defs>
+          <g clip-path="url(#shieldClip)">
+            <rect x="0" y="0" width="42" height="50" fill="#10182c"/>
+            <rect id="shieldFill" x="0" y="50" width="42" height="0" fill="url(#fillGrad)"/>
+          </g>
+          <path d="M21 1 L40 8 V24 C40 37 32 45 21 49 C10 45 2 37 2 24 V8 Z" fill="none" stroke="#E8B04B" stroke-width="1.5" opacity=".85"/>
+          <path d="M14 24 l5 5 l9 -11" fill="none" stroke="#0B0E1A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/>
+        </svg>
+        <div class="wordmark">
+          <span class="name">AE<b>GIS</b></span>
+          <span class="sub">ISC2-Aligned · v1.1.0</span>
+        </div>
+      </div>
+      <div class="top-spacer"></div>
+      <div class="streak" title="Study streak — keep it alive by completing something each day">⚡ <b id="streakNum">0</b>&nbsp;day</div>
+      <div class="rank-chip">
+        <div>
+          <div class="rk-label">Readiness</div>
+          <div class="rk-name" id="rankName">Recruit</div>
+        </div>
+        <div class="ring">
+          <svg width="38" height="38" viewBox="0 0 38 38">
+            <circle cx="19" cy="19" r="16" fill="none" stroke="#26314E" stroke-width="3.5"/>
+            <circle id="ringFill" cx="19" cy="19" r="16" fill="none" stroke="#E8B04B" stroke-width="3.5"
+              stroke-linecap="round" stroke-dasharray="100.5" stroke-dashoffset="100.5"/>
+          </svg>
+          <span class="pct" id="ringPct">0%</span>
+        </div>
+      </div>
+    </div>
+    <nav class="tabs" id="tabs">
+      <button class="tab active" data-view="dash">Command<span class="dot"></span></button>
+      <button class="tab" data-view="domains">Domains<span class="dot"></span></button>
+      <button class="tab" data-view="range">The Range<span class="dot"></span></button>
+      <button class="tab" data-view="labs">Live Labs<span class="dot"></span></button>
+      <button class="tab" data-view="certs">Cert Map<span class="dot"></span></button>
+      <button class="tab" data-view="ethics">Code of Ethics<span class="dot"></span></button>
+      <button class="tab" data-view="templates">Templates<span class="dot"></span></button>
+      <button class="tab" data-view="progress">Progress<span class="dot"></span></button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- ============ DASHBOARD ============ -->
+<section class="view active" id="view-dash">
+  <div class="hero">
+    <span class="eyebrow">Your operating system for learning cybersecurity</span>
+    <h1 style="margin-top:12px">Built on the <em>ISC2</em> framework. Driven by hands-on practice. Run it every session.</h1>
+    <p>Five official Certified in Cybersecurity domains form the spine. Every topic runs the same loop — learn the concept, drill it in a sandbox, prove it under test. The Code of Ethics gates the offensive tooling. Progress saves to this device.</p>
+    <div class="loop">
+      <div class="loop-step"><span class="n">1</span><b>Learn</b><span>in-app lessons</span></div>
+      <span class="loop-arrow">→</span>
+      <div class="loop-step"><span class="n">2</span><b>Drill</b><span>in-browser range</span></div>
+      <span class="loop-arrow">→</span>
+      <div class="loop-step"><span class="n">3</span><b>Prove</b><span>quiz + live labs</span></div>
+    </div>
+  </div>
+
+  <div class="dash-grid">
+    <div class="card">
+      <div class="section-head" style="margin-bottom:14px">
+        <div><span class="eyebrow">CC Common Body of Knowledge</span><h2 style="font-size:19px;margin-top:6px">The five domains</h2></div>
+        <span class="pill cyan" id="overallPill">0% complete</span>
+      </div>
+      <div class="domain-rows" id="dashDomains"></div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="card stat-card">
+        <span class="eyebrow">This week</span>
+        <div class="big" id="weekDrills">0</div>
+        <div class="lbl">objectives + drills completed</div>
+        <div class="bar" style="margin-top:14px"><i id="weekBar" style="width:0%"></i></div>
+      </div>
+      <div class="card">
+        <span class="eyebrow">Credential ladder</span>
+        <div class="ladder" id="ladder" style="margin-top:12px"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px">
+      <div>
+        <span class="eyebrow">Next best action</span>
+        <h3 style="font-size:17px;margin-top:7px" id="nbaTitle">Accept the Code of Ethics to unlock offensive trainers</h3>
+        <p class="muted" style="margin:6px 0 0;font-size:13.5px" id="nbaSub">ISC2 makes ethical conduct a condition of certification. Start there.</p>
+      </div>
+      <button class="btn" id="nbaBtn">Go →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DOMAINS ============ -->
+<section class="view" id="view-domains">
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">Certified in Cybersecurity · Exam outline (effective Oct 2025)</span>
+      <h2>Domains</h2>
+      <p class="lead">Each objective with a <b style="color:var(--cyan)">Learn ›</b> button opens a full in-app lesson — the concept explained, a diagram, and a worked example. Read it, then it ticks itself. Every objective is flagged by difficulty so you can climb each topic in order.</p>
+    </div>
+  </div>
+  <div class="lvl-legend">
+    <span>Difficulty within each topic:</span>
+    <span class="lvl b">Beg</span> foundational · start here
+    <span class="lvl i">Int</span> builds on the basics
+    <span class="lvl a">Adv</span> depth / design-level
+  </div>
+  <div class="lvl-filter" id="lvlFilter">
+    <button class="lvl-chip active" data-lvl="all">Show all</button>
+    <button class="lvl-chip" data-lvl="b">Beginner only</button>
+    <button class="lvl-chip" data-lvl="i">Intermediate only</button>
+    <button class="lvl-chip" data-lvl="a">Advanced only</button>
+  </div>
+  <div class="dom-select" id="domSelect"></div>
+  <div id="domPanels"></div>
+</section>
+
+<!-- ============ RANGE ============ -->
+<section class="view" id="view-range">
+  <div id="rangeHome">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Hands-on · runs entirely in your browser</span>
+        <h2>The Range</h2>
+        <p class="lead">Six trainers that make you do the thing, not read about it. Offensive tooling stays locked until you accept the Code of Ethics — that's the rule, not a formality.</p>
+      </div>
+      <span class="pill gold" id="rangeEthicsPill">Ethics: not accepted</span>
+    </div>
+    <div class="range-grid" id="trainerGrid"></div>
+  </div>
+
+  <!-- Terminal trainer -->
+  <div class="stage" id="stage-terminal">
+    <div class="stage-head"><button class="back" data-back>‹ Range</button><h3 style="font-size:17px">SOC Terminal — Log Triage</h3><span class="pill cyan">Domain 5 · Security Ops</span></div>
+    <div class="mission-box">
+      <h4>◆ Mission brief</h4>
+      <p class="muted" style="font-size:13px;margin:0 0 11px">A login service is misbehaving. Investigate the box, find the suspicious activity in the auth log, and confirm file integrity. Type <span class="mono term-c-gold">help</span> to list commands.</p>
+      <div id="termTasks"></div>
+    </div>
+    <div class="terminal">
+      <div class="term-bar"><div class="lights"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></div><span class="title">analyst@aegis-soc: ~</span></div>
+      <div class="term-body" id="termBody" tabindex="0"></div>
+    </div>
+  </div>
+
+  <!-- Quiz trainer -->
+  <div class="stage" id="stage-quiz">
+    <div class="stage-head"><button class="back" data-back>‹ Range</button><h3 id="quizTitle" style="font-size:17px">CC Exam Bank</h3><span class="pill gold">Pass: 80%</span></div>
+    <div class="q-stage" id="quizWrap"></div>
+  </div>
+
+  <!-- IR scenario -->
+  <div class="stage" id="stage-ir">
+    <div class="stage-head"><button class="back" data-back>‹ Range</button><h3 style="font-size:17px">Incident Response Simulator</h3><span class="pill cyan">Domain 2 · BC/DR/IR</span></div>
+    <div class="scn" id="irWrap"></div>
+  </div>
+
+  <!-- Access control -->
+  <div class="stage" id="stage-acl">
+    <div class="stage-head"><button class="back" data-back>‹ Range</button><h3 style="font-size:17px">Least-Privilege Workshop</h3><span class="pill cyan">Domain 3 · Access Controls</span></div>
+    <div id="aclWrap"></div>
+  </div>
+
+  <!-- Phishing -->
+  <div class="stage" id="stage-phish">
+    <div class="stage-head"><button class="back" data-back>‹ Range</button><h3 style="font-size:17px">Human Firewall — Phishing Triage</h3><span class="pill cyan">Domain 5 · Awareness</span></div>
+    <div class="scn" id="phishWrap"></div>
+  </div>
+
+  <!-- Ethics judge -->
+  <div class="stage" id="stage-ethicsjudge">
+    <div class="stage-head"><button class="back" data-back>‹ Range</button><h3 style="font-size:17px">Ethics Tribunal — Which Canon Governs?</h3><span class="pill gold">Domain 1 · Ethics</span></div>
+    <div class="scn" id="ejWrap"></div>
+  </div>
+
+  <!-- Subnet trainer -->
+  <div class="stage" id="stage-subnet">
+    <div class="stage-head"><button class="back" data-back>‹ Range</button><h3 style="font-size:17px">Subnet &amp; CIDR Trainer</h3><span class="pill cyan">Domain 4 · Networking</span></div>
+    <div class="scn" id="subnetWrap"></div>
+  </div>
+</section>
+
+<!-- ============ LABS ============ -->
+<section class="view" id="view-labs">
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">Where to prove it for real</span>
+      <h2>Live Labs</h2>
+      <p class="lead">Curated external platforms, mapped to the domain each one trains. Everything here is a sanctioned, legal practice environment — the only place offensive technique belongs.</p>
+    </div>
+  </div>
+  <div id="labsWrap"></div>
+  <div class="card" style="margin-top:8px;border-color:rgba(240,88,107,.3)">
+    <h4 style="font-size:14px;color:var(--alert);display:flex;align-items:center;gap:8px">⚠ Rules of engagement</h4>
+    <p class="muted" style="font-size:13px;margin:8px 0 0">Practice offensive techniques only against systems you own or are explicitly authorized to test — the platforms above, your own VirtualBox lab, or a written-scope engagement. Scanning or attacking anything else is illegal under laws like the U.S. CFAA, regardless of intent. This maps directly to Canon I and Canon II of the Code of Ethics.</p>
+  </div>
+</section>
+
+<!-- ============ CERT MAP ============ -->
+<section class="view" id="view-certs">
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">The whole ladder, not just the next rung</span>
+      <h2>Certification map</h2>
+      <p class="lead">Where every major credential sits, who it's for, and what it demands. Your current target — ISC2 CC — is flagged. Each tier is labelled by the level of the professional it's built for.</p>
+    </div>
+  </div>
+  <div id="certsWrap"></div>
+  <div class="card" style="margin-top:8px">
+    <span class="eyebrow">How to read this</span>
+    <p class="muted" style="font-size:13.5px;margin:9px 0 0">Certs don't replace hands-on skill — they package it. The strongest path stacks a credential with proof: CC or Security+ plus documented lab work (your write-ups, a GitHub of solved boxes) makes you far more hireable than the paper alone. Experience-gated certs like CISSP, CISM, and OSCP come <b style="color:var(--text)">after</b> you've done the work; treat them as a horizon, not a next step.</p>
+  </div>
+</section>
+
+<!-- ============ ETHICS ============ -->
+<section class="view" id="view-ethics">
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">ISC2 Code of Ethics · a condition of certification</span>
+      <h2>The four canons</h2>
+      <p class="lead">Every ISC2 credential — CC through CISSP — requires you to commit to this code. The canons are listed in priority order: when two conflict, the higher number wins. Society before self, integrity before client.</p>
+    </div>
+  </div>
+  <div class="preamble">
+    <span class="eyebrow" style="display:block;margin-bottom:10px">Preamble</span>
+    <span class="q">The safety and welfare of society and the common good, duty to our principals, and duty to each other, require that we adhere — and be seen to adhere — to the highest ethical standards of behavior.</span>
+  </div>
+  <div class="canon-grid" id="canonGrid"></div>
+
+  <div class="gate-box" id="gateBox">
+    <h3 style="font-size:16px;margin-bottom:6px">Commit to the code</h3>
+    <p class="muted" style="font-size:13px;margin-bottom:16px">This unlocks the offensive trainers in The Range. It mirrors the real ISC2 application: you attest to the canons before you carry the credential.</p>
+    <label class="gate-check">
+      <input type="checkbox" id="gateCheck">
+      <span style="font-size:13.5px">I will protect society and infrastructure, act legally and honestly, serve my principals diligently, and advance the profession. I will use offensive techniques only against systems I am authorized to test.</span>
+    </label>
+    <button class="btn" id="gateBtn" disabled>Accept &amp; unlock The Range</button>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <span class="eyebrow">How it's enforced</span>
+    <p class="muted" style="font-size:13.5px;margin:9px 0 0">Members who knowingly violate any canon face a peer-review panel that can revoke certification. Standing to complain follows the canons: <b style="color:var(--text)">anyone</b> may report a Canon I or II breach, only <b style="color:var(--text)">principals</b> (employers/clients) may report Canon III, and only <b style="color:var(--text)">other members</b> may report Canon IV. Observing a violation and staying silent is itself a Canon IV breach.</p>
+  </div>
+</section>
+
+<!-- ============ TEMPLATES ============ -->
+<section class="view" id="view-templates">
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">Capture what you learn so it sticks</span>
+      <h2>Study templates</h2>
+      <p class="lead">Copy any of these into your notes app or repo. Built for the workflow: write up what you broke, distill it, schedule the review.</p>
+    </div>
+  </div>
+  <div class="tpl-tabs" id="tplTabs"></div>
+  <div id="tplViews"></div>
+</section>
+
+<!-- ============ PROGRESS ============ -->
+<section class="view" id="view-progress">
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">Where you stand</span>
+      <h2>Progress &amp; recall</h2>
+      <p class="lead">Spaced repetition is how cybersecurity facts move into long-term memory. Flag anything you fumbled in a drill and review on schedule.</p>
+    </div>
+  </div>
+  <div class="prog-cards" id="progCards"></div>
+
+  <div class="grid" style="grid-template-columns:1fr 1fr;gap:16px">
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <h3 style="font-size:16px">Review queue</h3>
+        <button class="btn ghost sm" id="addReview">+ Add card</button>
+      </div>
+      <div class="srs-list" id="srsList"></div>
+    </div>
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <h3 style="font-size:16px">Field notes</h3>
+        <span class="pill" id="noteSaved">saved</span>
+      </div>
+      <textarea class="notes-area" id="notesArea" placeholder="Scratch space — commands that worked, concepts that clicked, things to revisit..."></textarea>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+    <div><h4 style="font-size:14px">Reset everything</h4><p class="muted" style="font-size:12.5px;margin:5px 0 0">Wipes all saved progress on this device. Cannot be undone.</p></div>
+    <button class="btn ghost sm" id="resetBtn" style="border-color:var(--alert);color:var(--alert)">Reset</button>
+  </div>
+</section>
+
+<div class="foot wrap">AEGIS <b id="footVer" style="color:var(--gold)">v1.1.0</b> · <a href="#" id="footWhatsNew">What's new</a> · ISC2-aligned learning system · progress saves on this device</div>
+</main>
+
+<div class="lesson-overlay" id="wnOverlay">
+  <div class="lesson-modal">
+    <button class="lesson-close" id="wnClose" aria-label="Close">✕</button>
+    <div class="lesson-content" id="wnContent"></div>
+    <div class="lesson-foot">
+      <span id="wnVer"></span>
+      <button class="btn" id="wnDone">Let's go →</button>
+    </div>
+  </div>
+</div>
+
+<button class="install-chip" id="installChip">⤓ Install AEGIS</button>
+
+<div class="lesson-overlay" id="lessonOverlay">
+  <div class="lesson-modal">
+    <button class="lesson-close" id="lessonClose" aria-label="Close lesson">✕</button>
+    <div class="lesson-content" id="lessonContent"></div>
+    <div class="lesson-foot">
+      <span>Read it, then mark it — that ticks the objective.</span>
+      <button class="btn" id="lessonDone">Got it — mark complete</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   STORAGE — graceful fallback so it never throws in a sandbox
+   ============================================================ */
+const Store=(()=>{let mem={},ok=true;try{const k='__aegis';localStorage.setItem(k,'1');localStorage.removeItem(k);}catch(e){ok=false;}
+ return{ok,get(k){try{if(ok){const v=localStorage.getItem(k);return v==null?null:JSON.parse(v);}}catch(e){}return k in mem?mem[k]:null;},
+ set(k,v){try{if(ok){localStorage.setItem(k,JSON.stringify(v));return;}}catch(e){}mem[k]=v;}};})();
+
+const KEY='aegis.state.v1';
+
+/* ============================================================
+   VERSION + CHANGELOG (drives the "What's new" screen)
+   ============================================================ */
+const APP_VERSION='1.1.0';
+const CHANGELOG=[
+ {v:'1.1.0',date:'Aug 2026',items:[
+   'AEGIS is now an <b>installable app</b> (PWA) — add it to your home screen and it runs full-screen and offline.',
+   '<b>Per-domain quizzes</b> with a real 80% pass gate, plus a larger question bank.',
+   '<b>In-app lessons</b> for every Beginner objective and all of Domain 1 — concept, diagram, and worked example.',
+   'New <b>Subnet & CIDR trainer</b> with real IPv4 math, bringing the Range to 7 trainers.',
+   'Domain 4 expanded across <b>Beginner → Advanced</b> networking, plus a full certification map.',
+   'This changelog screen, plus version tracking.'
+ ]},
+ {v:'1.0.0',date:'Jul 2026',items:[
+   'Initial release: the five ISC2 CC domains on a <b>learn → drill → prove</b> loop.',
+   'Six hands-on browser trainers and the <b>Code of Ethics</b> gate for offensive tools.',
+   'Progress tracking with streaks and a spaced-repetition review queue.'
+ ]}
+];
+const today=()=>new Date().toISOString().slice(0,10);
+function loadState(){
+  const s=Store.get(KEY)||{};
+  return Object.assign({objectives:{},drills:{},quizBest:{},domQuiz:{},streak:{count:0,last:null},
+    ethicsAccepted:false,notes:'',srs:[],weekStart:today(),weekCount:0,lastSeenVersion:null},s);
+}
+let state=loadState();
+function save(){Store.set(KEY,state);}
+
+/* streak + week bookkeeping */
+function bumpActivity(){
+  const t=today();
+  if(state.streak.last!==t){
+    const y=new Date(Date.now()-864e5).toISOString().slice(0,10);
+    state.streak.count=(state.streak.last===y)?state.streak.count+1:1;
+    state.streak.last=t;
+  }
+  // week rollover (7 days)
+  if((new Date(t)-new Date(state.weekStart))/864e5>=7){state.weekStart=t;state.weekCount=0;}
+  save();render();
+}
+
+/* ============================================================
+   DATA — ISC2 CC domains, ethics, labs, templates, quiz, etc.
+   ============================================================ */
+const DOMAINS=[
+  {id:'d1',code:'1',name:'Security Principles',pct:0,
+   learn:[['CIA triad: confidentiality, integrity, availability — the basis of every decision','b'],
+     ['Authentication, non-repudiation, and privacy','b'],
+     ['Control types: technical, administrative (managerial), physical','b'],
+     ['The ISC2 Code of Ethics (see the Ethics tab)','b'],
+     ['Risk management lifecycle: identify → assess → treat','i'],
+     ['Governance: policies, procedures, standards, regulations, and laws','i']],
+   res:[['ISC2','Official CC self-paced course (free candidate program)'],['READ','Destination Certification — CC domain 1 notes'],['CONCEPT','CIA triad + the AAA model']],
+   ai:'The CC outline now applies CIA to AI systems — e.g. data integrity is what prevents "model poisoning," and ethical/transparent AI use sits inside this domain.',
+   drill:'ethicsjudge',drillLabel:'Ethics Tribunal'},
+  {id:'d2',code:'2',name:'BC, DR & Incident Response',pct:0,
+   learn:[['Business Continuity (BC): keeping critical operations running','b'],
+     ['Disaster Recovery (DR): restoring systems after an event','b'],
+     ['Backups — including configs and datasets, not just files','b'],
+     ['Incident Response: the IR lifecycle and following playbooks','i'],
+     ['Roles during detection, triage, and escalation','i'],
+     ['RTO vs RPO and how they drive recovery strategy','i']],
+   res:[['ISC2','CC course — domain 2'],['PRACTICE','Run the IR Simulator in The Range'],['CONCEPT','RTO vs RPO']],
+   ai:'"Model drift" — an AI quietly degrading in performance — is treated as a business-continuity risk. Recovery now includes backing up AI configurations and training datasets.',
+   drill:'ir',drillLabel:'IR simulator'},
+  {id:'d3',code:'3',name:'Access Controls Concepts',pct:0,
+   learn:[['Subjects, objects, and the rules between them','b'],
+     ['Principle of least privilege & need-to-know','b'],
+     ['Physical vs logical access controls','b'],
+     ['Segregation (separation) of duties','i'],
+     ['Privileged accounts and why they are high-risk','i'],
+     ['Models: DAC, MAC, RBAC','i']],
+   res:[['ISC2','CC course — domain 3'],['PRACTICE','Least-Privilege Workshop in The Range'],['CONCEPT','DAC / MAC / RBAC compared']],
+   ai:'Access-control thinking extends to AI: who and what may reach training data and model endpoints.',
+   drill:'acl',drillLabel:'Least-privilege workshop'},
+  {id:'d4',code:'4',name:'Network Security',pct:0,
+   learn:[
+     ['OSI & TCP/IP models: layered encapsulation & decapsulation','b'],
+     ['IP addressing & subnetting: IPv4/IPv6, CIDR, netmasks, public vs private','b'],
+     ['Core protocols: DNS, DHCP, HTTP/HTTPS, SSH, FTP, ARP, ICMP (+ common ports)','b'],
+     ['Network hardware & topologies: switches, routers, firewalls, access points','b'],
+     ['NAT & port forwarding: static, dynamic, and PAT','b'],
+     ['Firewalls & segmentation: VLANs, ACLs, DMZs, stateful vs stateless (+ IDS/IPS)','i'],
+     ['VPNs & secure tunneling: IPsec, OpenVPN, WireGuard, SSL/TLS','i'],
+     ['Packet analysis: capturing & reading PCAPs with Wireshark and tcpdump','i'],
+     ['Routing protocols: static, OSPF, BGP basics; reading routing tables','i'],
+     ['Network Access Control: 802.1X, RADIUS, TACACS+, port security','i'],
+     ['SDN & virtualization: microsegmentation, SD-WAN, VXLAN overlays','a'],
+     ['Zero Trust (ZTNA) & SASE: identity-centric, continuously-verified access','a'],
+     ['BGP security & internet infrastructure: route-hijack mitigation, RPKI, DNSSEC','a'],
+     ['Deep packet inspection & TLS interception: cert pinning, cipher-suite analysis','a'],
+     ['Advanced traffic analysis: C2 beaconing, DNS tunneling, covert ICMP/HTTP exfil','a']],
+   res:[['PRACTICE','Subnet & CIDR trainer + SOC Terminal in The Range'],['TOOL','Wireshark / tcpdump on sample PCAPs'],['CONCEPT','Defense in depth & Zero Trust']],
+   ai:'Segmentation isolates AI development environments from production data, and Zero Trust protects the pathways high-value training data travels.',
+   scope:'The Advanced items here reach past CC into CySA+ / CISSP territory. Learn what each one <i>is</i> now; go deep when you get there.',
+   drill:'subnet',drillLabel:'Subnet & CIDR trainer'},
+  {id:'d5',code:'5',name:'Security Operations',pct:0,
+   learn:[['Data handling: classification, labeling, retention, destruction','b'],
+     ['Security awareness training: social engineering & password protection','b'],
+     ['Logging & monitoring of security events (SIEM)','i'],
+     ['System hardening: configuration management, baselines, patching','i'],
+     ['Encryption fundamentals (symmetric / asymmetric / hashing)','i'],
+     ['Key management & applied crypto trade-offs','a']],
+   res:[['ISC2','CC course — domain 5'],['PRACTICE','SOC Terminal + Phishing Triage'],['CONCEPT','Why passphrase length beats complexity']],
+   ai:'SIEM tools use AI to correlate events and cut "alert fatigue." A key new risk: employees leaking data into public LLMs — you are the "human firewall."',
+   drill:'phish',drillLabel:'Phishing triage'}
+];
+const LVL_NAME={b:'Beg',i:'Int',a:'Adv'};
+
+/* ============================================================
+   LESSONS — actual in-app teaching content, keyed by objective
+   ============================================================ */
+const LESSONS={
+ d1_0:{title:'The CIA Triad',dom:'Domain 1 · Security Principles',lvl:'b',html:`
+  <p>Every security control that has ever existed protects at least one of three properties. Learn these and you have the lens you'll use to reason about all of security.</p>
+  <div class="l-diagram">        Confidentiality
+              /\\
+             /  \\
+            /    \\
+   Integrity ---- Availability</div>
+  <ul>
+   <li><b>Confidentiality</b> — only authorized people can read the data. Broken by a breach or eavesdropping. Protected by encryption and access controls.</li>
+   <li><b>Integrity</b> — data is accurate and unaltered, and you'd know if it changed. Broken by tampering. Protected by hashing, checksums, and digital signatures.</li>
+   <li><b>Availability</b> — the data or service is there when authorized users need it. Broken by ransomware or a DDoS. Protected by backups, redundancy, and DoS defenses.</li>
+  </ul>
+  <div class="l-eg"><b>Worked example</b>A hospital records system: encryption keeps records <b>confidential</b>, a hash confirms a lab result wasn't altered (<b>integrity</b>), and redundant servers keep it reachable during an outage (<b>availability</b>). Any attack or defense you meet maps back to which leg it hits.</div>
+  <h4>Why it matters</h4>
+  <p>When you can't tell what a control is "for," ask which leg of the triad it protects. It's the first question in the field and on the exam. (Some models add Authenticity and Non-repudiation — but CIA is the core you reason from.)</p>`},
+
+ d1_1:{title:'Authentication, Non-repudiation & Privacy',dom:'Domain 1 · Security Principles',lvl:'b',html:`
+  <p>These three ideas govern <i>who</i> is acting and what that means for trust.</p>
+  <h4>Authentication — proving identity</h4>
+  <p>You prove who you are using one or more <b>factors</b>:</p>
+  <ul>
+   <li>Something you <b>know</b> — a password or PIN</li>
+   <li>Something you <b>have</b> — a phone, token, or smart card</li>
+   <li>Something you <b>are</b> — a fingerprint or face</li>
+  </ul>
+  <p>Combining factors is <b>multi-factor authentication (MFA)</b> — far stronger, because stealing a password alone isn't enough. (Don't confuse authentication with <b>authorization</b>, which is what you're allowed to do <i>after</i> you're authenticated.)</p>
+  <h4>Non-repudiation</h4>
+  <p>You can't credibly deny an action you took. Achieved with digital signatures and trustworthy logging — critical for accountability and investigations.</p>
+  <h4>Privacy</h4>
+  <p>An individual's control over their personal data. It drives laws like GDPR and HIPAA and the principle of collecting only the data you actually need.</p>
+  <div class="l-eg"><b>Worked example</b>You sign in with a password + phone code (authentication, two factors). The system logs and signs your action so you can't later deny it (non-repudiation), and it only stored the personal data it needed to (privacy).</div>`},
+
+ d1_2:{title:'Control Types: Technical, Administrative, Physical',dom:'Domain 1 · Security Principles',lvl:'b',html:`
+  <p>Any safeguard can be sorted by its <b>nature</b> — how it actually does its job. There are three types, and strong security uses all three together (defense in depth).</p>
+  <ul>
+   <li><b>Technical (logical)</b> — enforced by technology: firewalls, encryption, MFA, antivirus, access-control lists.</li>
+   <li><b>Administrative (managerial)</b> — the rules that govern people and process: policies, procedures, security training, background checks.</li>
+   <li><b>Physical</b> — protects the tangible world: locks, fences, guards, badge readers, cameras.</li>
+  </ul>
+  <p>Controls also have <b>functions</b> — preventive, detective, corrective, deterrent, compensating — describing <i>when</i> they act. A CCTV camera is a physical control that's both deterrent and detective.</p>
+  <div class="l-eg"><b>Worked example</b>Protecting a server room needs all three types: a least-privilege policy (administrative), a badge reader on the door (physical), and disk encryption on the servers (technical). Remove any one and there's an obvious hole.</div>`},
+
+ d1_3:{title:'The ISC2 Code of Ethics',dom:'Domain 1 · Security Principles',lvl:'b',html:`
+  <p>Ethics isn't a footnote in this field — it's a <b>condition of certification</b>. Every ISC2 credential requires you to commit to four canons, and they're listed in <b>priority order</b>: when two conflict, the lower-numbered one wins.</p>
+  <ul>
+   <li><b>Canon I</b> — Protect society, the common good, and the infrastructure. <i>(Public safety first.)</i></li>
+   <li><b>Canon II</b> — Act honorably, honestly, justly, responsibly, and legally.</li>
+   <li><b>Canon III</b> — Provide diligent and competent service to principals (employers/clients).</li>
+   <li><b>Canon IV</b> — Advance and protect the profession.</li>
+  </ul>
+  <p>The ordering is the whole point: society before self, integrity before the client's wishes.</p>
+  <div class="l-eg"><b>Go deeper</b>The full canons, how they're enforced, and who can file complaints live on the <b>Code of Ethics</b> tab — and the <b>Ethics Tribunal</b> trainer drills the gray-area judgment calls.</div>`},
+
+ d1_4:{title:'The Risk Management Lifecycle',dom:'Domain 1 · Security Principles',lvl:'i',html:`
+  <p>Security is really risk management. First, the vocabulary — people mix these up constantly:</p>
+  <ul>
+   <li><b>Threat</b> — what could go wrong (a thief, malware, a flood)</li>
+   <li><b>Vulnerability</b> — the weakness it could exploit (an unlocked door, unpatched software)</li>
+   <li><b>Risk</b> — the <i>combination</i>: likelihood × impact of a threat hitting a vulnerability</li>
+  </ul>
+  <h4>The core process</h4>
+  <div class="l-diagram">IDENTIFY  →  ASSESS  →  TREAT
+ (asset,     (likelihood   (choose a
+  threat,     x impact)     response)
+  vuln)</div>
+  <p>When you <b>treat</b> a risk you pick one of four responses:</p>
+  <ul>
+   <li><b>Mitigate</b> — add a control to reduce it</li>
+   <li><b>Transfer</b> — shift it (insurance, outsourcing)</li>
+   <li><b>Avoid</b> — stop doing the risky activity</li>
+   <li><b>Accept</b> — knowingly live with it, documented</li>
+  </ul>
+  <p>Whatever remains after your controls is <b>residual risk</b>.</p>
+  <div class="l-eg"><b>Worked example</b>Laptops get stolen (threat) and their disks are unencrypted (vulnerability) — high impact if they hold customer data. You <b>mitigate</b> by enforcing full-disk encryption; the small remaining chance is residual risk you formally accept.</div>`},
+
+ d1_5:{title:'Governance: Policies, Standards, Procedures & Laws',dom:'Domain 1 · Security Principles',lvl:'i',html:`
+  <p>Governance is the structure of rules that directs security and answers "who decides, who's accountable, and what must we follow." The internal documents form a hierarchy from broad to specific:</p>
+  <ul>
+   <li><b>Policy</b> — high-level intent, mandatory, approved by leadership. <i>"We protect customer data."</i></li>
+   <li><b>Standard</b> — specific mandatory requirements. <i>"AES-256 for data at rest."</i></li>
+   <li><b>Procedure</b> — the exact step-by-step how-to.</li>
+   <li><b>Guideline</b> — recommended, not mandatory.</li>
+  </ul>
+  <p>Above all of these sit external <b>laws and regulations</b> you must comply with — HIPAA (health), GDPR (EU privacy), PCI-DSS (card data). Compliance is the floor, not the ceiling.</p>
+  <div class="l-eg"><b>Worked example</b>A password <b>policy</b> mandates MFA; the <b>standard</b> names the approved authenticator app; the <b>procedure</b> walks a new hire through enrolling their device. Three documents, three levels of specificity, one goal.</div>`},
+
+ d2_0:{title:'Business Continuity (BC)',dom:'Domain 2 · BC/DR/IR',lvl:'b',html:`
+  <p><b>Business Continuity</b> is keeping the critical parts of the organization running <i>during and after</i> a disruption. It's a whole-business discipline, not just IT.</p>
+  <p>It starts with a <b>Business Impact Analysis (BIA)</b>: which functions are critical, and how long can each be down before real harm? The BC plan then defines how those functions keep operating — alternate sites, manual workarounds, cross-trained staff, communication trees.</p>
+  <ul>
+   <li><b>BC</b> = the <i>business</i> keeps functioning</li>
+   <li><b>DR</b> = restoring the <i>IT systems</i> specifically (a subset of BC)</li>
+  </ul>
+  <div class="l-eg"><b>Worked example</b>If the office floods, BC covers staff switching to remote work, phones rerouting to mobiles, and payroll still going out on time — the human and process side, not just the servers.</div>`},
+
+ d2_1:{title:'Disaster Recovery (DR)',dom:'Domain 2 · BC/DR/IR',lvl:'b',html:`
+  <p><b>Disaster Recovery</b> is the IT-focused subset of continuity: restoring systems, data, and infrastructure after an incident. It's driven by two numbers you set in advance:</p>
+  <ul>
+   <li><b>RTO</b> (Recovery Time Objective) — how fast you must be back up</li>
+   <li><b>RPO</b> (Recovery Point Objective) — how much data loss you can tolerate</li>
+  </ul>
+  <p>Recovery strategies trade cost against speed:</p>
+  <div class="l-diagram">Backups only --> Cold site --> Warm site --> Hot site --> Active-active
+ cheap / slow                                    expensive / instant</div>
+  <div class="l-eg"><b>Worked example</b>Nightly backups give you a ~24-hour RPO (you could lose up to a day of data). A hot site that mirrors data continuously gives an RPO of minutes. You choose based on how much loss and downtime the business can actually survive.</div>`},
+
+ d2_2:{title:'Backups That Actually Save You',dom:'Domain 2 · BC/DR/IR',lvl:'b',html:`
+  <p>A backup is a copy you can restore from — but only if you did it right. Four rules carry most of the weight:</p>
+  <ul>
+   <li><b>3-2-1</b> — keep <b>3</b> copies, on <b>2</b> different media types, with <b>1</b> offsite.</li>
+   <li><b>Offline / immutable copies</b> — ransomware encrypts everything it can reach, so at least one copy must be unreachable from the network.</li>
+   <li><b>Test your restores</b> — an untested backup is a hope, not a backup. Corrupt or incomplete backups are discovered at the worst possible moment.</li>
+   <li><b>Back up more than files</b> — system configurations too, and (per current guidance) AI model configs and training datasets.</li>
+  </ul>
+  <div class="l-eg"><b>Worked example</b>Ransomware encrypts your file server. Because you keep an <b>offline</b> copy and tested the restore last month, you wipe and rebuild in hours instead of paying a ransom. The offline copy is the single reason paying was never on the table.</div>`},
+
+ d3_0:{title:'Subjects, Objects & the Rules Between',dom:'Domain 3 · Access Controls',lvl:'b',html:`
+  <p>All of access control reduces to one sentence: <i>should this <b>subject</b> be allowed this <b>action</b> on this <b>object</b>?</i></p>
+  <ul>
+   <li><b>Subject</b> — the active thing making the request: a user, a process, a service.</li>
+   <li><b>Object</b> — the passive thing being accessed: a file, a database, an API, a room.</li>
+   <li><b>Reference monitor</b> — the gatekeeper that checks every request against the rules and can't be bypassed.</li>
+  </ul>
+  <div class="l-diagram">SUBJECT --request--> [ reference monitor ] --> OBJECT
+  (user)              checks the rules        (payroll file)</div>
+  <div class="l-eg"><b>Worked example</b>A user (subject) tries to open the payroll file (object). The system checks the access-control list (the rules) and grants <b>read</b> but denies <b>write</b>. Same subject, same object, different actions — each decided on its own.</div>`},
+
+ d3_1:{title:'Least Privilege & Need-to-Know',dom:'Domain 3 · Access Controls',lvl:'b',html:`
+  <p><b>Least privilege</b> means giving a subject the <i>minimum</i> access needed to do its job — and nothing more. Its partner, <b>need-to-know</b>, restricts data access to those whose role actually requires it.</p>
+  <p>The payoff is <b>blast radius</b>: when an account is phished or an insider goes rogue, they can only reach what that account was granted. Tightly-scoped accounts contain the damage automatically.</p>
+  <p>Two related ideas:</p>
+  <ul>
+   <li><b>Just-in-time access</b> — grant elevated rights temporarily, then revoke.</li>
+   <li><b>Privilege creep</b> — permissions pile up as people change roles; audit regularly and strip what's no longer needed.</li>
+  </ul>
+  <div class="l-eg"><b>Worked example</b>A helpdesk tech can reset passwords but can't read the CEO's mailbox. If their account gets phished, the attacker inherits only helpdesk-level reach — annoying, not catastrophic. Drill this in the <b>Least-Privilege Workshop</b>.</div>`},
+
+ d3_2:{title:'Physical vs Logical Access Control',dom:'Domain 3 · Access Controls',lvl:'b',html:`
+  <p>Access control happens in two arenas, and you need both — the strongest firewall is useless if someone can walk out with the server.</p>
+  <ul>
+   <li><b>Physical</b> — controls a <i>body's</i> access to places and hardware: badges, locks, mantraps, guards, cameras.</li>
+   <li><b>Logical (technical)</b> — controls access to <i>systems and data</i>: passwords, MFA, permissions, encryption.</li>
+  </ul>
+  <div class="l-eg"><b>Worked example</b>A data center pairs the two: a badge-plus-PIN mantrap controls who reaches the racks (physical), and once you're at a console you still need a login and MFA to touch anything (logical). Defeating one layer still leaves the other.</div>`},
+
+ d4_0:{title:'The OSI & TCP/IP Models',dom:'Domain 4 · Network Security',lvl:'b',html:`
+  <p>Networks are built in <b>layers</b>. Each layer adds its own header and passes the data down (<b>encapsulation</b>); the receiving side peels the headers back off in reverse (<b>decapsulation</b>). The OSI model has 7 layers; TCP/IP collapses them into 4.</p>
+  <div class="l-diagram">OSI (7)              TCP/IP (4)
+7 Application  |
+6 Presentation |---> Application
+5 Session      |
+4 Transport    ----> Transport   (TCP/UDP, ports)
+3 Network      ----> Internet    (IP addresses)
+2 Data Link    |---> Link        (MAC, frames)
+1 Physical     |                 (the wire)</div>
+  <p>Why a security pro cares: <b>every control and every attack lives at a layer.</b> A firewall filtering IPs works at Layer 3; TLS encryption sits up around Layer 6/7; MAC spoofing is a Layer 2 attack. Naming the layer tells you where to defend.</p>
+  <div class="l-eg"><b>Worked example</b>Your web request gets a TCP header with a port (L4), then an IP header with addresses (L3), then a frame with MAC addresses (L2), then becomes bits on the wire (L1). The server reverses the process to read it.</div>`},
+
+ d4_1:{title:'IP Addressing & Subnetting',dom:'Domain 4 · Network Security',lvl:'b',html:`
+  <p>An IPv4 address is <b>32 bits</b>, written as four octets like <b>192.168.1.10</b>. A <b>subnet mask</b> / CIDR prefix splits every address into a <i>network</i> part and a <i>host</i> part.</p>
+  <p><b>/24</b> means the first 24 bits are the network (mask 255.255.255.0), leaving 8 bits for hosts. From any address + prefix you can derive:</p>
+  <ul>
+   <li><b>Network address</b> — host bits all 0 -> 192.168.1.<b>0</b></li>
+   <li><b>Broadcast address</b> — host bits all 1 -> 192.168.1.<b>255</b></li>
+   <li><b>Usable hosts</b> — 2^(host bits) - 2 -> for /24, 2^8 - 2 = <b>254</b></li>
+  </ul>
+  <p><b>Private ranges</b> (RFC 1918, not routable on the internet): <b>10.0.0.0/8</b>, <b>172.16.0.0/12</b>, <b>192.168.0.0/16</b>. IPv6 uses 128 bits to solve address exhaustion.</p>
+  <p>The security angle: subnets are your <b>segmentation boundaries</b> — they define where you place firewalls and separate trust zones.</p>
+  <div class="l-eg"><b>Practice it</b>The <b>Subnet & CIDR Trainer</b> generates fresh problems with real bit-math and shows the working each time. That's where this concept actually sticks.</div>`},
+
+ d4_2:{title:'Core Protocols & Ports',dom:'Domain 4 · Network Security',lvl:'b',html:`
+  <p>Protocols are the agreed languages devices speak; <b>ports</b> (0-65535) are the numbered doors where each service listens. Memorize these — they show up constantly in scans, logs, and the exam:</p>
+  <ul>
+   <li><b>DNS · 53</b> — resolves names to IP addresses</li>
+   <li><b>DHCP · 67/68</b> — hands out IP configuration automatically</li>
+   <li><b>HTTP · 80 / HTTPS · 443</b> — web traffic (443 is encrypted)</li>
+   <li><b>SSH · 22</b> — encrypted remote administration</li>
+   <li><b>FTP · 21</b> — file transfer (unencrypted)</li>
+   <li><b>ARP</b> — maps an IP to a MAC address on the local network</li>
+   <li><b>ICMP</b> — diagnostics like ping and traceroute</li>
+  </ul>
+  <p>Security angle: knowing the defaults lets you spot the odd one out, and you should always prefer the encrypted variant — HTTPS over HTTP, SSH over Telnet.</p>
+  <div class="l-eg"><b>Worked example</b>Traffic to port <b>23</b> (Telnet) in your logs is a red flag: it's plaintext, so credentials cross the wire in the clear. SSH on port 22 does the same job encrypted.</div>`},
+
+ d4_3:{title:'Network Hardware & Topologies',dom:'Domain 4 · Network Security',lvl:'b',html:`
+  <p>Four devices move and guard traffic. Knowing which layer each works at tells you what it can filter:</p>
+  <ul>
+   <li><b>Switch</b> — connects devices within a LAN; forwards by <b>MAC</b> address (Layer 2).</li>
+   <li><b>Router</b> — connects <i>different</i> networks; forwards by <b>IP</b> (Layer 3). A common place for rules.</li>
+   <li><b>Firewall</b> — allows or blocks traffic by ruleset; the policy enforcement point.</li>
+   <li><b>Access point (AP)</b> — bridges wireless clients onto the wired network.</li>
+  </ul>
+  <p><b>Topology</b> is how they're arranged; the <b>star</b> (everything to a central switch) dominates today. The switch/router boundary is where you segment and filter traffic between trust zones.</p>
+  <div class="l-eg"><b>Worked example</b>Guest Wi-Fi rides its own VLAN and is routed through a firewall that blocks it from the internal network — so a compromised guest laptop can reach the internet but not your file server.</div>`},
+
+ d4_4:{title:'NAT & Port Forwarding',dom:'Domain 4 · Network Security',lvl:'b',html:`
+  <p><b>NAT</b> (Network Address Translation) rewrites IP addresses as traffic crosses a boundary — most often letting many private hosts share one public IP.</p>
+  <ul>
+   <li><b>Static NAT</b> — a fixed one-to-one mapping.</li>
+   <li><b>Dynamic NAT</b> — a pool of public IPs assigned as needed.</li>
+   <li><b>PAT (overload)</b> — many private hosts behind one public IP, told apart by port number. This is what your home router does.</li>
+  </ul>
+  <p><b>Port forwarding</b> maps an inbound public port to a specific internal host and port — deliberately exposing a service to the outside.</p>
+  <p>Security angle: NAT hides internal structure (a mild side benefit, not a real control). Every port-forward, by contrast, is an <i>intentional hole</i> you must justify and lock down.</p>
+  <div class="l-eg"><b>Worked example</b>Forwarding public <b>:443</b> to an internal web server at <b>192.168.1.20:443</b> lets the internet reach that one service — and nothing else on the network, if your firewall is doing its job.</div>`},
+
+ d5_0:{title:'Data Handling: Classify, Label, Retain, Destroy',dom:'Domain 5 · Security Operations',lvl:'b',html:`
+  <p>Data has a lifecycle, and security follows it from creation to disposal. Four verbs:</p>
+  <ul>
+   <li><b>Classify</b> — sort data by sensitivity: Public / Internal / Confidential / Restricted. Classification decides how hard you protect it.</li>
+   <li><b>Label</b> — mark it so people and tools apply the right controls automatically.</li>
+   <li><b>Retain</b> — keep it as long as it's needed or legally required — and no longer.</li>
+   <li><b>Destroy</b> — when retention ends, dispose securely (crypto-erase, wiping, shredding) so it can't be recovered.</li>
+  </ul>
+  <p>Two truths sit underneath: you can't protect what you never classified, and data kept past its purpose is pure liability with no upside.</p>
+  <div class="l-eg"><b>Worked example</b>Customer PII is classified <b>Confidential</b> (so it's encrypted and access-restricted), retained for the seven years a regulation requires, then securely wiped. Each verb triggered a concrete action.</div>`},
+
+ d5_1:{title:'Security Awareness & the Human Firewall',dom:'Domain 5 · Security Operations',lvl:'b',html:`
+  <p>People are the most-attacked layer, which makes training a <b>primary</b> control — not a nice-to-have. The core topics:</p>
+  <ul>
+   <li><b>Social engineering</b> — manipulating people to bypass technology: <b>phishing</b> (email), <b>vishing</b> (voice), <b>pretexting</b> (a fake story), <b>tailgating</b> (following someone through a door).</li>
+   <li><b>Passphrase hygiene</b> — length beats complexity, use a unique one per site, lean on a password manager, and turn on MFA everywhere.</li>
+   <li><b>Reporting</b> — knowing <i>how and when</i> to report a suspicion; fast reporting is what limits damage.</li>
+  </ul>
+  <p>Trained employees become sensors — the "human firewall." The best technical stack still fails if a user simply hands over their credentials.</p>
+  <div class="l-eg"><b>Worked example</b>An employee spots a "CEO" gift-card request as business email compromise and reports it instead of buying the cards. No tool caught it — a trained human did. Drill this in <b>Phishing Triage</b>.</div>`}
+};
+
+const CANONS=[
+  {rom:'I',prio:'Highest priority',title:'Protect society, the common good, necessary public trust and confidence, and the infrastructure.',
+   body:'Public safety comes before everything else. Promote safe practices; never exploit a vulnerability for personal gain.'},
+  {rom:'II',prio:'2nd',title:'Act honorably, honestly, justly, responsibly, and legally.',
+   body:'Personal integrity over client demands. When laws conflict across jurisdictions, favor the one where services are delivered. Don\'t peddle fear, uncertainty, and doubt.'},
+  {rom:'III',prio:'3rd',title:'Provide diligent and competent service to principals.',
+   body:'Serve employers and clients competently and within your qualifications. Avoid conflicts of interest; protect the confidentiality of their information.'},
+  {rom:'IV',prio:'4th',title:'Advance and protect the profession.',
+   body:'Maintain and grow skills; don\'t associate with those who would harm the profession (e.g. exam cheating). Report observed violations.'}
+];
+
+const LABS=[
+  {cat:'Foundations & Linux',dom:'D4 · D5',items:[
+    ['🧩','OverTheWire — Bandit','Learn the Linux command line by escalating through a wargame, level by level.','f','overthewire.org','b'],
+    ['🐧','Linux Journey','Structured, free Linux fundamentals from filesystem to networking.','f','linuxjourney.com','b']
+  ]},
+  {cat:'Blue team & defense',dom:'D2 · D5',items:[
+    ['🛡️','TryHackMe — SOC Level 1','Guided defensive path: SIEM, log analysis, threat intel, incident handling.','p','tryhackme.com','i'],
+    ['🔍','Blue Team Labs Online','Investigation-style challenges: phishing, forensics, IR scenarios.','p','blueteamlabs.online','i'],
+    ['📊','LetsDefend','Browser-based SOC analyst simulator with a live alert queue.','p','letsdefend.io','i']
+  ]},
+  {cat:'Web & offensive (authorized only)',dom:'D4',items:[
+    ['🎯','TryHackMe — Pre-Security / Jr Pentester','Gentle on-ramp into offensive concepts in sandboxed rooms.','p','tryhackme.com','b'],
+    ['🕸️','PortSwigger Web Security Academy','The definitive free web-vuln labs from the makers of Burp Suite.','f','portswigger.net/web-security','i'],
+    ['💀','Hack The Box','Vulnerable machines and Academy modules for hands-on attack practice.','p','hackthebox.com','a']
+  ]},
+  {cat:'Capture the flag',dom:'All',items:[
+    ['🚩','picoCTF','Beginner-friendly CTF from Carnegie Mellon — runs year-round.','f','picoctf.org','b'],
+    ['⚔️','CTFtime','Calendar of live CTF competitions to test yourself against the clock.','f','ctftime.org','a']
+  ]}
+];
+
+const CERTS=[
+  {tier:'Entry & foundational',lvl:'b',blurb:'No experience required. Prove you belong in the room.',items:[
+    {name:'CompTIA Security+',issuer:'CompTIA',target:false,
+     tagline:'The widely-recognized on-ramp: baseline security + network security. Strong for DoD-aligned roles.',
+     aud:'Sysadmins, junior analysts, helpdesk',pre:'None (Network+ or ~2 yrs IT recommended)',
+     doms:['General Security Concepts','Threats, Vulnerabilities & Mitigations','Security Architecture','Security Operations','Program Management & Oversight']},
+    {name:'ISC2 Certified in Cybersecurity (CC)',issuer:'ISC2',target:true,
+     tagline:'Your current target. The accessible ISC2 gateway that opens the SSCP → CISSP path.',
+     aud:'Career changers, grads, entry-level IT',pre:'None',
+     doms:['Security Principles','BC/DR & Incident Response','Access Controls','Network Security','Security Operations']}
+  ]},
+  {tier:'Intermediate & mid-career',lvl:'i',blurb:'A few years in. Specialize toward defense or offense.',items:[
+    {name:'CompTIA CySA+',issuer:'CompTIA',target:false,
+     tagline:'Defensive: threat detection and behavioral analysis to protect infrastructure.',
+     aud:'SOC analysts, vuln analysts, threat intel',pre:'3–4 yrs security/IT, or Security+',
+     doms:['Security Operations','Vulnerability Management','Incident Response & Management','Reporting & Communication']},
+    {name:'Certified Ethical Hacker (CEH)',issuer:'EC-Council',target:false,
+     tagline:'Offensive: think like an attacker to find vulnerabilities — legally, in scope.',
+     aud:'Penetration testers, vuln auditors',pre:'2 yrs InfoSec, or official EC-Council training',
+     doms:['Recon & Footprinting','System Hacking','Network & Perimeter Hacking','Web & Wireless','Cryptography & Cloud']}
+  ]},
+  {tier:'Advanced & leadership',lvl:'a',blurb:'Experience-gated. Senior technical and managerial depth.',items:[
+    {name:'CISSP',issuer:'ISC2',target:false,
+     tagline:'The gold standard for experienced pros — senior technical + managerial breadth across 8 CBK domains.',
+     aud:'CISOs, security directors/architects, IT managers',pre:'5 yrs paid exp in ≥2 of 8 domains (degree waives 1 yr)',
+     doms:['Security & Risk Mgmt','Asset Security','Security Architecture & Eng','Comms & Network Security','IAM','Security Assessment & Testing','Security Operations','Software Dev Security']},
+    {name:'CISM',issuer:'ISACA',target:false,
+     tagline:'Management, governance, and strategy over hands-on execution. Aligns security to business goals.',
+     aud:'Security managers, risk officers, consultants',pre:'5 yrs InfoSec, ≥3 yrs in security management',
+     doms:['Info Security Governance','Info Risk Management','Security Program','Incident Management']}
+  ]},
+  {tier:'Specialized & hands-on',lvl:'a',blurb:'Deep, focused proof — cloud or pure exploitation.',items:[
+    {name:'OSCP',issuer:'OffSec',target:false,
+     tagline:'The respected practical pentest cert: a 24-hour hands-on exam actively exploiting target machines.',
+     aud:'Penetration testers',pre:'Strong Linux + networking + scripting foundation',
+     doms:['Active exploitation','Privilege escalation','Pivoting','Report writing under time pressure']},
+    {name:'ISC2 CCSP',issuer:'ISC2',target:false,
+     tagline:'Cloud security specialization: architecture, data & platform security, and compliance across clouds.',
+     aud:'Cloud security engineers/architects',pre:'5 yrs IT, incl. 3 yrs security & 1 yr cloud',
+     doms:['Cloud Concepts & Architecture','Cloud Data Security','Platform & Infra Security','App Security','Ops','Legal & Compliance']}
+  ]}
+];
+
+const QUIZ=[
+  {d:'Domain 1 · Security Principles',q:'A hospital encrypts patient records so only authorized staff can read them. Which part of the CIA triad does this primarily protect?',
+   o:['Integrity','Confidentiality','Availability','Non-repudiation'],a:1,
+   e:'Encryption that limits who can read data protects <b>confidentiality</b>. Integrity is about data not being altered; availability is about access when needed.'},
+  {d:'Domain 1 · Security Principles',q:'Which control type is a security awareness training program best classified as?',
+   o:['Technical control','Physical control','Administrative (managerial) control','Compensating control'],a:2,
+   e:'Policies, procedures, and training are <b>administrative</b> controls. Firewalls are technical; locks and fences are physical.'},
+  {d:'Domain 1 · Security Principles',q:'In risk management, what is the correct order of the core process?',
+   o:['Treat → Identify → Assess','Identify → Assess → Treat','Assess → Treat → Identify','Identify → Treat → Assess'],a:1,
+   e:'You must <b>identify</b> a risk, <b>assess</b> its likelihood and impact, then <b>treat</b> it (accept, avoid, mitigate, or transfer).'},
+  {d:'Domain 2 · BC/DR/IR',q:'RPO (Recovery Point Objective) answers which question?',
+   o:['How fast must we restore service?','How much data loss can we tolerate?','Who declares the disaster?','Where is the alternate site?'],a:1,
+   e:'<b>RPO</b> = acceptable data loss, measured backward in time to the last good backup. RTO is about how fast you restore.'},
+  {d:'Domain 2 · BC/DR/IR',q:'During a ransomware incident, what should happen before you wipe and rebuild an infected host?',
+   o:['Pay the ransom to be safe','Preserve evidence / forensic image','Email all staff the details','Disable logging to save space'],a:1,
+   e:'<b>Preserve evidence</b> first. Rebuilding destroys artifacts needed for investigation and potential legal action.'},
+  {d:'Domain 3 · Access Controls',q:'A new intern is granted full domain-admin rights "to save time." Which principle is violated?',
+   o:['Defense in depth','Least privilege','Non-repudiation','Fail-secure'],a:1,
+   e:'<b>Least privilege</b>: give only the access needed for the role. Admin rights for an intern is a textbook violation.'},
+  {d:'Domain 3 · Access Controls',q:'In which model are permissions assigned to job functions, and users inherit them by being assigned a function?',
+   o:['DAC','MAC','RBAC','Rule-based ACL'],a:2,
+   e:'<b>RBAC</b> (role-based) ties permissions to roles. DAC lets owners grant access; MAC uses system-enforced labels/clearances.'},
+  {d:'Domain 3 · Access Controls',q:'Requiring two different people to complete a sensitive financial transaction is an example of:',
+   o:['Least privilege','Separation of duties','Mandatory access control','Single sign-on'],a:1,
+   e:'<b>Separation (segregation) of duties</b> splits a critical task so no one person can complete it alone, reducing fraud risk.'},
+  {d:'Domain 4 · Network Security',q:'Which device decides whether to allow or block traffic based on a defined ruleset?',
+   o:['Switch','Firewall','Repeater','Load balancer'],a:1,
+   e:'A <b>firewall</b> permits or denies traffic by rule. A switch forwards frames; a repeater regenerates signal.'},
+  {d:'Domain 4 · Network Security',q:'"Never trust, always verify" — even inside the network perimeter — is the core idea of:',
+   o:['DMZ design','Zero Trust','Port forwarding','Spanning Tree'],a:1,
+   e:'<b>Zero Trust</b> removes implicit trust based on network location; every request is authenticated and authorized.'},
+  {d:'Domain 4 · Network Security',q:'Which port is the default for HTTPS?',
+   o:['21','22','80','443'],a:3,
+   e:'<b>443</b> is HTTPS. 80 is HTTP, 22 is SSH, 21 is FTP control.'},
+  {d:'Domain 5 · Security Operations',q:'Hashing a file before and after transfer to confirm it wasn\'t changed protects which property?',
+   o:['Confidentiality','Availability','Integrity','Anonymity'],a:2,
+   e:'Matching hashes prove the data is unchanged — that\'s <b>integrity</b>. Hashing is one-way and is not encryption.'},
+  {d:'Domain 5 · Security Operations',q:'Per modern guidance (and the password tool in this app), the strongest practical defense for a memorized secret is:',
+   o:['Frequent forced rotation','Maximum special characters','Length — a long passphrase','A 6-digit PIN'],a:2,
+   e:'<b>Length</b> wins. A long passphrase resists brute force far better than a short, complex string, and is easier to remember.'},
+  {d:'Domain 5 · Security Operations',q:'A SIEM mainly helps a SOC analyst by:',
+   o:['Encrypting all endpoints','Aggregating and correlating logs/events','Replacing firewalls','Patching servers automatically'],a:1,
+   e:'A <b>SIEM</b> centralizes logs and correlates events to surface incidents and reduce alert fatigue.'},
+  {d:'Domain 5 · Security Operations',q:'An employee pastes confidential source code into a public chatbot. The CC outline frames this primarily as:',
+   o:['A hardware failure','Data leakage risk','A DDoS attack','A compliance bonus'],a:1,
+   e:'This is <b>data leakage</b> into a public LLM. Acting as the "human firewall" means recognizing and preventing it.'},
+  {d:'Domain 4 · Network · Beg',q:'How many usable host addresses does a /26 subnet provide?',
+   o:['30','62','126','254'],a:1,
+   e:'2^(32−26) − 2 = 64 − 2 = <b>62</b> usable hosts (network + broadcast are not usable).'},
+  {d:'Domain 4 · Network · Beg',q:'Which of these is a private (RFC 1918) address range?',
+   o:['8.8.8.0/24','172.16.0.0/12','203.0.113.0/24','1.1.1.0/24'],a:1,
+   e:'<b>172.16.0.0/12</b> is private, alongside 10.0.0.0/8 and 192.168.0.0/16.'},
+  {d:'Domain 4 · Network · Beg',q:'PAT (Port Address Translation) lets an organization:',
+   o:['Encrypt all traffic by default','Map many internal hosts to one public IP using ports','Route between VLANs','Sign DNS records'],a:1,
+   e:'<b>PAT</b> (NAT overload) multiplexes many private hosts onto a single public IP by tracking source ports.'},
+  {d:'Domain 4 · Network · Int',q:'A VLAN primarily provides:',
+   o:['Physical cabling','Logical segmentation of a switched network','Password hashing','Disk encryption'],a:1,
+   e:'A <b>VLAN</b> logically splits one physical switch into separate broadcast domains, limiting lateral movement.'},
+  {d:'Domain 4 · Network · Int',q:'Which tool captures and dissects packet-level traffic from a PCAP?',
+   o:['Wireshark','Nikto','Hydra','John the Ripper'],a:0,
+   e:'<b>Wireshark</b> (and tcpdump) capture and analyze packets; the others are scanning or password-cracking tools.'},
+  {d:'Domain 4 · Network · Int',q:'A stateful firewall differs from a stateless one because it:',
+   o:['Only checks source IP','Tracks connection state and context','Cannot be bypassed','Encrypts every packet'],a:1,
+   e:'A <b>stateful</b> firewall tracks the state of connections, so it can allow return traffic for sessions it has already seen.'},
+  {d:'Domain 4 · Network · Adv',q:'Regular outbound DNS queries carrying encoded subdomains most likely indicate:',
+   o:['Normal caching','DNS tunneling / covert C2 exfiltration','A DHCP renewal','An ARP broadcast'],a:1,
+   e:'Encoded data in DNS subdomains at beacon-like intervals is classic <b>DNS tunneling</b> for covert command-and-control or exfiltration.'},
+  {d:'Domain 4 · Network · Adv',q:'RPKI is deployed primarily to defend against:',
+   o:['SQL injection','BGP route hijacking','Phishing emails','Weak passwords'],a:1,
+   e:'<b>RPKI</b> cryptographically validates which networks may originate a route, mitigating <b>BGP route hijacking</b>.'},
+  {d:'Domain 1 · Security Principles',q:'Which principle ensures a user cannot credibly deny an action they performed?',
+   o:['Confidentiality','Non-repudiation','Availability','Least privilege'],a:1,
+   e:'<b>Non-repudiation</b>, achieved with digital signatures and solid logging, makes an action undeniable.'},
+  {d:'Domain 1 · Security Principles',q:'Buying cyber-insurance to cover breach costs is which risk treatment?',
+   o:['Mitigate','Accept','Transfer','Avoid'],a:2,
+   e:'Shifting the financial impact to a third party is <b>transfer</b>. Mitigate reduces it; accept lives with it; avoid stops the activity.'},
+  {d:'Domain 1 · Security Principles',q:'Which governance document is high-level, mandatory, and approved by leadership?',
+   o:['Guideline','Procedure','Policy','Standard'],a:2,
+   e:'A <b>policy</b> states mandatory high-level intent. Standards and procedures implement it; guidelines are only recommended.'},
+  {d:'Domain 1 · Security Principles',q:'Multi-factor authentication requires factors from which categories?',
+   o:['Two different passwords','Something you know, have, and/or are','Two usernames','Two security questions'],a:1,
+   e:'<b>MFA</b> combines distinct factor types — know / have / are. Two passwords are the same factor, so that is not MFA.'},
+  {d:'Domain 2 · BC/DR/IR',q:'RTO (Recovery Time Objective) measures:',
+   o:['Tolerable data loss','How fast you must restore service','Number of backups kept','Backup file size'],a:1,
+   e:'<b>RTO</b> is the target time to restore service. RPO is the tolerable amount of data loss.'},
+  {d:'Domain 2 · BC/DR/IR',q:'A fully-equipped, running recovery site enabling near-instant failover is a:',
+   o:['Cold site','Warm site','Hot site','Offsite locker'],a:2,
+   e:'A <b>hot site</b> mirrors production and can take over almost immediately — the fastest and costliest option.'},
+  {d:'Domain 2 · BC/DR/IR',q:'The 3-2-1 backup rule means:',
+   o:['3 servers, 2 admins, 1 password','3 copies, on 2 media types, with 1 offsite','3 backups every day','3 encryption keys'],a:1,
+   e:'<b>3-2-1</b>: three copies, two media types, one offsite — resilience against local disasters and ransomware.'},
+  {d:'Domain 2 · BC/DR/IR',q:'A Business Impact Analysis (BIA) primarily identifies:',
+   o:['Employee salaries','Critical functions and how long they can be down','The marketing plan','Office furniture needs'],a:1,
+   e:'A <b>BIA</b> pinpoints critical functions and their maximum tolerable downtime, driving continuity priorities.'},
+  {d:'Domain 3 · Access Controls',q:'In Mandatory Access Control (MAC), access decisions are based on:',
+   o:['Owner discretion','System-enforced labels and clearances','The user choosing for themselves','Time of day'],a:1,
+   e:'<b>MAC</b> enforces access through system-assigned labels/clearances — the owner cannot override it, unlike DAC.'},
+  {d:'Domain 3 · Access Controls',q:'Granting elevated rights only for a short, defined window is called:',
+   o:['Privilege creep','Just-in-time access','Single sign-on','Federation'],a:1,
+   e:'<b>Just-in-time</b> access issues elevated rights temporarily, then revokes them — shrinking standing privilege.'},
+  {d:'Domain 3 · Access Controls',q:'An employee keeps accumulating permissions across role changes. This is:',
+   o:['Least privilege','Privilege creep','Separation of duties','Need-to-know'],a:1,
+   e:'<b>Privilege creep</b> is unaudited permission buildup — audit regularly and strip what a role no longer needs.'},
+  {d:'Domain 3 · Access Controls',q:'The component that mediates every access request and cannot be bypassed is the:',
+   o:['Firewall','Reference monitor','Load balancer','Proxy'],a:1,
+   e:'The <b>reference monitor</b> checks every subject-to-object request against the rules and is tamper-proof.'},
+  {d:'Domain 5 · Security Operations',q:'Securely wiping or shredding media at end of retention primarily prevents:',
+   o:['Power loss','Recovery of sensitive data from discarded media','Slow networks','High CPU usage'],a:1,
+   e:'Secure destruction stops <b>data remanence</b> — recovering sensitive data from disposed drives or media.'},
+  {d:'Domain 5 · Security Operations',q:'Symmetric encryption uses:',
+   o:['A public/private key pair','The same key to encrypt and decrypt','No keys at all','Only a hash function'],a:1,
+   e:'<b>Symmetric</b> crypto uses one shared key for both directions — fast, but key distribution is the challenge.'},
+  {d:'Domain 5 · Security Operations',q:'System hardening includes:',
+   o:['Adding extra admin accounts','Applying baselines, patching, and disabling unneeded services','Opening all ports','Sharing passwords for convenience'],a:1,
+   e:'<b>Hardening</b> shrinks the attack surface: enforce a secure baseline, patch, and disable services you do not need.'}
+];
+
+const IR_TREE={
+  start:{phase:'00 · Detection',text:'07:42. A SIEM alert fires: a finance workstation is making outbound connections to an unknown IP every 60 seconds, and a user reports their files now end in <span class="term-c-alert">.locked</span>. What is your <b>first</b> action?',
+    choices:[
+      {t:'Power the machine off immediately',next:'powerOff',ok:false,fb:'Pulling power destroys volatile evidence (memory, active connections) and can corrupt files mid-encryption. Isolate without losing forensic state.'},
+      {t:'Isolate the host from the network, keep it running',next:'isolate',ok:true,fb:'Correct. Containment first — cut the network to stop spread and C2, but keep the host powered for forensic capture.'},
+      {t:'Email the whole company a warning',next:'broadcast',ok:false,fb:'Premature mass communication causes panic and tips off nothing useful yet. Contain first, communicate through the IR plan.'}
+    ]},
+  isolate:{phase:'01 · Triage',text:'Host is isolated. The encryption appears to still be spreading to mapped network drives from <i>other</i> machines. What next?',
+    choices:[
+      {t:'Identify and isolate other affected hosts; disable the shared drive',next:'contain',ok:true,fb:'Right. Scope the blast radius and contain laterally — shared drives are a common ransomware spread path.'},
+      {t:'Start restoring files on the first machine right away',next:'earlyRestore',ok:false,fb:'Too early. If the threat is still active, you\'ll re-encrypt your restore. Contain the full incident first.'}
+    ]},
+  powerOff:{phase:'01 · Triage',text:'The machine is off. You\'ve lost memory artifacts, but the spread continues elsewhere. Recover the approach — what now?',
+    choices:[
+      {t:'Identify and isolate other affected hosts; disable the shared drive',next:'contain',ok:true,fb:'Good recovery. Contain the lateral spread now.'}
+    ]},
+  broadcast:{phase:'01 · Triage',text:'Inboxes light up; the help desk is flooded and the threat is still spreading. Refocus — what now?',
+    choices:[
+      {t:'Isolate affected hosts and disable the shared drive',next:'contain',ok:true,fb:'Back on track. Contain the spread.'}
+    ]},
+  earlyRestore:{phase:'01 · Triage',text:'Your restore got partially re-encrypted. Lesson logged. What now?',
+    choices:[{t:'Contain everything first, then plan recovery',next:'contain',ok:true,fb:'Exactly — containment before recovery.'}]},
+  contain:{phase:'02 · Eradication',text:'Spread is stopped. Threat intel matches a known ransomware family. The attackers demand payment for a decryptor. Leadership asks for your recommendation.',
+    choices:[
+      {t:'Pay the ransom — it\'s cheapest',next:'pay',ok:false,fb:'Paying funds crime, breaks no guarantee of recovery, and may violate sanctions law. It also marks you as a payer. Recover from clean backups instead.'},
+      {t:'Do not pay; eradicate the malware and recover from known-good backups',next:'recover',ok:true,fb:'Correct. Remove persistence/malware, then restore from offline, verified-clean backups.'}
+    ]},
+  pay:{phase:'02 · Eradication',text:'Reconsider — paying is discouraged for legal and practical reasons. The better path?',
+    choices:[{t:'Eradicate malware and recover from clean backups',next:'recover',ok:true,fb:'Right call.'}]},
+  recover:{phase:'03 · Recovery',text:'Malware eradicated; systems restored from offline backups and validated. The business is back online. What closes the incident properly?',
+    choices:[
+      {t:'Mark it resolved and move on',next:'noLesson',ok:false,fb:'Skipping the retrospective wastes the incident. The "lessons learned" phase is part of the IR lifecycle.'},
+      {t:'Hold a lessons-learned review and update the playbook',next:'done',ok:true,fb:'Correct. Post-incident review feeds back into preparation — closing the IR loop.'}
+    ]},
+  noLesson:{phase:'03 · Recovery',text:'One more step makes this a complete response.',
+    choices:[{t:'Run a lessons-learned review and update the playbook',next:'done',ok:true,fb:'That completes the lifecycle.'}]},
+  done:{phase:'✓ Resolved',text:'Incident closed: detected, contained, eradicated, recovered, and reviewed — the full IR lifecycle, by the playbook. Well handled, analyst.',end:true}
+};
+
+const ACL_SCENARIO={
+  role:'Junior SOC Analyst (Tier 1)',
+  brief:'Grant this new Tier-1 analyst exactly the access their job needs — no more. Tier-1 monitors alerts, triages, documents, and escalates. They do not administer systems or close out major incidents alone.',
+  perms:[
+    {id:'p1',name:'Read SIEM dashboards & alerts',sub:'view',need:true},
+    {id:'p2',name:'Add notes / triage tickets',sub:'write:tickets',need:true},
+    {id:'p3',name:'Escalate to Tier-2',sub:'workflow',need:true},
+    {id:'p4',name:'Read knowledge base / playbooks',sub:'read:kb',need:true},
+    {id:'p5',name:'Domain Administrator',sub:'admin:*',need:false,danger:true},
+    {id:'p6',name:'Delete audit logs',sub:'delete:logs',need:false,danger:true},
+    {id:'p7','name':'Approve & close major incidents alone',sub:'approve:incident',need:false,danger:true},
+    {id:'p8',name:'Modify firewall rules in production',sub:'write:fw',need:false,danger:true},
+    {id:'p9',name:'Manage all user accounts',sub:'admin:users',need:false,danger:true}
+  ]
+};
+
+const PHISH=[
+  {from:'IT Service Desk',addr:'it-support@yourcompany.com',subj:'Scheduled maintenance this Saturday',
+   body:'<p>Hi team,</p><p>We\'ll be applying routine patches between 10pm and 2am Saturday. No action is needed from you. If you have questions, reply to this thread or open a ticket in the usual portal.</p><p>— IT Service Desk</p>',
+   phish:false,why:'Legitimate: internal sender domain, no urgency, asks for nothing, no links or credential requests. Routine and verifiable.'},
+  {from:'Microsoft 365',addr:'security@m1crosoft-verify.com',subj:'URGENT: Your account will be deleted in 24 hours',
+   body:'<p>We detected unusual sign-in activity. Your account will be <b>permanently deleted in 24 hours</b> unless you verify now.</p><p><a href="#">Click here to verify your password immediately</a></p>',
+   phish:true,why:'Phishing: lookalike domain (m1crosoft-verify.com), manufactured urgency, threat of deletion, and a link demanding your password. Three classic red flags.'},
+  {from:'CEO Dana Reyes',addr:'dana.reyes.ceo@gmail.com',subj:'Quick favor — are you at your desk?',
+   body:'<p>I\'m in back-to-back meetings and can\'t talk. I need you to buy five $200 gift cards for a client and send me the codes ASAP. I\'ll reimburse you. Keep this between us for now.</p>',
+   phish:true,why:'Phishing (business email compromise): external Gmail not the corporate domain, impersonates an executive, gift-card request, urgency, and secrecy. Verify through a known channel.'},
+  {from:'Calendar',addr:'no-reply@calendar.yourcompany.com',subj:'Invitation: Team retro — Thursday 3pm',
+   body:'<p>You have been invited to "Team retro" on Thursday at 3:00pm. Accept, decline, or propose a new time from your calendar.</p>',
+   phish:false,why:'Legitimate: expected internal system message, no credential request, no pressure. Matches a normal workflow.'}
+];
+
+const ETHICS_CASES=[
+  {text:'You discover a serious flaw in a widely used medical-device firmware. The vendor ignores your reports for months while patients remain at risk. The canon that most directly compels you to keep pressing for a fix is:',
+   o:['Canon I','Canon II','Canon III','Canon IV'],a:0,
+   e:'<b>Canon I</b> — protect society and the infrastructure. Public safety outranks the vendor relationship, so you must act to get the flaw fixed (responsibly).'},
+  {text:'A client pressures you to overstate their security posture in an audit report to win a contract. Refusing this aligns most with:',
+   o:['Canon I','Canon II','Canon III','Canon IV'],a:1,
+   e:'<b>Canon II</b> — act honestly and legally. Personal integrity outranks the client\'s demand (which also touches Canon III, but honesty is the direct conflict).'},
+  {text:'You take on a penetration test in a specialized cloud environment you\'ve never worked in, knowing you\'re not yet qualified, and you don\'t disclose this. The canon at stake is:',
+   o:['Canon I','Canon II','Canon III','Canon IV'],a:2,
+   e:'<b>Canon III</b> — provide diligent and competent service to principals. Taking work beyond your competence without disclosure breaches your duty to the client.'},
+  {text:'A peer offers to sell you leaked copies of an ISC2 exam question bank. Declining and reporting it upholds:',
+   o:['Canon I','Canon II','Canon III','Canon IV'],a:3,
+   e:'<b>Canon IV</b> — advance and protect the profession. Exam cheating harms the credential\'s integrity; observing it and staying silent is itself a Canon IV breach.'},
+  {text:'Two canons appear to conflict: doing what your employer wants (III) would put the public at mild risk (I). Which takes precedence?',
+   o:['Canon I — society first','Canon III — the client pays you','Whichever is cheaper','They are equal'],a:0,
+   e:'<b>Canon I</b>. The canons are in priority order; a lower-numbered canon always wins. Society and the common good come before duty to principals.'}
+];
+
+const TEMPLATES={
+  ctf:{name:'CTF / Lab write-up',text:`# [Box / Challenge Name]  —  [Platform]
+Date: ____   Difficulty: ____   Domain(s): ____
+
+## 1. Recon
+- Target / scope (authorized? Y/N): 
+- Enumeration commands run:
+  \`\`\`
+  nmap -sC -sV -oN scan.txt <ip>
+  \`\`\`
+- Open ports / services:
+
+## 2. Foothold
+- Vulnerability identified:
+- How I exploited it (steps):
+- Proof / flag:
+
+## 3. Privilege escalation
+- Vector:
+- Steps:
+
+## 4. What I learned
+- New concept:
+- What I'd do faster next time:
+- Maps to CC objective: 
+
+## 5. Review flag
+- [ ] Add the tricky part to my spaced-repetition queue`},
+  cornell:{name:'Cornell notes',text:`Topic: ____________________     Domain: ____     Date: ______
+================================================================
+CUES / QUESTIONS         |  NOTES
+-------------------------|--------------------------------------
+What is the CIA triad?   |  Confidentiality, Integrity,
+                         |  Availability — basis of all controls
+                         |
+Why least privilege?     |  Grant only access the role needs;
+                         |  limits blast radius of a compromise
+                         |
+(your question)          |  (your note in your own words)
+                         |
+================================================================
+SUMMARY (write 2–3 sentences from memory, no peeking):
+________________________________________________________________
+________________________________________________________________`},
+  week:{name:'Weekly plan',text:`WEEK OF: __________            Target credential: CC
+
+FOCUS DOMAIN THIS WEEK: ____________________
+
+  Mon  | Learn  | Read domain material + tick objectives
+  Tue  | Drill  | Range trainer: ____________
+  Wed  | Learn  | Next subtopic
+  Thu  | Drill  | Live lab: ____________ (authorized only)
+  Fri  | Prove  | Domain quiz — target 80%+
+  Sat  | Build  | VirtualBox lab / longer CTF
+  Sun  | Review | Spaced-repetition queue + Cornell summaries
+
+MIN. DAILY: keep the streak — one objective or one drill.
+END-OF-WEEK CHECK:
+  [ ] Domain quiz passed
+  [ ] Write-up committed
+  [ ] 3 new SRS cards added`},
+  srs:{name:'Spaced repetition',text:`SPACED REPETITION — review schedule
+(Interval grows each time you recall correctly)
+
+  1st review:  +1 day
+  2nd review:  +3 days
+  3rd review:  +7 days
+  4th review:  +16 days
+  5th review:  +35 days
+  Missed it?   reset to +1 day
+
+CARD FORMAT (front → back):
+  Q: Default port for SSH?            → 22
+  Q: Order of risk process?          → Identify, Assess, Treat
+  Q: Which canon = public safety?    → Canon I
+  Q: RPO measures?                   → tolerable data loss
+
+Use the Review Queue on the Progress tab to track these in-app.`}
+};
+
+/* ============================================================
+   RENDER ENGINE
+   ============================================================ */
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>[...r.querySelectorAll(s)];
+
+function domainPct(d){
+  const total=d.learn.length;
+  let done=0;
+  d.learn.forEach((_,i)=>{if(state.objectives[d.id+'_'+i])done++;});
+  const learnPart=total?(done/total)*70:0;        // objectives
+  const drillPart=state.drills[d.drill]?15:0;      // hands-on drill cleared
+  const quizPart=(state.domQuiz[d.id]||0)>=80?15:0;// domain quiz passed at 80%
+  return Math.min(100,Math.round(learnPart+drillPart+quizPart));
+}
+function overallPct(){
+  let s=0;DOMAINS.forEach(d=>s+=domainPct(d));return Math.round(s/DOMAINS.length);
+}
+function rankFor(p){
+  if(!state.ethicsAccepted)return'Recruit';
+  if(p<20)return'Initiate';
+  if(p<45)return'CC Candidate';
+  if(p<70)return'CC Ready';
+  if(p<90)return'SSCP Track';
+  return'CISSP Track';
+}
+
+function render(){
+  const p=overallPct();
+  // shield fill
+  const fill=$('#shieldFill');const h=48*(p/100);fill.setAttribute('y',49-h);fill.setAttribute('height',h);
+  // ring
+  const C=100.5;$('#ringFill').setAttribute('stroke-dashoffset',C-(C*p/100));
+  $('#ringPct').textContent=p+'%';
+  $('#rankName').textContent=rankFor(p);
+  $('#streakNum').textContent=state.streak.count;
+  $('#overallPill').textContent=p+'% complete';
+
+  // dash domains
+  const dd=$('#dashDomains');dd.innerHTML='';
+  DOMAINS.forEach((d,i)=>{
+    const dp=domainPct(d);
+    const row=document.createElement('div');row.className='d-row';
+    row.innerHTML=`<div class="idx">D${d.code}</div>
+      <div class="d-main"><b>${d.name}</b><div class="bar"><i style="width:${dp}%"></i></div></div>
+      <div class="d-pct">${dp}%</div>`;
+    row.onclick=()=>{switchView('domains');selectDomain(i);};
+    dd.appendChild(row);
+  });
+
+  // week
+  $('#weekDrills').textContent=state.weekCount;
+  $('#weekBar').style.width=Math.min(100,(state.weekCount/10)*100)+'%';
+
+  // ladder
+  const ladSteps=[
+    ['CC','Certified in Cybersecurity — entry, no experience needed',p>=20&&p<70],
+    ['SSCP','Systems Security Certified Practitioner — technical depth',p>=70&&p<90],
+    ['CISSP','The flagship — requires 5 yrs experience',p>=90],
+    ['CCSP','Cloud specialization (optional next step)',false]
+  ];
+  const lad=$('#ladder');lad.innerHTML='';
+  ladSteps.forEach(s=>{const e=document.createElement('div');e.className='lad-step'+(s[2]?' now':'');
+    e.innerHTML=`<div class="marker"></div><div><b>${s[0]}</b><div class="meta">${s[1]}</div></div>`;lad.appendChild(e);});
+
+  // NBA
+  let nba;
+  if(!state.ethicsAccepted)nba=['Accept the Code of Ethics to unlock offensive trainers','ISC2 makes ethical conduct a condition of certification. Start there.',()=>switchView('ethics')];
+  else if(overallPct()<10)nba=['Start Domain 1 — Security Principles','Tick objectives as you learn the CIA triad and risk basics.',()=>{switchView('domains');selectDomain(0);}];
+  else nba=['Run a domain drill in The Range','Drilling beats re-reading. Pick a trainer and prove what you know.',()=>switchView('range')];
+  $('#nbaTitle').textContent=nba[0];$('#nbaSub').textContent=nba[1];$('#nbaBtn').onclick=nba[2];
+
+  // range ethics pill + locks
+  $('#rangeEthicsPill').textContent='Ethics: '+(state.ethicsAccepted?'accepted ✓':'not accepted');
+  $('#rangeEthicsPill').className='pill '+(state.ethicsAccepted?'cyan':'gold');
+  $$('.trainer-card').forEach(c=>{
+    const off=c.dataset.offensive==='1';
+    if(off&&!state.ethicsAccepted)c.classList.add('locked');else c.classList.remove('locked');
+  });
+
+  // progress cards
+  renderProgress();
+}
+
+/* ---------- view switching ---------- */
+function switchView(v){
+  $$('.view').forEach(s=>s.classList.toggle('active',s.id==='view-'+v));
+  $$('.tab').forEach(t=>t.classList.toggle('active',t.dataset.view===v));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+$('#tabs').addEventListener('click',e=>{const t=e.target.closest('.tab');if(t)switchView(t.dataset.view);});
+
+/* ============================================================
+   DOMAINS VIEW
+   ============================================================ */
+function buildDomains(){
+  const sel=$('#domSelect');const panels=$('#domPanels');
+  DOMAINS.forEach((d,i)=>{
+    const b=document.createElement('button');b.className='dom-tab'+(i===0?' active':'');
+    b.innerHTML=`Domain ${d.code}<small>${d.name.toUpperCase()}</small>`;
+    b.onclick=()=>selectDomain(i);sel.appendChild(b);
+
+    const pn=document.createElement('div');pn.className='dom-panel'+(i===0?' active':'');pn.dataset.idx=i;
+    pn.innerHTML=`
+      <div class="card">
+        <div class="dom-head">
+          <div class="num">${d.code}</div>
+          <div><span class="eyebrow">CC Domain ${d.code}</span><h3 style="font-size:22px;margin-top:5px">${d.name}</h3></div>
+        </div>
+        <div class="three-col">
+          <div class="lp-card lp-learn">
+            <h4><span class="lp-ico">📖</span> Learn</h4>
+            <p class="k">Tap <b style="color:var(--cyan)">Learn ›</b> to read the lesson, then tick.</p>
+            <ul class="obj-list">${d.learn.map((o,j)=>{const key=d.id+'_'+j;const hasL=!!LESSONS[key];return `<li data-lvl="${o[1]}"><label class="obj" data-obj="${key}"><input type="checkbox"><span>${o[0]}</span><span class="lvl ${o[1]}">${LVL_NAME[o[1]]}</span>${hasL?`<button class="learn-btn" type="button" data-lesson="${key}">Learn ›</button>`:''}</label></li>`;}).join('')}</ul>
+            <div class="ai-note"><b>AI in this domain</b>${d.ai}</div>
+            ${d.scope?`<div class="ai-note" style="background:rgba(232,176,75,.06);border-color:rgba(232,176,75,.22)"><b style="color:var(--gold)">Scope note</b>${d.scope}</div>`:''}
+          </div>
+          <div class="lp-card lp-drill">
+            <h4><span class="lp-ico">⚡</span> Drill</h4>
+            <p class="k">Hands-on practice in The Range.</p>
+            <div style="flex:1"></div>
+            <button class="btn cyan" data-drill="${d.drill}">${d.drillLabel} →</button>
+            <div style="margin-top:10px;font-size:11px" class="muted mono" data-drillstate="${d.drill}"></div>
+          </div>
+          <div class="lp-card lp-prove">
+            <h4><span class="lp-ico">🎯</span> Prove</h4>
+            <p class="k">Pass this domain's quiz at <b style="color:var(--gold)">80%</b>, then test yourself for real.</p>
+            <div style="flex:1">${d.res.map(r=>`<div class="res-link"><span class="tag">${r[0]}</span><span>${r[1]}</span></div>`).join('')}</div>
+            <button class="btn ghost sm" data-drill="quiz" data-dom="${d.id}" style="margin-top:12px">Take Domain ${d.code} quiz →</button>
+            <div class="mono" style="font-size:11px;margin-top:8px" data-quizstate="${d.id}"></div>
+          </div>
+        </div>
+      </div>`;
+    panels.appendChild(pn);
+  });
+
+  // objective checkboxes
+  panels.addEventListener('change',e=>{
+    if(e.target.matches('.obj input')){
+      const key=e.target.closest('.obj').dataset.obj;
+      state.objectives[key]=e.target.checked;
+      e.target.closest('.obj').classList.toggle('done',e.target.checked);
+      if(e.target.checked){state.weekCount++;toast('Objective logged','Keep going.');}
+      bumpActivity();
+    }
+  });
+  panels.addEventListener('click',e=>{
+    const lb=e.target.closest('.learn-btn');
+    if(lb){e.preventDefault();e.stopPropagation();openLesson(lb.dataset.lesson);return;}
+    const b=e.target.closest('[data-drill]');
+    if(b){switchView('range');openTrainer(b.dataset.drill,b.dataset.dom);}
+  });
+  // difficulty filter
+  $('#lvlFilter').addEventListener('click',e=>{
+    const c=e.target.closest('.lvl-chip');if(!c)return;
+    $$('.lvl-chip').forEach(x=>x.classList.toggle('active',x===c));
+    const lvl=c.dataset.lvl;
+    $$('#domPanels li[data-lvl]').forEach(li=>li.classList.toggle('hidden',lvl!=='all'&&li.dataset.lvl!==lvl));
+  });
+}
+function selectDomain(i){
+  switchView('domains');
+  $$('.dom-tab').forEach((t,j)=>t.classList.toggle('active',j===i));
+  $$('.dom-panel').forEach(p=>p.classList.toggle('active',+p.dataset.idx===i));
+  // sync checkbox states
+  DOMAINS.forEach(d=>d.learn.forEach((_,j)=>{
+    const key=d.id+'_'+j;const cb=$(`.obj[data-obj="${key}"] input`);
+    if(cb){cb.checked=!!state.objectives[key];cb.closest('.obj').classList.toggle('done',cb.checked);}
+    const lb=$(`.learn-btn[data-lesson="${key}"]`);
+    if(lb&&state.objectives[key]){lb.classList.add('read');lb.textContent='Reread ›';}
+  }));
+}
+
+/* ============================================================
+   RANGE — trainer cards + stages
+   ============================================================ */
+const TRAINERS=[
+  {id:'quiz',ico:'🎯',name:'CC Exam Bank',desc:'A 12-question mixed exam across all five domains. Per-domain quizzes (80% to pass) live on each domain in the Domains tab.',dom:'All',lvl:'b',off:false},
+  {id:'phish',ico:'🎣',name:'Phishing Triage',desc:'Be the human firewall. Flag phishing vs legitimate mail and name the red flags.',dom:'D5',lvl:'b',off:false},
+  {id:'acl',ico:'🔑',name:'Least-Privilege Workshop',desc:'Provision a new analyst with exactly the access they need. No more.',dom:'D3',lvl:'b',off:false},
+  {id:'ethicsjudge',ico:'⚖️',name:'Ethics Tribunal',desc:'Gray-area scenarios. Identify which canon governs and resolve conflicts.',dom:'D1',lvl:'b',off:false},
+  {id:'ir',ico:'🚨',name:'Incident Response Sim',desc:'A branching ransomware scenario. Make the calls a responder makes — in order.',dom:'D2',lvl:'i',off:false},
+  {id:'subnet',ico:'🧮',name:'Subnet & CIDR Trainer',desc:'Compute network/broadcast addresses, host counts, and masks from CIDR. Real IP math, fresh each run.',dom:'D4',lvl:'i',off:false},
+  {id:'terminal',ico:'⌨️',name:'SOC Terminal',desc:'A simulated Linux shell. Hunt a threat in the auth log and verify file integrity.',dom:'D5',lvl:'i',off:false}
+];
+function buildTrainers(){
+  const g=$('#trainerGrid');
+  TRAINERS.forEach(t=>{
+    const c=document.createElement('div');c.className='trainer-card';c.dataset.offensive=t.off?'1':'0';
+    c.innerHTML=`<div class="t-ico">${t.ico}</div><h4>${t.name}</h4><p>${t.desc}</p>
+      <div class="t-foot"><span style="display:flex;gap:6px"><span class="pill">${t.dom}</span><span class="lvl ${t.lvl}">${LVL_NAME[t.lvl]}</span></span><span class="mono muted" style="font-size:11px" data-best="${t.id}"></span></div>`;
+    c.onclick=()=>openTrainer(t.id);
+    g.appendChild(c);
+  });
+}
+function openTrainer(id,arg){
+  switchView('range');
+  $('#rangeHome').style.display='none';
+  $$('.stage').forEach(s=>s.classList.remove('active'));
+  const st=$('#stage-'+id);if(st)st.classList.add('active');
+  if(id==='terminal')initTerminal();
+  if(id==='quiz')initQuiz(arg);
+  if(id==='ir')initIR();
+  if(id==='acl')initACL();
+  if(id==='phish')initPhish();
+  if(id==='ethicsjudge')initEthicsJudge();
+  if(id==='subnet')initSubnet();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.addEventListener('click',e=>{
+  if(e.target.matches('[data-back]')){
+    $$('.stage').forEach(s=>s.classList.remove('active'));
+    $('#rangeHome').style.display='';
+  }
+});
+function completeDrill(id){
+  if(!state.drills[id]){state.weekCount++;}
+  state.drills[id]=true;
+  bumpActivity();
+}
+
+/* ---------- Terminal trainer ---------- */
+const FS={
+  '/home/analyst':{type:'dir',children:['notes.txt','integrity.sha256','README']},
+  '/var/log':{type:'dir',children:['auth.log','syslog']},
+  '/home/analyst/notes.txt':{type:'file',content:'TODO: review failed logins, confirm config baseline hash.'},
+  '/home/analyst/README':{type:'file',content:'Run `cat /var/log/auth.log` and look for brute-force patterns.\nThen verify the config with sha256sum.'},
+  '/home/analyst/integrity.sha256':{type:'file',content:'expected baseline: 9f2c1a... (compare with sha256sum output)'},
+  '/var/log/syslog':{type:'file',content:'Apr 14 06:01 systemd: Started Daily apt upgrade.\nApr 14 06:32 cron: job finished cleanly.'},
+  '/var/log/auth.log':{type:'file',content:
+`Apr 14 07:10:02 sshd: Accepted password for analyst from 10.0.0.5 port 51122
+Apr 14 07:38:41 sshd: Failed password for root from 203.0.113.66 port 40512
+Apr 14 07:38:43 sshd: Failed password for root from 203.0.113.66 port 40514
+Apr 14 07:38:45 sshd: Failed password for admin from 203.0.113.66 port 40516
+Apr 14 07:38:47 sshd: Failed password for admin from 203.0.113.66 port 40518
+Apr 14 07:38:49 sshd: Failed password for test from 203.0.113.66 port 40520
+Apr 14 07:39:55 sshd: Accepted password for analyst from 10.0.0.5 port 51140`}
+};
+let termState;
+function initTerminal(){
+  termState={cwd:'/home/analyst',tasks:{explore:false,grep:false,hash:false},history:[]};
+  const tb=$('#termBody');tb.innerHTML='';
+  termPrint('AEGIS SOC training shell — type "help"','term-c-muted');
+  termPrint('Mission: investigate the failed logins and verify file integrity.\n','term-c-muted');
+  newPromptLine();
+  renderTermTasks();
+  tb.onclick=()=>{const inp=$('.term-input');if(inp)inp.focus();};
+}
+function renderTermTasks(){
+  const t=termState.tasks;
+  $('#termTasks').innerHTML=[
+    ['explore','Explore the box: list files (try `ls`, `cat`)'],
+    ['grep','Find the attacker: grep "Failed password" /var/log/auth.log'],
+    ['hash','Verify integrity: run `sha256sum notes.txt`']
+  ].map(([k,txt])=>`<div class="mtask ${t[k]?'done':''}"><span class="chk">${t[k]?'✓':''}</span><span class="mt-txt">${txt}</span></div>`).join('');
+}
+function termPrint(text,cls=''){
+  const tb=$('#termBody');const d=document.createElement('div');d.className='out '+cls;d.textContent=text;tb.appendChild(d);tb.scrollTop=tb.scrollHeight;
+}
+function newPromptLine(){
+  const tb=$('#termBody');
+  const line=document.createElement('div');line.className='term-line';
+  line.innerHTML=`<span class="term-prompt">analyst@soc:${termState.cwd.replace('/home/analyst','~')}$</span>`;
+  const inp=document.createElement('input');inp.className='term-input';inp.autocomplete='off';inp.spellcheck=false;
+  line.appendChild(inp);tb.appendChild(line);inp.focus();
+  inp.addEventListener('keydown',ev=>{
+    if(ev.key==='Enter'){const v=inp.value;inp.disabled=true;runCmd(v);}
+  });
+  tb.scrollTop=tb.scrollHeight;
+}
+function resolvePath(arg){
+  if(!arg)return termState.cwd;
+  if(arg.startsWith('/'))return arg.replace(/\/$/,'')||'/';
+  if(arg==='~')return'/home/analyst';
+  if(arg==='..'){return termState.cwd.split('/').slice(0,-1).join('/')||'/';}
+  return (termState.cwd==='/'?'':termState.cwd)+'/'+arg;
+}
+function runCmd(raw){
+  const cmd=raw.trim();termState.history.push(cmd);
+  const [c,...args]=cmd.split(/\s+/);
+  const arg=args.join(' ');
+  switch(c){
+    case'':break;
+    case'help':termPrint('Commands: ls, cat <file>, cd <dir>, pwd, whoami, grep "<text>" <file>, sha256sum <file>, history, clear');break;
+    case'pwd':termPrint(termState.cwd);break;
+    case'whoami':termPrint('analyst');break;
+    case'clear':$('#termBody').innerHTML='';break;
+    case'history':termPrint(termState.history.map((h,i)=>` ${i+1}  ${h}`).join('\n'));break;
+    case'ls':{
+      const p=resolvePath(args[0]);const node=FS[p];
+      if(node&&node.type==='dir'){termPrint(node.children.join('   '),'term-c-cyan');termState.tasks.explore=true;}
+      else if(node)termPrint(args[0]);
+      else termPrint('ls: cannot access \''+(args[0]||'')+'\': No such file or directory','term-c-alert');
+      break;}
+    case'cd':{
+      const p=resolvePath(args[0]||'~');const node=FS[p];
+      if(node&&node.type==='dir')termState.cwd=p;
+      else termPrint('cd: '+(args[0]||'')+': No such directory','term-c-alert');
+      break;}
+    case'cat':{
+      let p=resolvePath(args[0]);let node=FS[p];
+      if(!node){p=resolvePath(args[0]);node=FS[(termState.cwd==='/home/analyst'?'/home/analyst/':termState.cwd+'/')+args[0]];}
+      // try relative within cwd
+      if(!node&&args[0]){const cand=(termState.cwd+'/'+args[0]).replace('//','/');node=FS[cand];}
+      if(node&&node.type==='file'){termPrint(node.content);termState.tasks.explore=true;}
+      else termPrint('cat: '+(args[0]||'')+': No such file','term-c-alert');
+      break;}
+    case'grep':{
+      const m=cmd.match(/grep\s+"([^"]+)"\s+(\S+)/)||cmd.match(/grep\s+'([^']+)'\s+(\S+)/)||cmd.match(/grep\s+(\S+)\s+(\S+)/);
+      if(!m){termPrint('usage: grep "text" <file>','term-c-muted');break;}
+      const needle=m[1];const fp=resolvePath(m[2]);const node=FS[fp]||FS[(termState.cwd+'/'+m[2]).replace('//','/')];
+      if(node&&node.type==='file'){
+        const hits=node.content.split('\n').filter(l=>l.toLowerCase().includes(needle.toLowerCase()));
+        if(hits.length){termPrint(hits.join('\n'),'term-c-gold');
+          if(/fail/i.test(needle)){termState.tasks.grep=true;
+            termPrint('\n→ Five failed logins from 203.0.113.66 in 8 seconds against root/admin/test — a brute-force attempt. That source IP is your indicator of compromise.','term-c-green');}
+        } else termPrint('(no matches)','term-c-muted');
+      } else termPrint('grep: '+m[2]+': No such file','term-c-alert');
+      break;}
+    case'sha256sum':{
+      let node=FS[resolvePath(args[0])]||FS[(termState.cwd+'/'+args[0]).replace('//','/')];
+      if(node&&node.type==='file'){
+        termPrint('9f2c1a7e4b... '+(args[0]||''),'term-c-cyan');
+        termState.tasks.hash=true;
+        termPrint('→ Hash matches the expected baseline (9f2c1a...). File integrity confirmed — no tampering.','term-c-green');
+      } else termPrint('sha256sum: '+(args[0]||'')+': No such file','term-c-alert');
+      break;}
+    default:termPrint(c+': command not found','term-c-alert');
+  }
+  renderTermTasks();
+  const t=termState.tasks;
+  if(t.explore&&t.grep&&t.hash&&!termState.cleared){
+    termState.cleared=true;
+    termPrint('\n✓ MISSION COMPLETE — you investigated the host, identified a brute-force source, and verified file integrity. That\'s core Domain 5 work.','term-c-green');
+    completeDrill('terminal');toast('SOC Terminal cleared','Domain 5 drill logged.');
+  }
+  newPromptLine();
+}
+
+/* ---------- Quiz ---------- */
+let quiz;
+function qDom(q){const m=q.d.match(/Domain\s+(\d)/);return m?'d'+m[1]:null;}
+function initQuiz(domId){
+  const idxs=[...QUIZ.keys()].filter(i=>!domId||qDom(QUIZ[i])===domId);
+  const size=domId?Math.min(idxs.length,6):12;
+  quiz={i:0,score:0,dom:domId||null,order:idxs.sort(()=>Math.random()-.5).slice(0,size)};
+  const t=$('#quizTitle');
+  if(t)t.textContent=domId?(DOMAINS.find(d=>d.id===domId).name+' — Quiz'):'CC Exam Bank · all domains';
+  renderQ();
+}
+function renderQ(){
+  const w=$('#quizWrap');
+  if(quiz.i>=quiz.order.length){
+    const pct=Math.round(quiz.score/quiz.order.length*100);
+    const passed=pct>=80;
+    if(quiz.dom){state.domQuiz[quiz.dom]=Math.max(state.domQuiz[quiz.dom]||0,pct);}
+    else{const b=state.quizBest.quiz||0;if(pct>b)state.quizBest.quiz=pct;if(passed)completeDrill('quiz');}
+    bumpActivity();
+    w.innerHTML=`<div class="q-card" style="text-align:center">
+      <div class="q-domain">${quiz.dom?DOMAINS.find(d=>d.id===quiz.dom).name:'CC Exam Bank'} · Result</div>
+      <div style="font-family:var(--disp);font-size:48px;font-weight:700;color:${passed?'var(--green)':'var(--alert)'}">${pct}%</div>
+      <p class="muted">${quiz.score} of ${quiz.order.length} correct</p>
+      <div style="text-align:center;margin-top:8px"><span class="pill ${passed?'cyan':'alert'}">${passed?'PASSED · 80% cleared ✓':'Below 80% — not passed yet'}</span></div>
+      ${passed&&quiz.dom?`<p class="muted" style="font-size:12.5px;margin-top:10px">Counts toward Domain ${DOMAINS.find(d=>d.id===quiz.dom).code} completion.</p>`:''}
+      <div style="display:flex;gap:10px;justify-content:center;margin-top:18px">
+        <button class="btn" id="qAgain">Retake</button>
+        <button class="btn ghost" data-back>Back to Range</button>
+      </div></div>`;
+    $('#qAgain').onclick=()=>initQuiz(quiz.dom);
+    return;
+  }
+  const q=QUIZ[quiz.order[quiz.i]];
+  w.innerHTML=`<div class="q-meta"><span>Question ${quiz.i+1} / ${quiz.order.length}</span><span>Score ${quiz.score}</span></div>
+    <div class="q-card">
+      <div class="q-domain">${q.d}</div>
+      <div class="q-text">${q.q}</div>
+      <div id="opts">${q.o.map((o,j)=>`<button class="opt" data-i="${j}"><span class="key">${'ABCD'[j]}</span><span>${o}</span></button>`).join('')}</div>
+      <div class="explain" id="qExplain"><b>Why:</b> ${q.e}</div>
+      <div style="text-align:right;margin-top:14px"><button class="btn" id="qNext" style="display:none">Next →</button></div>
+    </div>`;
+  $$('#opts .opt').forEach(b=>b.onclick=()=>{
+    const pick=+b.dataset.i;const correct=q.a;
+    $$('#opts .opt').forEach(x=>{x.disabled=true;
+      if(+x.dataset.i===correct)x.classList.add('correct');
+      if(+x.dataset.i===pick&&pick!==correct)x.classList.add('wrong');});
+    if(pick===correct)quiz.score++;
+    $('#qExplain').classList.add('show');
+    $('#qNext').style.display='inline-flex';
+    $('#qNext').onclick=()=>{quiz.i++;renderQ();};
+  });
+}
+
+/* ---------- IR sim ---------- */
+let irNode,irScore;
+function initIR(){irNode='start';irScore=0;renderIR();}
+function renderIR(){
+  const n=IR_TREE[irNode];const w=$('#irWrap');
+  if(n.end){
+    if(irScore>=4)completeDrill('ir');else bumpActivity();
+    w.innerHTML=`<div class="scn-stage" style="text-align:center">
+      <div class="scn-phase">${n.phase}</div>
+      <div class="scn-text">${n.text}</div>
+      <div class="scn-score" style="justify-content:center;margin-bottom:16px">Decision quality: <b style="color:var(--gold)">${irScore}/5 optimal calls</b></div>
+      <div style="display:flex;gap:10px;justify-content:center">
+        <button class="btn" id="irAgain">Run again</button><button class="btn ghost" data-back>Back to Range</button></div></div>`;
+    $('#irAgain').onclick=initIR;return;
+  }
+  w.innerHTML=`<div class="scn-stage">
+    <div class="scn-phase">${n.phase}</div>
+    <div class="scn-text">${n.text}</div>
+    <div class="scn-feedback" id="irFb"></div>
+    <div id="irChoices">${n.choices.map((c,j)=>`<button class="choice" data-i="${j}">${c.t}</button>`).join('')}</div>
+  </div>`;
+  $$('#irChoices .choice').forEach(b=>b.onclick=()=>{
+    const c=n.choices[+b.dataset.i];
+    const fb=$('#irFb');fb.className='scn-feedback show '+(c.ok?'good':'bad');
+    fb.innerHTML=`<h4>${c.ok?'✓ Good call':'✗ Reconsider'}</h4>${c.fb}`;
+    if(c.ok)irScore++;
+    $$('#irChoices .choice').forEach(x=>x.disabled=true);
+    const cont=document.createElement('button');cont.className='btn';cont.style.marginTop='14px';cont.textContent='Continue →';
+    cont.onclick=()=>{irNode=c.next;renderIR();};
+    $('#irChoices').appendChild(cont);
+  });
+}
+
+/* ---------- Access control workshop ---------- */
+function initACL(){
+  const s=ACL_SCENARIO;const w=$('#aclWrap');
+  w.innerHTML=`<div class="card">
+    <span class="eyebrow">Provision: ${s.role}</span>
+    <p class="muted" style="font-size:13.5px;margin:9px 0 18px">${s.brief}</p>
+    <div class="acl-grid">
+      <div><div class="eyebrow" style="margin-bottom:10px">Grant access</div><div id="aclPerms"></div></div>
+      <div>
+        <div class="eyebrow" style="margin-bottom:10px">Least-privilege check</div>
+        <div class="card" style="background:var(--ink-2)">
+          <p class="muted" style="font-size:13px;margin:0 0 14px">Toggle on only what a Tier-1 analyst needs. Granting admin-level or destructive rights breaks least privilege and separation of duties.</p>
+          <button class="btn" id="aclSubmit">Submit provisioning</button>
+          <div id="aclResult" style="margin-top:16px"></div>
+        </div>
+      </div>
+    </div></div>`;
+  const pc=$('#aclPerms');const granted={};
+  s.perms.forEach(p=>{
+    const row=document.createElement('div');row.className='perm'+(p.danger?' danger':'');
+    row.innerHTML=`<div class="tgl"></div><div><div class="p-name">${p.name}</div><div class="p-sub">${p.sub}</div></div>`;
+    row.onclick=()=>{granted[p.id]=!granted[p.id];row.classList.toggle('on',granted[p.id]);};
+    pc.appendChild(row);
+  });
+  $('#aclSubmit').onclick=()=>{
+    let over=[],missing=[];
+    s.perms.forEach(p=>{
+      if(granted[p.id]&&!p.need)over.push(p.name);
+      if(!granted[p.id]&&p.need)missing.push(p.name);
+    });
+    const r=$('#aclResult');
+    if(over.length===0&&missing.length===0){
+      r.innerHTML=`<div class="scn-feedback show good"><h4>✓ Textbook least privilege</h4>Exactly the four permissions a Tier-1 analyst needs, and nothing dangerous. This is how you limit the blast radius of a compromised account.</div>`;
+      completeDrill('acl');toast('Least-privilege workshop cleared','Domain 3 drill logged.');
+    } else {
+      r.innerHTML=`<div class="scn-feedback show bad"><h4>✗ Not least privilege yet</h4>
+        ${over.length?`<div><b>Over-provisioned</b> (remove these — they violate least privilege / separation of duties): ${over.join(', ')}.</div>`:''}
+        ${missing.length?`<div style="margin-top:6px"><b>Missing</b> (the analyst can\'t do their job without): ${missing.join(', ')}.</div>`:''}</div>`;
+      bumpActivity();
+    }
+  };
+}
+
+/* ---------- Phishing triage ---------- */
+let phishI,phishScore;
+function initPhish(){phishI=0;phishScore=0;renderPhish();}
+function renderPhish(){
+  const w=$('#phishWrap');
+  if(phishI>=PHISH.length){
+    if(phishScore>=3)completeDrill('phish');else bumpActivity();
+    w.innerHTML=`<div class="scn-stage" style="text-align:center"><div class="scn-phase">Result</div>
+      <div style="font-family:var(--disp);font-size:42px;font-weight:700;color:var(--gold)">${phishScore}/${PHISH.length}</div>
+      <p class="muted">${phishScore>=3?'Solid human-firewall instincts ✓':'Review the red flags and retry.'}</p>
+      <div style="display:flex;gap:10px;justify-content:center;margin-top:16px"><button class="btn" id="phAgain">Retry</button><button class="btn ghost" data-back>Back to Range</button></div></div>`;
+    $('#phAgain').onclick=initPhish;return;
+  }
+  const m=PHISH[phishI];
+  w.innerHTML=`<div class="q-meta"><span>Message ${phishI+1} / ${PHISH.length}</span><span>Score ${phishScore}</span></div>
+    <div class="mail">
+      <div class="mail-head"><div class="from">${m.from}</div><div class="addr">&lt;${m.addr}&gt;</div><div class="subj">${m.subj}</div></div>
+      <div class="mail-body">${m.body}</div>
+    </div>
+    <div class="flag-row">
+      <button class="btn ghost" data-v="legit">✓ Legitimate</button>
+      <button class="btn" data-v="phish" style="background:var(--alert);color:#fff">⚑ Phishing</button>
+    </div>
+    <div class="scn-feedback" id="phFb" style="margin-top:14px"></div>`;
+  $$('.flag-row button').forEach(b=>b.onclick=()=>{
+    const said=b.dataset.v==='phish';const correct=said===m.phish;
+    if(correct)phishScore++;
+    const fb=$('#phFb');fb.className='scn-feedback show '+(correct?'good':'bad');
+    fb.innerHTML=`<h4>${correct?'✓ Correct':'✗ Missed'}</h4>${m.why}`;
+    $$('.flag-row button').forEach(x=>x.disabled=true);
+    const cont=document.createElement('button');cont.className='btn';cont.style.marginTop='12px';cont.textContent='Next →';
+    cont.onclick=()=>{phishI++;renderPhish();};fb.appendChild(document.createElement('br'));fb.appendChild(cont);
+  });
+}
+
+/* ---------- Ethics tribunal ---------- */
+let ejI,ejScore;
+function initEthicsJudge(){ejI=0;ejScore=0;renderEJ();}
+function renderEJ(){
+  const w=$('#ejWrap');
+  if(ejI>=ETHICS_CASES.length){
+    if(ejScore>=4)completeDrill('ethicsjudge');else bumpActivity();
+    w.innerHTML=`<div class="scn-stage" style="text-align:center"><div class="scn-phase">Verdict</div>
+      <div style="font-family:var(--disp);font-size:42px;font-weight:700;color:var(--gold)">${ejScore}/${ETHICS_CASES.length}</div>
+      <p class="muted">${ejScore>=4?'You can reason with the canons ✓':'Re-read the four canons and their priority order.'}</p>
+      <div style="display:flex;gap:10px;justify-content:center;margin-top:16px"><button class="btn" id="ejAgain">Retry</button><button class="btn ghost" data-back>Back to Range</button></div></div>`;
+    $('#ejAgain').onclick=initEthicsJudge;return;
+  }
+  const c=ETHICS_CASES[ejI];
+  w.innerHTML=`<div class="q-meta"><span>Case ${ejI+1} / ${ETHICS_CASES.length}</span><span>Score ${ejScore}</span></div>
+    <div class="scn-stage"><div class="scn-phase">Scenario</div>
+      <div class="scn-text">${c.text}</div>
+      <div id="ejOpts">${c.o.map((o,j)=>`<button class="choice" data-i="${j}">${o}</button>`).join('')}</div>
+      <div class="scn-feedback" id="ejFb" style="margin-top:14px"></div></div>`;
+  $$('#ejOpts .choice').forEach(b=>b.onclick=()=>{
+    const pick=+b.dataset.i;const ok=pick===c.a;if(ok)ejScore++;
+    $$('#ejOpts .choice').forEach((x,j)=>{x.disabled=true;if(j===c.a)x.style.borderColor='var(--green)';if(j===pick&&!ok)x.style.borderColor='var(--alert)';});
+    const fb=$('#ejFb');fb.className='scn-feedback show '+(ok?'good':'bad');
+    fb.innerHTML=`<h4>${ok?'✓ Correct':'✗ Not quite'}</h4>${c.e}`;
+    const cont=document.createElement('button');cont.className='btn';cont.style.marginTop='12px';cont.textContent='Next →';
+    cont.onclick=()=>{ejI++;renderEJ();};fb.appendChild(document.createElement('br'));fb.appendChild(cont);
+  });
+}
+
+/* ---------- Subnet & CIDR trainer (real IPv4 math) ---------- */
+let subQ,subI,subScore;const SUB_TOTAL=6;
+function ipToInt(ip){return ip.split('.').reduce((a,o)=>((a*256)+(+o)),0)>>>0;}
+function intToIp(n){n=n>>>0;return [(n>>>24)&255,(n>>>16)&255,(n>>>8)&255,n&255].join('.');}
+function rnd(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+function maskFor(p){return p===0?0:((0xFFFFFFFF<<(32-p))>>>0);}
+function privateIp(){const k=rnd(0,2);
+  if(k===0)return [10,rnd(0,255),rnd(0,255),rnd(1,254)].join('.');
+  if(k===1)return [172,rnd(16,31),rnd(0,255),rnd(1,254)].join('.');
+  return [192,168,rnd(0,255),rnd(1,254)].join('.');}
+function makeSubnetQ(){
+  const t=['net','bcast','hosts','mask','classify','same'][rnd(0,5)];
+  if(t==='classify'){
+    const priv=Math.random()<0.5;
+    const ip=priv?privateIp():[rnd(1,9),rnd(0,255),rnd(0,255),rnd(1,254)].join('.');
+    return{lvl:'b',prompt:`Is <b>${ip}</b> a public or private address?`,opts:['Private','Public'],answer:priv?'Private':'Public',
+      explain:`Private space (RFC 1918) is 10.0.0.0/8, 172.16.0.0/12, and 192.168.0.0/16. ${ip} falls ${priv?'inside — private':'outside — public'}.`};
+  }
+  if(t==='same'){
+    const p=rnd(24,29),size=2**(32-p),base=(ipToInt(privateIp())&maskFor(p))>>>0;
+    const ip1=intToIp((base+rnd(1,size-2))>>>0);
+    const same=Math.random()<0.5;
+    const ip2=same?intToIp((base+rnd(1,size-2))>>>0):intToIp((base+size+rnd(1,size-2))>>>0);
+    const ans=((ipToInt(ip1)&maskFor(p))>>>0)===((ipToInt(ip2)&maskFor(p))>>>0)?'Yes':'No';
+    return{lvl:'i',prompt:`Under a <b>/${p}</b> mask, are <b>${ip1}</b> and <b>${ip2}</b> in the same subnet?`,opts:['Yes','No'],answer:ans,
+      explain:`Mask both: ${ip1} → ${intToIp(ipToInt(ip1)&maskFor(p))}, ${ip2} → ${intToIp(ipToInt(ip2)&maskFor(p))}. ${ans==='Yes'?'Same network — yes.':'Different networks — no.'}`};
+  }
+  const p=rnd(22,30),ip=privateIp(),n=(ipToInt(ip)&maskFor(p))>>>0,bc=(n|((~maskFor(p))>>>0))>>>0;
+  if(t==='net')return{lvl:'i',input:1,fmt:'dotted decimal · e.g. 192.168.1.0',prompt:`What is the <b>network address</b> of ${ip}/${p}?`,answer:intToIp(n),
+    explain:`AND the host with the mask ${intToIp(maskFor(p))}. Result: <b>${intToIp(n)}</b>.`};
+  if(t==='bcast')return{lvl:'i',input:1,fmt:'dotted decimal',prompt:`What is the <b>broadcast address</b> of ${ip}/${p}?`,answer:intToIp(bc),
+    explain:`Set every host bit to 1. Network ${intToIp(n)} → broadcast <b>${intToIp(bc)}</b>.`};
+  if(t==='hosts')return{lvl:'b',input:1,fmt:'a number',prompt:`How many <b>usable hosts</b> fit in a /${p} subnet?`,answer:String(Math.pow(2,32-p)-2),
+    explain:`2^(32−${p}) − 2 = ${Math.pow(2,32-p)} − 2 = <b>${Math.pow(2,32-p)-2}</b> (drop network + broadcast).`};
+  return{lvl:'b',input:1,fmt:'dotted decimal · e.g. 255.255.255.0',prompt:`What is the <b>subnet mask</b> for /${p}?`,answer:intToIp(maskFor(p)),
+    explain:`/${p} means the first ${p} bits are 1 → <b>${intToIp(maskFor(p))}</b>.`};
+}
+function initSubnet(){subI=0;subScore=0;renderSubnet();}
+function renderSubnet(){
+  const w=$('#subnetWrap');
+  if(subI>=SUB_TOTAL){
+    if(subScore>=Math.ceil(SUB_TOTAL*0.7))completeDrill('subnet');else bumpActivity();
+    w.innerHTML=`<div class="scn-stage" style="text-align:center"><div class="scn-phase">Result</div>
+      <div style="font-family:var(--disp);font-size:42px;font-weight:700;color:var(--gold)">${subScore}/${SUB_TOTAL}</div>
+      <p class="muted">${subScore>=Math.ceil(SUB_TOTAL*0.7)?'Subnet math locked in ✓':'Work the bit math and run it again.'}</p>
+      <div style="display:flex;gap:10px;justify-content:center;margin-top:16px"><button class="btn" id="subAgain">New set</button><button class="btn ghost" data-back>Back to Range</button></div></div>`;
+    $('#subAgain').onclick=initSubnet;return;
+  }
+  subQ=makeSubnetQ();
+  const body=subQ.input
+    ? `<input id="subInput" class="term-input" style="background:#070A14;border:1px solid var(--line);border-radius:9px;padding:12px 14px;width:100%;font-size:15px" placeholder="${subQ.fmt}" autocomplete="off" spellcheck="false">
+       <div style="text-align:right;margin-top:12px"><button class="btn" id="subCheck">Check</button></div>`
+    : `<div id="subOpts">${subQ.opts.map(o=>`<button class="choice" data-o="${o}">${o}</button>`).join('')}</div>`;
+  w.innerHTML=`<div class="q-meta"><span>Question ${subI+1} / ${SUB_TOTAL}</span><span>Score ${subScore}</span></div>
+    <div class="scn-stage"><div class="scn-phase" style="display:flex;gap:8px;align-items:center">Networking <span class="lvl ${subQ.lvl}">${LVL_NAME[subQ.lvl]}</span></div>
+      <div class="scn-text">${subQ.prompt}</div>${body}
+      <div class="scn-feedback" id="subFb" style="margin-top:14px"></div></div>`;
+  const norm=s=>(s||'').trim().replace(/[, ]/g,'').toLowerCase();
+  function judge(val){
+    const ok=norm(val)===norm(subQ.answer);if(ok)subScore++;
+    const fb=$('#subFb');fb.className='scn-feedback show '+(ok?'good':'bad');
+    fb.innerHTML=`<h4>${ok?'✓ Correct':'✗ Answer: '+subQ.answer}</h4>${subQ.explain}`;
+    const cont=document.createElement('button');cont.className='btn';cont.style.marginTop='12px';cont.textContent='Next →';
+    cont.onclick=()=>{subI++;renderSubnet();};
+    fb.appendChild(document.createElement('br'));fb.appendChild(cont);
+  }
+  if(subQ.input){
+    const inp=$('#subInput');inp.focus();
+    const go=()=>{$('#subCheck').disabled=true;inp.disabled=true;judge(inp.value);};
+    $('#subCheck').onclick=go;
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter')go();});
+  } else {
+    $$('#subOpts .choice').forEach(b=>b.onclick=()=>{$$('#subOpts .choice').forEach(x=>x.disabled=true);judge(b.dataset.o);});
+  }
+}
+
+/* ============================================================
+   WHAT'S NEW MODAL
+   ============================================================ */
+function whatsNewHTML(){
+  return CHANGELOG.map((c,i)=>`<h4>v${c.v} · ${c.date}${i===0?' · latest':''}</h4><ul>${c.items.map(t=>`<li>${t}</li>`).join('')}</ul>`).join('');
+}
+function openWhatsNew(){
+  $('#wnContent').innerHTML=`<span class="l-eyebrow">What's new in AEGIS</span>
+    <h3>Version ${APP_VERSION} <span class="lvl b">Update</span></h3>${whatsNewHTML()}`;
+  $('#wnVer').textContent='v'+APP_VERSION;
+  $('#wnOverlay').classList.add('show');document.body.style.overflow='hidden';
+}
+function closeWhatsNew(){
+  $('#wnOverlay').classList.remove('show');document.body.style.overflow='';
+  if(state.lastSeenVersion!==APP_VERSION){state.lastSeenVersion=APP_VERSION;save();}
+}
+function initWhatsNew(){
+  $('#wnClose').onclick=closeWhatsNew;
+  $('#wnDone').onclick=closeWhatsNew;
+  $('#wnOverlay').addEventListener('click',e=>{if(e.target.id==='wnOverlay')closeWhatsNew();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#wnOverlay').classList.contains('show'))closeWhatsNew();});
+  const fw=$('#footWhatsNew');if(fw)fw.onclick=e=>{e.preventDefault();openWhatsNew();};
+  $('#footVer').textContent='v'+APP_VERSION;
+}
+
+/* ============================================================
+   LESSON MODAL
+   ============================================================ */
+let currentLesson=null;
+function openLesson(key){
+  const L=LESSONS[key];if(!L)return;currentLesson=key;
+  const done=!!state.objectives[key];
+  $('#lessonContent').innerHTML=`<span class="l-eyebrow">${L.dom} · Lesson</span>
+    <h3>${L.title} <span class="lvl ${L.lvl}">${LVL_NAME[L.lvl]}</span></h3>${L.html}`;
+  $('#lessonDone').textContent=done?'✓ Completed — close':'Got it — mark complete';
+  $('#lessonOverlay').classList.add('show');
+  document.body.style.overflow='hidden';
+  $('#lessonContent').parentElement.scrollTop=0;
+}
+function closeLesson(){$('#lessonOverlay').classList.remove('show');document.body.style.overflow='';currentLesson=null;}
+function initLessons(){
+  $('#lessonClose').onclick=closeLesson;
+  $('#lessonOverlay').addEventListener('click',e=>{if(e.target.id==='lessonOverlay')closeLesson();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#lessonOverlay').classList.contains('show'))closeLesson();});
+  $('#lessonDone').onclick=()=>{
+    if(currentLesson&&!state.objectives[currentLesson]){
+      state.objectives[currentLesson]=true;state.weekCount++;
+      const cb=$(`.obj[data-obj="${currentLesson}"] input`);
+      if(cb){cb.checked=true;cb.closest('.obj').classList.add('done');}
+      const lb=$(`.learn-btn[data-lesson="${currentLesson}"]`);if(lb){lb.classList.add('read');lb.textContent='Reread ›';}
+      bumpActivity();toast('Lesson complete','Objective ticked.');
+    }
+    closeLesson();
+  };
+}
+
+/* ============================================================
+   ETHICS VIEW
+   ============================================================ */
+function buildEthics(){
+  const g=$('#canonGrid');
+  CANONS.forEach(c=>{const e=document.createElement('div');e.className='canon';
+    e.innerHTML=`<span class="prio">${c.prio}</span><span class="rom">Canon ${c.rom}</span><h4>${c.title}</h4><p>${c.body}</p>`;g.appendChild(e);});
+  const chk=$('#gateCheck'),btn=$('#gateBtn');
+  chk.onchange=()=>btn.disabled=!chk.checked;
+  btn.onclick=()=>{state.ethicsAccepted=true;save();toast('Code accepted','The Range is unlocked.');renderGate();render();};
+  renderGate();
+}
+function renderGate(){
+  const box=$('#gateBox');
+  if(state.ethicsAccepted){
+    box.classList.add('accepted');
+    box.querySelector('h3').textContent='✓ Code accepted';
+    $('#gateCheck').checked=true;$('#gateCheck').disabled=true;
+    $('#gateBtn').textContent='Accepted — Range unlocked';$('#gateBtn').disabled=true;
+  }
+}
+
+/* ============================================================
+   LABS VIEW
+   ============================================================ */
+function buildLabs(){
+  const w=$('#labsWrap');
+  LABS.forEach(cat=>{
+    const sec=document.createElement('div');sec.className='lab-cat';
+    sec.innerHTML=`<h3>${cat.cat}<span class="dom-ref">${cat.dom}</span></h3>
+      <div class="lab-grid">${cat.items.map(it=>`
+        <div class="lab"><div class="lab-ico">${it[0]}</div>
+          <div class="lab-body"><h4>${it[1]} <span class="free ${it[3]}">${it[3]==='f'?'FREE':'FREEMIUM'}</span> <span class="lvl ${it[5]}">${LVL_NAME[it[5]]}</span></h4>
+          <p>${it[2]}</p><span class="mono muted" style="font-size:11px">${it[4]}</span></div></div>`).join('')}</div>`;
+    w.appendChild(sec);
+  });
+}
+
+/* ============================================================
+   CERT MAP VIEW
+   ============================================================ */
+function buildCerts(){
+  const w=$('#certsWrap');
+  CERTS.forEach(tier=>{
+    const sec=document.createElement('div');sec.className='cert-tier';
+    sec.innerHTML=`<div class="tier-head"><h3>${tier.tier}</h3><span class="lvl ${tier.lvl}">${LVL_NAME[tier.lvl]}</span><span class="muted" style="font-size:12.5px">${tier.blurb}</span></div>
+      <div class="cert-grid">${tier.items.map(c=>`
+        <div class="cert ${c.target?'target':''}">
+          ${c.target?'<span class="target-flag">Your target</span>':''}
+          <div class="cert-top"><div><h4>${c.name}</h4><div class="issuer">${c.issuer}</div></div></div>
+          <p class="tagline">${c.tagline}</p>
+          <div class="cert-meta">
+            <div><b>For</b><span>${c.aud}</span></div>
+            <div><b>Requires</b><span>${c.pre}</span></div>
+          </div>
+          <div class="doms-label">Core domains</div>
+          <div class="doms">${c.doms.map(d=>`<span>${d}</span>`).join('')}</div>
+        </div>`).join('')}</div>`;
+    w.appendChild(sec);
+  });
+}
+
+/* ============================================================
+   TEMPLATES VIEW
+   ============================================================ */
+function buildTemplates(){
+  const tabs=$('#tplTabs'),views=$('#tplViews');
+  Object.entries(TEMPLATES).forEach(([k,t],i)=>{
+    const b=document.createElement('button');b.className='tpl-tab'+(i===0?' active':'');b.textContent=t.name;b.dataset.k=k;
+    b.onclick=()=>{$$('.tpl-tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');
+      $$('.tpl-view').forEach(v=>v.classList.toggle('active',v.dataset.k===k));};
+    tabs.appendChild(b);
+    const v=document.createElement('div');v.className='tpl-view'+(i===0?' active':'');v.dataset.k=k;
+    v.innerHTML=`<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <h3 style="font-size:16px">${t.name}</h3><button class="btn ghost sm" data-copy="${k}">Copy</button></div>
+      <div class="tpl-pre">${t.text.replace(/</g,'&lt;')}</div></div>`;
+    views.appendChild(v);
+  });
+  views.addEventListener('click',e=>{const b=e.target.closest('[data-copy]');if(b){
+    const t=TEMPLATES[b.dataset.copy].text;
+    navigator.clipboard?.writeText(t).then(()=>toast('Copied','Paste it into your notes.'),()=>toast('Copy failed','Select and copy manually.'));
+  }});
+}
+
+/* ============================================================
+   PROGRESS VIEW
+   ============================================================ */
+function renderProgress(){
+  const objDone=Object.values(state.objectives).filter(Boolean).length;
+  const drillsDone=Object.values(state.drills).filter(Boolean).length;
+  const best=state.quizBest.quiz||0;
+  const passed=DOMAINS.filter(d=>(state.domQuiz[d.id]||0)>=80).length;
+  const cards=[['Overall',overallPct()+'%'],['Objectives',objDone],['Drills cleared',drillsDone+'/7'],['Quizzes ≥80%',passed+'/5']];
+  const pc=$('#progCards');if(pc){pc.innerHTML=cards.map(c=>`<div class="pc"><div class="v">${c[1]}</div><div class="l">${c[0]}</div></div>`).join('');}
+  // best badges on trainer cards
+  $$('[data-best]').forEach(el=>{el.textContent=state.drills[el.dataset.best]?'cleared ✓':'';});
+  $$('[data-drillstate]').forEach(el=>{el.textContent=state.drills[el.dataset.drillstate]?'✓ cleared':'not yet';el.style.color=state.drills[el.dataset.drillstate]?'var(--green)':'';});
+  $$('[data-quizstate]').forEach(el=>{const b=state.domQuiz[el.dataset.quizstate]||0;
+    el.textContent=b?('Best '+b+'%'+(b>=80?' · passed ✓':' · need 80%')):'Not attempted';
+    el.style.color=b>=80?'var(--green)':(b?'var(--muted)':'');});
+  renderSRS();
+}
+function renderSRS(){
+  const list=$('#srsList');if(!list)return;
+  if(!state.srs.length){list.innerHTML=`<p class="muted" style="font-size:13px">No review cards yet. Add facts you keep forgetting — ports, the canon order, the risk process.</p>`;return;}
+  list.innerHTML='';
+  state.srs.forEach((c,i)=>{
+    const due=new Date(c.due);const overdue=due<=new Date();
+    const row=document.createElement('div');row.className='srs-item';
+    row.innerHTML=`<span class="pill ${overdue?'gold':''}" style="flex:none">${overdue?'due':'in '+Math.ceil((due-new Date())/864e5)+'d'}</span>
+      <span class="s-txt">${c.q}</span>
+      <button class="btn cyan sm" data-recall="${i}">Recalled ✓</button>
+      <button class="btn ghost sm" data-del="${i}">✕</button>`;
+    list.appendChild(row);
+  });
+  list.querySelectorAll('[data-recall]').forEach(b=>b.onclick=()=>{
+    const c=state.srs[+b.dataset.recall];const ints=[1,3,7,16,35];c.step=Math.min((c.step||0)+1,4);
+    c.due=new Date(Date.now()+ints[c.step]*864e5).toISOString();save();renderSRS();toast('Scheduled','Next review in '+ints[c.step]+' days.');
+  });
+  list.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{state.srs.splice(+b.dataset.del,1);save();renderSRS();});
+}
+function buildProgress(){
+  $('#addReview').onclick=()=>{
+    const q=prompt('Card front (the prompt / question):');if(!q)return;
+    state.srs.push({q:q.trim(),step:0,due:new Date(Date.now()+864e5).toISOString()});save();renderSRS();
+  };
+  const ta=$('#notesArea');ta.value=state.notes||'';
+  let tmr;ta.addEventListener('input',()=>{clearTimeout(tmr);$('#noteSaved').textContent='saving…';
+    tmr=setTimeout(()=>{state.notes=ta.value;save();$('#noteSaved').textContent='saved';},500);});
+  $('#resetBtn').onclick=()=>{if(confirm('Erase all saved progress on this device?')){Store.set(KEY,null);state=loadState();location.reload();}};
+}
+
+/* ============================================================
+   TOAST + BOOT
+   ============================================================ */
+let toastTmr;
+function toast(title,sub){const t=$('#toast');t.innerHTML=`<b>${title}</b> &nbsp;${sub||''}`;t.classList.add('show');
+  clearTimeout(toastTmr);toastTmr=setTimeout(()=>t.classList.remove('show'),2600);}
+
+function boot(){
+  buildDomains();buildTrainers();buildEthics();buildLabs();buildCerts();buildTemplates();buildProgress();initLessons();initWhatsNew();
+  selectDomain(0);
+  render();
+  if(state.lastSeenVersion!==APP_VERSION){openWhatsNew();}
+  if(!Store.ok){
+    setTimeout(()=>toast('Heads up','Download &amp; open this file to save progress between sessions.'),700);
+  }
+}
+boot();
+
+/* ---------- PWA: service worker + install prompt ---------- */
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+}
+let deferredPrompt=null;
+const chip=document.getElementById('installChip');
+window.addEventListener('beforeinstallprompt',(e)=>{
+  e.preventDefault();deferredPrompt=e;if(chip)chip.classList.add('show');
+});
+if(chip){
+  chip.addEventListener('click',async()=>{
+    if(!deferredPrompt)return;
+    chip.classList.remove('show');
+    deferredPrompt.prompt();
+    try{await deferredPrompt.userChoice;}catch(e){}
+    deferredPrompt=null;
+  });
+}
+window.addEventListener('appinstalled',()=>{if(chip)chip.classList.remove('show');deferredPrompt=null;});
+</script>
+</body>
+</html>
