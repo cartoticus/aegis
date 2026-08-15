@@ -148,6 +148,17 @@ li.hidden{display:none}
 .cert .doms{display:flex;flex-wrap:wrap;gap:6px}
 .cert .doms span{font-size:11.5px;background:var(--ink-2);border:1px solid var(--line-soft);border-radius:6px;padding:4px 9px;color:var(--muted)}
 .cert .target-flag{position:absolute;top:-9px;left:18px;background:var(--gold);color:#1a1304;font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:6px;font-weight:700}
+.cert-currency{margin-top:14px;padding-top:13px;border-top:1px dashed var(--line-soft)}
+.cur-line{display:flex;flex-direction:column;gap:2px;margin-bottom:9px}
+.cur-line .cur-k{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2)}
+.cur-line .cur-v{font-size:12.5px;color:var(--text)}
+.cur-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.cur-foot a{font-family:var(--mono);font-size:11px}
+.cur-badge{font-family:var(--mono);font-size:10px;letter-spacing:.04em;padding:3px 8px;border-radius:6px;border:1px solid var(--line);color:var(--muted)}
+.cur-badge.current{color:var(--green);border-color:rgba(91,214,160,.4);background:rgba(91,214,160,.08)}
+.cur-badge.update{color:var(--gold);border-color:rgba(232,176,75,.45);background:rgba(232,176,75,.1)}
+.cur-badge.upcoming{color:var(--steel);border-color:rgba(127,162,224,.45);background:rgba(127,162,224,.1)}
+.cur-note{font-size:11.5px;color:var(--muted);margin-top:7px;line-height:1.5}
 /* in-app lessons */
 .learn-btn{flex:none;background:rgba(79,215,201,.1);border:1px solid rgba(79,215,201,.35);color:var(--cyan);
   font-family:var(--mono);font-size:10px;letter-spacing:.05em;padding:4px 9px;border-radius:7px;cursor:pointer;margin-top:1px;margin-left:8px;transition:.14s;white-space:nowrap}
@@ -460,7 +471,7 @@ li.hidden{display:none}
         </svg>
         <div class="wordmark">
           <span class="name">AE<b>GIS</b></span>
-          <span class="sub">ISC2-Aligned · v1.1.0</span>
+          <span class="sub">ISC2-Aligned · v1.2.0</span>
         </div>
       </div>
       <div class="top-spacer"></div>
@@ -660,6 +671,19 @@ li.hidden{display:none}
       <p class="lead">Where every major credential sits, who it's for, and what it demands. Your current target — ISC2 CC — is flagged. Each tier is labelled by the level of the professional it's built for.</p>
     </div>
   </div>
+  <div class="card" id="currencyBar" style="margin:0 0 22px">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:14px">
+      <div style="max-width:560px">
+        <span class="eyebrow">Outline currency</span>
+        <h3 style="font-size:16px;margin-top:6px">Are these outlines still current?</h3>
+        <p class="muted" style="font-size:13px;margin:7px 0 0">AEGIS shows the exam edition each cert is aligned to and checks a maintained version list for newer outlines. Vendors don't offer a live feed, so always confirm on the official page (one tap per cert below).</p>
+      </div>
+      <div style="text-align:right">
+        <button class="btn sm" id="checkOutlinesBtn">Check for updates</button>
+        <div class="mono" id="outlineStatus" style="font-size:11px;color:var(--muted-2);margin-top:8px"></div>
+      </div>
+    </div>
+  </div>
   <div id="certsWrap"></div>
   <div class="card" style="margin-top:8px">
     <span class="eyebrow">How to read this</span>
@@ -787,8 +811,13 @@ const KEY='aegis.state.v1';
 /* ============================================================
    VERSION + CHANGELOG (drives the "What's new" screen)
    ============================================================ */
-const APP_VERSION='1.1.0';
+const APP_VERSION='1.2.0';
 const CHANGELOG=[
+ {v:'1.2.0',date:'Aug 2026',items:[
+   'New <b>Outline Currency</b> check on the Cert Map — see the exact exam edition AEGIS is aligned to, get flagged when a certification publishes a newer outline, and open the official source in one tap.',
+   'Heads-up baked in: the <b>ISC2 CC outline refreshes Sept 1, 2026</b> (deeper AI coverage) — AEGIS surfaces it automatically.',
+   'Refreshed certification editions (CISSP Apr 2024, Security+ SY0-701, CEH v13, CySA+ CS0-003, and more).'
+ ]},
  {v:'1.1.0',date:'Aug 2026',items:[
    'AEGIS is now an <b>installable app</b> (PWA) — add it to your home screen and it runs full-screen and offline.',
    '<b>Per-domain quizzes</b> with a real 80% pass gate, plus a larger question bank.',
@@ -1159,41 +1188,41 @@ const LABS=[
 
 const CERTS=[
   {tier:'Entry & foundational',lvl:'b',blurb:'No experience required. Prove you belong in the room.',items:[
-    {name:'CompTIA Security+',issuer:'CompTIA',target:false,
+    {name:'CompTIA Security+',issuer:'CompTIA',target:false,key:'secplus',outline:'SY0-701 (2026 objectives)',asOf:'2026-07-01',url:'https://www.comptia.org/certifications/security',
      tagline:'The widely-recognized on-ramp: baseline security + network security. Strong for DoD-aligned roles.',
      aud:'Sysadmins, junior analysts, helpdesk',pre:'None (Network+ or ~2 yrs IT recommended)',
      doms:['General Security Concepts','Threats, Vulnerabilities & Mitigations','Security Architecture','Security Operations','Program Management & Oversight']},
-    {name:'ISC2 Certified in Cybersecurity (CC)',issuer:'ISC2',target:true,
+    {name:'ISC2 Certified in Cybersecurity (CC)',issuer:'ISC2',target:true,key:'cc',outline:'Exam outline — effective Oct 1, 2025',asOf:'2025-10-01',url:'https://www.isc2.org/certifications/cc/cc-certification-exam-outline',
      tagline:'Your current target. The accessible ISC2 gateway that opens the SSCP → CISSP path.',
      aud:'Career changers, grads, entry-level IT',pre:'None',
      doms:['Security Principles','BC/DR & Incident Response','Access Controls','Network Security','Security Operations']}
   ]},
   {tier:'Intermediate & mid-career',lvl:'i',blurb:'A few years in. Specialize toward defense or offense.',items:[
-    {name:'CompTIA CySA+',issuer:'CompTIA',target:false,
+    {name:'CompTIA CySA+',issuer:'CompTIA',target:false,key:'cysa',outline:'CS0-003',asOf:'2023-06-06',url:'https://www.comptia.org/certifications/cybersecurity-analyst',
      tagline:'Defensive: threat detection and behavioral analysis to protect infrastructure.',
      aud:'SOC analysts, vuln analysts, threat intel',pre:'3–4 yrs security/IT, or Security+',
      doms:['Security Operations','Vulnerability Management','Incident Response & Management','Reporting & Communication']},
-    {name:'Certified Ethical Hacker (CEH)',issuer:'EC-Council',target:false,
+    {name:'Certified Ethical Hacker (CEH)',issuer:'EC-Council',target:false,key:'ceh',outline:'CEH v13',asOf:'2024-09-01',url:'https://www.eccouncil.org/train-certify/certified-ethical-hacker-ceh/',
      tagline:'Offensive: think like an attacker to find vulnerabilities — legally, in scope.',
      aud:'Penetration testers, vuln auditors',pre:'2 yrs InfoSec, or official EC-Council training',
      doms:['Recon & Footprinting','System Hacking','Network & Perimeter Hacking','Web & Wireless','Cryptography & Cloud']}
   ]},
   {tier:'Advanced & leadership',lvl:'a',blurb:'Experience-gated. Senior technical and managerial depth.',items:[
-    {name:'CISSP',issuer:'ISC2',target:false,
+    {name:'CISSP',issuer:'ISC2',target:false,key:'cissp',outline:'Exam outline — effective Apr 15, 2024',asOf:'2024-04-15',url:'https://www.isc2.org/certifications/cissp/cissp-certification-exam-outline',
      tagline:'The gold standard for experienced pros — senior technical + managerial breadth across 8 CBK domains.',
      aud:'CISOs, security directors/architects, IT managers',pre:'5 yrs paid exp in ≥2 of 8 domains (degree waives 1 yr)',
      doms:['Security & Risk Mgmt','Asset Security','Security Architecture & Eng','Comms & Network Security','IAM','Security Assessment & Testing','Security Operations','Software Dev Security']},
-    {name:'CISM',issuer:'ISACA',target:false,
+    {name:'CISM',issuer:'ISACA',target:false,key:'cism',outline:'Content outline — 2022 update',asOf:'2022-06-01',url:'https://www.isaca.org/credentialing/cism',
      tagline:'Management, governance, and strategy over hands-on execution. Aligns security to business goals.',
      aud:'Security managers, risk officers, consultants',pre:'5 yrs InfoSec, ≥3 yrs in security management',
      doms:['Info Security Governance','Info Risk Management','Security Program','Incident Management']}
   ]},
   {tier:'Specialized & hands-on',lvl:'a',blurb:'Deep, focused proof — cloud or pure exploitation.',items:[
-    {name:'OSCP',issuer:'OffSec',target:false,
+    {name:'OSCP',issuer:'OffSec',target:false,key:'oscp',outline:'PEN-200 / OSCP+ (2024)',asOf:'2024-11-01',url:'https://www.offsec.com/courses/pen-200/',
      tagline:'The respected practical pentest cert: a 24-hour hands-on exam actively exploiting target machines.',
      aud:'Penetration testers',pre:'Strong Linux + networking + scripting foundation',
      doms:['Active exploitation','Privilege escalation','Pivoting','Report writing under time pressure']},
-    {name:'ISC2 CCSP',issuer:'ISC2',target:false,
+    {name:'ISC2 CCSP',issuer:'ISC2',target:false,key:'ccsp',outline:'Exam outline — effective Aug 1, 2022',asOf:'2022-08-01',url:'https://www.isc2.org/certifications/ccsp/ccsp-certification-exam-outline',
      tagline:'Cloud security specialization: architecture, data & platform security, and compliance across clouds.',
      aud:'Cloud security engineers/architects',pre:'5 yrs IT, incl. 3 yrs security & 1 yr cloud',
      doms:['Cloud Concepts & Architecture','Cloud Data Security','Platform & Infra Security','App Security','Ops','Legal & Compliance']}
@@ -2187,6 +2216,50 @@ function buildLabs(){
   });
 }
 
+let outlineRemote=null;
+function normDate(s){ // 'YYYY', 'YYYY-MM', 'YYYY-MM-DD' -> 'YYYY-MM-DD'
+  if(!s)return '0000-00-00';
+  const p=String(s).split('-'); while(p.length<3)p.push('01'); return p.slice(0,3).join('-');
+}
+function setOutlineStatus(t){const el=$('#outlineStatus');if(el)el.textContent=t;}
+async function checkOutlines(manual){
+  const btn=$('#checkOutlinesBtn');
+  if(btn){btn.disabled=true;btn.textContent='Checking…';}
+  try{
+    const res=await fetch('outline-versions.json?t='+Date.now(),{cache:'no-store'});
+    if(!res.ok)throw new Error('http');
+    outlineRemote=await res.json();
+    renderCurrency();
+    const d=outlineRemote.updatedAt?(' · list updated '+outlineRemote.updatedAt):'';
+    setOutlineStatus('Checked just now'+d);
+  }catch(e){
+    setOutlineStatus(navigator.onLine?'Could not reach the update list — showing built-in editions.':'Offline — showing built-in editions.');
+  }finally{
+    if(btn){btn.disabled=false;btn.textContent='Check for updates';}
+  }
+}
+function renderCurrency(){
+  const today=new Date().toISOString().slice(0,10);
+  CERTS.forEach(tier=>tier.items.forEach(c=>{
+    const el=$(`.cur-badge[data-currency="${c.key}"]`);if(!el)return;
+    const rem=outlineRemote&&outlineRemote.certs&&outlineRemote.certs[c.key];
+    // clear any prior note
+    const noteEl=el.parentElement.parentElement.querySelector('.cur-note');if(noteEl)noteEl.remove();
+    if(rem&&normDate(rem.asOf)>normDate(c.asOf)){
+      const upcoming=normDate(rem.asOf)>today;
+      el.className='cur-badge '+(upcoming?'upcoming':'update');
+      el.textContent=(upcoming?'Upcoming · ':'Update · ')+(rem.outline||rem.asOf);
+      const note=document.createElement('div');note.className='cur-note';
+      note.innerHTML=(upcoming?'⤴ ':'⚑ ')+(rem.note||('A newer outline is listed ('+rem.asOf+'). Confirm on the official page.'));
+      el.parentElement.parentElement.appendChild(note);
+    } else if(outlineRemote){
+      el.className='cur-badge current';el.textContent='Current ✓ · as of '+c.asOf;
+    } else {
+      el.className='cur-badge';el.textContent='as of '+c.asOf;
+    }
+  }));
+}
+
 /* ============================================================
    CERT MAP VIEW
    ============================================================ */
@@ -2206,9 +2279,20 @@ function buildCerts(){
           </div>
           <div class="doms-label">Core domains</div>
           <div class="doms">${c.doms.map(d=>`<span>${d}</span>`).join('')}</div>
+          <div class="cert-currency">
+            <div class="cur-line"><span class="cur-k">AEGIS aligned to</span><span class="cur-v">${c.outline||'—'}</span></div>
+            <div class="cur-foot">
+              <span class="cur-badge" data-currency="${c.key||''}">as of ${c.asOf||'—'}</span>
+              ${c.url?`<a href="${c.url}" target="_blank" rel="noopener">Official outline ↗</a>`:''}
+            </div>
+          </div>
         </div>`).join('')}</div>`;
     w.appendChild(sec);
   });
+  const btn=$('#checkOutlinesBtn');
+  if(btn)btn.onclick=()=>checkOutlines(true);
+  renderCurrency();       // show baked-in editions immediately
+  checkOutlines(false);   // then quietly check the maintained list
 }
 
 /* ============================================================

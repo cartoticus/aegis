@@ -2,7 +2,7 @@
 
 ![AEGIS](docs/screenshot.png)
 
-![Version](https://img.shields.io/badge/version-1.1.0-E8B04B)
+![Version](https://img.shields.io/badge/version-1.2.0-E8B04B)
 ![PWA](https://img.shields.io/badge/PWA-installable-E8B04B)
 ![Works offline](https://img.shields.io/badge/works-offline-4FD7C9)
 ![No build](https://img.shields.io/badge/build-none-5BD6A0)
@@ -25,6 +25,7 @@ It's an installable **Progressive Web App** — add it to your phone's home scre
 - **Certification map** — CC → SSCP → CISSP → CCSP, alongside Security+, CySA+, CEH, CISM, and OSCP.
 - **Difficulty flags** — every objective, trainer, and lab is tagged Beginner / Intermediate / Advanced, with a filter.
 - **Progress tracking** — study streak, spaced-repetition review queue, and field notes, saved locally.
+- **Outline currency check** — the Cert Map shows the exam edition each certification is aligned to, flags when a newer outline is published, and links to the official source in one tap.
 
 ## The trainers
 
@@ -103,6 +104,31 @@ aegis/
 
 > The screenshot is the app's landing view. To use your own, take a capture on
 > your S25+ (**Power + Volume Down**) and replace `docs/screenshot.png`.
+
+## Keeping outlines current
+
+Certification bodies don't publish a machine-readable feed of exam-outline
+versions, so AEGIS uses a maintained list you control: **`outline-versions.json`**
+at the repo root. The app fetches it and, if it advertises a newer outline than
+the edition baked into the app, flags that certification on the Cert Map
+(**Upcoming** for a future effective date, **Update** for one already in effect).
+Everything degrades gracefully offline, and every cert links to its official
+outline page so the source of truth is always one tap away.
+
+When a vendor announces a new outline, edit one file:
+
+1. In `outline-versions.json`, bump that cert's `outline` label and `asOf` date
+   (format `YYYY-MM-DD`), and add a short `note`.
+2. Commit. Every installed copy shows the flag on its next online load — no app
+   rebuild needed.
+
+To fully re-align the app to a new outline (not just flag it), update the cert's
+baked `outline`/`asOf` in `index.html` and refresh the affected domain content,
+then cut a version bump.
+
+> Example shipped in this version: the **ISC2 CC outline effective Sept 1, 2026**
+> is listed in `outline-versions.json`, so AEGIS flags CC as an upcoming refresh
+> automatically.
 
 ## Tech notes
 

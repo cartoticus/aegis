@@ -1,0 +1,14 @@
+{
+  "updatedAt": "2026-08-15",
+  "_comment": "Maintained list of the latest known exam outline per certification. When a vendor publishes a new outline, bump that cert's outline + asOf (and add a note). Every AEGIS install flags it on next online load. Dates are YYYY-MM-DD. Always confirm on the official page linked in the app.",
+  "certs": {
+    "cc":      { "outline": "New exam outline — effective Sept 1, 2026", "asOf": "2026-09-01", "note": "ISC2 refreshes the CC outline on Sept 1, 2026 — its first major content update, with deeper AI coverage. Re-verify the domains before testing on/after that date." },
+    "secplus": { "outline": "SY0-701 (2026 objectives)", "asOf": "2026-07-01" },
+    "cysa":    { "outline": "CS0-003", "asOf": "2023-06-06" },
+    "ceh":     { "outline": "CEH v13", "asOf": "2024-09-01" },
+    "cissp":   { "outline": "Exam outline — effective Apr 15, 2024", "asOf": "2024-04-15" },
+    "cism":    { "outline": "Content outline — 2022 update", "asOf": "2022-06-01" },
+    "oscp":    { "outline": "PEN-200 / OSCP+ (2024)", "asOf": "2024-11-01" },
+    "ccsp":    { "outline": "Exam outline — effective Aug 1, 2022", "asOf": "2022-08-01" }
+  }
+}
