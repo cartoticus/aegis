@@ -1,9 +1,11 @@
-/* AEGIS service worker — offline app shell + installability */
-const CACHE = 'aegis-v1.1.0';
+/* AEGIS service worker — network-first app shell so the newest version
+   always loads when online; cached copies are used only offline. */
+const CACHE = 'aegis-v1.2.1';
 const ASSETS = [
   './',
   './index.html',
   './manifest.webmanifest',
+  './outline-versions.json',
   './icons/icon-192.png',
   './icons/icon-512.png',
   './icons/icon-maskable-512.png'
@@ -26,22 +28,43 @@ self.addEventListener('activate', (e) => {
 self.addEventListener('fetch', (e) => {
   const req = e.request;
   if (req.method !== 'GET') return;
-  e.respondWith(
-    caches.match(req).then((cached) => {
-      if (cached) return cached;
-      return fetch(req)
+  const url = new URL(req.url);
+
+  const isHTML =
+    req.mode === 'navigate' ||
+    req.destination === 'document' ||
+    url.pathname.endsWith('/') ||
+    url.pathname.endsWith('index.html');
+  const isManifestJSON = url.pathname.endsWith('outline-versions.json');
+
+  // Network-first for the app HTML and the version manifest → always fresh online.
+  if (isHTML || isManifestJSON) {
+    const fallback = isHTML ? './index.html' : './outline-versions.json';
+    e.respondWith(
+      fetch(req)
         .then((resp) => {
-          // cache same-origin GETs as they're fetched
-          if (resp && resp.ok && new URL(req.url).origin === self.location.origin) {
+          const copy = resp.clone();
+          caches.open(CACHE).then((c) => c.put(fallback, copy));
+          return resp;
+        })
+        .catch(() => caches.match(fallback))
+    );
+    return;
+  }
+
+  // Cache-first for static assets (icons, manifest).
+  e.respondWith(
+    caches.match(req).then((cached) =>
+      cached ||
+      fetch(req)
+        .then((resp) => {
+          if (resp && resp.ok && url.origin === self.location.origin) {
             const copy = resp.clone();
             caches.open(CACHE).then((c) => c.put(req, copy));
           }
           return resp;
         })
-        .catch(() => {
-          // offline fallback: serve the app shell for navigations
-          if (req.mode === 'navigate') return caches.match('./index.html');
-        });
-    })
+        .catch(() => cached)
+    )
   );
 });
