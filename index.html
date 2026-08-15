@@ -471,7 +471,7 @@ li.hidden{display:none}
         </svg>
         <div class="wordmark">
           <span class="name">AE<b>GIS</b></span>
-          <span class="sub">ISC2-Aligned · v1.2.0</span>
+          <span class="sub">ISC2-Aligned · v1.2.1</span>
         </div>
       </div>
       <div class="top-spacer"></div>
@@ -811,8 +811,11 @@ const KEY='aegis.state.v1';
 /* ============================================================
    VERSION + CHANGELOG (drives the "What's new" screen)
    ============================================================ */
-const APP_VERSION='1.2.0';
+const APP_VERSION='1.2.1';
 const CHANGELOG=[
+ {v:'1.2.1',date:'Aug 2026',items:[
+   'Reliability: the app now always loads the newest version when you\u2019re online (network-first service worker), so updates appear without clearing anything.'
+ ]},
  {v:'1.2.0',date:'Aug 2026',items:[
    'New <b>Outline Currency</b> check on the Cert Map — see the exact exam edition AEGIS is aligned to, get flagged when a certification publishes a newer outline, and open the official source in one tap.',
    'Heads-up baked in: the <b>ISC2 CC outline refreshes Sept 1, 2026</b> (deeper AI coverage) — AEGIS surfaces it automatically.',
