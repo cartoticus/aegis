@@ -446,6 +446,30 @@ li.hidden{display:none}
   display:none;align-items:center;gap:8px;background:var(--gold);color:#1a1304;border:none;font-family:var(--body);
   font-weight:600;font-size:13.5px;padding:11px 16px;border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.5);cursor:pointer}
 .install-chip.show{display:inline-flex}
+/* glossary */
+.gloss{font-weight:600;border-bottom:1.5px dotted var(--gold);cursor:pointer;color:var(--text);transition:.12s}
+.gloss:hover{color:var(--gold);border-bottom-style:solid}
+#glossTip{position:fixed;z-index:130;max-width:280px;background:#0c1120;border:1px solid var(--gold);
+  border-radius:9px;padding:9px 12px;font-size:12.5px;line-height:1.5;color:var(--text);
+  box-shadow:0 10px 30px rgba(0,0,0,.55);pointer-events:none;opacity:0;transition:opacity .12s;display:none}
+#glossTip.show{opacity:1}
+#glossTip .gt-term{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:3px}
+#glossTip .gt-hint{display:block;margin-top:5px;color:var(--muted-2);font-size:10.5px;font-family:var(--mono)}
+#termOverlay{z-index:110}
+.gloss-search{width:100%;background:#070A14;border:1px solid var(--line);border-radius:11px;padding:12px 14px;color:var(--text);font-size:14px;margin-bottom:18px;font-family:var(--body)}
+.gloss-search::placeholder{color:var(--muted-2)}
+.gloss-group{margin-bottom:22px}
+.gloss-group .gl-letter{font-family:var(--disp);font-size:15px;color:var(--gold);border-bottom:1px solid var(--line-soft);padding-bottom:6px;margin-bottom:10px}
+.gloss-item{display:flex;gap:12px;align-items:flex-start;background:var(--ink-2);border:1px solid var(--line-soft);border-radius:11px;padding:13px 15px;margin-bottom:9px;cursor:pointer;transition:.14s}
+.gloss-item:hover{border-color:var(--gold);transform:translateX(2px)}
+.gloss-item .gi-main{flex:1;min-width:0}
+.gloss-item .gi-term{font-family:var(--disp);font-weight:600;font-size:15px}
+.gloss-item .gi-def{font-size:12.5px;color:var(--muted);margin-top:3px}
+.gloss-item .gi-dom{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-2);border:1px solid var(--line);border-radius:5px;padding:3px 7px;white-space:nowrap;flex:none}
+.term-sec{margin-top:16px}
+.term-sec h4{font-size:12px;font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin:0 0 6px}
+.term-sec p{font-size:14px;line-height:1.65;margin:0;color:var(--text)}
+.term-dom{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(232,176,75,.4);background:rgba(232,176,75,.08);border-radius:6px;padding:3px 8px}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -471,7 +495,7 @@ li.hidden{display:none}
         </svg>
         <div class="wordmark">
           <span class="name">AE<b>GIS</b></span>
-          <span class="sub">ISC2-Aligned · v1.2.1</span>
+          <span class="sub">ISC2-Aligned · v1.3.0</span>
         </div>
       </div>
       <div class="top-spacer"></div>
@@ -499,6 +523,7 @@ li.hidden{display:none}
       <button class="tab" data-view="certs">Cert Map<span class="dot"></span></button>
       <button class="tab" data-view="ethics">Code of Ethics<span class="dot"></span></button>
       <button class="tab" data-view="templates">Templates<span class="dot"></span></button>
+      <button class="tab" data-view="glossary">Glossary<span class="dot"></span></button>
       <button class="tab" data-view="progress">Progress<span class="dot"></span></button>
     </nav>
   </div>
@@ -735,6 +760,20 @@ li.hidden{display:none}
   <div id="tplViews"></div>
 </section>
 
+<!-- ============ GLOSSARY ============ -->
+<section class="view" id="view-glossary">
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">Speak the language</span>
+      <h2>Glossary</h2>
+      <p class="lead">The essential cybersecurity vocabulary. These terms are auto-highlighted in the lessons — hover for a quick definition, tap for the full entry. Search or browse below.</p>
+    </div>
+    <span class="pill cyan" id="glossCount"></span>
+  </div>
+  <input class="gloss-search" id="glossSearch" type="search" placeholder="Search terms… (e.g. least privilege, subnet, phishing)">
+  <div id="glossList"></div>
+</section>
+
 <!-- ============ PROGRESS ============ -->
 <section class="view" id="view-progress">
   <div class="section-head">
@@ -771,6 +810,17 @@ li.hidden{display:none}
 
 <div class="foot wrap">AEGIS <b id="footVer" style="color:var(--gold)">v1.1.0</b> · <a href="#" id="footWhatsNew">What's new</a> · ISC2-aligned learning system · progress saves on this device</div>
 </main>
+
+<div class="lesson-overlay" id="termOverlay">
+  <div class="lesson-modal">
+    <button class="lesson-close" id="termClose" aria-label="Close">✕</button>
+    <div class="lesson-content" id="termContent"></div>
+    <div class="lesson-foot">
+      <span>Tap any highlighted word to jump between terms.</span>
+      <button class="btn ghost" id="termGloss">Browse glossary →</button>
+    </div>
+  </div>
+</div>
 
 <div class="lesson-overlay" id="wnOverlay">
   <div class="lesson-modal">
@@ -811,8 +861,12 @@ const KEY='aegis.state.v1';
 /* ============================================================
    VERSION + CHANGELOG (drives the "What's new" screen)
    ============================================================ */
-const APP_VERSION='1.2.1';
+const APP_VERSION='1.3.0';
 const CHANGELOG=[
+ {v:'1.3.0',date:'Aug 2026',items:[
+   'New <b>Glossary</b> tab — a searchable dictionary of ~60 cybersecurity terms, each with a definition, why it matters, its CC domain, and an example.',
+   'Terms are now <b>auto-highlighted in lessons</b>: hover for a quick definition, tap to open the full term page. Term pages cross-link to each other.'
+ ]},
  {v:'1.2.1',date:'Aug 2026',items:[
    'Reliability: the app now always loads the newest version when you\u2019re online (network-first service worker), so updates appear without clearing anything.'
  ]},
@@ -2126,6 +2180,155 @@ function renderSubnet(){
 }
 
 /* ============================================================
+   GLOSSARY — terms, auto-highlighting, tooltip, term pages
+   ============================================================ */
+const GLOSSARY={
+ cia:{t:'CIA Triad',aka:['CIA'],d:'Domain 1',def:`The three core goals of security — Confidentiality, Integrity, and Availability.`,why:`It's the lens for every security decision; nearly every control and every attack maps to one of the three.`,ex:`Encryption protects confidentiality, a hash protects integrity, and backups protect availability.`},
+ confidentiality:{t:'Confidentiality',aka:[],d:'Domain 1',def:`Ensuring only authorized people can read data.`,why:`A breach is a confidentiality failure — it's what most people picture when they think "hack."`,ex:`Encrypting a database so a stolen copy is unreadable.`},
+ integrity:{t:'Integrity',aka:[],d:'Domain 1',def:`Ensuring data is accurate and hasn't been altered, and that you'd know if it were.`,why:`Tampered data can be more dangerous than stolen data — you act on it believing it's true.`,ex:`Comparing a file's hash before and after transfer to prove it wasn't changed.`},
+ availability:{t:'Availability',aka:[],d:'Domain 1',def:`Ensuring systems and data are accessible when authorized users need them.`,why:`Security that makes a system unusable has failed the business; uptime is part of security.`,ex:`Redundant servers keep a hospital records system online during an outage.`},
+ authentication:{t:'Authentication',aka:['authenticate'],d:'Domain 1',def:`Proving you are who you claim to be.`,why:`It's the gate before authorization — get it wrong and everything downstream is exposed.`,ex:`Logging in with a password plus a code from your phone.`},
+ authorization:{t:'Authorization',aka:[],d:'Domain 3',def:`Deciding what an authenticated subject is allowed to do.`,why:`Authentication proves identity; authorization enforces limits — confusing the two creates holes.`,ex:`A logged-in user can read a file but is denied permission to delete it.`},
+ nonrepudiation:{t:'Non-repudiation',aka:[],d:'Domain 1',def:`Assurance that someone cannot credibly deny an action they took.`,why:`It underpins accountability and holds up in investigations and disputes.`,ex:`A digital signature ties a specific person to an approved transaction.`},
+ mfa:{t:'Multi-Factor Authentication',aka:['MFA','two-factor authentication','2FA'],d:'Domain 1',def:`Requiring two or more different types of proof (know / have / are) to sign in.`,why:`It's the single most effective defense against stolen passwords.`,ex:`A password (know) plus a code from an authenticator app (have).`},
+ privacy:{t:'Privacy',aka:[],d:'Domain 1',def:`An individual's control over their personal information.`,why:`It drives major laws and shapes how much data you're even allowed to collect.`,ex:`Collecting only the personal data a service truly needs, per GDPR.`},
+ pii:{t:'PII',aka:['personally identifiable information'],d:'Domain 5',def:`Personally Identifiable Information — data that can identify a specific person.`,why:`It's the crown-jewel data attackers want and regulators protect most fiercely.`,ex:`Names, Social Security numbers, and addresses in a customer database.`},
+ risk:{t:'Risk',aka:[],d:'Domain 1',def:`The likelihood and impact of a threat exploiting a vulnerability.`,why:`Security is risk management; you can't protect everything, so you prioritize by risk.`,ex:`Unencrypted laptops (vulnerability) plus theft (threat) = high risk to customer data.`},
+ threat:{t:'Threat',aka:[],d:'Domain 1',def:`Anything that could cause harm — a person, event, or code.`,why:`Naming the threat tells you what you're defending against.`,ex:`Ransomware, a malicious insider, or a flood in the server room.`},
+ vulnerability:{t:'Vulnerability',aka:['vulnerabilities'],d:'Domain 1',def:`A weakness a threat can exploit.`,why:`Threats are constant; reducing vulnerabilities is where you actually have control.`,ex:`Unpatched software or a password reused across sites.`},
+ residualrisk:{t:'Residual Risk',aka:[],d:'Domain 1',def:`The risk that remains after controls are applied.`,why:`No control is perfect — someone must consciously accept what's left.`,ex:`After full-disk encryption, the small chance a device is compromised while unlocked.`},
+ leastprivilege:{t:'Least Privilege',aka:['principle of least privilege'],d:'Domain 3',def:`Granting a subject only the access it needs to do its job — and no more.`,why:`It shrinks the blast radius when an account is compromised.`,ex:`A helpdesk tech can reset passwords but can't read the CEO's mailbox.`},
+ needtoknow:{t:'Need-to-Know',aka:[],d:'Domain 3',def:`Restricting data access to those whose role genuinely requires it.`,why:`It limits exposure of sensitive information even among trusted staff.`,ex:`Only HR can see salary records, even though many have system access.`},
+ sod:{t:'Separation of Duties',aka:['segregation of duties'],d:'Domain 3',def:`Splitting a critical task so no single person can complete it alone.`,why:`It prevents fraud and catches errors by requiring a second party.`,ex:`One employee requests a payment; another must approve it.`},
+ privilegecreep:{t:'Privilege Creep',aka:[],d:'Domain 3',def:`The gradual buildup of access rights as a person changes roles.`,why:`It quietly erodes least privilege until accounts are dangerously over-permissioned.`,ex:`A worker who moved from finance to IT still has access to both systems.`},
+ dac:{t:'DAC',aka:['discretionary access control'],d:'Domain 3',def:`Discretionary Access Control — the data owner decides who gets access.`,why:`It's flexible but risky, since owners can grant access freely.`,ex:`A file owner sharing a document with whomever they choose.`},
+ mac:{t:'MAC',aka:['mandatory access control'],d:'Domain 3',def:`Mandatory Access Control — the system enforces access via labels and clearances.`,why:`Owners can't override it, making it strong for high-security environments.`,ex:`A "Top Secret" file is unreadable without matching clearance, regardless of the owner.`},
+ rbac:{t:'RBAC',aka:['role-based access control'],d:'Domain 3',def:`Role-Based Access Control — permissions attach to roles, and users inherit them.`,why:`It scales cleanly: manage a few roles instead of thousands of individual grants.`,ex:`Anyone assigned the "SOC Analyst" role automatically gets alert-dashboard access.`},
+ referencemonitor:{t:'Reference Monitor',aka:[],d:'Domain 3',def:`The tamper-proof gatekeeper that checks every access request against the rules.`,why:`It's the theoretical heart of access control — it can't be bypassed.`,ex:`The OS component that validates each file open against permissions.`},
+ governance:{t:'Governance',aka:[],d:'Domain 1',def:`The structure of rules and accountability that directs security.`,why:`It answers who decides, who's accountable, and what you must comply with.`,ex:`A security policy approved by leadership that all standards flow from.`},
+ policy:{t:'Policy',aka:[],d:'Domain 1',def:`A high-level, mandatory statement of security intent.`,why:`It's the top of the document hierarchy that standards and procedures implement.`,ex:`"All customer data must be encrypted at rest."`},
+ encryption:{t:'Encryption',aka:['encrypt','encrypted'],d:'Domain 5',def:`Scrambling data so only someone with the key can read it.`,why:`It's the primary technical control for confidentiality.`,ex:`HTTPS encrypts web traffic so eavesdroppers see only ciphertext.`},
+ symmetric:{t:'Symmetric Encryption',aka:[],d:'Domain 5',def:`Encryption that uses the same key to encrypt and decrypt.`,why:`It's fast, but securely sharing the single key is the challenge.`,ex:`AES protecting files on a disk.`},
+ asymmetric:{t:'Asymmetric Encryption',aka:['public key encryption'],d:'Domain 5',def:`Encryption using a public/private key pair — encrypt with one, decrypt with the other.`,why:`It solves key distribution and enables digital signatures.`,ex:`Someone encrypts a message with your public key; only your private key opens it.`},
+ hashing:{t:'Hashing',aka:['hash'],d:'Domain 5',def:`A one-way function turning data into a fixed fingerprint.`,why:`It verifies integrity and safely stores passwords — it is not encryption (can't be reversed).`,ex:`Matching SHA-256 hashes confirm a downloaded file wasn't altered.`},
+ digitalsignature:{t:'Digital Signature',aka:[],d:'Domain 1',def:`A cryptographic stamp proving who sent data and that it wasn't changed.`,why:`It delivers both integrity and non-repudiation at once.`,ex:`A signed software update your device can verify came from the vendor.`},
+ firewall:{t:'Firewall',aka:[],d:'Domain 4',def:`A device or software that allows or blocks traffic by a defined ruleset.`,why:`It's the classic policy-enforcement point at network boundaries.`,ex:`Blocking all inbound traffic except web requests on port 443.`},
+ ids:{t:'IDS',aka:['intrusion detection system'],d:'Domain 4',def:`Intrusion Detection System — monitors traffic and alerts on suspicious activity.`,why:`It gives visibility, catching what slips past prevention.`,ex:`Flagging a port scan sweeping the internal network.`},
+ ips:{t:'IPS',aka:['intrusion prevention system'],d:'Domain 4',def:`Intrusion Prevention System — like an IDS, but it can block the threat in real time.`,why:`It shifts from alerting to actively stopping attacks inline.`,ex:`Dropping packets that match a known exploit signature.`},
+ vlan:{t:'VLAN',aka:['virtual LAN'],d:'Domain 4',def:`A logical segment of a switched network, separate from others.`,why:`It contains breaches by isolating groups of devices without new hardware.`,ex:`Putting guest Wi-Fi on its own VLAN, walled off from internal systems.`},
+ subnet:{t:'Subnet',aka:['subnetting','subnet mask'],d:'Domain 4',def:`A slice of an IP network defined by splitting addresses into network and host parts.`,why:`Subnets are your segmentation boundaries — where firewalls and trust zones live.`,ex:`192.168.1.0/24 holds hosts .1 through .254.`},
+ cidr:{t:'CIDR',aka:[],d:'Domain 4',def:`Classless Inter-Domain Routing — the "/24" notation for the network portion of an address.`,why:`It's the shorthand you must read fluently to reason about subnets.`,ex:`/26 means the first 26 bits are the network, leaving 62 usable hosts.`},
+ nat:{t:'NAT',aka:['network address translation'],d:'Domain 4',def:`Rewriting IP addresses as traffic crosses a boundary, often to share one public IP.`,why:`It conserves public addresses and hides internal structure.`,ex:`Your home router mapping many devices to one public IP.`},
+ pat:{t:'PAT',aka:['port address translation'],d:'Domain 4',def:`NAT overload — many private hosts share one public IP, distinguished by port number.`,why:`It's how a whole household or office reaches the internet through a single address.`,ex:`Two laptops browsing at once, told apart by source port.`},
+ dns:{t:'DNS',aka:['domain name system'],d:'Domain 4',def:`The system that resolves human names to IP addresses.`,why:`It's foundational to the internet — and a common vector for tunneling and hijacking.`,ex:`Turning example.com into 93.184.216.34.`},
+ dhcp:{t:'DHCP',aka:[],d:'Domain 4',def:`Dynamic Host Configuration Protocol — hands out IP settings automatically.`,why:`It configures devices at scale; a rogue DHCP server can redirect traffic.`,ex:`A laptop joining Wi-Fi and instantly receiving an IP and gateway.`},
+ arp:{t:'ARP',aka:[],d:'Domain 4',def:`Address Resolution Protocol — maps an IP address to a hardware (MAC) address on a LAN.`,why:`It's essential locally and abusable via spoofing for man-in-the-middle attacks.`,ex:`Finding which physical device owns 192.168.1.10.`},
+ icmp:{t:'ICMP',aka:[],d:'Domain 4',def:`The protocol behind diagnostics like ping and traceroute.`,why:`Useful for troubleshooting, but also a channel for covert data exfiltration.`,ex:`Pinging a server to check if it's reachable.`},
+ ssh:{t:'SSH',aka:[],d:'Domain 4',def:`Secure Shell — encrypted remote administration on port 22.`,why:`It replaced plaintext tools like Telnet; credentials never cross the wire in the clear.`,ex:`Logging into a Linux server securely from your laptop.`},
+ https:{t:'HTTPS',aka:[],d:'Domain 4',def:`Encrypted web traffic (HTTP over TLS) on port 443.`,why:`It protects data in transit; plain HTTP exposes everything to eavesdroppers.`,ex:`The padlock in your browser when banking online.`},
+ vpn:{t:'VPN',aka:['virtual private network'],d:'Domain 4',def:`An encrypted tunnel that carries traffic securely across an untrusted network.`,why:`It extends a private network safely over the public internet.`,ex:`A remote worker reaching the office network from a coffee shop.`},
+ zerotrust:{t:'Zero Trust',aka:['ZTNA'],d:'Domain 4',def:`"Never trust, always verify" — no implicit trust based on network location.`,why:`It counters the flat-network problem where one breach means total access.`,ex:`Re-authenticating and authorizing every request, even from inside the LAN.`},
+ dmz:{t:'DMZ',aka:['demilitarized zone'],d:'Domain 4',def:`A buffer network zone that exposes public-facing services while shielding the internal network.`,why:`It contains a compromised public server from reaching internal systems.`,ex:`A web server sitting in the DMZ, separated from the internal database.`},
+ defenseindepth:{t:'Defense in Depth',aka:[],d:'Domain 4',def:`Layering multiple, overlapping controls so no single failure is catastrophic.`,why:`Any one control can fail; layers ensure an attacker must beat several.`,ex:`A firewall, plus IDS, plus segmentation, plus endpoint protection.`},
+ siem:{t:'SIEM',aka:[],d:'Domain 5',def:`Security Information and Event Management — centralizes and correlates logs to surface incidents.`,why:`It turns a flood of raw logs into actionable alerts for analysts.`,ex:`Correlating failed logins across servers to spot a brute-force attack.`},
+ hardening:{t:'System Hardening',aka:['hardening'],d:'Domain 5',def:`Reducing a system's attack surface via baselines, patching, and disabling unneeded services.`,why:`Fewer exposed services and known holes mean fewer ways in.`,ex:`Closing unused ports and removing default accounts on a new server.`},
+ phishing:{t:'Phishing',aka:[],d:'Domain 5',def:`Fraudulent messages that trick people into revealing credentials or installing malware.`,why:`It's the most common entry point for breaches — people, not tech, are targeted.`,ex:`A fake "reset your password" email linking to a lookalike login page.`},
+ socialengineering:{t:'Social Engineering',aka:[],d:'Domain 5',def:`Manipulating people into bypassing security, rather than attacking technology.`,why:`The strongest tech fails if a human is talked into opening the door.`,ex:`A caller impersonating IT to talk an employee out of their password.`},
+ malware:{t:'Malware',aka:[],d:'Domain 5',def:`Malicious software — viruses, worms, trojans, spyware, and more.`,why:`It's the payload most attacks aim to deliver and run.`,ex:`A trojan hidden in a cracked app that opens a backdoor.`},
+ ransomware:{t:'Ransomware',aka:[],d:'Domain 2',def:`Malware that encrypts your data and demands payment to unlock it.`,why:`It's a top business-continuity threat; offline backups are the real defense.`,ex:`Files renamed with a .locked extension and a ransom note on the desktop.`},
+ incidentresponse:{t:'Incident Response',aka:['IR'],d:'Domain 2',def:`The structured process of detecting, containing, eradicating, and recovering from an attack.`,why:`A calm, rehearsed playbook limits damage when — not if — something happens.`,ex:`Isolating an infected host before wiping and restoring from clean backups.`},
+ bc:{t:'Business Continuity',aka:['BC'],d:'Domain 2',def:`Keeping the critical parts of the business running during and after a disruption.`,why:`It's broader than IT — people, process, and comms all keep functioning.`,ex:`Staff working remotely and payroll still running after an office flood.`},
+ dr:{t:'Disaster Recovery',aka:['DR'],d:'Domain 2',def:`The IT-focused work of restoring systems and data after an incident.`,why:`It's the technical subset of continuity, driven by RTO and RPO targets.`,ex:`Failing over to a hot site within minutes of an outage.`},
+ rto:{t:'RTO',aka:['recovery time objective'],d:'Domain 2',def:`Recovery Time Objective — how fast you must restore a service.`,why:`It sets how much you invest in recovery speed.`,ex:`A 1-hour RTO means the system must be back within an hour.`},
+ rpo:{t:'RPO',aka:['recovery point objective'],d:'Domain 2',def:`Recovery Point Objective — how much data loss you can tolerate.`,why:`It dictates how often you back up.`,ex:`A 24-hour RPO means nightly backups are acceptable.`},
+ backup:{t:'Backup',aka:['backups'],d:'Domain 2',def:`A recoverable copy of data, ideally following 3-2-1 with an offline copy.`,why:`An offline, tested backup is the difference between recovering and paying a ransom.`,ex:`Three copies, two media types, one kept offsite and offline.`},
+ osi:{t:'OSI Model',aka:['OSI'],d:'Domain 4',def:`A 7-layer model of how data moves across a network.`,why:`Naming the layer of a control or attack tells you where to defend.`,ex:`A firewall filtering IPs works at Layer 3 (Network).`},
+ dataleakage:{t:'Data Leakage',aka:['DLP'],d:'Domain 5',def:`Sensitive data escaping to an unauthorized place, deliberately or by accident.`,why:`A fast-growing risk as staff paste confidential data into public AI tools.`,ex:`An employee pasting source code into a public chatbot.`}
+};
+
+let GLOSS_RE=null; const GLOSS_LOOKUP={};
+function buildGlossMatcher(){
+  const forms=[];
+  Object.entries(GLOSSARY).forEach(([slug,g])=>{
+    [g.t].concat(g.aka||[]).forEach(f=>{const k=f.toLowerCase();if(!(k in GLOSS_LOOKUP)){GLOSS_LOOKUP[k]=slug;forms.push(f);}});
+  });
+  forms.sort((a,b)=>b.length-a.length);
+  const esc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  GLOSS_RE=new RegExp('\\b('+forms.map(esc).join('|')+')\\b','gi');
+}
+function linkifyGlossary(root,opts){
+  if(!root||!GLOSS_RE)return; opts=opts||{}; const used=new Set();
+  const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode(node){
+    if(!node.nodeValue||!node.nodeValue.trim())return NodeFilter.FILTER_REJECT;
+    let p=node.parentNode;
+    while(p&&p!==root){const tag=p.nodeName.toLowerCase();
+      if(tag==='a'||tag==='code'||tag==='button'||(p.classList&&(p.classList.contains('gloss')||p.classList.contains('l-diagram'))))return NodeFilter.FILTER_REJECT;
+      p=p.parentNode;}
+    return NodeFilter.FILTER_ACCEPT;
+  }});
+  const nodes=[];let n;while(n=walker.nextNode())nodes.push(n);
+  nodes.forEach(node=>{
+    const text=node.nodeValue;let m,last=0,changed=false;const frag=document.createDocumentFragment();
+    GLOSS_RE.lastIndex=0;
+    while((m=GLOSS_RE.exec(text))){
+      const slug=GLOSS_LOOKUP[m[0].toLowerCase()];
+      if(!slug||used.has(slug)||slug===opts.skip)continue;
+      used.add(slug);
+      frag.appendChild(document.createTextNode(text.slice(last,m.index)));
+      const span=document.createElement('span');span.className='gloss';span.dataset.term=slug;span.textContent=m[0];
+      frag.appendChild(span);last=m.index+m[0].length;changed=true;
+    }
+    if(changed){frag.appendChild(document.createTextNode(text.slice(last)));node.parentNode.replaceChild(frag,node);}
+  });
+}
+function openTerm(slug){
+  const g=GLOSSARY[slug];if(!g)return;
+  $('#termContent').innerHTML=`<span class="l-eyebrow">Glossary term</span>
+    <h3>${g.t}${g.d?` <span class="term-dom">${g.d}</span>`:''}</h3>
+    <div class="term-sec"><h4>Definition</h4><p>${g.def}</p></div>
+    <div class="term-sec"><h4>Why it matters</h4><p>${g.why}</p></div>
+    ${g.d?`<div class="term-sec"><h4>Where it fits</h4><p>${g.d} of the ISC2 CC exam.</p></div>`:''}
+    <div class="term-sec"><h4>Example</h4><p>${g.ex}</p></div>`;
+  $$('#termContent .term-sec p').forEach(p=>linkifyGlossary(p,{skip:slug}));
+  $('#termOverlay').classList.add('show');document.body.style.overflow='hidden';
+  $('#termOverlay').scrollTop=0;
+}
+function closeTerm(){
+  $('#termOverlay').classList.remove('show');
+  if(!$('#lessonOverlay').classList.contains('show')&&!$('#wnOverlay').classList.contains('show'))document.body.style.overflow='';
+}
+function buildGlossaryList(filter){
+  const list=$('#glossList');if(!list)return;const f=(filter||'').trim().toLowerCase();
+  const entries=Object.entries(GLOSSARY).filter(([slug,g])=>!f||g.t.toLowerCase().includes(f)||g.def.toLowerCase().includes(f)||(g.aka||[]).some(a=>a.toLowerCase().includes(f)))
+    .sort((a,b)=>a[1].t.localeCompare(b[1].t));
+  const cnt=$('#glossCount');if(cnt)cnt.textContent=Object.keys(GLOSSARY).length+' terms';
+  if(!entries.length){list.innerHTML=`<p class="muted" style="font-size:13px">No terms match your search.</p>`;return;}
+  const groups={};entries.forEach(([slug,g])=>{const L=g.t[0].toUpperCase();(groups[L]=groups[L]||[]).push([slug,g]);});
+  list.innerHTML=Object.keys(groups).sort().map(L=>`<div class="gloss-group"><div class="gl-letter">${L}</div>${
+    groups[L].map(([slug,g])=>`<div class="gloss-item" data-open="${slug}"><div class="gi-main"><div class="gi-term">${g.t}</div><div class="gi-def">${g.def}</div></div>${g.d?`<span class="gi-dom">${g.d}</span>`:''}</div>`).join('')
+  }</div>`).join('');
+  list.querySelectorAll('[data-open]').forEach(el=>el.onclick=()=>openTerm(el.dataset.open));
+}
+function initGlossary(){
+  buildGlossMatcher();buildGlossaryList('');
+  const s=$('#glossSearch');if(s)s.addEventListener('input',e=>buildGlossaryList(e.target.value));
+  $('#termClose').onclick=closeTerm;
+  $('#termGloss').onclick=()=>{closeTerm();switchView('glossary');};
+  $('#termOverlay').addEventListener('click',e=>{if(e.target.id==='termOverlay')closeTerm();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#termOverlay').classList.contains('show'))closeTerm();});
+  const tip=document.createElement('div');tip.id='glossTip';document.body.appendChild(tip);
+  document.addEventListener('mouseover',e=>{const g=e.target.closest&&e.target.closest('.gloss');if(!g)return;
+    const t=GLOSSARY[g.dataset.term];if(!t)return;
+    tip.innerHTML=`<span class="gt-term">${t.t}</span>${t.def}<span class="gt-hint">tap for full entry</span>`;
+    tip.style.display='block';const r=g.getBoundingClientRect();const tw=tip.offsetWidth;
+    let left=r.left+r.width/2-tw/2;left=Math.max(8,Math.min(left,window.innerWidth-tw-8));
+    let top=r.top-tip.offsetHeight-8;if(top<8)top=r.bottom+8;
+    tip.style.left=left+'px';tip.style.top=top+'px';tip.classList.add('show');});
+  document.addEventListener('mouseout',e=>{if(e.target.closest&&e.target.closest('.gloss')){tip.classList.remove('show');tip.style.display='none';}});
+  document.addEventListener('click',e=>{const g=e.target.closest&&e.target.closest('.gloss');if(g){e.preventDefault();e.stopPropagation();openTerm(g.dataset.term);}});
+}
+
+/* ============================================================
    WHAT'S NEW MODAL
    ============================================================ */
 function whatsNewHTML(){
@@ -2159,6 +2362,7 @@ function openLesson(key){
   const done=!!state.objectives[key];
   $('#lessonContent').innerHTML=`<span class="l-eyebrow">${L.dom} · Lesson</span>
     <h3>${L.title} <span class="lvl ${L.lvl}">${LVL_NAME[L.lvl]}</span></h3>${L.html}`;
+  linkifyGlossary($('#lessonContent'));
   $('#lessonDone').textContent=done?'✓ Completed — close':'Got it — mark complete';
   $('#lessonOverlay').classList.add('show');
   document.body.style.overflow='hidden';
@@ -2376,7 +2580,7 @@ function toast(title,sub){const t=$('#toast');t.innerHTML=`<b>${title}</b> &nbsp
   clearTimeout(toastTmr);toastTmr=setTimeout(()=>t.classList.remove('show'),2600);}
 
 function boot(){
-  buildDomains();buildTrainers();buildEthics();buildLabs();buildCerts();buildTemplates();buildProgress();initLessons();initWhatsNew();
+  buildDomains();buildTrainers();buildEthics();buildLabs();buildCerts();buildTemplates();buildProgress();initLessons();initWhatsNew();initGlossary();
   selectDomain(0);
   render();
   if(state.lastSeenVersion!==APP_VERSION){openWhatsNew();}

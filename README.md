@@ -2,7 +2,7 @@
 
 ![AEGIS](docs/screenshot.png)
 
-![Version](https://img.shields.io/badge/version-1.2.0-E8B04B)
+![Version](https://img.shields.io/badge/version-1.3.0-E8B04B)
 ![PWA](https://img.shields.io/badge/PWA-installable-E8B04B)
 ![Works offline](https://img.shields.io/badge/works-offline-4FD7C9)
 ![No build](https://img.shields.io/badge/build-none-5BD6A0)
@@ -26,6 +26,7 @@ It's an installable **Progressive Web App** — add it to your phone's home scre
 - **Difficulty flags** — every objective, trainer, and lab is tagged Beginner / Intermediate / Advanced, with a filter.
 - **Progress tracking** — study streak, spaced-repetition review queue, and field notes, saved locally.
 - **Outline currency check** — the Cert Map shows the exam edition each certification is aligned to, flags when a newer outline is published, and links to the official source in one tap.
+- **Glossary** — a searchable dictionary of ~60 cybersecurity terms (definition, why it matters, CC domain, example). Terms auto-highlight in lessons: hover for a definition, tap for the full entry, and term pages cross-link.
 
 ## The trainers
 
