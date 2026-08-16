@@ -470,6 +470,14 @@ li.hidden{display:none}
 .term-sec h4{font-size:12px;font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin:0 0 6px}
 .term-sec p{font-size:14px;line-height:1.65;margin:0;color:var(--text)}
 .term-dom{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(232,176,75,.4);background:rgba(232,176,75,.08);border-radius:6px;padding:3px 8px}
+.lesson-terms{margin-top:22px;padding-top:16px;border-top:1px solid var(--line-soft)}
+.lesson-terms h4{font-size:11px;font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin:0 0 10px}
+.lt-chips{display:flex;flex-wrap:wrap;gap:7px}
+.lt-chip{background:var(--ink-2);border:1px solid var(--line);color:var(--cyan);font-family:var(--body);font-size:12px;
+  padding:5px 11px;border-radius:8px;cursor:pointer;transition:.13s}
+.lt-chip:hover{border-color:var(--gold);color:var(--gold)}
+.tq-card{background:var(--ink-2);border:1px solid var(--line);border-radius:12px;padding:18px;margin-top:14px}
+.tq-card .q-domain{margin-bottom:8px}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -495,7 +503,7 @@ li.hidden{display:none}
         </svg>
         <div class="wordmark">
           <span class="name">AE<b>GIS</b></span>
-          <span class="sub">ISC2-Aligned · v1.3.0</span>
+          <span class="sub">ISC2-Aligned · v1.3.2</span>
         </div>
       </div>
       <div class="top-spacer"></div>
@@ -861,8 +869,16 @@ const KEY='aegis.state.v1';
 /* ============================================================
    VERSION + CHANGELOG (drives the "What's new" screen)
    ============================================================ */
-const APP_VERSION='1.3.0';
+const APP_VERSION='1.3.2';
 const CHANGELOG=[
+ {v:'1.3.2',date:'Aug 2026',items:[
+   'Each lesson now has a <b>definition quiz</b> — multiple-choice questions built from that lesson\u2019s key terms, so you can test your recall right after reading.'
+ ]},
+ {v:'1.3.1',date:'Aug 2026',items:[
+   'Expanded the glossary with common acronyms — <b>DDoS, GDPR, HIPAA, PCI-DSS, TLS, PKI, IAM, SOC, RPKI, DNSSEC</b> and more (~95 terms).',
+   'Every lesson now ends with a <b>Terms to know</b> list of its key terms.',
+   'Glossary terms are auto-highlighted in the <b>domain objectives</b> too — but not in quizzes, where you should already know them.'
+ ]},
  {v:'1.3.0',date:'Aug 2026',items:[
    'New <b>Glossary</b> tab — a searchable dictionary of ~60 cybersecurity terms, each with a definition, why it matters, its CC domain, and an example.',
    'Terms are now <b>auto-highlighted in lessons</b>: hover for a quick definition, tap to open the full term page. Term pages cross-link to each other.'
@@ -2243,7 +2259,42 @@ const GLOSSARY={
  rpo:{t:'RPO',aka:['recovery point objective'],d:'Domain 2',def:`Recovery Point Objective — how much data loss you can tolerate.`,why:`It dictates how often you back up.`,ex:`A 24-hour RPO means nightly backups are acceptable.`},
  backup:{t:'Backup',aka:['backups'],d:'Domain 2',def:`A recoverable copy of data, ideally following 3-2-1 with an offline copy.`,why:`An offline, tested backup is the difference between recovering and paying a ransom.`,ex:`Three copies, two media types, one kept offsite and offline.`},
  osi:{t:'OSI Model',aka:['OSI'],d:'Domain 4',def:`A 7-layer model of how data moves across a network.`,why:`Naming the layer of a control or attack tells you where to defend.`,ex:`A firewall filtering IPs works at Layer 3 (Network).`},
- dataleakage:{t:'Data Leakage',aka:['DLP'],d:'Domain 5',def:`Sensitive data escaping to an unauthorized place, deliberately or by accident.`,why:`A fast-growing risk as staff paste confidential data into public AI tools.`,ex:`An employee pasting source code into a public chatbot.`}
+ dataleakage:{t:'Data Leakage',aka:['DLP'],d:'Domain 5',def:`Sensitive data escaping to an unauthorized place, deliberately or by accident.`,why:`A fast-growing risk as staff paste confidential data into public AI tools.`,ex:`An employee pasting source code into a public chatbot.`},
+ dos:{t:'DoS',aka:['denial of service','denial-of-service'],d:'Domain 4',def:`A Denial-of-Service attack floods a system to make it unavailable to legitimate users.`,why:`It attacks availability directly — the "A" of the CIA triad.`,ex:`Overwhelming a website with junk traffic until it crashes.`},
+ ddos:{t:'DDoS',aka:['distributed denial of service'],d:'Domain 4',def:`A Distributed Denial-of-Service attack — a DoS launched from many machines at once, often a botnet.`,why:`Its scale makes it far harder to block than a single-source attack.`,ex:`Thousands of hijacked devices hitting one server at the same time.`},
+ gdpr:{t:'GDPR',aka:[],d:'Domain 1',def:`The EU's General Data Protection Regulation governing personal-data privacy.`,why:`It sets strict, globally influential rules with heavy fines for mishandling personal data.`,ex:`Requiring consent before collecting personal data, and honoring deletion requests.`},
+ hipaa:{t:'HIPAA',aka:[],d:'Domain 1',def:`A U.S. law protecting the privacy and security of health information.`,why:`It's the benchmark regulation for safeguarding medical data.`,ex:`A hospital encrypting patient records and limiting who can view them.`},
+ pcidss:{t:'PCI-DSS',aka:[],d:'Domain 1',def:`Payment Card Industry Data Security Standard — rules for handling credit-card data.`,why:`Any business taking card payments must comply or risk fines and losing card privileges.`,ex:`Never storing full card numbers in plaintext.`},
+ aes:{t:'AES',aka:[],d:'Domain 5',def:`Advanced Encryption Standard — the widely used symmetric encryption algorithm.`,why:`It's the modern default for protecting data at rest and in transit.`,ex:`AES-256 encrypting a laptop's hard drive.`},
+ tls:{t:'TLS',aka:['SSL','SSL/TLS'],d:'Domain 4',def:`Transport Layer Security — encrypts data in transit (the "S" in HTTPS). SSL is its older name.`,why:`It secures nearly all sensitive internet traffic.`,ex:`Protecting the connection between your browser and a bank.`},
+ pki:{t:'PKI',aka:['public key infrastructure'],d:'Domain 5',def:`Public Key Infrastructure — the system of keys and certificates that makes asymmetric encryption trustworthy.`,why:`It's how the internet verifies a public key really belongs to who it claims.`,ex:`A certificate authority issuing the certificate behind a site's padlock.`},
+ aaa:{t:'AAA',aka:[],d:'Domain 1',def:`Authentication, Authorization, and Accounting — the three pillars of access management.`,why:`Together they answer who you are, what you may do, and what you did.`,ex:`Logging in, being allowed to edit, and having the action logged.`},
+ iam:{t:'IAM',aka:['identity and access management'],d:'Domain 3',def:`Identity and Access Management — managing digital identities and what they can reach.`,why:`It's the backbone of enforcing least privilege at scale.`,ex:`Central control of joiner/mover/leaver accounts across every app.`},
+ soc:{t:'SOC',aka:['security operations center'],d:'Domain 5',def:`Security Operations Center — the team and facility that monitors and responds to threats.`,why:`It's the front line of detection and incident response.`,ex:`Analysts watching SIEM alerts around the clock.`},
+ mitm:{t:'MITM',aka:['man-in-the-middle','man in the middle'],d:'Domain 4',def:`A Man-in-the-Middle attack secretly intercepts communication between two parties.`,why:`It breaks confidentiality and integrity by sitting invisibly between victims.`,ex:`An attacker on public Wi-Fi relaying and reading your traffic.`},
+ sqli:{t:'SQL Injection',aka:['SQLi'],d:null,def:`Injecting malicious SQL into an app's input to manipulate its database.`,why:`A classic, high-impact web flaw that can dump or destroy whole databases.`,ex:`Typing a crafted value into a login box to bypass the check.`},
+ xss:{t:'XSS',aka:['cross-site scripting'],d:null,def:`Cross-Site Scripting — injecting scripts that run in other users' browsers on a trusted site.`,why:`It can steal sessions and credentials from users of a legitimate site.`,ex:`A comment field that runs attacker JavaScript when others view it.`},
+ c2:{t:'C2',aka:['command and control','command-and-control'],d:'Domain 4',def:`Command and Control — the channel malware uses to receive orders from an attacker.`,why:`Spotting C2 traffic is key to catching an active intrusion.`,ex:`Malware "beaconing" out to an attacker's server every minute.`},
+ rpki:{t:'RPKI',aka:[],d:'Domain 4',def:`Resource Public Key Infrastructure — validates which networks may announce which routes.`,why:`It defends the internet's routing against BGP hijacking.`,ex:`Rejecting a forged route that tries to divert a bank's traffic.`},
+ dnssec:{t:'DNSSEC',aka:[],d:'Domain 4',def:`DNS Security Extensions — cryptographically signs DNS records to prevent tampering.`,why:`It stops attackers from forging DNS answers to redirect victims.`,ex:`Verifying a domain's IP wasn't spoofed in transit.`},
+ sdn:{t:'SDN',aka:['software-defined networking'],d:'Domain 4',def:`Software-Defined Networking — controlling the network centrally through software.`,why:`It enables fine-grained microsegmentation and rapid policy changes.`,ex:`Instantly isolating a compromised segment with a software rule.`},
+ sase:{t:'SASE',aka:[],d:'Domain 4',def:`Secure Access Service Edge — cloud-delivered networking and security combined.`,why:`It fits remote-first work by applying Zero Trust from the cloud edge.`,ex:`A traveling employee's traffic secured through a nearby cloud node.`},
+ nac:{t:'NAC',aka:['network access control'],d:'Domain 4',def:`Network Access Control — checking a device's identity and health before letting it on the network.`,why:`It keeps unmanaged or non-compliant devices off the LAN.`,ex:`Blocking a laptop that lacks current patches from connecting.`},
+ radius:{t:'RADIUS',aka:[],d:'Domain 4',def:`A protocol that centrally authenticates users connecting to a network.`,why:`It centralizes credentials instead of storing them on each device.`,ex:`Authenticating Wi-Fi logins against one central server.`},
+ bgp:{t:'BGP',aka:['border gateway protocol'],d:'Domain 4',def:`Border Gateway Protocol — how independent networks exchange routing across the internet.`,why:`It directs global traffic; hijacking it can reroute entire services.`,ex:`Two ISPs advertising which addresses they can reach.`},
+ ospf:{t:'OSPF',aka:[],d:'Domain 4',def:`Open Shortest Path First — a protocol routers use to find the best path within a network.`,why:`It keeps internal routing efficient and self-healing.`,ex:`Traffic automatically rerouting when a link goes down.`},
+ bia:{t:'BIA',aka:['business impact analysis'],d:'Domain 2',def:`Business Impact Analysis — identifies critical functions and how long they can be down.`,why:`It's the foundation that sets recovery priorities, RTOs, and RPOs.`,ex:`Finding that order processing can't be down more than two hours.`},
+ tcpip:{t:'TCP/IP',aka:['TCP/IP model'],d:'Domain 4',def:`The 4-layer model (Link, Internet, Transport, Application) that runs the internet.`,why:`It's the practical stack every packet travels — the OSI model's real-world cousin.`,ex:`A request wrapped in TCP, then IP, then a link-layer frame.`},
+ port:{t:'Port',aka:[],d:'Domain 4',def:`A numbered endpoint (0–65535) where a service listens for traffic.`,why:`Knowing default ports lets you spot the odd service out in a scan or log.`,ex:`HTTPS on 443, SSH on 22, DNS on 53.`},
+ iot:{t:'IoT',aka:['internet of things'],d:null,def:`Internet of Things — everyday devices (cameras, sensors, appliances) connected to networks.`,why:`They're often poorly secured, making them easy footholds and botnet recruits.`,ex:`A cheap smart camera conscripted into a DDoS botnet.`},
+ apt:{t:'APT',aka:['advanced persistent threat'],d:null,def:`Advanced Persistent Threat — a skilled, well-resourced attacker who stays hidden long-term.`,why:`APTs pursue espionage or sabotage while evading normal defenses.`,ex:`A nation-state group quietly inside a network for months.`},
+ bruteforce:{t:'Brute Force',aka:['brute-force'],d:'Domain 5',def:`Trying many passwords or keys until one works.`,why:`It's why length and lockouts matter — they make brute force impractical.`,ex:`Automated tools guessing thousands of passwords per second.`},
+ sso:{t:'SSO',aka:['single sign-on'],d:'Domain 3',def:`Single Sign-On — one login grants access to many connected systems.`,why:`Great for usability, but a compromised SSO account is high-impact.`,ex:`Signing in once to reach email, chat, and files.`},
+ waf:{t:'WAF',aka:['web application firewall'],d:'Domain 4',def:`Web Application Firewall — filters malicious web requests before they reach an app.`,why:`It blocks common web attacks like SQL injection and XSS.`,ex:`Dropping a request that contains an obvious injection payload.`},
+ ftp:{t:'FTP',aka:[],d:'Domain 4',def:`File Transfer Protocol — moves files over a network, unencrypted, on port 21.`,why:`Its plaintext nature makes secure alternatives (SFTP/FTPS) preferable.`,ex:`Legacy systems still transferring files in the clear.`},
+ acl:{t:'ACL',aka:['access control list'],d:'Domain 4',def:`Access Control List — a ruleset stating who or what is allowed access.`,why:`It's the concrete form access decisions take on files and network gear.`,ex:`A router ACL permitting only certain IPs to reach a server.`},
+ ipsec:{t:'IPsec',aka:[],d:'Domain 4',def:`A protocol suite that encrypts and authenticates IP traffic, often for VPNs.`,why:`It secures site-to-site and remote-access tunnels at the network layer.`,ex:`Linking two offices over an encrypted IPsec tunnel.`},
+ dpi:{t:'DPI',aka:['deep packet inspection'],d:'Domain 4',def:`Deep Packet Inspection — examining full packet contents, not just headers.`,why:`It enables advanced filtering and threat detection, and raises privacy questions.`,ex:`A firewall inspecting payloads to block hidden malware.`}
 };
 
 let GLOSS_RE=null; const GLOSS_LOOKUP={};
@@ -2254,7 +2305,7 @@ function buildGlossMatcher(){
   });
   forms.sort((a,b)=>b.length-a.length);
   const esc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-  GLOSS_RE=new RegExp('\\b('+forms.map(esc).join('|')+')\\b','gi');
+  GLOSS_RE=new RegExp('\\b('+forms.map(esc).join('|')+')s?\\b','gi');
 }
 function linkifyGlossary(root,opts){
   if(!root||!GLOSS_RE)return; opts=opts||{}; const used=new Set();
@@ -2271,7 +2322,9 @@ function linkifyGlossary(root,opts){
     const text=node.nodeValue;let m,last=0,changed=false;const frag=document.createDocumentFragment();
     GLOSS_RE.lastIndex=0;
     while((m=GLOSS_RE.exec(text))){
-      const slug=GLOSS_LOOKUP[m[0].toLowerCase()];
+      let key=m[0].toLowerCase();
+      let slug=GLOSS_LOOKUP[key];
+      if(!slug&&key.endsWith('s'))slug=GLOSS_LOOKUP[key.slice(0,-1)];
       if(!slug||used.has(slug)||slug===opts.skip)continue;
       used.add(slug);
       frag.appendChild(document.createTextNode(text.slice(last,m.index)));
@@ -2280,6 +2333,9 @@ function linkifyGlossary(root,opts){
     }
     if(changed){frag.appendChild(document.createTextNode(text.slice(last)));node.parentNode.replaceChild(frag,node);}
   });
+}
+function linkifyDomains(){
+  $$('#domPanels .obj-list, #domPanels .ai-note').forEach(el=>linkifyGlossary(el));
 }
 function openTerm(slug){
   const g=GLOSSARY[slug];if(!g)return;
@@ -2296,6 +2352,48 @@ function openTerm(slug){
 function closeTerm(){
   $('#termOverlay').classList.remove('show');
   if(!$('#lessonOverlay').classList.contains('show')&&!$('#wnOverlay').classList.contains('show'))document.body.style.overflow='';
+}
+function _shuf(a){return a.slice().sort(()=>Math.random()-.5);}
+function startTermQuiz(slugs,mount){
+  if(!mount)return;
+  const all=Object.keys(GLOSSARY);
+  const qs=_shuf(slugs).map(slug=>{
+    const g=GLOSSARY[slug];
+    const distract=_shuf(all.filter(s=>s!==slug)).slice(0,3).map(s=>GLOSSARY[s].def);
+    const opts=_shuf([g.def].concat(distract));
+    return {term:g.t,opts,ans:opts.indexOf(g.def),ex:g.ex};
+  });
+  let i=0,score=0;
+  function draw(){
+    if(i>=qs.length){
+      const pass=score/qs.length>=0.8;
+      mount.innerHTML=`<div class="tq-card" style="text-align:center">
+        <div class="q-domain">Terms quiz · result</div>
+        <div style="font-family:var(--disp);font-size:34px;font-weight:700;color:${pass?'var(--green)':'var(--gold)'}">${score}/${qs.length}</div>
+        <p class="muted" style="font-size:13px;margin:4px 0 12px">${pass?'Strong recall ✓':'Review the terms above, then retake.'}</p>
+        <button class="btn sm" id="tqRetry">Retake</button></div>`;
+      mount.querySelector('#tqRetry').onclick=()=>{i=0;score=0;draw();};
+      return;
+    }
+    const q=qs[i];
+    mount.innerHTML=`<div class="tq-card">
+      <div class="q-domain">Definition check · ${i+1}/${qs.length}</div>
+      <div class="q-text" style="font-size:19px;margin-bottom:14px">What does <span style="color:var(--gold)">${q.term}</span> mean?</div>
+      <div id="tqOpts">${q.opts.map((o,j)=>`<button class="opt" type="button" data-i="${j}"><span class="key">${'ABCD'[j]}</span><span>${o}</span></button>`).join('')}</div>
+      <div class="explain" id="tqExp"></div>
+      <div style="text-align:right;margin-top:12px"><button class="btn sm" id="tqNext" style="display:none">Next →</button></div>
+    </div>`;
+    mount.querySelectorAll('#tqOpts .opt').forEach(b=>b.onclick=()=>{
+      const pick=+b.dataset.i;
+      mount.querySelectorAll('#tqOpts .opt').forEach(x=>{x.disabled=true;
+        if(+x.dataset.i===q.ans)x.classList.add('correct');
+        if(+x.dataset.i===pick&&pick!==q.ans)x.classList.add('wrong');});
+      if(pick===q.ans)score++;
+      const ex=mount.querySelector('#tqExp');ex.classList.add('show');ex.innerHTML=`<b>Example:</b> ${q.ex}`;
+      const nx=mount.querySelector('#tqNext');nx.style.display='inline-flex';nx.onclick=()=>{i++;draw();};
+    });
+  }
+  draw();
 }
 function buildGlossaryList(filter){
   const list=$('#glossList');if(!list)return;const f=(filter||'').trim().toLowerCase();
@@ -2363,6 +2461,17 @@ function openLesson(key){
   $('#lessonContent').innerHTML=`<span class="l-eyebrow">${L.dom} · Lesson</span>
     <h3>${L.title} <span class="lvl ${L.lvl}">${LVL_NAME[L.lvl]}</span></h3>${L.html}`;
   linkifyGlossary($('#lessonContent'));
+  const lc=$('#lessonContent');
+  const lslugs=[...new Set([...lc.querySelectorAll('.gloss')].map(s=>s.dataset.term))];
+  if(lslugs.length){
+    const box=document.createElement('div');box.className='lesson-terms';
+    box.innerHTML='<h4>Terms to know</h4><div class="lt-chips">'+lslugs.map(s=>`<button class="lt-chip" type="button" data-term="${s}">${GLOSSARY[s].t}</button>`).join('')+'</div>'
+      +(lslugs.length>=3?'<button class="btn cyan sm" id="lessonQuizBtn" type="button" style="margin-top:14px">📝 Quiz these '+lslugs.length+' terms →</button><div id="lessonQuizMount"></div>':'');
+    lc.appendChild(box);
+    box.querySelectorAll('.lt-chip').forEach(b=>b.onclick=()=>openTerm(b.dataset.term));
+    const qb=box.querySelector('#lessonQuizBtn');
+    if(qb)qb.onclick=()=>{qb.style.display='none';startTermQuiz(lslugs.slice(),box.querySelector('#lessonQuizMount'));};
+  }
   $('#lessonDone').textContent=done?'✓ Completed — close':'Got it — mark complete';
   $('#lessonOverlay').classList.add('show');
   document.body.style.overflow='hidden';
@@ -2580,7 +2689,7 @@ function toast(title,sub){const t=$('#toast');t.innerHTML=`<b>${title}</b> &nbsp
   clearTimeout(toastTmr);toastTmr=setTimeout(()=>t.classList.remove('show'),2600);}
 
 function boot(){
-  buildDomains();buildTrainers();buildEthics();buildLabs();buildCerts();buildTemplates();buildProgress();initLessons();initWhatsNew();initGlossary();
+  buildDomains();buildTrainers();buildEthics();buildLabs();buildCerts();buildTemplates();buildProgress();initLessons();initWhatsNew();initGlossary();linkifyDomains();
   selectDomain(0);
   render();
   if(state.lastSeenVersion!==APP_VERSION){openWhatsNew();}
