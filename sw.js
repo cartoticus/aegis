@@ -1,6 +1,6 @@
 /* AEGIS service worker — network-first app shell so the newest version
    always loads when online; cached copies are used only offline. */
-const CACHE = 'aegis-v1.2.1';
+const CACHE = 'aegis-v1.4.0';
 const ASSETS = [
   './',
   './index.html',
