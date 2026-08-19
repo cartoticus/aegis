@@ -416,8 +416,24 @@ li.hidden{display:none}
 .pc .v{font-family:var(--disp);font-weight:700;font-size:30px;color:var(--gold)}
 .pc .l{font-size:11.5px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.08em;font-family:var(--mono)}
 .srs-list{display:flex;flex-direction:column;gap:8px}
-.srs-item{display:flex;align-items:center;gap:12px;background:var(--ink-2);border:1px solid var(--line-soft);border-radius:10px;padding:11px 14px}
-.srs-item .s-txt{flex:1;font-size:13.5px}
+.srs-item{background:var(--ink-2);border:1px solid var(--line-soft);border-radius:10px;padding:12px 14px}
+.srs-head{display:flex;align-items:flex-start;gap:11px}
+.srs-item .s-txt{flex:1;font-size:13.5px;line-height:1.45;min-width:0}
+.srs-item .s-back{display:block;color:var(--muted);font-size:12.5px;margin-top:5px;padding-top:5px;border-top:1px dashed var(--line-soft)}
+.srs-foot{display:flex;align-items:center;gap:8px;margin-top:11px}
+.srs-foot .s-del{margin-left:auto;flex:none;padding:6px 9px;font-size:11.5px}
+.s-grades{display:inline-flex;gap:5px;flex:none}
+.s-grades .btn{padding:6px 10px;font-size:11.5px;border-radius:7px;font-weight:600}
+.s-grades .g1{background:transparent;border:1px solid rgba(240,88,107,.5);color:var(--alert)}
+.s-grades .g1:hover{background:rgba(240,88,107,.14)}
+.s-grades .g2{background:transparent;border:1px solid var(--line);color:var(--muted)}
+.s-grades .g2:hover{background:var(--panel-2);color:var(--text)}
+.s-grades .g3{background:transparent;border:1px solid rgba(232,176,75,.5);color:var(--gold)}
+.s-grades .g3:hover{background:rgba(232,176,75,.14)}
+.s-grades .g4{background:transparent;border:1px solid rgba(91,214,160,.5);color:var(--green)}
+.s-grades .g4:hover{background:rgba(91,214,160,.14)}
+.s-show{flex:none;padding:6px 10px;font-size:11.5px}
+@media(max-width:420px){.s-grades{flex-wrap:wrap}}
 .notes-area{width:100%;min-height:180px;background:#070A14;border:1px solid var(--line);border-radius:11px;
   padding:15px;color:var(--text);font-family:var(--mono);font-size:13px;line-height:1.6;resize:vertical}
 
@@ -510,7 +526,7 @@ li.hidden{display:none}
         </svg>
         <div class="wordmark">
           <span class="name">AE<b>GIS</b></span>
-          <span class="sub">ISC2-Aligned · v1.4.0</span>
+          <span class="sub">ISC2-Aligned · v1.5.0</span>
         </div>
       </div>
       <div class="top-spacer"></div>
@@ -876,14 +892,21 @@ const KEY='aegis.state.v1';
 /* ============================================================
    VERSION + CHANGELOG (drives the "What's new" screen)
    ============================================================ */
-const APP_VERSION='1.4.0';
+const APP_VERSION='1.5.0';
 const CHANGELOG=[
+ {v:'1.5.0',date:'Aug 2026',items:[
+   'The review queue now schedules with <b>FSRS-6</b>, the modern spaced-repetition algorithm, instead of a fixed 1/3/7/16/35-day ladder. Each card tracks its own <b>stability</b> and <b>difficulty</b>, so intervals adapt to how <i>you</i> actually remember it.',
+   '<b>Fixed a real bug:</b> the old queue only ever moved forward — a card you completely blanked on still advanced to a longer interval. Reviews are now graded <b>Again · Hard · Good · Easy</b>, and <b>Again</b> genuinely shortens the next interval and records a lapse.',
+   'Mastering a glossary term in a lesson quiz now <b>files a review card automatically</b> (deduplicated), so the queue fills itself instead of waiting for you to type cards by hand.',
+   'Cards can carry an answer on the back — tap <b>Show</b> to reveal it before you grade yourself.',
+   'Your existing cards were migrated automatically. Nothing was lost: each card\\u2019s old step became its starting stability.'
+ ]},
  {v:'1.4.0',date:'Aug 2026',items:[
    'Vocabulary now <b>counts</b>: mastering a term in a lesson quiz tracks it, feeds your streak, and contributes to overall readiness. See <b>Terms mastered</b> on the Progress tab, with ✓ marks in the glossary.',
    'Lesson quizzes gained a <b>direction toggle</b> — <b>Both</b>, Term→definition, or Definition→term — so you practice both recognizing and naming terms. Distractors now prefer the same domain to stay challenging.'
  ]},
  {v:'1.3.2',date:'Aug 2026',items:[
-   'Each lesson now has a <b>definition quiz</b> — multiple-choice questions built from that lesson\u2019s key terms, so you can test your recall right after reading.'
+   'Each lesson now has a <b>definition quiz</b> — multiple-choice questions built from that lesson’s key terms, so you can test your recall right after reading.'
  ]},
  {v:'1.3.1',date:'Aug 2026',items:[
    'Expanded the glossary with common acronyms — <b>DDoS, GDPR, HIPAA, PCI-DSS, TLS, PKI, IAM, SOC, RPKI, DNSSEC</b> and more (~95 terms).',
@@ -895,7 +918,7 @@ const CHANGELOG=[
    'Terms are now <b>auto-highlighted in lessons</b>: hover for a quick definition, tap to open the full term page. Term pages cross-link to each other.'
  ]},
  {v:'1.2.1',date:'Aug 2026',items:[
-   'Reliability: the app now always loads the newest version when you\u2019re online (network-first service worker), so updates appear without clearing anything.'
+   'Reliability: the app now always loads the newest version when you’re online (network-first service worker), so updates appear without clearing anything.'
  ]},
  {v:'1.2.0',date:'Aug 2026',items:[
    'New <b>Outline Currency</b> check on the Cert Map — see the exact exam edition AEGIS is aligned to, get flagged when a certification publishes a newer outline, and open the official source in one tap.',
@@ -924,6 +947,155 @@ function loadState(){
 }
 let state=loadState();
 function save(){Store.set(KEY,state);}
+
+/* ============================================================
+   FSRS-6 SCHEDULER  (inlined from ARC v4.3.0 engine/arc-fsrs6.mjs)
+   ------------------------------------------------------------
+   Free Spaced Repetition Scheduler, version 6. Replaces the fixed
+   [1,3,7,16,35] ladder, which could only ever move forward — a card you
+   blanked on still advanced. FSRS models memory as two separable
+   variables, stability (how long a memory lasts) and difficulty (how
+   hard the item is), so a lapse genuinely shortens the next interval.
+
+   Formulas transcribed verbatim from the reference implementation
+   (py-fsrs 6.3.2, open-spaced-repetition). Pure functions, no state,
+   no dependencies — AEGIS stays a single offline file.
+   ============================================================ */
+const FSRS_W=[0.212,1.2931,2.3065,8.2956,6.4133,0.8334,3.0194,0.001,
+  1.8722,0.1666,0.796,1.4835,0.0614,0.2629,1.6483,0.6014,
+  1.8729,0.5425,0.0912,0.0658,0.1542];
+const FSRS_DECAY=-FSRS_W[20];
+const FSRS_FACTOR=Math.pow(0.9,1/FSRS_DECAY)-1;
+const FSRS_RETENTION=0.9;        // target recall probability
+const FSRS_MAX_INTERVAL=36500;   // days
+const S_MIN=0.001,D_MIN=1,D_MAX=10,S0_MAX=100;
+const clampS=s=>Math.max(s,S_MIN);
+const clampD=d=>Math.min(Math.max(d,D_MIN),D_MAX);
+
+/* Python's round() is half-to-even, JS's Math.round is half-up. Using the
+   wrong one diverges by a full day at every exact .5 boundary. */
+function roundHalfToEven(x){
+  const f=Math.floor(x),diff=x-f;
+  if(diff>0.5)return f+1;
+  if(diff<0.5)return f;
+  return f%2===0?f:f+1;
+}
+/* R(t,S) = (1 + FACTOR·t/S)^DECAY — the forgetting curve. */
+function fsrsRetrievability(elapsedDays,stability){
+  if(!(stability>0))return 0;
+  const t=Math.max(0,elapsedDays);
+  return Math.pow(1+(FSRS_FACTOR*t)/stability,FSRS_DECAY);
+}
+/* S₀(G) = w[G−1] */
+function fsrsInitialStability(g){return clampS(Math.min(FSRS_W[g-1],S0_MAX));}
+/* D₀(G) = w4 − e^(w5·(G−1)) + 1 */
+function fsrsInitialDifficulty(g,clamp){
+  const d=FSRS_W[4]-Math.exp(FSRS_W[5]*(g-1))+1;
+  return clamp===false?d:clampD(d);
+}
+/* Linear damping + mean reversion toward D₀(Easy). */
+function fsrsNextDifficulty(difficulty,g){
+  const deltaD=-(FSRS_W[6]*(g-3));
+  const damped=difficulty+((10-difficulty)*deltaD)/9;
+  const target=fsrsInitialDifficulty(4,false);
+  return clampD(FSRS_W[7]*target+(1-FSRS_W[7])*damped);
+}
+/* Successful recall: S·(1 + e^w8·(11−D)·S^−w9·(e^((1−R)·w10)−1)·hard·easy) */
+function fsrsNextRecallStability(difficulty,stability,retrievability,g){
+  const hard=g===2?FSRS_W[15]:1, easy=g===4?FSRS_W[16]:1;
+  return stability*(1+Math.exp(FSRS_W[8])*(11-difficulty)*Math.pow(stability,-FSRS_W[9])
+    *(Math.exp((1-retrievability)*FSRS_W[10])-1)*hard*easy);
+}
+/* Lapse: min(long-term form, short-term ceiling). This is the path the old
+   ladder had no equivalent for — it is why "Again" now shortens. */
+function fsrsNextForgetStability(difficulty,stability,retrievability){
+  const longTerm=FSRS_W[11]*Math.pow(difficulty,-FSRS_W[12])
+    *(Math.pow(stability+1,FSRS_W[13])-1)*Math.exp((1-retrievability)*FSRS_W[14]);
+  const shortTerm=stability/Math.exp(FSRS_W[17]*FSRS_W[18]);
+  return Math.min(longTerm,shortTerm);
+}
+/* Same-day repeat: S·max(1, e^(w17·(G−3+w18))·S^−w19) for non-Again grades. */
+function fsrsShortTermStability(stability,g){
+  let inc=Math.exp(FSRS_W[17]*(g-3+FSRS_W[18]))*Math.pow(stability,-FSRS_W[19]);
+  if(g!==1)inc=Math.max(inc,1);
+  return clampS(stability*inc);
+}
+/* interval = (S/FACTOR)·(DR^(1/DECAY) − 1), banker's-rounded, ≥1 day. */
+function fsrsNextInterval(stability,retention){
+  const dr=retention||FSRS_RETENTION;
+  const raw=(stability/FSRS_FACTOR)*(Math.pow(dr,1/FSRS_DECAY)-1);
+  return Math.min(Math.max(roundHalfToEven(raw),1),FSRS_MAX_INTERVAL);
+}
+
+/* ---- adapter: the only two functions the rest of AEGIS calls ---- */
+/* A brand-new card. Stability/difficulty stay null until the first grade —
+   FSRS derives them from how that first review actually went. */
+function fsrsNew(now){
+  now=now||new Date();
+  return {stability:null,difficulty:null,due:now.toISOString(),
+    state:'new',reps:0,lapses:0,last_review:null};
+}
+/* Grade a card. g: 1 Again · 2 Hard · 3 Good · 4 Easy. Mutates and returns c. */
+function fsrsReview(c,g,now){
+  now=now||new Date();
+  g=Math.min(4,Math.max(1,Math.round(g)||3));
+  const isNew=!(c.stability>0);
+  let stability,difficulty;
+  if(isNew){
+    stability=fsrsInitialStability(g);
+    difficulty=fsrsInitialDifficulty(g);
+  }else{
+    const last=c.last_review?Date.parse(c.last_review):now.getTime();
+    const elapsed=Math.max(0,Math.floor((now.getTime()-last)/864e5));
+    const r=fsrsRetrievability(elapsed,c.stability);
+    // difficulty and stability both read the PRE-review difficulty
+    difficulty=fsrsNextDifficulty(c.difficulty,g);
+    stability=clampS(elapsed<1
+      ? fsrsShortTermStability(c.stability,g)
+      : (g===1 ? fsrsNextForgetStability(c.difficulty,c.stability,r)
+               : fsrsNextRecallStability(c.difficulty,c.stability,r,g)));
+    if(g===1)c.lapses=(c.lapses||0)+1;
+  }
+  const interval=fsrsNextInterval(stability);
+  c.stability=stability;
+  c.difficulty=difficulty;
+  c.reps=(c.reps||0)+1;
+  c.lapses=c.lapses||0;
+  c.state=g===1?'relearning':'review';
+  c.last_review=now.toISOString();
+  c.due=new Date(now.getTime()+interval*864e5).toISOString();
+  return c;
+}
+
+/* ---- one-time migration off the retired [1,3,7,16,35] ladder ---- */
+function migrateSrsCard(c,now){
+  if(c.stability!=null||c.state)return c;      // already FSRS-shaped
+  const LADDER=[1,3,7,16,35];
+  const step=Math.min(Math.max(c.step||0,0),4);
+  c.stability=LADDER[step];                     // old step ≈ initial stability
+  c.difficulty=5.0;                             // neutral; converges after a review or two
+  c.reps=step;c.lapses=0;c.state='review';
+  c.last_review=now.toISOString();
+  if(!c.due)c.due=new Date(now.getTime()+c.stability*864e5).toISOString();
+  delete c.step;
+  return c;
+}
+(function migrateSrs(){
+  const now=new Date();
+  state.srs=(state.srs||[]).map(c=>migrateSrsCard(c,now));
+  save();
+})();
+
+/* Add a card, deduping on `key` so re-mastering a term doesn't pile up. */
+function enqueueCard(front,back,key){
+  if(!front)return null;
+  state.srs=state.srs||[];
+  if(key&&state.srs.some(c=>c.key===key))return null;
+  const card=Object.assign({q:String(front).trim()},back?{a:String(back).trim()}:{},
+    key?{key}:{},fsrsNew(new Date()));
+  state.srs.push(card);save();
+  return card;
+}
 
 /* streak + week bookkeeping */
 function bumpActivity(){
@@ -1579,15 +1751,23 @@ END-OF-WEEK CHECK:
   [ ] Domain quiz passed
   [ ] Write-up committed
   [ ] 3 new SRS cards added`},
-  srs:{name:'Spaced repetition',text:`SPACED REPETITION — review schedule
-(Interval grows each time you recall correctly)
+  srs:{name:'Spaced repetition',text:`SPACED REPETITION — how AEGIS schedules reviews
+(FSRS-6: intervals are computed per card, not read off a fixed ladder)
 
-  1st review:  +1 day
-  2nd review:  +3 days
-  3rd review:  +7 days
-  4th review:  +16 days
-  5th review:  +35 days
-  Missed it?   reset to +1 day
+Every card carries two numbers:
+  STABILITY   how many days the memory should survive
+  DIFFICULTY  how hard this particular item is for you (1-10)
+
+You grade each review, and both numbers move:
+  AGAIN  you blanked        → stability drops, lapse recorded, back within a day
+  HARD   recalled, a fight  → small increase
+  GOOD   recalled cleanly   → normal increase
+  EASY   instant            → large increase
+
+That is the whole point of grading rather than clicking "Recalled ✓":
+a card you fumble must come back SOONER, not later. Be honest with
+AGAIN — inflating your grades is how you arrive at the exam confident
+and wrong.
 
 CARD FORMAT (front → back):
   Q: Default port for SSH?            → 22
@@ -1595,7 +1775,8 @@ CARD FORMAT (front → back):
   Q: Which canon = public safety?    → Canon I
   Q: RPO measures?                   → tolerable data loss
 
-Use the Review Queue on the Progress tab to track these in-app.`}
+Use the Review Queue on the Progress tab to track these in-app —
+mastering a glossary term in a lesson quiz files a card there for you.`}
 };
 
 /* ============================================================
@@ -2419,7 +2600,12 @@ function startTermQuiz(slugs,mount,mode){
         if(+x.dataset.i===q.ans)x.classList.add('correct');
         if(+x.dataset.i===pick&&pick!==q.ans)x.classList.add('wrong');});
       if(pick===q.ans){score++;
-        if(!state.termsMastered[q.slug]){state.termsMastered[q.slug]=true;state.weekCount++;gained++;bumpActivity();}
+        if(!state.termsMastered[q.slug]){
+          state.termsMastered[q.slug]=true;state.weekCount++;gained++;
+          const g=GLOSSARY[q.slug];
+          if(g)enqueueCard('What does '+g.t+' mean?',g.def,'term:'+q.slug);
+          bumpActivity();
+        }
       }
       const ex=mount.querySelector('#tqExp');ex.classList.add('show');ex.innerHTML=q.ex;
       const nx=mount.querySelector('#tqNext');nx.style.display='inline-flex';nx.onclick=()=>{i++;draw();};
@@ -2684,29 +2870,50 @@ function renderProgress(){
     el.style.color=b>=80?'var(--green)':(b?'var(--muted)':'');});
   renderSRS();
 }
+const GRADES=[[1,'Again'],[2,'Hard'],[3,'Good'],[4,'Easy']];
+const GRADE_HINT={1:'Blanked — bring it back within a day',2:'Recalled, but it was a fight',3:'Recalled cleanly',4:'Instant — push it well out'};
+function escHtml(s){return String(s).replace(/[&<>"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));}
 function renderSRS(){
   const list=$('#srsList');if(!list)return;
-  if(!state.srs.length){list.innerHTML=`<p class="muted" style="font-size:13px">No review cards yet. Add facts you keep forgetting — ports, the canon order, the risk process.</p>`;return;}
+  if(!state.srs.length){list.innerHTML=`<p class="muted" style="font-size:13px">No review cards yet. Master a term in a lesson quiz and it lands here automatically — or add your own with <b>+ Add card</b>.</p>`;return;}
+  const now=new Date();
+  // due first, then soonest — the queue should always show you the work
+  const order=state.srs.map((c,i)=>({c,i})).sort((a,b)=>new Date(a.c.due)-new Date(b.c.due));
   list.innerHTML='';
-  state.srs.forEach((c,i)=>{
-    const due=new Date(c.due);const overdue=due<=new Date();
+  order.forEach(({c,i})=>{
+    const due=new Date(c.due);const overdue=due<=now;
+    const days=Math.ceil((due-now)/864e5);
     const row=document.createElement('div');row.className='srs-item';
-    row.innerHTML=`<span class="pill ${overdue?'gold':''}" style="flex:none">${overdue?'due':'in '+Math.ceil((due-new Date())/864e5)+'d'}</span>
-      <span class="s-txt">${c.q}</span>
-      <button class="btn cyan sm" data-recall="${i}">Recalled ✓</button>
-      <button class="btn ghost sm" data-del="${i}">✕</button>`;
+    row.innerHTML=`<div class="srs-head">
+        <span class="pill ${overdue?'gold':''}" style="flex:none">${overdue?'due':'in '+days+'d'}</span>
+        <span class="s-txt">${escHtml(c.q)}${c.a?`<span class="s-back" data-back="${i}" style="display:none">${escHtml(c.a)}</span>`:''}</span>
+      </div>
+      <div class="srs-foot">
+        ${c.a?`<button class="btn ghost s-show" data-show="${i}">Show answer</button>`:''}
+        <span class="s-grades">${GRADES.map(([g,label])=>`<button class="btn g${g}" data-grade="${i}:${g}" title="${GRADE_HINT[g]}">${label}</button>`).join('')}</span>
+        <button class="btn ghost s-del" data-del="${i}" aria-label="Delete card">✕</button>
+      </div>`;
     list.appendChild(row);
   });
-  list.querySelectorAll('[data-recall]').forEach(b=>b.onclick=()=>{
-    const c=state.srs[+b.dataset.recall];const ints=[1,3,7,16,35];c.step=Math.min((c.step||0)+1,4);
-    c.due=new Date(Date.now()+ints[c.step]*864e5).toISOString();save();renderSRS();toast('Scheduled','Next review in '+ints[c.step]+' days.');
+  list.querySelectorAll('[data-show]').forEach(b=>b.onclick=()=>{
+    const back=list.querySelector(`[data-back="${b.dataset.show}"]`);
+    if(back){back.style.display='';b.remove();}
+  });
+  list.querySelectorAll('[data-grade]').forEach(b=>b.onclick=()=>{
+    const [i,g]=b.dataset.grade.split(':');
+    const c=state.srs[+i];if(!c)return;
+    fsrsReview(c,+g,new Date());
+    save();renderSRS();
+    const days=Math.max(1,Math.round((new Date(c.due)-new Date())/864e5));
+    toast(+g===1?'Back soon':'Scheduled',`Next review in ${days} day${days===1?'':'s'}.`);
   });
   list.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{state.srs.splice(+b.dataset.del,1);save();renderSRS();});
 }
 function buildProgress(){
   $('#addReview').onclick=()=>{
     const q=prompt('Card front (the prompt / question):');if(!q)return;
-    state.srs.push({q:q.trim(),step:0,due:new Date(Date.now()+864e5).toISOString()});save();renderSRS();
+    const a=prompt('Card back (the answer) — optional:');
+    enqueueCard(q,a||'');renderSRS();
   };
   const ta=$('#notesArea');ta.value=state.notes||'';
   let tmr;ta.addEventListener('input',()=>{clearTimeout(tmr);$('#noteSaved').textContent='saving…';
