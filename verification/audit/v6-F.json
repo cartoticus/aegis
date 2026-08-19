@@ -1,0 +1,239 @@
+{
+ "answers": [
+  {
+   "module": "isc2.cc.d1.cia-triad",
+   "site": "gate",
+   "assignment": {
+    "Ransomware encrypts the file server": "Availability",
+    "Firmware replaced with a tampered build": "Integrity",
+    "Botnet floods the public website with traffic": "Availability",
+    "Customer database exfiltrated and posted online": "Confidentiality",
+    "Payroll figures silently altered in the database": "Integrity",
+    "Attacker reads unencrypted traffic on public Wi-Fi": "Confidentiality"
+   }
+  },
+  {
+   "module": "isc2.cc.d1.cia-triad",
+   "site": "isc2.cc.d1.cia.d7.constructset",
+   "assignment": {
+    "DDoS mitigation service": "IN",
+    "Digital signatures on lab results": "OUT",
+    "Full-disk encryption": "OUT",
+    "Offline immutable backups": "IN",
+    "Redundant failover servers": "IN",
+    "Role-based access control": "OUT",
+    "TLS on the web portal": "OUT",
+    "Tested restore procedure": "IN"
+   }
+  },
+  {
+   "module": "isc2.cc.d1.authn-nonrep-privacy",
+   "site": "gate",
+   "assignment": {
+    "Unlocking a workstation with a registered fingerprint": "Authentication",
+    "Collecting only the data fields the service actually needs": "Privacy",
+    "Keeping a tamper-evident audit log of who changed each record": "Non-repudiation",
+    "Requiring a password plus a one-time code from the user's phone": "Authentication",
+    "Honouring a customer's request to erase what you hold about them": "Privacy",
+    "Digitally signing an approved payment so it traces to one named employee": "Non-repudiation"
+   }
+  },
+  {
+   "module": "isc2.cc.d1.authn-nonrep-privacy",
+   "site": "isc2.cc.d1.anp.d7.classify",
+   "assignment": {
+    "The master passphrase that unlocks your password manager": "Something you know",
+    "A fingerprint the reader matches against an enrolled scan": "Something you are",
+    "An iris pattern the door camera measures against a stored template": "Something you are",
+    "A signing key that never leaves the TPM chip soldered to your laptop": "Something you have",
+    "A rotating code read from an authenticator app registered to one handset": "Something you have",
+    "The answer to the security question you chose when you opened the account": "Something you know"
+   }
+  },
+  {
+   "module": "isc2.cc.d1.control-types",
+   "site": "gate",
+   "assignment": {
+    "A locked door on the server room": "Physical",
+    "Full-disk encryption on every laptop": "Technical",
+    "A perimeter fence around the data centre": "Physical",
+    "A firewall filtering inbound traffic by rule": "Technical",
+    "Background checks run before a new hire starts": "Administrative",
+    "An acceptable-use policy signed by every employee": "Administrative"
+   }
+  },
+  {
+   "module": "isc2.cc.d1.control-types",
+   "site": "isc2.cc.d1.ctrl.d7.constructset",
+   "assignment": {
+    "A badge-operated turnstile in the lobby": "OUT",
+    "A mandatory data-classification scheme staff must apply to new documents": "IN",
+    "A safe for storing backup tapes": "OUT",
+    "A written incident response procedure": "IN",
+    "Annual security awareness training for all staff": "IN",
+    "Antivirus deployed to every endpoint": "OUT",
+    "Separation of duties on payment approvals": "IN",
+    "TLS on the customer web portal": "OUT"
+   }
+  },
+  {
+   "module": "isc2.cc.d1.code-of-ethics",
+   "site": "gate",
+   "assignment": {
+    "You refuse to scan a network you have no written authorisation to test": "Canon II — act honourably, honestly, justly, responsibly and legally",
+    "You report a peer who is selling leaked ISC2 exam questions to candidates": "Canon IV — advance and protect the profession",
+    "You report a vulnerability you found in a city's emergency dispatch system": "Canon I — protect society and the infrastructure",
+    "You decline to exaggerate a threat in a sales pitch to frighten a prospect into buying": "Canon II — act honourably, honestly, justly, responsibly and legally",
+    "You spend an afternoon each month mentoring junior analysts with no billable work attached": "Canon IV — advance and protect the profession",
+    "You turn down a second client whose work would create a conflict of interest with your current engagement": "Canon III — provide diligent and competent service to principals",
+    "You tell a client up front that a specialised cloud engagement is beyond what you are qualified to deliver": "Canon III — provide diligent and competent service to principals",
+    "A vendor ignores your reports of a medical-device firmware flaw while patients remain at risk, and you keep pressing for a fix": "Canon I — protect society and the infrastructure"
+   }
+  },
+  {
+   "module": "isc2.cc.d1.risk-lifecycle",
+   "site": "isc2.cc.d1.risk.d7.classify",
+   "assignment": {
+    "Enforce MFA on all remote access": "Mitigate",
+    "Roll out full-disk encryption on every laptop": "Mitigate",
+    "Discontinue the legacy file-sharing service entirely": "Avoid",
+    "Buy a cyber-insurance policy covering breach response costs": "Transfer",
+    "Add a clause making the hosting provider financially responsible for data loss": "Transfer",
+    "Document the remaining chance of a laptop stolen while unlocked, and have the head of IT sign it off": "Accept"
+   }
+  },
+  {
+   "module": "isc2.cc.d1.governance",
+   "site": "gate",
+   "assignment": {
+    "Data at rest must be encrypted with AES-256": "Standard",
+    "Where practical, prefer a passphrase of four or more words": "Guideline",
+    "All production servers must run the approved hardened OS image": "Standard",
+    "HIPAA's requirements for safeguarding protected health information": "Law or regulation",
+    "The organisation will protect the confidentiality of all customer data": "Policy",
+    "Every system must have a named owner who is accountable for its security": "Policy",
+    "Step 1: open the admin console. Step 2: select Enrol device. Step 3: scan the QR code": "Procedure",
+    "To report a suspected phishing email, click Report, then forward it to the security inbox": "Procedure"
+   }
+  }
+ ],
+ "findings": [
+  {
+   "module": "isc2.cc.d1.code-of-ethics",
+   "site": "gate",
+   "item": "You tell a client up front that a specialised cloud engagement is beyond what you are qualified to deliver",
+   "defect": "misleading-hint (new hint 2 inverts this item)",
+   "severity": "HIGH",
+   "why": "The replacement hint says \"Canon III covers duties you take on only by accepting an engagement; Canon II covers how you conduct yourself whether or not anyone has hired you.\" This item is explicitly pre-acceptance: you tell them \"up front\" that the engagement is beyond you, i.e. you have not taken the engagement on. Applying the new test literally routes a well-prepared candidate to Canon II (truthfulness / staying within your competence, which the ISC2 Canon II objectives also cover verbatim), while the intended key is Canon III (\"render only those services for which you are fully competent and qualified\"). The bucket balance (2/2/2/2) confirms III is intended. Change 2 therefore fixed the counterparty misfire on one item and created a sharper one here: the hint now argues against the key.",
+   "suggested_fix": "Either re-key nothing and rewrite the item so the engagement already exists — e.g. \"Midway through a client engagement you tell them a specialised cloud component is beyond what you are qualified to deliver, and you hand it to a specialist\" — or reword hint 2 to \"Canon III covers what you owe someone who is relying on you as their principal, including telling them what you cannot do; Canon II covers conduct owed to everyone.\" Do not leave \"up front\" in place with the current hint."
+  },
+  {
+   "module": "isc2.cc.d1.code-of-ethics",
+   "site": "gate",
+   "item": "You refuse to scan a network you have no written authorisation to test",
+   "defect": "two-home (Canon I vs Canon II), hints pull opposite ways",
+   "severity": "MEDIUM",
+   "why": "The replacement item is legally framed (unauthorised scanning = illegality → Canon II, which the prompt gloss cues with \"your own honesty and legality\"), but hint 1 still asks \"who is primarily being protected\" — and the party protected by not scanning is the un-consulted network owner and the infrastructure, which reads as Canon I. ISC2 Canon I objectives also include \"discourage unsafe practice\". Hint 2 (engagement vs general conduct) supports II; hint 1 supports I. The item is defensible but the two hints now disagree on it, so the replacement did not land clean.",
+   "suggested_fix": "Make the legality the operative fact rather than the protected party: \"You decline a request to port-scan a network because you have no written authorisation and doing so would be unlawful.\" Or drop \"who is primarily being protected\" from hint 1 (see next finding), which is what removes the Canon I pull."
+  },
+  {
+   "module": "isc2.cc.d1.code-of-ethics",
+   "site": "gate",
+   "item": "You decline to exaggerate a threat in a sales pitch to frighten a prospect into buying",
+   "defect": "misleading-hint — the counterparty test was only removed from hint 2, not hint 1",
+   "severity": "MEDIUM",
+   "why": "Change 2 claims the ethics hint no longer uses a counterparty test, but hint 1 is still exactly that: \"Ask who is primarily being protected: the public, your own integrity, the client who hired you, or the profession itself.\" On this item the party being protected is a prospect — someone who has not hired you — which matches none of the four options cleanly and sits nearest \"the client\", steering candidates to Canon III. FUD selling also plausibly reads as Canon IV (it degrades the standing of the profession). Intended answer is Canon II (\"give prudent advice; avoid raising unnecessary alarm\"). So the removal was applied to one hint only and the residual test still misfires.",
+   "suggested_fix": "Replace hint 1 with a subject-matter test rather than a beneficiary test: \"Ask what the situation is about: the safety of systems the public depends on (I), the legality and truthfulness of your own conduct (II), obligations to someone relying on you (III), or the credibility of the certification and the field (IV).\""
+  },
+  {
+   "module": "isc2.cc.d1.cia-triad",
+   "site": "gate",
+   "item": "Ransomware encrypts the file server",
+   "defect": "misleading-hint — hint 1 describes availability loss but positions it as confidentiality",
+   "severity": "MEDIUM",
+   "why": "Hint 1 reads \"Ask what the victim actually lost: the ability to read it, trust in it, or access to it\", and the three clauses map positionally onto the bucket order Confidentiality / Integrity / Availability. But a confidentiality breach is not the victim losing the ability to read data — it is a third party gaining it. Read literally, \"lost the ability to read it\" describes exactly what ransomware does, so a candidate who trusts hint 1 sorts this item into Confidentiality. Hint 2 rescues this one item by naming encryption explicitly; the framing error still stands for \"Customer database exfiltrated and posted online\" and \"Attacker reads unencrypted traffic on public Wi-Fi\", where the victim loses none of the three things listed.",
+   "suggested_fix": "Rewrite hint 1 from the attacker side: \"Ask what the attacker gained or destroyed: the ability to see data they should not (C), the ability to change it undetected (I), or the ability to stop anyone reaching it (A).\""
+  },
+  {
+   "module": "isc2.cc.d1.governance",
+   "site": "gate",
+   "item": "Every system must have a named owner who is accountable for its security",
+   "defect": "two-home (Policy vs Standard) introduced by the replacement item",
+   "severity": "MEDIUM",
+   "why": "The replacement removes the duplicate Policy wording, but hint 1 tells candidates to ask \"is it mandatory, and does it name specific technology or specific steps?\" This item is mandatory (\"must\") and states a specific, checkable requirement (one named accountable owner per system), so a candidate running the hint mechanically lands on Standard — the same reasoning that correctly yields Standard for \"All production servers must run the approved hardened OS image\". The intended answer is Policy (org-wide statement of intent, no technology named), and the sibling Policy item is the softer \"The organisation will protect...\", so the two Policy items are no longer duplicates but they no longer look like the same layer either.",
+   "suggested_fix": "Either soften it to a clear intent statement — \"The organisation holds a named individual accountable for the security of every system it operates\" — or tighten hint 1 to distinguish scope from specificity: \"Mandatory and technology- or step-specific = standard or procedure; mandatory but stated as organisational intent that applies everywhere = policy.\""
+  },
+  {
+   "module": "isc2.cc.d1.authn-nonrep-privacy",
+   "site": "isc2.cc.d1.anp.d7.classify",
+   "item": null,
+   "defect": "give-away / trivial — the whole discrimination rule sits in the prompt",
+   "severity": "MEDIUM",
+   "why": "The hints array is empty because the hint text was folded into the prompt, including \"A code is not a memory factor just because it can be read out — what was enrolled is the device that generates it.\" That sentence single-handedly settles \"A rotating code read from an authenticator app registered to one handset\", which is the only item in the bank that requires any discrimination; the remaining five are direct keyword matches to the prompt's own gloss (\"stored only in your memory\", \"a specific enrolled device\", \"a measurement of your body\"). The bank measures reading, not knowledge, and the item that would have discriminated is pre-solved.",
+   "suggested_fix": "Move the \"a code is not a memory factor\" sentence back into a hint so it is revealed only on a wrong attempt, and keep the prompt to \"For each sign-in step, decide which factor category it draws on.\""
+  },
+  {
+   "module": "isc2.cc.d1.code-of-ethics",
+   "site": "gate",
+   "item": "A vendor ignores your reports of a medical-device firmware flaw while patients remain at risk, and you keep pressing for a fix",
+   "defect": "redundant with a sibling item; compound stem",
+   "severity": "LOW",
+   "why": "This tests the same discrimination as \"You report a vulnerability you found in a city's emergency dispatch system\" — public-safety vulnerability disclosure → Canon I — so one of the eight slots buys no new information. It is also the only item written as a two-clause scenario (vendor behaviour + your response), which invites candidates to classify the vendor's conduct rather than their own, and introduces a counterparty (the vendor) that can be misread as a principal.",
+   "suggested_fix": "Replace with a different Canon I subject, e.g. \"You refuse to build an undocumented remote-access channel into a utility control system a customer asked you to install\", and keep the medical-device scenario for the module's open-ended synthesis step."
+  },
+  {
+   "module": "isc2.cc.d1.governance",
+   "site": "gate",
+   "item": "Where practical, prefer a passphrase of four or more words",
+   "defect": "give-away hint",
+   "severity": "LOW",
+   "why": "Hint 2 (\"Anything you could decline to follow without breaking a rule is a guideline, however sensible it sounds\") plus the stem's \"Where practical, prefer\" makes this the only non-mandatory item in the bank and hands the answer outright. It is the sole Guideline item, so the entire Guideline bucket is decided by a single lexical cue.",
+   "suggested_fix": "Add a second, mandatory-sounding guideline (e.g. \"Security teams should consider reviewing firewall rules quarterly\") so the bucket is not settled by one hedge phrase, and make hint 2 point at the test rather than the answer."
+  },
+  {
+   "module": "isc2.cc.d1.governance",
+   "site": "gate",
+   "item": "To report a suspected phishing email, click Report, then forward it to the security inbox",
+   "defect": "redundant with a sibling item",
+   "severity": "LOW",
+   "why": "Both Procedure items are numbered/sequenced click-paths; \"Step 1: open the admin console...\" already establishes the pattern, so the second adds no discrimination. A stronger Procedure item would be one that does not look like a step list on its face.",
+   "suggested_fix": "Swap in something that reads like prose but is still a procedure, e.g. \"On termination, HR notifies IT the same day and IT disables the account before the employee leaves the building.\""
+  },
+  {
+   "module": "isc2.cc.d1.control-types",
+   "site": "isc2.cc.d1.ctrl.d7.constructset",
+   "item": "Separation of duties on payment approvals",
+   "defect": "two-home (administrative vs technical enforcement)",
+   "severity": "LOW",
+   "why": "Separation of duties is an administrative/managerial control in ISC2 terms, but \"on payment approvals\" evokes a workflow enforced by the payment system, which some candidates will read as technical. The bank has no hints to resolve it.",
+   "suggested_fix": "Reword as \"A rule that the person who raises a payment cannot be the person who approves it\" to keep the emphasis on the rule rather than the system."
+  },
+  {
+   "module": "isc2.cc.d1.risk-lifecycle",
+   "site": "isc2.cc.d1.risk.d7.classify",
+   "item": null,
+   "defect": "no hints at all; uneven bucket coverage",
+   "severity": "LOW",
+   "why": "The hints array is empty for a four-bucket bank, so a candidate who misreads \"Discontinue the legacy file-sharing service entirely\" as mitigation (removing the exposure reduces risk) gets no scaffold back to Avoid. Coverage is also 2 Mitigate / 2 Transfer / 1 Avoid / 1 Accept, so the two least-practised treatments each rest on a single item.",
+   "suggested_fix": "Add one hint — \"Ask whether the risk still exists afterwards: reduced (mitigate), owned by someone else (transfer), gone because the activity stopped (avoid), or unchanged and knowingly signed off (accept)\" — and add a second Avoid item."
+  },
+  {
+   "module": "isc2.cc.d1.control-types",
+   "site": "gate",
+   "item": null,
+   "defect": "trivial",
+   "severity": "LOW",
+   "why": "All six items are canonical textbook pairings (locked door / fence = physical, firewall / FDE = technical, background checks / AUP = administrative) with no item that could plausibly sit in two type buckets, so the gate cannot fail a candidate who has skimmed the material once. The hints add a function-vs-type warning that no item actually exercises.",
+   "suggested_fix": "Add one genuine two-home item that the hints then resolve, e.g. \"A badge reader that logs every entry to the server room\" (physical enforcement, technical logging), or an item whose function is detective to make hint 2 load-bearing."
+  },
+  {
+   "module": "isc2.cc.d1.cia-triad",
+   "site": "isc2.cc.d1.cia.d7.constructset",
+   "item": "Offline immutable backups",
+   "defect": "two-home (integrity of the backup vs availability of the data)",
+   "severity": "LOW",
+   "why": "\"Immutable\" is an integrity word, and a candidate primed by the gate bank's integrity items may read the item as protecting the backup from alteration rather than keeping the records reachable. The prompt's \"reachable through any disruption\" framing makes IN the defensible answer, so this is a wobble rather than a trap.",
+   "suggested_fix": "If it needs hardening, \"Offline backups held in a separate facility\" removes the integrity cue without changing the answer."
+  }
+ ]
+}

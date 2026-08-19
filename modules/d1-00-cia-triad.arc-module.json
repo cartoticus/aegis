@@ -1,0 +1,159 @@
+{
+  "id": "isc2.cc.d1.cia-triad",
+  "version": "1.0.0",
+  "domain": "ISC2 Certified in Cybersecurity — Domain 1: Security Principles",
+  "dag_branch": "cc.d1.principles",
+  "profile": "CONCEPT",
+  "prerequisites": [],
+  "invalidation_policy": "REVIEW",
+  "provenance": {
+    "authored_by": "hybrid",
+    "generator_id": "arc-aegis-migration/4.3.0",
+    "reviewed_by": null,
+    "reviewed_at": null
+  },
+  "content": {
+    "title": "The CIA Triad",
+    "prequestion": {
+      "prompt": "Before reading: a ransomware attack encrypts a hospital's records so staff cannot open them. Which property has been attacked?",
+      "options": [
+        "Confidentiality",
+        "Integrity",
+        "Availability",
+        "Not sure"
+      ]
+    },
+    "reading_markdown": "## The lens for every control\n\nEvery security control that has ever existed protects at least one of three properties. Learn these and you have the lens you will use to reason about all of security.\n\n- **Confidentiality** — only authorised people can read the data. Broken by a breach or eavesdropping. Protected by encryption and access controls.\n- **Integrity** — data is accurate and unaltered, and you would know if it changed. Broken by tampering. Protected by hashing, checksums and digital signatures.\n- **Availability** — the data or service is there when authorised users need it. Broken by ransomware or a denial-of-service attack. Protected by backups, redundancy and DoS defences.\n\n## Worked example\n\nA hospital records system: encryption keeps records **confidential**; a hash confirms a lab result was not altered (**integrity**); redundant servers keep it reachable during an outage (**availability**). Any attack or defence you meet maps back to which leg it hits.\n\n## Why it matters\n\nWhen you cannot tell what a control is *for*, ask which leg of the triad it protects. It is the first question in the field and on the exam.\n\nA common trap: ransomware feels like a confidentiality attack because it involves encryption. It is not. The attacker encrypts data *you already hold* and does not necessarily read it — what you lose is **access**. That is availability. Confidentiality fails when someone reads what they should not."
+  },
+  "gate": {
+    "type": "CLASSIFY",
+    "scoring_class": "B",
+    "expected_duration_s": 90,
+    "pass_threshold": {
+      "min_correct": 5,
+      "item_count": 6
+    },
+    "prompt": "Sort each incident under the leg of the CIA triad it primarily attacks.",
+    "hints": [
+      "Name the property the attacker destroyed, not the technology they used. The same technology shows up as a control on one side and a weapon on the other.",
+      "If two legs seem to fit, ask which loss the victim notices first, and which one they could still be suffering without knowing."
+    ],
+    "validation_payload": {
+      "accuracy_metric": "bucket_assignment",
+      "buckets": {
+        "Confidentiality": [
+          "Customer database exfiltrated and posted online",
+          "Attacker reads unencrypted traffic on public Wi-Fi"
+        ],
+        "Integrity": [
+          "Payroll figures silently altered in the database",
+          "Firmware replaced with a tampered build"
+        ],
+        "Availability": [
+          "Ransomware encrypts the file server",
+          "Botnet floods the public website with traffic"
+        ]
+      },
+      "normalisation": {
+        "strip_diacritics": false
+      }
+    },
+    "accessible_equivalent": "Keyboard-navigable list pairing each incident with one of {Confidentiality, Integrity, Availability}; scored identically as bucket_assignment."
+  },
+  "analog_synthesis": {
+    "taxonomy_type": "SPATIAL",
+    "prompt": "On paper, draw the triad as a triangle and label the three vertices from memory. Against each vertex write one attack that breaks it and one control that protects it — six items total. Do not consult the lesson.",
+    "calibration_question": "Which vertex did you fill in last, and did you write a control there that actually protects a different leg?",
+    "accessible_equivalent": "Arrange three tactile markers and state aloud, for each, one attack and one control; or dictate the six pairings as a recorded response."
+  },
+  "drills": [
+    {
+      "id": "isc2.cc.d1.cia.d1.cloze",
+      "type": "CLOZE",
+      "scoring_class": "B",
+      "interval_tier": "RECOGNITION",
+      "expected_duration_s": 40,
+      "pass_threshold": {
+        "min_correct": 2,
+        "item_count": 3
+      },
+      "prompt": "Complete: Hashing a file to prove it was not changed protects ______. Redundant servers protect ______. Encrypting a stolen laptop's disk protects ______.",
+      "validation_payload": {
+        "accuracy_metric": "correct_slot_ratio",
+        "accept": [
+          [
+            "integrity"
+          ],
+          [
+            "availability"
+          ],
+          [
+            "confidentiality"
+          ]
+        ]
+      },
+      "accessible_equivalent": "Same three prompts as a screen-reader accessible select-one list.",
+      "explanation": "Hashing detects alteration (integrity); redundancy preserves access (availability); encryption restricts reading (confidentiality)."
+    },
+    {
+      "id": "isc2.cc.d1.cia.d7.constructset",
+      "type": "CONSTRUCT_SET",
+      "scoring_class": "B",
+      "interval_tier": "APPLICATION",
+      "expected_duration_s": 60,
+      "pass_threshold": {
+        "min_correct": 3,
+        "item_count": 4
+      },
+      "prompt": "A hospital must keep patient records reachable through any disruption — outage, attack or accident. Select every control below that primarily protects AVAILABILITY.",
+      "validation_payload": {
+        "accuracy_metric": "set_f1",
+        "correct_set": [
+          "Offline immutable backups",
+          "Redundant failover servers",
+          "Tested restore procedure",
+          "DDoS mitigation service"
+        ],
+        "distractors": [
+          "Full-disk encryption",
+          "Digital signatures on lab results",
+          "Role-based access control",
+          "TLS on the web portal"
+        ],
+        "normalisation": {
+          "strip_diacritics": false
+        }
+      },
+      "accessible_equivalent": "Multi-select list with screen-reader labels; scored identically as set_f1.",
+      "explanation": "Encryption, signatures and RBAC protect confidentiality or integrity. Only backups, redundancy, tested restores and DDoS defence keep the service reachable."
+    },
+    {
+      "id": "isc2.cc.d1.cia.d30.freerecall",
+      "type": "FREE_RECALL",
+      "scoring_class": "C",
+      "interval_tier": "GENERATIVE",
+      "expected_duration_s": 150,
+      "pass_threshold": {
+        "min_correct": 4,
+        "item_count": 6
+      },
+      "prompt": "Without notes: name the three legs of the CIA triad, give one attack and one control for each, and explain why ransomware is an availability attack rather than a confidentiality one.",
+      "validation_payload": {
+        "accuracy_metric": "keyword_density",
+        "required_keywords": [
+          "confidentiality",
+          "integrity",
+          "availability",
+          "hashing",
+          "backups",
+          "encryption"
+        ],
+        "normalisation": {
+          "strip_diacritics": false
+        }
+      },
+      "accessible_equivalent": "Spoken response transcribed via speech-to-text, scored on the same keyword set.",
+      "explanation": "Being able to state the ransomware distinction unprompted is the marker that the triad has become a reasoning tool rather than three memorised words."
+    }
+  ]
+}

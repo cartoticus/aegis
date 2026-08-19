@@ -1,0 +1,154 @@
+[
+ {
+  "module": "isc2.cc.d1.cia-triad",
+  "site": "gate",
+  "pass_threshold": {
+   "min_correct": 5,
+   "item_count": 6
+  },
+  "key": {
+   "Customer database exfiltrated and posted online": "Confidentiality",
+   "Attacker reads unencrypted traffic on public Wi-Fi": "Confidentiality",
+   "Payroll figures silently altered in the database": "Integrity",
+   "Firmware replaced with a tampered build": "Integrity",
+   "Ransomware encrypts the file server": "Availability",
+   "Botnet floods the public website with traffic": "Availability"
+  }
+ },
+ {
+  "module": "isc2.cc.d1.cia-triad",
+  "site": "isc2.cc.d1.cia.d7.constructset",
+  "pass_threshold": {
+   "min_correct": 3,
+   "item_count": 4
+  },
+  "key": {
+   "Offline immutable backups": "IN",
+   "Redundant failover servers": "IN",
+   "Tested restore procedure": "IN",
+   "DDoS mitigation service": "IN",
+   "Full-disk encryption": "OUT",
+   "Digital signatures on lab results": "OUT",
+   "Role-based access control": "OUT",
+   "TLS on the web portal": "OUT"
+  }
+ },
+ {
+  "module": "isc2.cc.d1.authn-nonrep-privacy",
+  "site": "gate",
+  "pass_threshold": {
+   "min_correct": 5,
+   "item_count": 6
+  },
+  "key": {
+   "Requiring a password plus a one-time code from the user's phone": "Authentication",
+   "Unlocking a workstation with a registered fingerprint": "Authentication",
+   "Digitally signing an approved payment so it traces to one named employee": "Non-repudiation",
+   "Keeping a tamper-evident audit log of who changed each record": "Non-repudiation",
+   "Collecting only the data fields the service actually needs": "Privacy",
+   "Honouring a customer's request to erase what you hold about them": "Privacy"
+  }
+ },
+ {
+  "module": "isc2.cc.d1.authn-nonrep-privacy",
+  "site": "isc2.cc.d1.anp.d7.classify",
+  "pass_threshold": {
+   "min_correct": 5,
+   "item_count": 6
+  },
+  "key": {
+   "The answer to the security question you chose when you opened the account": "Something you know",
+   "The master passphrase that unlocks your password manager": "Something you know",
+   "A rotating code read from an authenticator app registered to one handset": "Something you have",
+   "A signing key that never leaves the TPM chip soldered to your laptop": "Something you have",
+   "An iris pattern the door camera measures against a stored template": "Something you are",
+   "A fingerprint the reader matches against an enrolled scan": "Something you are"
+  }
+ },
+ {
+  "module": "isc2.cc.d1.control-types",
+  "site": "gate",
+  "pass_threshold": {
+   "min_correct": 5,
+   "item_count": 6
+  },
+  "key": {
+   "A firewall filtering inbound traffic by rule": "Technical",
+   "Full-disk encryption on every laptop": "Technical",
+   "An acceptable-use policy signed by every employee": "Administrative",
+   "Background checks run before a new hire starts": "Administrative",
+   "A perimeter fence around the data centre": "Physical",
+   "A locked door on the server room": "Physical"
+  }
+ },
+ {
+  "module": "isc2.cc.d1.control-types",
+  "site": "isc2.cc.d1.ctrl.d7.constructset",
+  "pass_threshold": {
+   "min_correct": 3,
+   "item_count": 4
+  },
+  "key": {
+   "Annual security awareness training for all staff": "IN",
+   "A written incident response procedure": "IN",
+   "Separation of duties on payment approvals": "IN",
+   "A mandatory data-classification scheme staff must apply to new documents": "IN",
+   "A badge-operated turnstile in the lobby": "OUT",
+   "Antivirus deployed to every endpoint": "OUT",
+   "A safe for storing backup tapes": "OUT",
+   "TLS on the customer web portal": "OUT"
+  }
+ },
+ {
+  "module": "isc2.cc.d1.code-of-ethics",
+  "site": "gate",
+  "pass_threshold": {
+   "min_correct": 7,
+   "item_count": 8
+  },
+  "key": {
+   "A vendor ignores your reports of a medical-device firmware flaw while patients remain at risk, and you keep pressing for a fix": "Canon I — protect society and the infrastructure",
+   "You report a vulnerability you found in a city's emergency dispatch system": "Canon I — protect society and the infrastructure",
+   "You refuse to scan a network you have no written authorisation to test": "Canon II — act honourably, honestly, justly, responsibly and legally",
+   "You decline to exaggerate a threat in a sales pitch to frighten a prospect into buying": "Canon II — act honourably, honestly, justly, responsibly and legally",
+   "You tell a client up front that a specialised cloud engagement is beyond what you are qualified to deliver": "Canon III — provide diligent and competent service to principals",
+   "You turn down a second client whose work would create a conflict of interest with your current engagement": "Canon III — provide diligent and competent service to principals",
+   "You report a peer who is selling leaked ISC2 exam questions to candidates": "Canon IV — advance and protect the profession",
+   "You spend an afternoon each month mentoring junior analysts with no billable work attached": "Canon IV — advance and protect the profession"
+  }
+ },
+ {
+  "module": "isc2.cc.d1.risk-lifecycle",
+  "site": "isc2.cc.d1.risk.d7.classify",
+  "pass_threshold": {
+   "min_correct": 5,
+   "item_count": 6
+  },
+  "key": {
+   "Roll out full-disk encryption on every laptop": "Mitigate",
+   "Enforce MFA on all remote access": "Mitigate",
+   "Buy a cyber-insurance policy covering breach response costs": "Transfer",
+   "Add a clause making the hosting provider financially responsible for data loss": "Transfer",
+   "Discontinue the legacy file-sharing service entirely": "Avoid",
+   "Document the remaining chance of a laptop stolen while unlocked, and have the head of IT sign it off": "Accept"
+  }
+ },
+ {
+  "module": "isc2.cc.d1.governance",
+  "site": "gate",
+  "pass_threshold": {
+   "min_correct": 7,
+   "item_count": 8
+  },
+  "key": {
+   "The organisation will protect the confidentiality of all customer data": "Policy",
+   "Every system must have a named owner who is accountable for its security": "Policy",
+   "Data at rest must be encrypted with AES-256": "Standard",
+   "All production servers must run the approved hardened OS image": "Standard",
+   "Step 1: open the admin console. Step 2: select Enrol device. Step 3: scan the QR code": "Procedure",
+   "To report a suspected phishing email, click Report, then forward it to the security inbox": "Procedure",
+   "Where practical, prefer a passphrase of four or more words": "Guideline",
+   "HIPAA's requirements for safeguarding protected health information": "Law or regulation"
+  }
+ }
+]

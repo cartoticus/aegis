@@ -1,0 +1,408 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://arc-spec.org/schema/4.3.0/arc-module.schema.json",
+  "title": "ARCv430_ModuleInterchange",
+  "type": "object",
+  "required": [
+    "id",
+    "version",
+    "domain",
+    "dag_branch",
+    "profile",
+    "prerequisites",
+    "invalidation_policy",
+    "provenance",
+    "content",
+    "gate",
+    "analog_synthesis",
+    "drills"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "domain": {
+      "type": "string",
+      "minLength": 1
+    },
+    "dag_branch": {
+      "type": "string",
+      "minLength": 1,
+      "description": "REQUIRED in 4.0.2 (was optional; P2 was vacuously waivable)."
+    },
+    "profile": {
+      "type": "string",
+      "enum": [
+        "CONCEPT",
+        "SKILL"
+      ]
+    },
+    "prerequisites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "invalidation_policy": {
+      "type": "string",
+      "enum": [
+        "PRESERVE",
+        "REVIEW",
+        "INVALIDATE"
+      ]
+    },
+    "consolidation_hours": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Spec 5.3 override. Default 24."
+    },
+    "mastery_interval_days": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Spec 5.3 override. CONCEPT 60 / SKILL 30."
+    },
+    "remediation_threshold": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Spec 5.3 override. Default 3."
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "authored_by",
+        "reviewed_by",
+        "reviewed_at"
+      ],
+      "properties": {
+        "authored_by": {
+          "type": "string",
+          "enum": [
+            "human",
+            "agent",
+            "hybrid"
+          ]
+        },
+        "generator_id": {
+          "type": "string"
+        },
+        "reviewed_by": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reviewed_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "required": [
+        "title",
+        "reading_markdown"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "chunk_media_url": {
+          "type": "string"
+        },
+        "prequestion": {
+          "type": "object",
+          "required": [
+            "prompt"
+          ],
+          "properties": {
+            "prompt": {
+              "type": "string"
+            },
+            "options": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "reading_markdown": {
+          "type": "string",
+          "maxLength": 12000,
+          "description": "Phase 1 chunk. The NORMATIVE limit is 1,200 words (spec \u00a75.1/V1); this character cap is a loose backstop only and MUST NOT bind first."
+        }
+      }
+    },
+    "gate": {
+      "type": "object",
+      "required": [
+        "type",
+        "scoring_class",
+        "expected_duration_s",
+        "pass_threshold",
+        "prompt",
+        "validation_payload",
+        "accessible_equivalent"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "EXACT_MATCH",
+            "REGEX",
+            "CLASSIFY",
+            "CONSTRUCT_SET",
+            "CLOZE",
+            "LABEL_DIAGRAM",
+            "ORDER_SEQUENCE",
+            "FREE_RECALL",
+            "PRODUCE",
+            "EXPLAIN_NOVICE",
+            "RUBRIC_SELF_ASSESS"
+          ]
+        },
+        "scoring_class": {
+          "type": "string",
+          "enum": [
+            "A",
+            "B",
+            "C"
+          ]
+        },
+        "expected_duration_s": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "pass_threshold": {
+          "type": "object",
+          "description": "Exactly one of ratio / min_correct (V4). min_correct requires item_count and >=1 (V5).",
+          "properties": {
+            "ratio": {
+              "type": "number",
+              "minimum": 0.0,
+              "maximum": 1.0
+            },
+            "min_correct": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "item_count": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        "prompt": {
+          "type": "string",
+          "minLength": 1
+        },
+        "hints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "validation_payload": {
+          "type": "object",
+          "required": [
+            "accuracy_metric"
+          ],
+          "properties": {
+            "accuracy_metric": {
+              "type": "string",
+              "enum": [
+                "binary",
+                "correct_slot_ratio",
+                "set_f1",
+                "kendall_tau",
+                "bucket_assignment",
+                "rubric_proportion",
+                "keyword_density"
+              ]
+            },
+            "normalisation": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "strip_diacritics": {
+                  "type": "boolean"
+                }
+              },
+              "description": "MUST be an object, not prose. A string here silently no-ops in JS and throws in typed languages."
+            }
+          }
+        },
+        "accessible_equivalent": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "analog_synthesis": {
+      "type": "object",
+      "required": [
+        "taxonomy_type",
+        "prompt",
+        "calibration_question",
+        "accessible_equivalent"
+      ],
+      "properties": {
+        "taxonomy_type": {
+          "type": "string",
+          "enum": [
+            "SPATIAL",
+            "SEQUENTIAL",
+            "REDUCTIVE",
+            "GENERATIVE",
+            "COMPARATIVE"
+          ]
+        },
+        "prompt": {
+          "type": "string",
+          "minLength": 1
+        },
+        "calibration_question": {
+          "type": "string",
+          "minLength": 1
+        },
+        "accessible_equivalent": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "drills": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "scoring_class",
+          "interval_tier",
+          "expected_duration_s",
+          "pass_threshold",
+          "prompt",
+          "validation_payload"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "EXACT_MATCH",
+              "REGEX",
+              "CLASSIFY",
+              "CONSTRUCT_SET",
+              "CLOZE",
+              "LABEL_DIAGRAM",
+              "ORDER_SEQUENCE",
+              "FREE_RECALL",
+              "PRODUCE",
+              "EXPLAIN_NOVICE",
+              "RUBRIC_SELF_ASSESS"
+            ]
+          },
+          "scoring_class": {
+            "type": "string",
+            "enum": [
+              "A",
+              "B",
+              "C"
+            ]
+          },
+          "expected_duration_s": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "pass_threshold": {
+            "type": "object",
+            "description": "Exactly one of ratio / min_correct (V4). min_correct requires item_count and >=1 (V5).",
+            "properties": {
+              "ratio": {
+                "type": "number",
+                "minimum": 0.0,
+                "maximum": 1.0
+              },
+              "min_correct": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "item_count": {
+                "type": "integer",
+                "minimum": 1
+              }
+            }
+          },
+          "prompt": {
+            "type": "string",
+            "minLength": 1
+          },
+          "hints": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "validation_payload": {
+            "type": "object",
+            "required": [
+              "accuracy_metric"
+            ],
+            "properties": {
+              "accuracy_metric": {
+                "type": "string",
+                "enum": [
+                  "binary",
+                  "correct_slot_ratio",
+                  "set_f1",
+                  "kendall_tau",
+                  "bucket_assignment",
+                  "rubric_proportion",
+                  "keyword_density"
+                ]
+              },
+              "normalisation": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "strip_diacritics": {
+                    "type": "boolean"
+                  }
+                },
+                "description": "MUST be an object, not prose. A string here silently no-ops in JS and throws in typed languages."
+              }
+            }
+          },
+          "accessible_equivalent": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "interval_tier": {
+            "type": "string",
+            "enum": [
+              "RECOGNITION",
+              "APPLICATION",
+              "GENERATIVE"
+            ]
+          },
+          "explanation": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

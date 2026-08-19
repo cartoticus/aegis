@@ -1,0 +1,165 @@
+{
+  "id": "isc2.cc.d1.governance",
+  "version": "1.0.0",
+  "domain": "ISC2 Certified in Cybersecurity — Domain 1: Security Principles",
+  "dag_branch": "cc.d1.principles",
+  "profile": "CONCEPT",
+  "prerequisites": [
+    "isc2.cc.d1.cia-triad"
+  ],
+  "invalidation_policy": "REVIEW",
+  "provenance": {
+    "authored_by": "hybrid",
+    "generator_id": "arc-aegis-phase1/4.3.0",
+    "reviewed_by": null,
+    "reviewed_at": null
+  },
+  "content": {
+    "title": "Governance: Policies, Standards, Procedures & Laws",
+    "prequestion": {
+      "prompt": "Before reading: \"Data at rest must be encrypted with AES-256.\" Is that a policy?",
+      "options": [
+        "Yes — it is mandatory and comes from leadership",
+        "No — it names a specific technology, so it is a standard",
+        "No — it is a procedure",
+        "Not sure"
+      ]
+    },
+    "reading_markdown": "## Who decides, who is accountable, what you must follow\n\nGovernance is the structure of rules that directs security. Internally it forms a hierarchy from broad intent down to exact steps, and each layer answers a different question.\n\n- **Policy** — high-level intent. Mandatory, approved by leadership, deliberately technology-free so it survives the next decade. *\"We protect customer data.\"*\n- **Standard** — specific mandatory requirements that implement a policy. Names technologies, versions, settings. *\"Data at rest is encrypted with AES-256.\"*\n- **Procedure** — the exact step-by-step how-to, for the person doing the task. *\"1. Open the console. 2. Select Enrol device...\"*\n- **Guideline** — recommended, **not** mandatory. Advice for cases the standard cannot anticipate. *\"Where practical, prefer passphrases of four or more words.\"*\n\nThe reliable test is not tone but **specificity and force**. If it states *what we want* without naming how, it is a policy. If it is mandatory and names the how, it is a standard. If it is a sequence of actions to perform, it is a procedure. If you could decline to follow it without breaking a rule, it is a guideline.\n\n## Above all of it: law and regulation\n\nExternal **laws and regulations** sit above the whole internal hierarchy and are not optional: **HIPAA** for health data, **GDPR** for EU personal data, **PCI-DSS** for payment cards. You do not get to write a policy that contradicts them.\n\nAnd compliance is the **floor, not the ceiling**. A system can be fully compliant and still insecure — the regulation encodes the minimum that everyone must do, not the right amount for your particular risk.\n\n## Worked example\n\nA password **policy** mandates multi-factor authentication because the organisation has decided credentials must be protected. The **standard** names the approved authenticator app and the minimum passphrase length. The **procedure** walks a new hire through enrolling their device, screen by screen. A **guideline** suggests reviewing saved passwords each quarter. Four documents, four levels of specificity, one intent — and above them all, the regulation that made it non-negotiable in the first place."
+  },
+  "gate": {
+    "type": "CLASSIFY",
+    "scoring_class": "B",
+    "expected_duration_s": 150,
+    "pass_threshold": {
+      "min_correct": 7,
+      "item_count": 8
+    },
+    "prompt": "Sort each document or statement into the governance layer it belongs to.",
+    "hints": [
+      "Work down in order: is it imposed on you from outside, is it optional, and does it state an intention, a specific requirement, or a sequence of actions?",
+      "Force and specificity are two separate axes. Something can be mandatory and vague, or detailed and optional — the pair of answers picks the layer."
+    ],
+    "validation_payload": {
+      "accuracy_metric": "bucket_assignment",
+      "buckets": {
+        "Policy": [
+          "The organisation will protect the confidentiality of all customer data",
+          "Every system must have a named owner who is accountable for its security"
+        ],
+        "Standard": [
+          "Data at rest must be encrypted with AES-256",
+          "All production servers must run the approved hardened OS image"
+        ],
+        "Procedure": [
+          "Step 1: open the admin console. Step 2: select Enrol device. Step 3: scan the QR code",
+          "To report a suspected phishing email, click Report, then forward it to the security inbox"
+        ],
+        "Guideline": [
+          "Where practical, prefer a passphrase of four or more words"
+        ],
+        "Law or regulation": [
+          "HIPAA's requirements for safeguarding protected health information"
+        ]
+      },
+      "normalisation": {
+        "strip_diacritics": false
+      }
+    },
+    "accessible_equivalent": "Keyboard-navigable list pairing each statement with one of {Policy, Standard, Procedure, Guideline, Law or regulation}; scored identically as bucket_assignment."
+  },
+  "analog_synthesis": {
+    "taxonomy_type": "GENERATIVE",
+    "prompt": "Away from the screen, pick one security rule you personally follow — locking your screen, using a password manager, not plugging in found USB sticks. On paper, write the full stack for it yourself: the one-sentence policy it serves, a standard that makes it specific and measurable, a procedure someone could follow without asking you a question, and a guideline that would help but that you would not enforce. Four documents, your own words.",
+    "calibration_question": "Before checking: which of the four did you find hardest to write without sliding into one of the others — and did your 'policy' accidentally name a specific tool?",
+    "accessible_equivalent": "Dictate the same four documents as a recorded or transcribed spoken response, stating clearly which layer each one is."
+  },
+  "drills": [
+    {
+      "id": "isc2.cc.d1.gov.d1.cloze",
+      "type": "CLOZE",
+      "scoring_class": "B",
+      "interval_tier": "RECOGNITION",
+      "expected_duration_s": 50,
+      "pass_threshold": {
+        "min_correct": 3,
+        "item_count": 4
+      },
+      "prompt": "Complete: High-level mandatory intent from leadership is a ______. A specific mandatory requirement naming the technology is a ______. Step-by-step instructions are a ______. A recommendation you may decline is a ______.",
+      "validation_payload": {
+        "accuracy_metric": "correct_slot_ratio",
+        "accept": [
+          [
+            "policy"
+          ],
+          [
+            "standard"
+          ],
+          [
+            "procedure"
+          ],
+          [
+            "guideline"
+          ]
+        ],
+        "normalisation": {
+          "strip_diacritics": false
+        }
+      },
+      "accessible_equivalent": "The same four prompts as a screen-reader accessible select-one list drawn from {policy, standard, procedure, guideline}.",
+      "explanation": "Mandatory and vague is a policy; mandatory and specific is a standard; a sequence of actions is a procedure; optional is a guideline."
+    },
+    {
+      "id": "isc2.cc.d1.gov.d7.order",
+      "type": "ORDER_SEQUENCE",
+      "scoring_class": "B",
+      "interval_tier": "APPLICATION",
+      "expected_duration_s": 60,
+      "pass_threshold": {
+        "min_correct": 6,
+        "item_count": 6
+      },
+      "prompt": "Order these from the broadest and most binding down to the most specific internal document.",
+      "validation_payload": {
+        "accuracy_metric": "kendall_tau",
+        "correct": [
+          "Law or regulation (HIPAA, GDPR, PCI-DSS)",
+          "Policy — high-level mandatory intent",
+          "Standard — specific mandatory requirement",
+          "Procedure — exact steps to perform"
+        ]
+      },
+      "accessible_equivalent": "The four layers as a keyboard-reorderable list with 'move up' / 'move down' controls and screen-reader-announced positions; scored identically as kendall_tau.",
+      "explanation": "External law binds the organisation; policy states intent within it; standards make the policy specific; procedures make the standard performable."
+    },
+    {
+      "id": "isc2.cc.d1.gov.d30.freerecall",
+      "type": "FREE_RECALL",
+      "scoring_class": "C",
+      "interval_tier": "GENERATIVE",
+      "expected_duration_s": 165,
+      "pass_threshold": {
+        "min_correct": 5,
+        "item_count": 7
+      },
+      "prompt": "Without notes: name the four internal governance documents from broadest to most specific, with an example of each; say which one is not mandatory; name two external regulations and where they sit; and explain what \"compliance is the floor, not the ceiling\" means.",
+      "validation_payload": {
+        "accuracy_metric": "keyword_density",
+        "required_keywords": [
+          "policy",
+          "standard",
+          "procedure",
+          "guideline",
+          "mandatory",
+          "regulation",
+          "compliance"
+        ],
+        "normalisation": {
+          "strip_diacritics": false
+        }
+      },
+      "accessible_equivalent": "Spoken response transcribed via speech-to-text and scored on the same keyword set.",
+      "explanation": "The two markers of real understanding here are knowing that the guideline is the only optional layer, and being able to say why a fully compliant system can still be insecure."
+    }
+  ]
+}

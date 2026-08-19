@@ -1,0 +1,33 @@
+{
+  "$comment": "Recorded overrides to arc-item-audit's decision rule. An item flagged DEFECTIVE may be kept ONLY if the module's own reading_markdown decides the case \u2014 a 'defensible second answer' is a taught distinction, not a coin flip, when the learner was told which way it goes. Each entry must quote the resolving sentence VERBATIM from that module's reading_markdown; arc-item-audit verifies the quote is really there and fails if it is not. Every override is also a dogfood watch-list entry: if a learner who read the module still gets it wrong, the item is wrong and the override was mistaken. NOTE: the audit-report item was CUT in round 5 after three independent reviewers converged on it and every attempt to hint it misfired \u2014 a scenario that legitimately spans Canons I/II/III is the wrong instrument for a classification gate, so it now lives in analog_synthesis where wrestling the conflict is the point. Its override was retired with it.",
+  "overrides": [
+    {
+      "module": "isc2.cc.d1.cia-triad",
+      "item": "Ransomware encrypts the file server",
+      "key": "Availability",
+      "resolving_quote": "A common trap: ransomware feels like a confidentiality attack because it involves encryption. It is not.",
+      "rationale": "This is the module's central teaching trap, not an accident. The reading names the misconception and corrects it, and the gate hint warns that encryption appears on both sides. Cutting it would remove the one item the lesson exists to teach."
+    },
+    {
+      "module": "isc2.cc.d1.cia-triad",
+      "item": "Offline immutable backups",
+      "key": "IN",
+      "resolving_quote": "Availability** \u2014 the data or service is there when authorised users need it. Broken by ransomware or a denial-of-service attack. Protected by backups, redundancy and DoS defences.",
+      "rationale": "Flagged because 'immutable' is an integrity word. The reading assigns backups to availability explicitly, and the drill prompt asks which control keeps records reachable — immutability is how the backup survives to be restored, not what the control is for."
+    },
+    {
+      "module": "isc2.cc.d1.control-types",
+      "item": "Separation of duties on payment approvals",
+      "key": "IN",
+      "resolving_quote": "**Administrative** (also called *managerial*) \u2014 the rules that govern people and process: policies, procedures, security awareness training, background checks, separation of duties.",
+      "rationale": "Flagged because separation of duties is usually enforced by a technical workflow. The reading lists it by name under Administrative, which is the ISC2 classification: the control is the rule, the workflow is only its implementation."
+    },
+    {
+      "module": "isc2.cc.d1.code-of-ethics",
+      "item": "You decline to exaggerate a threat in a sales pitch to frighten a prospect into buying",
+      "key": "Canon II \u2014 act honourably, honestly, justly, responsibly and legally",
+      "resolving_quote": "do not peddle fear, uncertainty and doubt to make a sale",
+      "rationale": "Flagged as Canon II vs IV. The reading places the anti-FUD rule inside Canon II verbatim, which is also where ISC2's own canon guidance puts it."
+    }
+  ]
+}

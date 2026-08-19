@@ -1,0 +1,122 @@
+[
+  {
+    "module": "isc2.cc.d1.cia-triad",
+    "site": "gate",
+    "defect": "two-home",
+    "severity": "HIGH",
+    "item": "Ransomware encrypts the file server",
+    "buckets_in_tension": ["Availability", "Confidentiality"],
+    "why": "The item is almost certainly keyed Availability (data unreachable), but the only verb in it is 'encrypts', and a candidate who has been taught the modern double-extortion model knows ransomware operators exfiltrate before encrypting, so the loss is Confidentiality first. A third defensible reading is Integrity: the attacker has replaced every file's contents with ciphertext without authorisation. Nothing in the wording ('encrypts the file server', with no mention of downtime, outage, or inability to treat patients) forces the Availability reading, and the one word present in the item is the word most strongly associated with Confidentiality. This is the sharpest trap in the set: the better a candidate's real-world knowledge, the more likely they file it wrong.",
+    "suggested_fix": "Reword to pin the impact: 'Ransomware encrypts the file server and staff cannot open any patient records until it is restored' — or cut and replace with 'A failed disk array takes the shared drive offline for two days'."
+  },
+  {
+    "module": "isc2.cc.d1.code-of-ethics",
+    "site": "gate",
+    "defect": "two-home",
+    "severity": "HIGH",
+    "item": "You correct a status report you had already sent, once you realise it overstated your progress",
+    "buckets_in_tension": ["Canon II — act honourably, honestly, justly, responsibly and legally", "Canon III — provide diligent and competent service to principals"],
+    "why": "Canon II's objectives include 'tell the truth' and 'make all stakeholders aware of your actions on a timely basis', which is exactly a retraction of an overstated report — that is presumably the key. But a status report is by definition sent to a principal (client or employer), and Canon III's objectives include avoiding misrepresentation to principals and rendering honest service to them; the ISC2 guidance for Canon III explicitly covers not overstating work done for a principal. Both canons are squarely on point and the item gives no cue as to which frame the author wants. A candidate who reasons 'the audience is the principal, so it is Canon III' is not making an error of knowledge.",
+    "suggested_fix": "Remove the principal from the scenario so only Canon II applies: 'You publicly correct a conference talk in which you had overstated your own research results.' Otherwise cut."
+  },
+  {
+    "module": "isc2.cc.d1.code-of-ethics",
+    "site": "gate",
+    "defect": "two-home",
+    "severity": "HIGH",
+    "item": "A peer offers to sell you leaked ISC2 exam questions, and you decline and report it",
+    "buckets_in_tension": ["Canon IV — advance and protect the profession", "Canon II — act honourably, honestly, justly, responsibly and legally"],
+    "why": "Exam-integrity scenarios are conventionally keyed Canon IV ('protect the profession' — cheating devalues the credential), and reporting the peer is a Canon IV 'sponsor and support' action. But the item as written is first and foremost a candidate refusing to buy stolen, copyrighted material: declining is 'act honourably, honestly and legally', which is the literal text of Canon II. Two candidates with identical, correct knowledge of the Code will split on this depending on whether they weight the object of the act (the credential) or the character of the act (refusing a dishonest, illegal transaction).",
+    "suggested_fix": "Strip the illegality so only the profession-harm reading survives: 'You volunteer as an ISC2 exam item writer and report a study site that is republishing live exam content.' Or key it Canon IV and reword to 'to keep the certification meaningful for everyone who holds it'."
+  },
+  {
+    "module": "isc2.cc.d1.governance",
+    "site": "gate",
+    "defect": "two-home",
+    "severity": "HIGH",
+    "item": "Access to company systems is granted on the principle of least privilege",
+    "buckets_in_tension": ["Policy", "Standard"],
+    "why": "The bank's own contrast set teaches that a Policy is a broad management intent statement ('The organisation will protect the confidentiality of all customer data') and a Standard is a mandatory, specific, uniformly applied rule ('must be encrypted with AES-256', 'must run the approved hardened OS image'). The least-privilege item sits exactly on that line: it is a mandatory rule about how a specific control (access provisioning) is performed across all systems, phrased in the present indicative like the two Standard items rather than as management intent like the Policy item. Many curricula present least privilege as an access-control standard derived from a security policy. A candidate who applies the bank's own Policy/Standard discriminator consistently is led to Standard.",
+    "suggested_fix": "Reword toward intent to make it unambiguously Policy: 'The organisation is committed to limiting employee access to the minimum needed to do the job.' Or move it to Standard and add a genuine Policy item in its place."
+  },
+  {
+    "module": "isc2.cc.d1.control-types",
+    "site": "isc2.cc.d1.ctrl.d7.constructset",
+    "defect": "two-home",
+    "severity": "MEDIUM",
+    "item": "Separation of duties on payment approvals",
+    "buckets_in_tension": ["IN (Administrative)", "OUT (Technical)"],
+    "why": "Separation of duties is taught as an administrative/managerial control, so IN is presumably the key. But the prompt asks about 'safeguards on the plan' for a branch office build-out, and separation of duties on payment approvals is in practice implemented as a dual-authorisation rule configured in the payments application — i.e. a technical enforcement mechanism, exactly parallel to 'Antivirus deployed to every endpoint' which the bank keys OUT. The item does not say whether it is a written rule or a system configuration. A candidate who classifies by how the safeguard is enforced rather than by where it originates marks it OUT.",
+    "suggested_fix": "Make the artefact explicit: 'A written policy requiring separation of duties on payment approvals'."
+  },
+  {
+    "module": "isc2.cc.d1.code-of-ethics",
+    "site": "gate",
+    "defect": "two-home",
+    "severity": "MEDIUM",
+    "item": "A client pressures you to overstate their security posture in an audit report, and you refuse",
+    "buckets_in_tension": ["Canon II — act honourably, honestly, justly, responsibly and legally", "Canon I — protect society and the infrastructure"],
+    "why": "Keyed Canon II (refusing to lie). But an audit report is a document produced precisely so that third parties — regulators, customers, insurers — can rely on it, and Canon I's text covers 'necessary public trust and confidence'. A falsified assurance report is the textbook case of eroding public trust, and the ISC2 canons are explicitly ordered by priority so that a candidate is trained to ask 'does this touch the public first?' before settling on Canon II. Canon III (service to the principal) is also arguable, since refusing serves the client's real interest.",
+    "suggested_fix": "Confine the harm to the two parties: 'A client asks you to backdate an internal memo so their own board minutes look consistent, and you refuse.'"
+  },
+  {
+    "module": "isc2.cc.d1.cia-triad",
+    "site": "isc2.cc.d1.cia.d7.constructset",
+    "defect": "overlapping-buckets",
+    "severity": "MEDIUM",
+    "item": null,
+    "buckets_in_tension": ["IN (primarily Availability)", "OUT"],
+    "why": "The stem sets the success condition as 'patient records intact and reachable' — 'intact' is an Integrity word — and then restricts the selection to controls that 'primarily protect AVAILABILITY'. The stem therefore cues the exact reason a candidate would wrongly mark 'Digital signatures on lab results' IN (they keep records intact) and the exact reason they would hesitate over 'Offline immutable backups' (immutability is a write-once integrity property; its availability value is the offline copy, not the immutability). The IN and OUT sets are only disjoint if the candidate ignores half the stem.",
+    "suggested_fix": "Drop 'intact' from the stem: 'A hospital must survive a ransomware incident with patient records still reachable to clinicians. Select every control that primarily protects AVAILABILITY.'"
+  },
+  {
+    "module": "isc2.cc.d1.code-of-ethics",
+    "site": "gate",
+    "defect": "give-away",
+    "severity": "MEDIUM",
+    "item": "You tell a client their deadline is too short for a competent test rather than rushing it",
+    "buckets_in_tension": ["Canon III — provide diligent and competent service to principals", "Canon II — act honourably, honestly, justly, responsibly and legally"],
+    "why": "The item contains both discriminating words of the Canon III bucket label — 'competent' and 'client' (= principal) — so it can be sorted by string overlap with zero understanding of the Code. The sibling item 'You disclose to a client that a specialised cloud engagement is outside your current competence' has the same defect ('competence' + 'client'), so two of the eight items, and both members of the Canon III pair, are answerable by keyword. Ironically the give-away is also what rescues the item, because on the merits 'telling a client' the truth about your limits is equally Canon II 'tell the truth'.",
+    "suggested_fix": "Reword one of the pair without the label words: 'You refuse to sign off a penetration test you were given two days to run, and explain to the customer what coverage they would not be getting.'"
+  },
+  {
+    "module": "isc2.cc.d1.authn-nonrep-privacy",
+    "site": "isc2.cc.d1.anp.d7.classify",
+    "defect": "trivial",
+    "severity": "MEDIUM",
+    "item": null,
+    "buckets_in_tension": ["Something you know", "Something you have", "Something you are"],
+    "why": "All six items are the canonical textbook exemplars, and five of the six are answerable by a single embedded cue: 'memorised' PIN and 'the answer to a security question' announce knowledge, 'iris scan' and 'fingerprint' announce biometrics, 'physical smart card' announces possession. There is no item that probes the actual boundary (e.g. a certificate in the TPM, a recovery code printed on paper, a knowledge-based answer stored in a password manager, behavioural biometrics). The check passes for anyone who has skimmed the factor list once, so it distinguishes nobody. It is also redundant with the gate bank, which already uses 'a registered fingerprint' and an OTP-plus-password item.",
+    "suggested_fix": "Replace two items with boundary cases, e.g. 'A backup recovery code you printed and keep in your wallet' and 'A client certificate stored in the laptop's TPM'."
+  },
+  {
+    "module": "isc2.cc.d1.authn-nonrep-privacy",
+    "site": "gate",
+    "defect": "give-away",
+    "severity": "LOW",
+    "item": "Collecting only the personal fields the service actually needs",
+    "buckets_in_tension": ["Privacy", "Authentication"],
+    "why": "Both Privacy items ('Deleting a customer's personal data on request' and this one) are the only two items in the bank containing the token 'personal', which is the standard collocate of the Privacy bucket. A candidate can partition the bank on that one token without knowing what data minimisation is. Low severity because a wrong answer is not induced — the give-away helps rather than harms — but the item stops measuring the construct.",
+    "suggested_fix": "Reword to 'The signup form asks for date of birth only where a legal age check is required' so the Privacy judgement has to be made from the substance."
+  },
+  {
+    "module": "isc2.cc.d1.risk-lifecycle",
+    "site": "isc2.cc.d1.risk.d7.classify",
+    "defect": "give-away",
+    "severity": "LOW",
+    "item": "Contractually shift liability for data loss to the hosting provider",
+    "buckets_in_tension": ["Transfer", "Mitigate"],
+    "why": "'Shift ... to the hosting provider' is a direct paraphrase of the Transfer bucket label, so the item is sortable by synonym matching. There is a secondary convention issue: ISO 27005 and NIST call this 'sharing' rather than transference and stress that legal liability can move while operational and reputational risk cannot, so a candidate trained on those sources may hesitate. With 'Buy a cyber-insurance policy' already covering Transfer canonically, this item adds no discrimination.",
+    "suggested_fix": "Cut it, or replace with a genuine discriminator such as 'Move the payment page to a PCI-validated third-party processor so cardholder data never touches your systems' (transfer vs avoid tension is then real and worth testing)."
+  },
+  {
+    "module": "isc2.cc.d1.control-types",
+    "site": "gate",
+    "defect": "trivial",
+    "severity": "LOW",
+    "item": null,
+    "buckets_in_tension": ["Technical", "Administrative", "Physical"],
+    "why": "Two exemplars per bucket, every one of them the most-repeated example in the CC study material (locked door, fence, encryption, firewall, background check, acceptable-use policy), and each carries a self-labelling cue ('locked door', 'fence' = physical; 'policy', 'background checks' = administrative). No item touches the boundary the domain actually cares about — a badge reader (physical mechanism, technical enforcement, administrative issuance), a guard, or CCTV. It also duplicates the d7 SELECT bank, which reuses background checks verbatim in substance ('Background checks for new hires'), and full-disk encryption appears in three of the nine banks.",
+    "suggested_fix": "Swap one item per bucket for a boundary case, e.g. 'A badge reader that logs every entry to the server room' or 'A security guard who checks visitor ID at reception', and de-duplicate background checks against the d7 bank."
+  }
+]

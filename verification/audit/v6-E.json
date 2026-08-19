@@ -1,0 +1,195 @@
+[
+ {
+  "module": "isc2.cc.d1.cia-triad",
+  "site": "gate",
+  "assignment": {
+   "Ransomware encrypts the file server": "Availability",
+   "Firmware replaced with a tampered build": "Integrity",
+   "Botnet floods the public website with traffic": "Availability",
+   "Customer database exfiltrated and posted online": "Confidentiality",
+   "Payroll figures silently altered in the database": "Integrity",
+   "Attacker reads unencrypted traffic on public Wi-Fi": "Confidentiality"
+  },
+  "ambiguous": [
+   {
+    "item": "Ransomware encrypts the file server",
+    "alternative": "Confidentiality",
+    "why": "Modern ransomware usually exfiltrates before encrypting, so a student could read it as a confidentiality loss; hint 2 settles it as availability, and the prompt says 'primarily attacks'."
+   }
+  ],
+  "misleading_hints": [
+   {
+    "hint": "Ask what the victim actually lost: the ability to read it, trust in it, or access to it.",
+    "why": "In 'Customer database exfiltrated and posted online' the victim loses nothing they could previously read — exclusivity is lost, not readability. The 'what the victim lost' framing maps confidentiality onto 'ability to read it', which is closer to an availability loss and points away from the confidentiality answer."
+   }
+  ]
+ },
+ {
+  "module": "isc2.cc.d1.cia-triad",
+  "site": "isc2.cc.d1.cia.d7.constructset",
+  "assignment": {
+   "DDoS mitigation service": "IN",
+   "Digital signatures on lab results": "OUT",
+   "Full-disk encryption": "OUT",
+   "Offline immutable backups": "IN",
+   "Redundant failover servers": "IN",
+   "Role-based access control": "OUT",
+   "TLS on the web portal": "OUT",
+   "Tested restore procedure": "IN"
+  },
+  "ambiguous": [
+   {
+    "item": "Offline immutable backups",
+    "alternative": "OUT",
+    "why": "Immutability is an integrity property, so a strict reading could exclude it; but the reason a hospital keeps offline immutable backups is to restore service after ransomware, which is availability, so it stays IN."
+   }
+  ],
+  "misleading_hints": []
+ },
+ {
+  "module": "isc2.cc.d1.authn-nonrep-privacy",
+  "site": "gate",
+  "assignment": {
+   "Unlocking a workstation with a registered fingerprint": "Authentication",
+   "Collecting only the data fields the service actually needs": "Privacy",
+   "Keeping a tamper-evident audit log of who changed each record": "Non-repudiation",
+   "Requiring a password plus a one-time code from the user's phone": "Authentication",
+   "Honouring a customer's request to erase what you hold about them": "Privacy",
+   "Digitally signing an approved payment so it traces to one named employee": "Non-repudiation"
+  },
+  "ambiguous": [],
+  "misleading_hints": []
+ },
+ {
+  "module": "isc2.cc.d1.authn-nonrep-privacy",
+  "site": "isc2.cc.d1.anp.d7.classify",
+  "assignment": {
+   "The master passphrase that unlocks your password manager": "Something you know",
+   "A fingerprint the reader matches against an enrolled scan": "Something you are",
+   "An iris pattern the door camera measures against a stored template": "Something you are",
+   "A signing key that never leaves the TPM chip soldered to your laptop": "Something you have",
+   "A rotating code read from an authenticator app registered to one handset": "Something you have",
+   "The answer to the security question you chose when you opened the account": "Something you know"
+  },
+  "ambiguous": [],
+  "misleading_hints": []
+ },
+ {
+  "module": "isc2.cc.d1.control-types",
+  "site": "gate",
+  "assignment": {
+   "A locked door on the server room": "Physical",
+   "Full-disk encryption on every laptop": "Technical",
+   "A perimeter fence around the data centre": "Physical",
+   "A firewall filtering inbound traffic by rule": "Technical",
+   "Background checks run before a new hire starts": "Administrative",
+   "An acceptable-use policy signed by every employee": "Administrative"
+  },
+  "ambiguous": [],
+  "misleading_hints": []
+ },
+ {
+  "module": "isc2.cc.d1.control-types",
+  "site": "isc2.cc.d1.ctrl.d7.constructset",
+  "assignment": {
+   "A badge-operated turnstile in the lobby": "OUT",
+   "A mandatory data-classification scheme staff must apply to new documents": "IN",
+   "A safe for storing backup tapes": "OUT",
+   "A written incident response procedure": "IN",
+   "Annual security awareness training for all staff": "IN",
+   "Antivirus deployed to every endpoint": "OUT",
+   "Separation of duties on payment approvals": "IN",
+   "TLS on the customer web portal": "OUT"
+  },
+  "ambiguous": [
+   {
+    "item": "Separation of duties on payment approvals",
+    "alternative": "OUT",
+    "why": "Separation of duties is often enforced in the payment system itself, so it can look technical; ISC2 classes it as an administrative/managerial control because it is a policy-level division of responsibility, so it is IN."
+   }
+  ],
+  "misleading_hints": []
+ },
+ {
+  "module": "isc2.cc.d1.code-of-ethics",
+  "site": "gate",
+  "assignment": {
+   "You refuse to scan a network you have no written authorisation to test": "Canon II — act honourably, honestly, justly, responsibly and legally",
+   "You report a peer who is selling leaked ISC2 exam questions to candidates": "Canon IV — advance and protect the profession",
+   "You report a vulnerability you found in a city's emergency dispatch system": "Canon I — protect society and the infrastructure",
+   "You decline to exaggerate a threat in a sales pitch to frighten a prospect into buying": "Canon II — act honourably, honestly, justly, responsibly and legally",
+   "You spend an afternoon each month mentoring junior analysts with no billable work attached": "Canon IV — advance and protect the profession",
+   "You turn down a second client whose work would create a conflict of interest with your current engagement": "Canon III — provide diligent and competent service to principals",
+   "You tell a client up front that a specialised cloud engagement is beyond what you are qualified to deliver": "Canon III — provide diligent and competent service to principals",
+   "A vendor ignores your reports of a medical-device firmware flaw while patients remain at risk, and you keep pressing for a fix": "Canon I — protect society and the infrastructure"
+  },
+  "ambiguous": [
+   {
+    "item": "You tell a client up front that a specialised cloud engagement is beyond what you are qualified to deliver",
+    "alternative": "Canon II — act honourably, honestly, justly, responsibly and legally",
+    "why": "Admitting a limitation is an act of personal honesty (Canon II), but the duty exists because a principal has engaged you and the subject matter is competent service, which hint 2 assigns to Canon III."
+   },
+   {
+    "item": "You refuse to scan a network you have no written authorisation to test",
+    "alternative": "Canon I — protect society and the infrastructure",
+    "why": "Unauthorised scanning also endangers third-party infrastructure, so Canon I is arguable; the situation is primarily about your own legality with no engagement in play, which hint 2 assigns to Canon II."
+   },
+   {
+    "item": "You turn down a second client whose work would create a conflict of interest with your current engagement",
+    "alternative": "Canon II — act honourably, honestly, justly, responsibly and legally",
+    "why": "Avoiding conflicts of interest is often taught as personal integrity, but here the duty arises only from the existing engagement, so hint 2's test puts it in Canon III."
+   }
+  ],
+  "misleading_hints": []
+ },
+ {
+  "module": "isc2.cc.d1.risk-lifecycle",
+  "site": "isc2.cc.d1.risk.d7.classify",
+  "assignment": {
+   "Enforce MFA on all remote access": "Mitigate",
+   "Roll out full-disk encryption on every laptop": "Mitigate",
+   "Discontinue the legacy file-sharing service entirely": "Avoid",
+   "Buy a cyber-insurance policy covering breach response costs": "Transfer",
+   "Add a clause making the hosting provider financially responsible for data loss": "Transfer",
+   "Document the remaining chance of a laptop stolen while unlocked, and have the head of IT sign it off": "Accept"
+  },
+  "ambiguous": [],
+  "misleading_hints": []
+ },
+ {
+  "module": "isc2.cc.d1.governance",
+  "site": "gate",
+  "assignment": {
+   "Data at rest must be encrypted with AES-256": "Standard",
+   "Where practical, prefer a passphrase of four or more words": "Guideline",
+   "All production servers must run the approved hardened OS image": "Standard",
+   "HIPAA's requirements for safeguarding protected health information": "Law or regulation",
+   "The organisation will protect the confidentiality of all customer data": "Policy",
+   "Every system must have a named owner who is accountable for its security": "Policy",
+   "Step 1: open the admin console. Step 2: select Enrol device. Step 3: scan the QR code": "Procedure",
+   "To report a suspected phishing email, click Report, then forward it to the security inbox": "Procedure"
+  },
+  "ambiguous": [
+   {
+    "item": "Every system must have a named owner who is accountable for its security",
+    "alternative": "Standard",
+    "why": "It is mandatory and uniform, which the hint's first test can push toward Standard; it names no technology and states an organisation-wide accountability intent, which is policy-level."
+   },
+   {
+    "item": "To report a suspected phishing email, click Report, then forward it to the security inbox",
+    "alternative": "Guideline",
+    "why": "It is phrased as advice rather than a mandate, so hint 2's 'could you decline to follow it' test reads as guideline; the content is an ordered sequence of concrete steps, which is a procedure."
+   }
+  ],
+  "misleading_hints": [
+   {
+    "hint": "Anything you could decline to follow without breaking a rule is a guideline, however sensible it sounds.",
+    "why": "Applied to 'To report a suspected phishing email, click Report, then forward it to the security inbox' it points to Guideline, because the sentence carries no 'must'. The item is a step sequence — a procedure — so the hint points away from the correct bucket."
+   },
+   {
+    "hint": "Ask two questions: is it mandatory, and does it name specific technology or specific steps?",
+    "why": "The mandatory/specific test mis-sorts the phishing-reporting item (specific steps but not mandatory) and pushes 'Every system must have a named owner who is accountable for its security' toward Standard, since it is mandatory; it needs the extra test of whether the statement sets intent or sets a uniform technical requirement."
+   }
+  ]
+ }
+]

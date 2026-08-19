@@ -1,0 +1,221 @@
+{
+ "answers": [
+  {
+   "module": "isc2.cc.d1.cia-triad",
+   "site": "gate",
+   "assignment": {
+    "Ransomware encrypts the file server": "Availability",
+    "Firmware replaced with a tampered build": "Integrity",
+    "Botnet floods the public website with traffic": "Availability",
+    "Customer database exfiltrated and posted online": "Confidentiality",
+    "Payroll figures silently altered in the database": "Integrity",
+    "Attacker reads unencrypted traffic on public Wi-Fi": "Confidentiality"
+   }
+  },
+  {
+   "module": "isc2.cc.d1.cia-triad",
+   "site": "isc2.cc.d1.cia.d7.constructset",
+   "assignment": {
+    "DDoS mitigation service": "IN",
+    "Digital signatures on lab results": "OUT",
+    "Full-disk encryption": "OUT",
+    "Offline immutable backups": "IN",
+    "Redundant failover servers": "IN",
+    "Role-based access control": "OUT",
+    "TLS on the web portal": "OUT",
+    "Tested restore procedure": "IN"
+   }
+  },
+  {
+   "module": "isc2.cc.d1.authn-nonrep-privacy",
+   "site": "gate",
+   "assignment": {
+    "Unlocking a workstation with a registered fingerprint": "Authentication",
+    "Collecting only the data fields the service actually needs": "Privacy",
+    "Keeping a tamper-evident audit log of who changed each record": "Non-repudiation",
+    "Requiring a password plus a one-time code from the user's phone": "Authentication",
+    "Honouring a customer's request to erase what you hold about them": "Privacy",
+    "Digitally signing an approved payment so it traces to one named employee": "Non-repudiation"
+   }
+  },
+  {
+   "module": "isc2.cc.d1.authn-nonrep-privacy",
+   "site": "isc2.cc.d1.anp.d7.classify",
+   "assignment": {
+    "The master passphrase that unlocks your password manager": "Something you know",
+    "A fingerprint the reader matches against an enrolled scan": "Something you are",
+    "An iris pattern the door camera measures against a stored template": "Something you are",
+    "A signing key that never leaves the TPM chip soldered to your laptop": "Something you have",
+    "A rotating code read from an authenticator app registered to one handset": "Something you have",
+    "The answer to the security question you chose when you opened the account": "Something you know"
+   }
+  },
+  {
+   "module": "isc2.cc.d1.control-types",
+   "site": "gate",
+   "assignment": {
+    "A locked door on the server room": "Physical",
+    "Full-disk encryption on every laptop": "Technical",
+    "A perimeter fence around the data centre": "Physical",
+    "A firewall filtering inbound traffic by rule": "Technical",
+    "Background checks run before a new hire starts": "Administrative",
+    "An acceptable-use policy signed by every employee": "Administrative"
+   }
+  },
+  {
+   "module": "isc2.cc.d1.control-types",
+   "site": "isc2.cc.d1.ctrl.d7.constructset",
+   "assignment": {
+    "A badge-operated turnstile in the lobby": "OUT",
+    "A safe for storing backup tapes": "OUT",
+    "A written incident response procedure": "IN",
+    "Annual security awareness training for all staff": "IN",
+    "Antivirus deployed to every endpoint": "OUT",
+    "Background checks for new hires": "IN",
+    "Separation of duties on payment approvals": "IN",
+    "TLS on the customer web portal": "OUT"
+   }
+  },
+  {
+   "module": "isc2.cc.d1.code-of-ethics",
+   "site": "gate",
+   "assignment": {
+    "You report a peer who is selling leaked ISC2 exam questions to candidates": "Canon IV — advance and protect the profession",
+    "You report a vulnerability you found in a city's emergency dispatch system": "Canon I — protect society and the infrastructure",
+    "You decline to exaggerate a threat in a sales pitch to frighten a prospect into buying": "Canon II — act honourably, honestly, justly, responsibly and legally",
+    "You spend an afternoon each month mentoring junior analysts with no billable work attached": "Canon IV — advance and protect the profession",
+    "A client pressures you to overstate their security posture in an audit report, and you refuse": "Canon II — act honourably, honestly, justly, responsibly and legally",
+    "You turn down a second client whose work would create a conflict of interest with your current engagement": "Canon III — provide diligent and competent service to principals",
+    "You tell a client up front that a specialised cloud engagement is beyond what you are qualified to deliver": "Canon III — provide diligent and competent service to principals",
+    "A vendor ignores your reports of a medical-device firmware flaw while patients remain at risk, and you keep pressing for a fix": "Canon I — protect society and the infrastructure"
+   }
+  },
+  {
+   "module": "isc2.cc.d1.risk-lifecycle",
+   "site": "isc2.cc.d1.risk.d7.classify",
+   "assignment": {
+    "Enforce MFA on all remote access": "Mitigate",
+    "Roll out full-disk encryption on every laptop": "Mitigate",
+    "Discontinue the legacy file-sharing service entirely": "Avoid",
+    "Buy a cyber-insurance policy covering breach response costs": "Transfer",
+    "Add a clause making the hosting provider financially responsible for data loss": "Transfer",
+    "Document the remaining chance of a laptop stolen while unlocked, and have the head of IT sign it off": "Accept"
+   }
+  },
+  {
+   "module": "isc2.cc.d1.governance",
+   "site": "gate",
+   "assignment": {
+    "Data at rest must be encrypted with AES-256": "Standard",
+    "Where practical, prefer a passphrase of four or more words": "Guideline",
+    "All production servers must run the approved hardened OS image": "Standard",
+    "HIPAA's requirements for safeguarding protected health information": "Law or regulation",
+    "The organisation will protect the confidentiality of all customer data": "Policy",
+    "Safeguarding client information is a responsibility of every employee, at every level": "Policy",
+    "Step 1: open the admin console. Step 2: select Enrol device. Step 3: scan the QR code": "Procedure",
+    "To report a suspected phishing email, click Report, then forward it to the security inbox": "Procedure"
+   }
+  }
+ ],
+ "findings": [
+  {
+   "module": "isc2.cc.d1.code-of-ethics",
+   "site": "gate",
+   "item": "You tell a client up front that a specialised cloud engagement is beyond what you are qualified to deliver",
+   "defect": "two-home / prompt-hint mis-resolution",
+   "severity": "HIGH",
+   "why": "ISC2 Canon III guidance says 'render only those services for which they are fully competent and qualified' (client-facing competence), but Canon II guidance says 'take care to be truthful, objective, cautious, and within your competence'. The item is literally a truthful disclosure to a client about competence, so it sits squarely in both. The bank's hint 2 ('If the action is about your own truthfulness or legality, it is Canon II - even when a client is involved') explicitly instructs the learner to send it to Canon II, while the prompt's own gloss of Canon III ('what you owe the client who hired you') sends it to Canon III. A candidate who reads and trusts the hint is graded wrong for following the instructions.",
+   "suggested_fix": "Either re-word to remove the disclosure act ('You refuse a specialised cloud engagement because it is beyond your qualifications') so it tests competence rather than truthfulness, or narrow hint 2 to 'if the action is about your own honesty toward third parties or the law, it is Canon II; competence owed to a paying principal is Canon III'."
+  },
+  {
+   "module": "isc2.cc.d1.authn-nonrep-privacy",
+   "site": "isc2.cc.d1.anp.d7.classify",
+   "item": "A rotating code read from an authenticator app registered to one handset",
+   "defect": "prompt heuristic contradicts the key (two-home)",
+   "severity": "HIGH",
+   "why": "The prompt supplies the decision rule 'Ask what an attacker would have to obtain to defeat it: a secret, an object, or your body.' The thing being classified is 'A rotating code' - a phishable string. Under the stated rule the attacker obtains a secret, i.e. 'Something you know'; the canonical key is 'Something you have'. Contrast the TPM item in the same bank, where 'never leaves the TPM chip soldered to your laptop' makes the object the only obtainable thing - the rule works there and fails here, so the more carefully a candidate applies the prompt, the more likely they miss. Real-world OTP phishing makes the wrong reasoning feel correct.",
+   "suggested_fix": "Classify the step, not the string: 'Reading a code from an authenticator app that was seeded onto one specific handset' plus a rule clause such as 'ask what the factor is anchored to, not what can be intercepted in transit'."
+  },
+  {
+   "module": "isc2.cc.d1.authn-nonrep-privacy",
+   "site": "gate",
+   "item": null,
+   "defect": "hint asserts a distractor structure that does not exist",
+   "severity": "MEDIUM",
+   "why": "Hint 2 states 'Logging appears in two of these' and then contrasts a log that proves who acted with one that holds less data. Only one item in the bank involves logging ('Keeping a tamper-evident audit log...'). A learner takes the hint as a warning that one of the two log items is a Privacy trap, hunts for the second, and the nearest candidate is 'Collecting only the data fields the service actually needs' - or they re-home the audit log to Privacy to satisfy the hint. The hint manufactures doubt about the one item that was unambiguous.",
+   "suggested_fix": "Either add a genuine second logging item (e.g. 'Truncating IP addresses before they are written to the web log' -> Privacy) or rewrite the hint as 'A log can serve either property - ask whether it exists to prove who acted or to hold less about them.'"
+  },
+  {
+   "module": "isc2.cc.d1.code-of-ethics",
+   "site": "gate",
+   "item": "You turn down a second client whose work would create a conflict of interest with your current engagement",
+   "defect": "two-home (Canon II vs Canon III)",
+   "severity": "MEDIUM",
+   "why": "ISC2 places 'avoid conflicts of interest or the appearance thereof' under Canon III, but the prompt glosses Canon III as 'what you owe the client who hired you' and Canon II as 'your own honesty and legality'. Declining paid work to stay clean reads to many candidates as personal integrity (II), and the revised prompt deliberately removed the old tie-breaker rule without replacing it, so nothing in front of the learner adjudicates.",
+   "suggested_fix": "Anchor the duty in the item: 'You turn down a second client because the engagement would compromise the diligence you owe your current client.'"
+  },
+  {
+   "module": "isc2.cc.d1.code-of-ethics",
+   "site": "gate",
+   "item": null,
+   "defect": "overlapping buckets left unadjudicated by the revised prompt",
+   "severity": "MEDIUM",
+   "why": "The revision correctly deletes the invented 'most specific canon' rule and correctly states that ranking settles conflicts of duty, not classification - but that leaves the bank with no stated tie-breaker at all, while ISC2's own canon guidance duplicates subject matter across canons (competence in both II and III; reporting wrongdoing in both II and IV; legality in both I and II). Three of the eight items (competence disclosure, conflict of interest, refusing to overstate an audit report) are affected, and the burden of adjudication has been pushed entirely onto hint 2, which over-fires.",
+   "suggested_fix": "Add one sentence to the prompt naming the classification test explicitly - 'ask whose interest the situation is chiefly about, not which canon the conduct could also satisfy' - and make every item name that interest unambiguously."
+  },
+  {
+   "module": "isc2.cc.d1.control-types",
+   "site": "isc2.cc.d1.ctrl.d7.constructset",
+   "item": "Separation of duties on payment approvals",
+   "defect": "two-home (administrative vs technical)",
+   "severity": "MEDIUM",
+   "why": "Separation of duties on payment approvals is administrative as a control decision but is almost always implemented as an enforced workflow in the payment system, and the prompt frames the list as 'safeguards on the plan' for a physical branch office without saying whether to classify the intent or the implementation. A candidate who applied the sibling gate's rule ('ask what actually does the enforcing: a machine, a rule that people follow') will reason 'the ERP enforces it' and leave it OUT.",
+   "suggested_fix": "Word it as the management act: 'A rule that no single employee may both raise and approve a payment', or add 'classify by what the safeguard is, not by the system it happens to be enforced in' to the prompt."
+  },
+  {
+   "module": "isc2.cc.d1.cia-triad",
+   "site": "gate",
+   "item": null,
+   "defect": "give-away hint",
+   "severity": "LOW",
+   "why": "Hint 2 ('Encryption appears on both sides - as a control protecting confidentiality, and as a weapon against availability') hands the answer to the only item in the bank with any pull, 'Ransomware encrypts the file server'. The remaining five are one-word matches (flood, exfiltrated, altered, tampered, reads).",
+   "suggested_fix": "Move that hint behind a first wrong attempt, or replace the ransomware item with one where confidentiality and availability genuinely compete (e.g. double-extortion with a stated primary loss)."
+  },
+  {
+   "module": "isc2.cc.d1.authn-nonrep-privacy",
+   "site": "isc2.cc.d1.anp.d7.classify",
+   "item": "A signing key that never leaves the TPM chip soldered to your laptop",
+   "defect": "give-away",
+   "severity": "LOW",
+   "why": "'never leaves the TPM chip soldered to your laptop' states the possession property outright, so the item is answerable without knowing anything about factor categories. The same is true of 'matches against an enrolled scan' and 'measures against a stored template', which are two near-duplicate biometric items.",
+   "suggested_fix": "Drop one biometric item and trim the possession tell: 'A signing key held in the laptop's TPM.'"
+  },
+  {
+   "module": "isc2.cc.d1.authn-nonrep-privacy",
+   "site": "isc2.cc.d1.anp.d7.classify",
+   "item": "The master passphrase that unlocks your password manager",
+   "defect": "trivial",
+   "severity": "LOW",
+   "why": "The rewrite added scenario clothing to the descriptive clauses but the two knowledge items ('The master passphrase...', 'The answer to the security question...') are still pure vocabulary matches - passphrase and answer are both self-labelling secrets. The bank tests recognition of the word, not the factor distinction.",
+   "suggested_fix": "Replace one with a contested case, e.g. a knowledge-based push approval or a memorised recovery code, and force the learner to distinguish it from a stored one."
+  },
+  {
+   "module": "isc2.cc.d1.control-types",
+   "site": "gate",
+   "item": null,
+   "defect": "trivial / cross-site duplication",
+   "severity": "LOW",
+   "why": "All six gate items are the canonical textbook exemplars (locked door, fence, firewall, FDE, background checks, AUP), and 'Background checks run before a new hire starts' reappears near-verbatim in the same module's drill as 'Background checks for new hires'. The drill therefore re-tests an item the learner has already been keyed on rather than probing new ground.",
+   "suggested_fix": "Swap one duplicate for a control whose type is genuinely arguable at this level (e.g. a mantrap with a badge reader, or a signed vendor NDA)."
+  },
+  {
+   "module": "isc2.cc.d1.cia-triad",
+   "site": "isc2.cc.d1.cia.d7.constructset",
+   "item": "Tested restore procedure",
+   "defect": "redundant option pair",
+   "severity": "LOW",
+   "why": "The revision to a threat-neutral stem works - 'through any disruption - outage, attack or accident' no longer cues backups specifically, and every OUT option now fails on a clean 'primarily' test. What survives is that 'Tested restore procedure' and 'Offline immutable backups' are the same fact scored twice, so the item count overstates the discrimination the SELECT actually provides.",
+   "suggested_fix": "Replace one with a near-miss such as 'Nightly backups that have never been restored from' to make recoverability, not backup existence, the thing being tested."
+  }
+ ]
+}

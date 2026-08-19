@@ -1,0 +1,19 @@
+{
+  "name": "aegis",
+  "version": "1.6.0",
+  "private": true,
+  "description": "AEGIS — ISC2-aligned cybersecurity learning system. Static PWA; no build step.",
+  "type": "module",
+  "scripts": {
+    "test": "node verification/verify-version.mjs && node verification/arc-module-probe.mjs --expect-root isc2.cc.d1.cia-triad --policy REVIEW && node verification/verify-module-seam.mjs && node verification/verify-arc-loop.mjs",
+    "test:content": "node verification/arc-module-probe.mjs --expect-root isc2.cc.d1.cia-triad --policy REVIEW",
+    "test:seam": "node verification/verify-module-seam.mjs",
+    "test:loop": "node verification/verify-arc-loop.mjs",
+    "test:rollback": "node verification/verify-rollback.mjs",
+    "blind": "node verification/arc-module-probe.mjs --blind /tmp/blind-task.json",
+    "serve": "python3 -m http.server 8080"
+  },
+  "devDependencies": {
+    "playwright": "^1.47.0"
+  }
+}

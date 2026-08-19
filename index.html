@@ -501,6 +501,38 @@ li.hidden{display:none}
 .tq-def{display:block;margin-top:8px;color:var(--text);font-size:15px;font-weight:400;font-family:var(--body);line-height:1.5}
 .lt-chip.mastered{border-color:rgba(91,214,160,.5);color:var(--green)}
 .gi-check{color:var(--green);font-family:var(--mono);font-size:12px;margin-left:6px}
+/* ARC beta */
+.arc-phase{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);margin:2px 0 12px}
+.arc-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:20px;padding-top:14px;border-top:1px solid var(--line-soft)}
+.arc-items{display:flex;flex-direction:column;gap:8px;margin:14px 0}
+.arc-item{display:flex;align-items:center;gap:12px;background:var(--ink-2);border:1px solid var(--line-soft);border-radius:10px;padding:11px 13px}
+.arc-item .ai-txt{flex:1;font-size:13.5px;line-height:1.45}
+.arc-check{cursor:pointer}
+.arc-check input{width:18px;height:18px;flex:none;accent-color:var(--gold)}
+.arc-sel{background:#070A14;border:1px solid var(--line);color:var(--text);border-radius:8px;padding:8px 10px;font-family:var(--body);font-size:12.5px;flex:none;max-width:46%}
+.arc-slots{display:flex;flex-direction:column;gap:10px;margin:14px 0}
+.arc-slot{display:flex;align-items:center;gap:12px}
+.arc-slot span{font-family:var(--mono);font-size:11px;color:var(--muted-2);width:64px;flex:none}
+.arc-in{flex:1;background:#070A14;border:1px solid var(--line);color:var(--text);border-radius:9px;padding:10px 12px;font-size:14px}
+.arc-order{list-style:none;counter-reset:o;padding:0;margin:14px 0;display:flex;flex-direction:column;gap:8px}
+.arc-order li{counter-increment:o;display:flex;align-items:center;gap:12px;background:var(--ink-2);border:1px solid var(--line-soft);border-radius:10px;padding:11px 13px}
+.arc-order li::before{content:counter(o);font-family:var(--mono);font-size:11px;color:var(--gold);border:1px solid var(--line);width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex:none}
+.arc-order li span:first-of-type{flex:1;font-size:13.5px}
+.arc-mv{display:flex;gap:5px;flex:none}
+.arc-free{min-height:130px;margin:14px 0}
+.arc-hints{margin:14px 0}
+.arc-hint{background:rgba(127,162,224,.07);border-left:3px solid var(--steel);border-radius:0 9px 9px 0;padding:10px 13px;font-size:13px;color:var(--muted);margin-top:8px}
+.arc-conf{background:rgba(232,176,75,.06);border:1px solid rgba(232,176,75,.25);border-radius:11px;padding:14px 16px;margin:16px 0}
+.arc-conf-q{font-size:13.5px;margin-bottom:10px}
+.arc-conf-row{display:flex;gap:6px;flex-wrap:wrap}
+.arc-conf-row .btn.on{background:rgba(232,176,75,.16);color:var(--gold);border-color:var(--gold)}
+.arc-alert{border-radius:11px;padding:13px 15px;margin-top:12px;font-size:13.5px;line-height:1.55}
+.arc-alert.over{background:rgba(240,88,107,.08);border:1px solid rgba(240,88,107,.35)}
+.arc-alert.under{background:rgba(91,214,160,.08);border:1px solid rgba(91,214,160,.35)}
+.arc-count{font-family:var(--disp);font-weight:700;font-size:38px;color:var(--gold);margin:10px 0}
+.arc-btn{flex:none;background:rgba(232,176,75,.1);border:1px solid rgba(232,176,75,.4);color:var(--gold);font-family:var(--mono);font-size:10px;letter-spacing:.05em;padding:4px 9px;border-radius:7px;cursor:pointer;margin-left:8px;margin-top:1px;white-space:nowrap}
+.arc-btn:hover{background:rgba(232,176,75,.2)}
+.arc-note{background:rgba(240,88,107,.06);border:1px solid rgba(240,88,107,.25);border-radius:10px;padding:11px 14px;font-size:12.5px;color:var(--muted);margin-top:12px}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -526,7 +558,7 @@ li.hidden{display:none}
         </svg>
         <div class="wordmark">
           <span class="name">AE<b>GIS</b></span>
-          <span class="sub">ISC2-Aligned · v1.5.0</span>
+          <span class="sub">ISC2-Aligned · v1.6.0</span>
         </div>
       </div>
       <div class="top-spacer"></div>
@@ -753,7 +785,7 @@ li.hidden{display:none}
     <div>
       <span class="eyebrow">ISC2 Code of Ethics · a condition of certification</span>
       <h2>The four canons</h2>
-      <p class="lead">Every ISC2 credential — CC through CISSP — requires you to commit to this code. The canons are listed in priority order: when two conflict, the higher number wins. Society before self, integrity before client.</p>
+      <p class="lead">Every ISC2 credential — CC through CISSP — requires you to commit to this code. The canons are listed in order of importance: when two conflict, the lower-numbered one wins. Society before self, integrity before client.</p>
     </div>
   </div>
   <div class="preamble">
@@ -833,6 +865,18 @@ li.hidden{display:none}
     </div>
   </div>
 
+  <div class="card" style="margin-top:16px" id="arcSettings">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px">
+      <div style="max-width:560px">
+        <h4 style="font-size:14px">ARC learning mode <span class="pill gold">beta</span></h4>
+        <p class="muted" style="font-size:12.5px;margin:6px 0 0">Domain 1 only. Replaces the &ldquo;mark complete&rdquo; click with a validated gate: you read, you prove it, you wait a day, then you retrieve it on a schedule. Your existing progress is untouched either way, and reading stays open whether or not you clear a gate.</p>
+        <div class="mono" id="arcStatus" style="font-size:11px;color:var(--muted-2);margin-top:9px"></div>
+      </div>
+      <button class="btn ghost sm" id="arcToggle">Enable</button>
+    </div>
+    <div id="arcModuleList" style="margin-top:14px"></div>
+  </div>
+
   <div class="card" style="margin-top:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
     <div><h4 style="font-size:14px">Reset everything</h4><p class="muted" style="font-size:12.5px;margin:5px 0 0">Wipes all saved progress on this device. Cannot be undone.</p></div>
     <button class="btn ghost sm" id="resetBtn" style="border-color:var(--alert);color:var(--alert)">Reset</button>
@@ -877,6 +921,17 @@ li.hidden{display:none}
   </div>
 </div>
 
+<div class="lesson-overlay" id="arcOverlay">
+  <div class="lesson-modal">
+    <button class="lesson-close" id="arcClose" aria-label="Close">✕</button>
+    <div class="lesson-content" id="arcContent"></div>
+    <div class="lesson-foot">
+      <span>ARC learning mode · beta. Reading and the glossary always stay open.</span>
+      <button class="btn ghost" id="arcCloseFoot">Close</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -892,8 +947,19 @@ const KEY='aegis.state.v1';
 /* ============================================================
    VERSION + CHANGELOG (drives the "What's new" screen)
    ============================================================ */
-const APP_VERSION='1.5.0';
+const APP_VERSION='1.6.0';
 const CHANGELOG=[
+ {v:'1.6.0',date:'Aug 2026',items:[
+   '<b>ARC learning mode (beta)</b> — Domain 1 only, off by default, switch it on under <b>Progress</b>. It replaces the &ldquo;Got it &mdash; mark complete&rdquo; click with a five-phase loop: a question before you read, the reading, a <b>gate you have to actually pass</b>, a paper exercise away from the screen, then spaced retrieval scheduled by FSRS-6.',
+   '<b>The gate is the point.</b> Marking something complete never meant you knew it. Now an objective only counts when you sort, order or recall it correctly against a threshold the module itself declares &mdash; and the engine checks that independently of anything the screen displays.',
+   '<b>Confidence before the answer.</b> Every gate asks how sure you are <i>before</i> revealing whether you were right. When you are certain and wrong, it says so &mdash; that gap is the thing re-reading hides from you.',
+   'A <b>24-hour wait</b> after the paper exercise before the first review. It cannot be skipped: that delay is what makes this spaced retrieval rather than a same-day repeat.',
+   'Content now lives in <span class="mono">modules/*.json</span>, cached for offline use after your first visit. With the beta off, nothing about the classic app changes &mdash; not the lessons, not the quizzes, not even the network requests it makes.'
+ ]},
+ {v:'1.5.1',date:'Aug 2026',items:[
+   '<b>Correction — Code of Ethics.</b> The Ethics tab said that when two canons conflict, the <i>higher</i>-numbered one wins. That was wrong, and it contradicted the lesson, the Ethics Tribunal, and its own next sentence. The canons are listed in order of importance and the <b>lower</b>-numbered canon takes precedence — society (I) before your client (III).',
+   'Clarified what the source actually says: ISC2 publishes four <i>mandatory</i> canons in a fixed order and states they are not equal, but the published Code does not spell out a numbered precedence rule. Treat &ldquo;lower number wins&rdquo; as the resolution method ISC2 expects and the exam tests — not as a line you can quote from the Code.'
+ ]},
  {v:'1.5.0',date:'Aug 2026',items:[
    'The review queue now schedules with <b>FSRS-6</b>, the modern spaced-repetition algorithm, instead of a fixed 1/3/7/16/35-day ladder. Each card tracks its own <b>stability</b> and <b>difficulty</b>, so intervals adapt to how <i>you</i> actually remember it.',
    '<b>Fixed a real bug:</b> the old queue only ever moved forward — a card you completely blanked on still advanced to a longer interval. Reviews are now graded <b>Again · Hard · Good · Easy</b>, and <b>Again</b> genuinely shortens the next interval and records a lapse.',
@@ -943,7 +1009,8 @@ const today=()=>new Date().toISOString().slice(0,10);
 function loadState(){
   const s=Store.get(KEY)||{};
   return Object.assign({objectives:{},drills:{},quizBest:{},domQuiz:{},streak:{count:0,last:null},
-    ethicsAccepted:false,notes:'',srs:[],weekStart:today(),weekCount:0,lastSeenVersion:null,termsMastered:{}},s);
+    ethicsAccepted:false,notes:'',srs:[],weekStart:today(),weekCount:0,lastSeenVersion:null,termsMastered:{},
+    arc:{enabled:false,fsm:{},cards:{},log:[]}},s);
 }
 let state=loadState();
 function save(){Store.set(KEY,state);}
@@ -1097,6 +1164,311 @@ function enqueueCard(front,back,key){
   return card;
 }
 
+/* ============================================================
+   ARC CORPUS LOADER  (Phase 1 · Decision 2 — fetched modules)
+   ------------------------------------------------------------
+   Content lives in modules/*.json and the engine in arc-core.mjs, both
+   service-worker cached. This is the one genuinely new failure surface in
+   Phase 1, so degradation is a first-class path, not a catch block:
+
+     - nothing is fetched at all unless ARC mode is switched on, so with the
+       toggle off the classic app makes exactly the requests it always did;
+     - a partial corpus is usable — modules whose prerequisites did not load
+       are dropped, not the whole domain;
+     - any failure leaves `ARC.status` set to a reason the UI can show, and
+       the classic lesson flow continues untouched.
+   ============================================================ */
+const ARC = {
+  status: 'idle',      // idle | loading | ready | degraded | unavailable
+  reason: null,        // human-readable, shown in Settings
+  engine: null,        // arc-core.mjs namespace
+  modules: [],         // loaded, prerequisite-resolvable modules
+  dropped: [],         // {id, why} for anything excluded
+  manifest: null,
+};
+
+async function fetchJSON(url) {
+  const res = await fetch(url, { cache: 'no-cache' });
+  if (!res.ok) throw new Error(`${res.status} ${res.statusText} for ${url}`);
+  return res.json();
+}
+
+/* A module is only usable if the engine can actually run it. Validating here
+   rather than trusting the file means a corrupt or truncated module is dropped
+   with a reason instead of throwing mid-lesson. */
+function arcUsable(m) {
+  if (!m || typeof m !== 'object') return 'not an object';
+  for (const k of ['id', 'profile', 'content', 'gate', 'analog_synthesis', 'drills'])
+    if (!(k in m)) return `missing ${k}`;
+  if (!m.content.reading_markdown) return 'missing reading';
+  if (!m.gate.validation_payload?.accuracy_metric) return 'gate has no accuracy_metric';
+  if (!Array.isArray(m.drills) || !m.drills.length) return 'no drills';
+  return null;
+}
+
+async function loadArcCorpus() {
+  if (ARC.status === 'ready' || ARC.status === 'loading') return ARC;
+  ARC.status = 'loading'; ARC.reason = null; ARC.dropped = [];
+  try {
+    ARC.engine = await import('./arc-core.mjs');
+  } catch (e) {
+    ARC.status = 'unavailable';
+    ARC.reason = 'The learning engine could not be loaded. Classic lessons are unaffected.';
+    return ARC;
+  }
+  let manifest;
+  try {
+    manifest = await fetchJSON('./modules/index.json');
+  } catch (e) {
+    ARC.status = 'unavailable';
+    ARC.reason = navigator.onLine
+      ? 'The module list could not be fetched. Classic lessons are unaffected.'
+      : 'Offline, and the modules have not been downloaded yet. Open this once while online.';
+    return ARC;
+  }
+  ARC.manifest = manifest;
+  const entries = (manifest.modules || []).map(m => (typeof m === 'string' ? { file: m } : m));
+
+  // Settled, not all — one bad module must not take down the domain.
+  const results = await Promise.allSettled(entries.map(e => fetchJSON('./modules/' + e.file)));
+  const loaded = [];
+  results.forEach((r, i) => {
+    if (r.status !== 'fulfilled') { ARC.dropped.push({ id: entries[i].file, why: 'could not be fetched' }); return; }
+    const why = arcUsable(r.value);
+    if (why) { ARC.dropped.push({ id: entries[i].file, why }); return; }
+    loaded.push(r.value);
+  });
+
+  // Drop anything whose prerequisites did not survive, transitively — an
+  // unreachable module would strand the learner at a gate they cannot open.
+  const byId = new Map(loaded.map(m => [m.id, m]));
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const m of [...byId.values()])
+      for (const p of m.prerequisites || [])
+        if (!byId.has(p)) { byId.delete(m.id); ARC.dropped.push({ id: m.id, why: `prerequisite ${p} unavailable` }); changed = true; break; }
+  }
+  ARC.modules = [...byId.values()];
+
+  if (!ARC.modules.length) {
+    ARC.status = 'unavailable';
+    ARC.reason = 'No usable modules were found. Classic lessons are unaffected.';
+  } else if (ARC.dropped.length) {
+    ARC.status = 'degraded';
+    ARC.reason = `${ARC.modules.length} of ${entries.length} modules loaded. ${ARC.dropped.length} unavailable.`;
+  } else {
+    ARC.status = 'ready';
+    ARC.reason = `${ARC.modules.length} modules loaded.`;
+  }
+  return ARC;
+}
+
+/* ============================================================
+   ARC RUNTIME — the 5-phase loop
+   ------------------------------------------------------------
+   The FSM, scoring and passage predicate are NOT reimplemented here. Every
+   transition goes through arc-core.mjs `step()`, every score through
+   `scoreAccuracy()`, and passage through `isPassed()` against the module's
+   own pass_threshold. This file only builds the payloads and renders.
+
+   Three properties this code exists to guarantee:
+     1. The gate is the assertion. There is no completion click. Mastery is
+        reachable only through isPassed() returning true.
+     2. consolidation_hours is enforced by the engine's clock, so a module
+        cannot be rushed to MASTERED in one sitting.
+     3. Confidence is captured BEFORE feedback. Recording it afterwards is
+        refused by arcSetConfidence(), not merely discouraged by the UI order —
+        calibration measured post-hoc is calibration theatre.
+   ============================================================ */
+const ARC_UI = {
+  moduleId: null, module: null, draft: null, confidence: null,
+  confidenceAt: null, feedbackShown: false, result: null,
+  hintsUsed: 0, startedAt: 0, revealed: false,
+};
+
+function arcCfg() { return (state.arc = state.arc || { enabled: false, fsm: {}, cards: {}, log: [] }); }
+function arcFsm(id) {
+  const a = arcCfg();
+  if (!a.fsm[id]) a.fsm[id] = ARC.engine.initialState('LOCKED');
+  return a.fsm[id];
+}
+function arcModule(id) { return ARC.modules.find(m => m.id === id); }
+
+/* Every transition funnels through here so the log and the engine cannot drift. */
+function arcStep(id, event) {
+  const m = arcModule(id);
+  const before = arcFsm(id);
+  const after = ARC.engine.step(before, event, { profile: m.profile, now: Date.now() });
+  arcCfg().fsm[id] = after;
+  save();
+  return after;
+}
+
+/* q -> FSRS grade. ARC §10.2 boundaries, identical to the engine's qToRating. */
+function arcQToGrade(q) { return q < 3 ? 1 : q < 4 ? 2 : q < 4.5 ? 3 : 4; }
+
+/* ---- payload builders: the client contract the probe already exercises ---- */
+function arcBuildSubmission(spec, draft) {
+  const vp = spec.validation_payload, metric = vp.accuracy_metric;
+  if (metric === 'bucket_assignment') return { assignment: draft || {}, buckets: vp.buckets, normalisation: vp.normalisation };
+  if (metric === 'correct_slot_ratio') return { response: draft || [], accept: vp.accept, normalisation: vp.normalisation };
+  if (metric === 'set_f1') return { selected: draft || [], correct_set: vp.correct_set, normalisation: vp.normalisation };
+  if (metric === 'kendall_tau') return { response: draft || [], correct: vp.correct };
+  if (metric === 'keyword_density') return { response: draft || '', required_keywords: vp.required_keywords, normalisation: vp.normalisation };
+  throw new Error('unsupported accuracy_metric: ' + metric);
+}
+
+/* ---- the widget → engine boundary ----------------------------------------
+   scoreAccuracy() is strict by design: kendall_tau THROWS unless the response
+   is a true permutation of `correct`, and the other metrics quietly score
+   garbage if handed the wrong shape. Neither is acceptable at a UI boundary —
+   a learner should never see a stack trace, and a malformed answer must fail
+   CLOSED (refused, nothing recorded) rather than score as though it were real.
+   So the payload is checked here, before the engine ever sees it. */
+function arcValidateSubmission(spec, sub) {
+  const vp = spec.validation_payload, metric = vp.accuracy_metric;
+  if (metric === 'kendall_tau') {
+    const want = vp.correct, got = sub.response;
+    if (!Array.isArray(got)) return 'The ordering is missing.';
+    if (got.length !== want.length) return `Order all ${want.length} steps before submitting.`;
+    if (new Set(got).size !== got.length) return 'The same step appears twice.';
+    const known = new Set(want);
+    if (!got.every(x => known.has(x))) return 'That ordering contains an item that is not part of this question.';
+    return null;
+  }
+  if (metric === 'bucket_assignment') {
+    const total = Object.values(vp.buckets).flat().length;
+    const names = new Set(Object.keys(vp.buckets));
+    const a = sub.assignment || {};
+    if (Object.keys(a).length !== total) return 'Every item needs a category.';
+    if (!Object.values(a).every(v => names.has(v))) return 'An item was placed in a category that does not exist.';
+    return null;
+  }
+  if (metric === 'correct_slot_ratio') {
+    if (!Array.isArray(sub.response) || sub.response.length !== vp.accept.length) return 'Fill in every blank.';
+    if (!sub.response.every(x => String(x ?? '').trim())) return 'Fill in every blank.';
+    return null;
+  }
+  if (metric === 'set_f1') {
+    if (!Array.isArray(sub.selected) || !sub.selected.length) return 'Select at least one option.';
+    const legal = new Set([...vp.correct_set, ...(vp.distractors || [])]);
+    if (!sub.selected.every(x => legal.has(x))) return 'A selection is not one of the offered options.';
+    return null;
+  }
+  if (metric === 'keyword_density') {
+    if (String(sub.response || '').trim().length < 20) return 'Write a fuller answer before submitting.';
+    return null;
+  }
+  return `Unsupported gate type (${metric}).`;
+}
+
+/* Score behind a guard. Even with the validator above, an engine throw must
+   surface as a refusal rather than a broken screen — defence in depth at the
+   boundary, same principle as the FSM not trusting the display's `passed`. */
+function arcScoreGuarded(spec, sub) {
+  const bad = arcValidateSubmission(spec, sub);
+  if (bad) return { error: bad };
+  try { return { scored: ARC.engine.scoreAccuracy(spec.validation_payload.accuracy_metric, sub) }; }
+  catch (e) { return { error: 'That answer could not be scored, so nothing was recorded. Please try again.' }; }
+}
+
+/* ---- confidence: before feedback, or not at all ---- */
+function arcSetConfidence(v) {
+  if (ARC_UI.feedbackShown) return false;   // refused, structurally
+  ARC_UI.confidence = v;
+  ARC_UI.confidenceAt = Date.now();
+  return true;
+}
+
+/* ---- the gate. This is the assertion the whole phase exists to make. ---- */
+function arcSubmitGate() {
+  const m = ARC_UI.module, gate = m.gate;
+  if (ARC_UI.confidence == null)
+    return { error: 'Confidence must be recorded before the answer is revealed.' };
+
+  const submission = arcBuildSubmission(gate, ARC_UI.draft);
+  const guarded = arcScoreGuarded(gate, submission);
+  if (guarded.error) return { error: guarded.error };   // fail closed: nothing recorded, no attempt burned
+  const scored = guarded.scored;
+  const passed = ARC.engine.isPassed(scored, gate.pass_threshold);   // the display's copy; step() recomputes
+  const latency_ms = Date.now() - ARC_UI.startedAt;
+  const q = ARC.engine.computeQ({
+    scoring_class: gate.scoring_class, raw_accuracy: scored.raw_accuracy,
+    cumulative_attempts: (arcFsm(m.id).cumulative_attempts || 0) + 1,
+    hints_used: ARC_UI.hintsUsed, latency_ms, expected_duration_s: gate.expected_duration_s,
+  });
+  const cal = ARC.engine.calibration(ARC_UI.confidence, q);
+
+  const after = arcStep(m.id, {
+    type: 'GATE_SUBMIT',
+    submission: { ...scored, hints_used: ARC_UI.hintsUsed, latency_ms },
+    gate,
+  });
+
+  arcCfg().log.push({
+    module_id: m.id, site: 'gate', ts: new Date().toISOString(),
+    raw_accuracy: scored.raw_accuracy, correct_count: scored.correct_count, item_count: scored.item_count,
+    passed, computed_q: q, hints_used: ARC_UI.hintsUsed, latency_ms,
+    predicted_confidence: ARC_UI.confidence,
+    confidence_recorded_at: new Date(ARC_UI.confidenceAt).toISOString(),
+    feedback_at: new Date().toISOString(),
+    calibration_error: cal.calibration_error, calibration_alert: cal.alert,
+    state_after: after.state,
+  });
+  save();
+
+  ARC_UI.feedbackShown = true;
+  ARC_UI.result = { scored, passed, q, cal, state: after.state };
+  return ARC_UI.result;
+}
+
+/* ---- Phase 4: drills, scheduled by the v1.5.0 FSRS engine ---- */
+function arcDrillFor(id) {
+  const m = arcModule(id), card = arcCfg().cards[id];
+  const tier = ARC.engine.tierForInterval(card ? Math.max(0, Math.round((Date.parse(card.due) - Date.parse(card.last_review || card.due)) / 864e5)) : 0);
+  return m.drills.find(d => d.interval_tier === tier) || m.drills[0];
+}
+function arcSubmitDrill(id, drill, draft) {
+  const a = arcCfg();
+  const submission = arcBuildSubmission(drill, draft);
+  const guarded = arcScoreGuarded(drill, submission);
+  if (guarded.error) return { error: guarded.error };
+  const scored = guarded.scored;
+  const q = ARC.engine.computeQ({
+    scoring_class: drill.scoring_class, raw_accuracy: scored.raw_accuracy, cumulative_attempts: 1,
+    hints_used: 0, latency_ms: drill.expected_duration_s * 1000, expected_duration_s: drill.expected_duration_s,
+  });
+  a.cards[id] = a.cards[id] || fsrsNew(new Date());
+  fsrsReview(a.cards[id], arcQToGrade(q), new Date());
+  const interval = Math.max(1, Math.round((Date.parse(a.cards[id].due) - Date.now()) / 864e5));
+  const after = arcStep(id, { type: 'DRILL', q, next_interval_days: interval });
+  a.log.push({ module_id: id, site: drill.id, ts: new Date().toISOString(),
+    raw_accuracy: scored.raw_accuracy, passed: ARC.engine.isPassed(scored, drill.pass_threshold),
+    computed_q: q, interval_days: interval, state_after: after.state });
+  save();
+  return { scored, q, interval, state: after.state };
+}
+
+/* ---- consolidation: only the clock opens this door ---- */
+function arcTick(id) {
+  const s = arcFsm(id);
+  if (s.state !== 'CONSOLIDATION_PENDING') return s;
+  return arcStep(id, { type: 'CLOCK_TICK', now: Date.now() });
+}
+function arcConsolidationRemainingMs(id) {
+  const s = arcFsm(id);
+  return s.consolidation_until ? Math.max(0, s.consolidation_until - Date.now()) : 0;
+}
+
+/* ---- prerequisites, resolved against loaded modules only ---- */
+function arcPrereqsMet(id) {
+  const m = arcModule(id);
+  if (!m) return false;
+  return (m.prerequisites || []).every(p => arcCfg().fsm[p] &&
+    ['PHASE_4_SPACED_QUEUE', 'MASTERED', 'NEEDS_RECALIBRATION'].includes(arcCfg().fsm[p].state));
+}
+
 /* streak + week bookkeeping */
 function bumpActivity(){
   const t=today();
@@ -1177,6 +1549,15 @@ const DOMAINS=[
    drill:'phish',drillLabel:'Phishing triage'}
 ];
 const LVL_NAME={b:'Beg',i:'Int',a:'Adv'};
+/* Objective key -> ARC module id. Domain 1 only in Phase 1. */
+const ARC_OBJECTIVE_MAP={
+  d1_0:'isc2.cc.d1.cia-triad',
+  d1_1:'isc2.cc.d1.authn-nonrep-privacy',
+  d1_2:'isc2.cc.d1.control-types',
+  d1_3:'isc2.cc.d1.code-of-ethics',
+  d1_4:'isc2.cc.d1.risk-lifecycle',
+  d1_5:'isc2.cc.d1.governance',
+};
 
 /* ============================================================
    LESSONS — actual in-app teaching content, keyed by objective
@@ -1930,6 +2311,8 @@ function buildDomains(){
   panels.addEventListener('click',e=>{
     const lb=e.target.closest('.learn-btn');
     if(lb){e.preventDefault();e.stopPropagation();openLesson(lb.dataset.lesson);return;}
+    const ab=e.target.closest('[data-arc]');
+    if(ab){e.preventDefault();e.stopPropagation();if(!ab.disabled)openArcModule(ab.dataset.arc);return;}
     const b=e.target.closest('[data-drill]');
     if(b){switchView('range');openTrainer(b.dataset.drill,b.dataset.dom);}
   });
@@ -1952,6 +2335,7 @@ function selectDomain(i){
     const lb=$(`.learn-btn[data-lesson="${key}"]`);
     if(lb&&state.objectives[key]){lb.classList.add('read');lb.textContent='Reread ›';}
   }));
+  syncArcButtons();
 }
 
 /* ============================================================
@@ -2915,10 +3299,289 @@ function buildProgress(){
     const a=prompt('Card back (the answer) — optional:');
     enqueueCard(q,a||'');renderSRS();
   };
+  const tg=$('#arcToggle');
+  if(tg)tg.onclick=async()=>{
+    const a=arcCfg();
+    if(a.enabled){a.enabled=false;save();renderArcSettings();render();return;}
+    tg.disabled=true;tg.textContent='Loading…';
+    await loadArcCorpus();
+    // Only enable if there is actually something to run. Turning a toggle on
+    // that then shows nothing is worse than refusing with a reason.
+    a.enabled = ARC.status==='ready'||ARC.status==='degraded';
+    save();tg.disabled=false;renderArcSettings();render();
+  };
+  renderArcSettings();
   const ta=$('#notesArea');ta.value=state.notes||'';
   let tmr;ta.addEventListener('input',()=>{clearTimeout(tmr);$('#noteSaved').textContent='saving…';
     tmr=setTimeout(()=>{state.notes=ta.value;save();$('#noteSaved').textContent='saved';},500);});
   $('#resetBtn').onclick=()=>{if(confirm('Erase all saved progress on this device?')){Store.set(KEY,null);state=loadState();location.reload();}};
+}
+
+/* ============================================================
+   ARC UI — renders whatever phase the ENGINE says we are in.
+   The renderer never decides a transition; it only offers the event.
+   ============================================================ */
+function arcMd(md){
+  const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const out=[];let inList=false,inPre=false;
+  for(const raw of String(md).split('\n')){
+    if(/^```/.test(raw)){ if(inPre){out.push('</pre>');inPre=false;} else {out.push('<pre class="l-diagram">');inPre=true;} continue; }
+    if(inPre){out.push(esc(raw));continue;}
+    let l=esc(raw);
+    l=l.replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>').replace(/(^|\W)\*([^*]+)\*/g,'$1<i>$2</i>');
+    if(/^## /.test(raw)){ if(inList){out.push('</ul>');inList=false;} out.push('<h4>'+l.slice(3)+'</h4>'); continue; }
+    if(/^- /.test(raw)){ if(!inList){out.push('<ul>');inList=true;} out.push('<li>'+l.slice(2)+'</li>'); continue; }
+    if(inList){out.push('</ul>');inList=false;}
+    if(l.trim())out.push('<p>'+l+'</p>');
+  }
+  if(inList)out.push('</ul>'); if(inPre)out.push('</pre>');
+  return out.join('');
+}
+const CONF_LABELS={1:'Guessing',2:'Shaky',3:'Fairly sure',4:'Confident',5:'Certain'};
+
+function openArcModule(id){
+  ARC_UI.moduleId=id; ARC_UI.module=arcModule(id);
+  ARC_UI.draft=null; ARC_UI.confidence=null; ARC_UI.confidenceAt=null;
+  ARC_UI.feedbackShown=false; ARC_UI.result=null; ARC_UI.hintsUsed=0; ARC_UI.revealed=false;
+  ARC_UI.startedAt=Date.now();
+  $('#arcOverlay').classList.add('show'); document.body.style.overflow='hidden';
+  renderArc();
+}
+function closeArc(){ $('#arcOverlay').classList.remove('show'); document.body.style.overflow=''; ARC_UI.moduleId=null; render(); }
+
+function arcGateWidget(spec,onChange){
+  const vp=spec.validation_payload,metric=vp.accuracy_metric;
+  if(metric==='bucket_assignment'){
+    const buckets=Object.keys(vp.buckets);
+    const items=Object.values(vp.buckets).flat().slice().sort((a,b)=>a.length-b.length||a.localeCompare(b));
+    ARC_UI.draft=ARC_UI.draft||{};
+    return `<div class="arc-items">${items.map((it,i)=>`<div class="arc-item"><span class="ai-txt">${escHtml(it)}</span>
+      <select class="arc-sel" data-item="${i}" aria-label="bucket for item ${i+1}"><option value="">— choose —</option>
+      ${buckets.map(b=>`<option value="${escHtml(b)}">${escHtml(b)}</option>`).join('')}</select></div>`).join('')}
+      <div class="arc-key" hidden>${items.map(escHtml).join(' ')}</div></div>`;
+  }
+  if(metric==='correct_slot_ratio'){
+    ARC_UI.draft=ARC_UI.draft||vp.accept.map(()=>'');
+    return `<div class="arc-slots">${vp.accept.map((_,i)=>`<label class="arc-slot"><span>Blank ${i+1}</span><input class="arc-in" data-slot="${i}" autocomplete="off"></label>`).join('')}</div>`;
+  }
+  if(metric==='set_f1'){
+    const all=[...vp.correct_set,...(vp.distractors||[])].slice().sort();
+    ARC_UI.draft=ARC_UI.draft||[];
+    return `<div class="arc-items">${all.map((it,i)=>`<label class="arc-item arc-check"><input type="checkbox" data-pick="${escHtml(it)}"><span class="ai-txt">${escHtml(it)}</span></label>`).join('')}</div>`;
+  }
+  if(metric==='kendall_tau'){
+    ARC_UI.draft=ARC_UI.draft||vp.correct.slice().sort((a,b)=>a.length-b.length||a.localeCompare(b));
+    return `<ol class="arc-order">${ARC_UI.draft.map((s,i)=>`<li><span>${escHtml(s)}</span><span class="arc-mv"><button class="btn ghost sm" data-mv="${i}:-1" aria-label="move up">↑</button><button class="btn ghost sm" data-mv="${i}:1" aria-label="move down">↓</button></span></li>`).join('')}</ol>`;
+  }
+  if(metric==='keyword_density'){
+    ARC_UI.draft=ARC_UI.draft||'';
+    return `<textarea class="notes-area arc-free" placeholder="Write your answer from memory…">${escHtml(ARC_UI.draft)}</textarea>`;
+  }
+  return `<p class="muted">This gate type is not yet supported in the beta.</p>`;
+}
+function arcWireWidget(spec,root,rerender){
+  const metric=spec.validation_payload.accuracy_metric;
+  if(metric==='bucket_assignment'){
+    const items=(root.querySelector('.arc-key')?.textContent||'').split(' ');
+    root.querySelectorAll('.arc-sel').forEach(sel=>sel.onchange=()=>{
+      ARC_UI.draft=ARC_UI.draft||{};
+      const it=items[+sel.dataset.item];
+      if(sel.value)ARC_UI.draft[it]=sel.value; else delete ARC_UI.draft[it];
+      root.dispatchEvent(new CustomEvent('arcdraft'));
+    });
+  }
+  if(metric==='correct_slot_ratio')root.querySelectorAll('.arc-in').forEach(inp=>inp.oninput=()=>{ARC_UI.draft[+inp.dataset.slot]=inp.value;root.dispatchEvent(new CustomEvent('arcdraft'));});
+  if(metric==='set_f1')root.querySelectorAll('[data-pick]').forEach(cb=>cb.onchange=()=>{
+    const v=cb.dataset.pick;ARC_UI.draft=(ARC_UI.draft||[]).filter(x=>x!==v);if(cb.checked)ARC_UI.draft.push(v);
+    root.dispatchEvent(new CustomEvent('arcdraft'));});
+  if(metric==='kendall_tau')root.querySelectorAll('[data-mv]').forEach(b=>b.onclick=()=>{
+    const [i,d]=b.dataset.mv.split(':').map(Number),j=i+d;
+    if(j<0||j>=ARC_UI.draft.length)return;
+    const a=ARC_UI.draft;[a[i],a[j]]=[a[j],a[i]];rerender();});
+  if(metric==='keyword_density')root.querySelector('.arc-free').oninput=e=>{ARC_UI.draft=e.target.value;root.dispatchEvent(new CustomEvent('arcdraft'));};
+}
+function arcDraftComplete(spec){
+  const metric=spec.validation_payload.accuracy_metric,d=ARC_UI.draft;
+  if(metric==='bucket_assignment')return Object.keys(d||{}).length===Object.values(spec.validation_payload.buckets).flat().length;
+  if(metric==='correct_slot_ratio')return (d||[]).every(x=>String(x).trim());
+  if(metric==='set_f1')return (d||[]).length>0;
+  if(metric==='kendall_tau')return true;
+  if(metric==='keyword_density')return String(d||'').trim().length>20;
+  return false;
+}
+
+function renderArc(){
+  const id=ARC_UI.moduleId; if(!id)return;
+  const m=ARC_UI.module, c=$('#arcContent');
+  let s=arcFsm(id);
+  if(s.state==='CONSOLIDATION_PENDING')s=arcTick(id);
+  // The phase line below carries the state; a second badge in the header only
+  // ever contradicts it (it said "gate" while the body said "result").
+  const head=`<span class="l-eyebrow">${escHtml(m.domain)}</span><h3>${escHtml(m.content.title)}</h3>`;
+
+  if(s.state==='LOCKED'){
+    const ok=arcPrereqsMet(id);
+    c.innerHTML=head+`<p class="muted">${ok?'This module is ready.':'Complete its prerequisite first — the foundation module has to be in your review queue before this one opens.'}</p>
+      <div class="arc-foot"><button class="btn" id="arcGo" ${ok?'':'disabled'}>Begin →</button></div>`;
+    if(ok)$('#arcGo').onclick=()=>{arcStep(id,{type:'PREREQ_RESOLVED'});renderArc();};
+    return;
+  }
+  if(s.state==='PHASE_0_PREQUESTION'){
+    const p=m.content.prequestion;
+    c.innerHTML=head+`<div class="arc-phase">Phase 0 · Prequestion</div>
+      <p class="muted" style="font-size:13px">Commit to an answer before you read. Being wrong here is useful — it is what makes the reading stick.</p>
+      <div class="q-text" style="font-size:17px">${escHtml(p.prompt)}</div>
+      <div id="arcPQ">${(p.options||[]).map((o,i)=>`<button class="choice" data-i="${i}">${escHtml(o)}</button>`).join('')}</div>`;
+    c.querySelectorAll('#arcPQ .choice').forEach(b=>b.onclick=()=>{
+      arcCfg().log.push({module_id:id,site:'prequestion',ts:new Date().toISOString(),answer:+b.dataset.i});
+      arcStep(id,{type:'PREQUESTION_DONE'});renderArc();});
+    return;
+  }
+  if(s.state==='PHASE_1_CHUNK'){
+    const words=m.content.reading_markdown.trim().split(/\s+/).length;
+    c.innerHTML=head+`<div class="arc-phase">Phase 1 · Read</div>${arcMd(m.content.reading_markdown)}
+      <div class="arc-foot"><span class="muted mono" style="font-size:11px">${words} words</span><button class="btn" id="arcRead">I've read it →</button></div>`;
+    const t0=Date.now();
+    $('#arcRead').onclick=()=>{
+      const expected=words/200*60000;               // ~200 wpm
+      arcStep(id,{type:'CHUNK_DONE',reading_ratio:(Date.now()-t0)/expected});
+      ARC_UI.startedAt=Date.now();renderArc();};
+    return;
+  }
+  if(s.state==='PHASE_2_GATE'||s.state==='NEEDS_RECALIBRATION'){
+    const gate=m.gate;
+    if(!ARC_UI.feedbackShown){
+      c.innerHTML=head+`<div class="arc-phase">Phase 2 · Gate${s.gate_attempts?` · attempt ${s.gate_attempts+1}`:''}</div>
+        <div class="q-text" style="font-size:16px">${escHtml(gate.prompt)}</div>
+        <div id="arcWidget">${arcGateWidget(gate)}</div>
+        ${(gate.hints||[]).length?`<div class="arc-hints"><button class="btn ghost sm" id="arcHint">Show a hint (costs scheduling quality)</button><div id="arcHintBody"></div></div>`:''}
+        <div class="arc-conf" id="arcConf"><div class="arc-conf-q">Before you see the answer — how confident are you?</div>
+          <div class="arc-conf-row">${[1,2,3,4,5].map(v=>`<button class="btn ghost sm" data-conf="${v}">${v} · ${CONF_LABELS[v]}</button>`).join('')}</div></div>
+        <div class="arc-foot"><span class="muted mono" style="font-size:11px" id="arcReady"></span><button class="btn" id="arcSubmit" disabled>Submit</button></div>`;
+      const w=$('#arcWidget');
+      const refresh=()=>{
+        const done=arcDraftComplete(gate), conf=ARC_UI.confidence!=null;
+        $('#arcSubmit').disabled=!(done&&conf);
+        $('#arcReady').textContent=!done?'Answer every part to continue':(!conf?'Record your confidence to continue':'');
+      };
+      arcWireWidget(gate,w,()=>{renderArc();});
+      w.addEventListener('arcdraft',refresh);
+      c.querySelectorAll('[data-conf]').forEach(b=>b.onclick=()=>{
+        if(!arcSetConfidence(+b.dataset.conf))return;
+        c.querySelectorAll('[data-conf]').forEach(x=>x.classList.toggle('on',x===b));refresh();});
+      const hb=$('#arcHint');
+      if(hb)hb.onclick=()=>{const h=(gate.hints||[])[ARC_UI.hintsUsed];if(!h)return;
+        ARC_UI.hintsUsed++;$('#arcHintBody').innerHTML+=`<div class="arc-hint">${escHtml(h)}</div>`;
+        if(ARC_UI.hintsUsed>=(gate.hints||[]).length)hb.disabled=true;};
+      $('#arcSubmit').onclick=()=>{const r=arcSubmitGate();if(r.error){$('#arcReady').textContent=r.error;return;}renderArc();};
+      refresh();
+      return;
+    }
+    const r=ARC_UI.result;
+    c.innerHTML=head+`<div class="arc-phase">Phase 2 · Result</div>
+      <div class="scn-feedback show ${r.passed?'good':'bad'}">
+        <h4>${r.passed?'✓ Gate cleared':'✗ Not yet'}</h4>
+        ${r.scored.correct_count} of ${r.scored.item_count} correct — this gate needs ${gate.pass_threshold.min_correct!==undefined?`${gate.pass_threshold.min_correct} of ${gate.pass_threshold.item_count}`:`${Math.round(gate.pass_threshold.ratio*100)}%`}.
+        ${r.passed?'':'<div style="margin-top:6px">Nothing is lost — the reading stays open and you can try again. Three misses in a row send you back to re-read.</div>'}
+      </div>
+      ${r.cal.alert==='OVERCONFIDENCE'?`<div class="arc-alert over"><b>Illusion of competence detected.</b> You said ${CONF_LABELS[r.cal===null?3:ARC_UI.confidence].toLowerCase()} and the answer did not hold up. That gap is the single most useful signal here — it is exactly what re-reading hides from you.</div>`:''}
+      ${r.cal.alert==='UNDERCONFIDENCE'?`<div class="arc-alert under"><b>You knew that better than you thought.</b> Worth noticing: under-confidence makes people re-study things they already have.</div>`:''}
+      <div class="arc-foot"><button class="btn" id="arcNext">Continue →</button></div>`;
+    $('#arcNext').onclick=()=>{ARC_UI.feedbackShown=false;ARC_UI.draft=null;ARC_UI.confidence=null;ARC_UI.result=null;ARC_UI.hintsUsed=0;ARC_UI.startedAt=Date.now();renderArc();};
+    return;
+  }
+  if(s.state==='PHASE_3_SYNTHESIS'){
+    const a=m.analog_synthesis;
+    c.innerHTML=head+`<div class="arc-phase">Phase 3 · Away from the screen (${a.taxonomy_type.toLowerCase()})</div>
+      <p>${escHtml(a.prompt)}</p>
+      <div class="l-eg"><b>When you have done it</b>${escHtml(a.calibration_question)}</div>
+      <p class="muted" style="font-size:12.5px">${escHtml(a.accessible_equivalent)}</p>
+      <div class="arc-foot"><button class="btn" id="arcRefl">Done — I did it on paper →</button></div>`;
+    $('#arcRefl').onclick=()=>{arcStep(id,{type:'REFLECTION_DONE'});renderArc();};
+    return;
+  }
+  if(s.state==='CONSOLIDATION_PENDING'){
+    const ms=arcConsolidationRemainingMs(id),h=Math.floor(ms/3600000),mi=Math.round(ms%3600000/60000);
+    c.innerHTML=head+`<div class="arc-phase">Consolidating</div>
+      <p>You have done the work. Sleep is the next step, and that is not a figure of speech — the 24-hour wait is what turns this into spaced retrieval rather than a same-day repeat.</p>
+      <div class="arc-count">${h}h ${mi}m</div>
+      <p class="muted" style="font-size:13px">The first review unlocks then. Nothing you do here can shorten it.</p>
+      <div class="arc-foot"><button class="btn ghost" id="arcClose2">Close</button></div>`;
+    $('#arcClose2').onclick=closeArc;
+    return;
+  }
+  if(s.state==='PHASE_4_SPACED_QUEUE'||s.state==='MASTERED'){
+    const card=arcCfg().cards[id];
+    const due=card?Date.parse(card.due):0, ready=!card||due<=Date.now();
+    if(s.state==='MASTERED'&&!ready){
+      c.innerHTML=head+`<div class="arc-phase">Mastered</div>
+        <p>Interval is ${s.interval_days} days — past the 60-day mark this profile calls mastery. It will keep coming back, just rarely.</p>
+        <div class="arc-foot"><button class="btn ghost" id="arcClose3">Close</button></div>`;
+      $('#arcClose3').onclick=closeArc; return;
+    }
+    if(!ready){
+      const d=Math.ceil((due-Date.now())/864e5);
+      c.innerHTML=head+`<div class="arc-phase">Phase 4 · Scheduled</div><p>Next retrieval in ${d} day${d===1?'':'s'}.</p>
+        <div class="arc-foot"><button class="btn ghost" id="arcClose4">Close</button></div>`;
+      $('#arcClose4').onclick=closeArc; return;
+    }
+    const drill=arcDrillFor(id);
+    ARC_UI.draft=null;
+    c.innerHTML=head+`<div class="arc-phase">Phase 4 · ${drill.interval_tier.toLowerCase()} retrieval</div>
+      <div class="q-text" style="font-size:16px">${escHtml(drill.prompt)}</div>
+      <div id="arcWidget">${arcGateWidget(drill)}</div>
+      <div class="arc-foot"><button class="btn" id="arcDrill">Submit</button></div>`;
+    arcWireWidget(drill,$('#arcWidget'),()=>renderArc());
+    $('#arcDrill').onclick=()=>{
+      const r=arcSubmitDrill(id,drill,ARC_UI.draft);
+      if(r.error){const w=$('#arcWidget');let n=w.parentElement.querySelector('.arc-refuse');
+        if(!n){n=document.createElement('div');n.className='arc-note arc-refuse';w.after(n);}
+        n.textContent=r.error;return;}
+      c.innerHTML=head+`<div class="arc-phase">Phase 4 · Result</div>
+        <div class="scn-feedback show ${r.q>=3?'good':'bad'}"><h4>${r.q>=3?'✓ Recalled':'✗ Lapsed'}</h4>
+        ${escHtml(drill.explanation||'')}<div style="margin-top:6px">Next review in ${r.interval} day${r.interval===1?'':'s'}.</div></div>
+        <div class="arc-foot"><button class="btn ghost" id="arcClose5">Close</button></div>`;
+      $('#arcClose5').onclick=closeArc;};
+    return;
+  }
+  c.innerHTML=head+`<p class="muted">State: ${s.state}</p><div class="arc-foot"><button class="btn ghost" id="arcClose6">Close</button></div>`;
+  $('#arcClose6').onclick=closeArc;
+}
+
+/* The ARC entry points are added to the DOM only while the beta is on, and
+   removed when it is off — so with the toggle off the Domains markup is exactly
+   what it was in v1.5.1, not merely styled to look that way. */
+function syncArcButtons(){
+  $$('#domPanels .arc-btn').forEach(b=>b.remove());
+  const a=arcCfg();
+  if(!a.enabled||!(ARC.status==='ready'||ARC.status==='degraded'))return;
+  Object.entries(ARC_OBJECTIVE_MAP).forEach(([key,mid])=>{
+    const label=$(`.obj[data-obj="${key}"]`); if(!label)return;
+    const m=arcModule(mid);
+    const b=document.createElement('button');
+    b.type='button'; b.className='arc-btn'; b.dataset.arc=mid;
+    if(!m){ b.textContent='unavailable'; b.disabled=true;
+      b.title='This module could not be downloaded. It will return on its own — your progress is safe.'; }
+    else { const st=a.fsm[mid]?.state||'LOCKED';
+      b.textContent=st==='MASTERED'?'✓ Mastered':st==='LOCKED'?'ARC ›':st.startsWith('PHASE_4')?'Review ›':'Resume ›'; }
+    label.appendChild(b);
+  });
+}
+
+function renderArcSettings(){
+  const box=$('#arcSettings'); if(!box)return;
+  const a=arcCfg(), tg=$('#arcToggle'), st=$('#arcStatus'), list=$('#arcModuleList');
+  tg.textContent=a.enabled?'Disable':'Enable';
+  tg.classList.toggle('cyan',!a.enabled);
+  if(!a.enabled&&ARC.status==='idle'){st.textContent='Off — the classic lesson flow is unchanged.';list.innerHTML='';return;}
+  if(ARC.status==='unavailable'){
+    st.textContent='Could not start.';
+    list.innerHTML=`<div class="arc-note">${escHtml(ARC.reason||'Unavailable.')}</div>`;return;
+  }
+  st.textContent=(a.enabled?'On · ':'Off · ')+(ARC.reason||'');
+  const mastered=ARC.modules.filter(m=>arcCfg().fsm[m.id]?.state==='MASTERED').length;
+  list.innerHTML=`<div class="mono" style="font-size:11px;color:var(--muted-2);margin-bottom:8px">${mastered} of ${ARC.modules.length} mastered · mastery means a review interval past 60 days, not a tick</div>`
+    + (ARC.dropped.length?`<div class="arc-note"><b>${ARC.dropped.length} module${ARC.dropped.length===1?'':'s'} temporarily unavailable.</b> ${escHtml(ARC.dropped.map(d=>`${d.id} (${d.why})`).join('; '))}<br>They will come back on their own once the download succeeds — nothing you have done has been lost.</div>`:'');
 }
 
 /* ============================================================
@@ -2930,6 +3593,11 @@ function toast(title,sub){const t=$('#toast');t.innerHTML=`<b>${title}</b> &nbsp
 
 function boot(){
   buildDomains();buildTrainers();buildEthics();buildLabs();buildCerts();buildTemplates();buildProgress();initLessons();initWhatsNew();initGlossary();linkifyDomains();
+  $('#arcClose').onclick=closeArc; $('#arcCloseFoot').onclick=closeArc;
+  $('#arcOverlay').addEventListener('click',e=>{if(e.target.id==='arcOverlay')closeArc();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#arcOverlay').classList.contains('show'))closeArc();});
+  // Restore the beta across reloads without ever fetching when it is off.
+  if(arcCfg().enabled)loadArcCorpus().then(()=>{syncArcButtons();renderArcSettings();});
   selectDomain(0);
   render();
   if(state.lastSeenVersion!==APP_VERSION){openWhatsNew();}

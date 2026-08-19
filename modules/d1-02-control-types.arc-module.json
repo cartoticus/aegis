@@ -1,0 +1,167 @@
+{
+  "id": "isc2.cc.d1.control-types",
+  "version": "1.0.0",
+  "domain": "ISC2 Certified in Cybersecurity — Domain 1: Security Principles",
+  "dag_branch": "cc.d1.principles",
+  "profile": "CONCEPT",
+  "prerequisites": [
+    "isc2.cc.d1.cia-triad"
+  ],
+  "invalidation_policy": "REVIEW",
+  "provenance": {
+    "authored_by": "hybrid",
+    "generator_id": "arc-aegis-phase1/4.3.0",
+    "reviewed_by": null,
+    "reviewed_at": null
+  },
+  "content": {
+    "title": "Control Types: Technical, Administrative, Physical",
+    "prequestion": {
+      "prompt": "Before reading: a CCTV camera in the server room. Is it a physical control or a detective one?",
+      "options": [
+        "Physical",
+        "Detective",
+        "Both — those answer different questions",
+        "Not sure"
+      ]
+    },
+    "reading_markdown": "## Two questions, not one\n\nEvery safeguard can be described two ways, and confusing them is the classic Domain 1 trap.\n\n- **Type** asks *how the control does its job* — through technology, through people and process, or through the physical world.\n- **Function** asks *when it acts* — before, during or after the event.\n\nA CCTV camera is a **physical** control by type and both **deterrent** and **detective** by function. Neither answer is wrong; they answer different questions. When an exam item asks for the *type*, give the type.\n\n## The three types\n\n- **Technical** (also called *logical*) — enforced by technology, with no human in the loop at the moment of enforcement: firewalls, encryption, access-control lists, antivirus, MFA systems.\n- **Administrative** (also called *managerial*) — the rules that govern people and process: policies, procedures, security awareness training, background checks, separation of duties.\n- **Physical** — protects the tangible world and controls access to bodies and hardware: locks, fences, guards, bollards, mantraps.\n\n## The functions, briefly\n\n**Preventive** stops it happening. **Detective** notices that it happened. **Corrective** fixes it afterwards. **Deterrent** discourages the attempt. **Compensating** stands in when the control you really wanted is not feasible.\n\n## Why the split matters\n\nStrong security uses all three types together — this is **defence in depth**. Each type fails differently, so each covers the others' blind spots. The best firewall in the world does not stop someone walking out of the building with a server, and the strongest lock does not stop a phished password.\n\n## Worked example\n\nProtecting a server room takes all three. A least-privilege **policy** decides who may enter at all (administrative). A locked door enforces it against bodies (physical). Full-disk **encryption** on the servers means that even a stolen drive gives up nothing (technical). Remove any one of the three and there is an obvious way in."
+  },
+  "gate": {
+    "type": "CLASSIFY",
+    "scoring_class": "B",
+    "expected_duration_s": 100,
+    "pass_threshold": {
+      "min_correct": 5,
+      "item_count": 6
+    },
+    "prompt": "Sort each control by its TYPE — how it does its job. Ignore when it acts; that is its function, not its type.",
+    "hints": [
+      "Ask what actually does the enforcing: a machine, a rule that people follow, or a barrier in the physical world.",
+      "A control can be preventive or detective and still be any of the three types. Type and function are separate questions — answer the one being asked."
+    ],
+    "validation_payload": {
+      "accuracy_metric": "bucket_assignment",
+      "buckets": {
+        "Technical": [
+          "A firewall filtering inbound traffic by rule",
+          "Full-disk encryption on every laptop"
+        ],
+        "Administrative": [
+          "An acceptable-use policy signed by every employee",
+          "Background checks run before a new hire starts"
+        ],
+        "Physical": [
+          "A perimeter fence around the data centre",
+          "A locked door on the server room"
+        ]
+      },
+      "normalisation": {
+        "strip_diacritics": false
+      }
+    },
+    "accessible_equivalent": "Keyboard-navigable list pairing each control with one of {Technical, Administrative, Physical}; scored identically as bucket_assignment."
+  },
+  "analog_synthesis": {
+    "taxonomy_type": "REDUCTIVE",
+    "prompt": "Away from the screen, pick one room or system you can actually see — your home office, a car, a bike lock, a shared flat. On paper, list every safeguard protecting it and label each one technical, administrative or physical. Then find the gap: which of the three types has no entry at all, and what would you add to fill it?",
+    "calibration_question": "Before checking: did you label anything by *when* it acts (preventive, detective) instead of by *how* it works — and which of the three types did you find yourself with nothing to write against?",
+    "accessible_equivalent": "Describe the same room aloud, listing each safeguard and its type, as a recorded or transcribed spoken response."
+  },
+  "drills": [
+    {
+      "id": "isc2.cc.d1.ctrl.d1.cloze",
+      "type": "CLOZE",
+      "scoring_class": "B",
+      "interval_tier": "RECOGNITION",
+      "expected_duration_s": 45,
+      "pass_threshold": {
+        "min_correct": 2,
+        "item_count": 3
+      },
+      "prompt": "Complete: A control enforced by technology is ______. A control that is a rule people follow is ______. A control that stops a body reaching the hardware is ______.",
+      "validation_payload": {
+        "accuracy_metric": "correct_slot_ratio",
+        "accept": [
+          [
+            "technical",
+            "logical"
+          ],
+          [
+            "administrative",
+            "managerial"
+          ],
+          [
+            "physical"
+          ]
+        ],
+        "normalisation": {
+          "strip_diacritics": false
+        }
+      },
+      "accessible_equivalent": "The same three prompts as a screen-reader accessible select-one list drawn from {technical, administrative, physical, compensating}.",
+      "explanation": "Technical is also called logical, and administrative is also called managerial — both names appear in the exam outline."
+    },
+    {
+      "id": "isc2.cc.d1.ctrl.d7.constructset",
+      "type": "CONSTRUCT_SET",
+      "scoring_class": "B",
+      "interval_tier": "APPLICATION",
+      "expected_duration_s": 75,
+      "pass_threshold": {
+        "min_correct": 3,
+        "item_count": 4
+      },
+      "prompt": "A new branch office is opening. Select every safeguard on the plan that is an ADMINISTRATIVE control.",
+      "validation_payload": {
+        "accuracy_metric": "set_f1",
+        "correct_set": [
+          "Annual security awareness training for all staff",
+          "A written incident response procedure",
+          "Separation of duties on payment approvals",
+          "A mandatory data-classification scheme staff must apply to new documents"
+        ],
+        "distractors": [
+          "A badge-operated turnstile in the lobby",
+          "Antivirus deployed to every endpoint",
+          "A safe for storing backup tapes",
+          "TLS on the customer web portal"
+        ],
+        "normalisation": {
+          "strip_diacritics": false
+        }
+      },
+      "accessible_equivalent": "Multi-select list with screen-reader labels; scored identically as set_f1.",
+      "explanation": "Training, procedures, separation of duties and background checks all work by governing what people do. The turnstile and the safe are physical; antivirus and TLS are technical."
+    },
+    {
+      "id": "isc2.cc.d1.ctrl.d30.freerecall",
+      "type": "FREE_RECALL",
+      "scoring_class": "C",
+      "interval_tier": "GENERATIVE",
+      "expected_duration_s": 165,
+      "pass_threshold": {
+        "min_correct": 5,
+        "item_count": 7
+      },
+      "prompt": "Without notes: name the three control types with two examples of each; explain how a control's type differs from its function; and say why using all three types together is stronger than doubling up on the one you are best at.",
+      "validation_payload": {
+        "accuracy_metric": "keyword_density",
+        "required_keywords": [
+          "technical",
+          "administrative",
+          "physical",
+          "function",
+          "preventive",
+          "detective",
+          "depth"
+        ],
+        "normalisation": {
+          "strip_diacritics": false
+        }
+      },
+      "accessible_equivalent": "Spoken response transcribed via speech-to-text and scored on the same keyword set.",
+      "explanation": "Being able to say unprompted that type and function are different axes — and that each type fails differently, which is what makes defence in depth work — is the marker that this is a reasoning tool rather than three memorised lists."
+    }
+  ]
+}

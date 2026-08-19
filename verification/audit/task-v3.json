@@ -1,0 +1,168 @@
+[
+ {
+  "module": "isc2.cc.d1.cia-triad",
+  "site": "gate",
+  "kind": "CLASSIFY",
+  "buckets": [
+   "Confidentiality",
+   "Integrity",
+   "Availability"
+  ],
+  "items": [
+   "Ransomware encrypts the file server",
+   "Firmware replaced with a tampered build",
+   "Botnet floods the public website with traffic",
+   "Customer database exfiltrated and posted online",
+   "Payroll figures silently altered in the database",
+   "Attacker reads unencrypted traffic on public Wi-Fi"
+  ]
+ },
+ {
+  "module": "isc2.cc.d1.cia-triad",
+  "site": "isc2.cc.d1.cia.d7.constructset",
+  "kind": "SELECT",
+  "prompt": "A hospital must survive a ransomware incident with patient records still reachable. Select every control that primarily protects AVAILABILITY.",
+  "items": [
+   "DDoS mitigation service",
+   "Digital signatures on lab results",
+   "Full-disk encryption",
+   "Offline immutable backups",
+   "Redundant failover servers",
+   "Role-based access control",
+   "TLS on the web portal",
+   "Tested restore procedure"
+  ]
+ },
+ {
+  "module": "isc2.cc.d1.authn-nonrep-privacy",
+  "site": "gate",
+  "kind": "CLASSIFY",
+  "buckets": [
+   "Authentication",
+   "Non-repudiation",
+   "Privacy"
+  ],
+  "items": [
+   "Unlocking a workstation with a registered fingerprint",
+   "Collecting only the data fields the service actually needs",
+   "Keeping a tamper-evident audit log of who changed each record",
+   "Requiring a password plus a one-time code from the user's phone",
+   "Honouring a customer's request to erase what you hold about them",
+   "Digitally signing an approved payment so it traces to one named employee"
+  ]
+ },
+ {
+  "module": "isc2.cc.d1.authn-nonrep-privacy",
+  "site": "isc2.cc.d1.anp.d7.classify",
+  "kind": "CLASSIFY",
+  "buckets": [
+   "Something you know",
+   "Something you have",
+   "Something you are"
+  ],
+  "items": [
+   "The master passphrase that unlocks your password manager",
+   "A fingerprint the reader matches against an enrolled scan",
+   "An iris pattern the door camera measures against a stored template",
+   "A signing key that never leaves the TPM chip soldered to your laptop",
+   "A rotating code read from an authenticator app registered to one handset",
+   "The answer to the security question you chose when you opened the account"
+  ]
+ },
+ {
+  "module": "isc2.cc.d1.control-types",
+  "site": "gate",
+  "kind": "CLASSIFY",
+  "buckets": [
+   "Technical",
+   "Administrative",
+   "Physical"
+  ],
+  "items": [
+   "A locked door on the server room",
+   "Full-disk encryption on every laptop",
+   "A perimeter fence around the data centre",
+   "A firewall filtering inbound traffic by rule",
+   "Background checks run before a new hire starts",
+   "An acceptable-use policy signed by every employee"
+  ]
+ },
+ {
+  "module": "isc2.cc.d1.control-types",
+  "site": "isc2.cc.d1.ctrl.d7.constructset",
+  "kind": "SELECT",
+  "prompt": "A new branch office is opening. Select every safeguard on the plan that is an ADMINISTRATIVE control.",
+  "items": [
+   "A badge-operated turnstile in the lobby",
+   "A safe for storing backup tapes",
+   "A written incident response procedure",
+   "Annual security awareness training for all staff",
+   "Antivirus deployed to every endpoint",
+   "Background checks for new hires",
+   "Separation of duties on payment approvals",
+   "TLS on the customer web portal"
+  ]
+ },
+ {
+  "module": "isc2.cc.d1.code-of-ethics",
+  "site": "gate",
+  "kind": "CLASSIFY",
+  "buckets": [
+   "Canon I — protect society and the infrastructure",
+   "Canon II — act honourably, honestly, justly, responsibly and legally",
+   "Canon III — provide diligent and competent service to principals",
+   "Canon IV — advance and protect the profession"
+  ],
+  "items": [
+   "You report a peer who is selling leaked ISC2 exam questions to candidates",
+   "You report a vulnerability you found in a city's emergency dispatch system",
+   "You decline to exaggerate a threat in a sales pitch to frighten a prospect into buying",
+   "You spend an afternoon each month mentoring junior analysts with no billable work attached",
+   "A client pressures you to overstate their security posture in an audit report, and you refuse",
+   "You turn down a second client whose work would create a conflict of interest with your current engagement",
+   "You tell a client up front that a specialised cloud engagement is beyond what you are qualified to deliver",
+   "A vendor ignores your reports of a medical-device firmware flaw while patients remain at risk, and you keep pressing for a fix"
+  ]
+ },
+ {
+  "module": "isc2.cc.d1.risk-lifecycle",
+  "site": "isc2.cc.d1.risk.d7.classify",
+  "kind": "CLASSIFY",
+  "buckets": [
+   "Mitigate",
+   "Transfer",
+   "Avoid",
+   "Accept"
+  ],
+  "items": [
+   "Enforce MFA on all remote access",
+   "Roll out full-disk encryption on every laptop",
+   "Discontinue the legacy file-sharing service entirely",
+   "Buy a cyber-insurance policy covering breach response costs",
+   "Add a clause making the hosting provider financially responsible for data loss",
+   "Document the remaining chance of a laptop stolen while unlocked, and have the head of IT sign it off"
+  ]
+ },
+ {
+  "module": "isc2.cc.d1.governance",
+  "site": "gate",
+  "kind": "CLASSIFY",
+  "buckets": [
+   "Policy",
+   "Standard",
+   "Procedure",
+   "Guideline",
+   "Law or regulation"
+  ],
+  "items": [
+   "Data at rest must be encrypted with AES-256",
+   "Where practical, prefer a passphrase of four or more words",
+   "All production servers must run the approved hardened OS image",
+   "HIPAA's requirements for safeguarding protected health information",
+   "The organisation will protect the confidentiality of all customer data",
+   "Safeguarding client information is a responsibility of every employee, at every level",
+   "Step 1: open the admin console. Step 2: select Enrol device. Step 3: scan the QR code",
+   "To report a suspected phishing email, click Report, then forward it to the security inbox"
+  ]
+ }
+]

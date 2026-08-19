@@ -1,0 +1,175 @@
+[
+ {
+  "module": "isc2.cc.d1.cia-triad",
+  "site": "gate",
+  "assignment": {
+   "Ransomware encrypts the file server": "Availability",
+   "Firmware replaced with a tampered build": "Integrity",
+   "Botnet floods the public website with traffic": "Availability",
+   "Customer database exfiltrated and posted online": "Confidentiality",
+   "Payroll figures silently altered in the database": "Integrity",
+   "Attacker reads unencrypted traffic on public Wi-Fi": "Confidentiality"
+  },
+  "ambiguous": [
+   {
+    "item": "Ransomware encrypts the file server",
+    "alternative": "Confidentiality",
+    "why": "Classic crypto-ransomware denies access, so Availability is the primary loss. But modern ransomware is double-extortion (exfiltrate, then encrypt), and a practitioner could defensibly say the primary attack is on Confidentiality; a third reading calls encryption of data-in-place an unauthorised modification, i.e. Integrity."
+   }
+  ],
+  "misleading_hints": [
+   {
+    "hint": "If two legs seem to fit, ask which loss the victim notices first, and which one they could still be suffering without knowing.",
+    "why": "The hint sets up a two-way test (noticed-immediately = Availability, suffered-silently = Confidentiality) that has no slot for silent Integrity loss. Applied literally to 'Payroll figures silently altered in the database' — the textbook Integrity item — the 'suffering without knowing' clause steers the learner to Confidentiality."
+   }
+  ]
+ },
+ {
+  "module": "isc2.cc.d1.cia-triad",
+  "site": "isc2.cc.d1.cia.d7.constructset",
+  "assignment": {
+   "DDoS mitigation service": "IN",
+   "Digital signatures on lab results": "OUT",
+   "Full-disk encryption": "OUT",
+   "Offline immutable backups": "IN",
+   "Redundant failover servers": "IN",
+   "Role-based access control": "OUT",
+   "TLS on the web portal": "OUT",
+   "Tested restore procedure": "IN"
+  },
+  "ambiguous": [],
+  "misleading_hints": []
+ },
+ {
+  "module": "isc2.cc.d1.authn-nonrep-privacy",
+  "site": "gate",
+  "assignment": {
+   "Unlocking a workstation with a registered fingerprint": "Authentication",
+   "Collecting only the data fields the service actually needs": "Privacy",
+   "Keeping a tamper-evident audit log of who changed each record": "Non-repudiation",
+   "Requiring a password plus a one-time code from the user's phone": "Authentication",
+   "Honouring a customer's request to erase what you hold about them": "Privacy",
+   "Digitally signing an approved payment so it traces to one named employee": "Non-repudiation"
+  },
+  "ambiguous": [],
+  "misleading_hints": []
+ },
+ {
+  "module": "isc2.cc.d1.authn-nonrep-privacy",
+  "site": "isc2.cc.d1.anp.d7.classify",
+  "assignment": {
+   "The master passphrase that unlocks your password manager": "Something you know",
+   "A fingerprint the reader matches against an enrolled scan": "Something you are",
+   "An iris pattern the door camera measures against a stored template": "Something you are",
+   "A signing key that never leaves the TPM chip soldered to your laptop": "Something you have",
+   "A rotating code read from an authenticator app registered to one handset": "Something you have",
+   "The answer to the security question you chose when you opened the account": "Something you know"
+  },
+  "ambiguous": [],
+  "misleading_hints": []
+ },
+ {
+  "module": "isc2.cc.d1.control-types",
+  "site": "gate",
+  "assignment": {
+   "A locked door on the server room": "Physical",
+   "Full-disk encryption on every laptop": "Technical",
+   "A perimeter fence around the data centre": "Physical",
+   "A firewall filtering inbound traffic by rule": "Technical",
+   "Background checks run before a new hire starts": "Administrative",
+   "An acceptable-use policy signed by every employee": "Administrative"
+  },
+  "ambiguous": [],
+  "misleading_hints": []
+ },
+ {
+  "module": "isc2.cc.d1.control-types",
+  "site": "isc2.cc.d1.ctrl.d7.constructset",
+  "assignment": {
+   "A badge-operated turnstile in the lobby": "OUT",
+   "A mandatory data-classification scheme staff must apply to new documents": "IN",
+   "A safe for storing backup tapes": "OUT",
+   "A written incident response procedure": "IN",
+   "Annual security awareness training for all staff": "IN",
+   "Antivirus deployed to every endpoint": "OUT",
+   "Separation of duties on payment approvals": "IN",
+   "TLS on the customer web portal": "OUT"
+  },
+  "ambiguous": [
+   {
+    "item": "Separation of duties on payment approvals",
+    "alternative": "OUT",
+    "why": "Separation of duties is a managerial/administrative principle, which is why I marked it IN. A practitioner who reads the item as the enforcement mechanism in the payments application (dual-approval workflow configured in software) would call it technical and mark it OUT."
+   }
+  ],
+  "misleading_hints": []
+ },
+ {
+  "module": "isc2.cc.d1.code-of-ethics",
+  "site": "gate",
+  "assignment": {
+   "You refuse to scan a network you have no written authorisation to test": "Canon II — act honourably, honestly, justly, responsibly and legally",
+   "You report a peer who is selling leaked ISC2 exam questions to candidates": "Canon IV — advance and protect the profession",
+   "You report a vulnerability you found in a city's emergency dispatch system": "Canon I — protect society and the infrastructure",
+   "You decline to exaggerate a threat in a sales pitch to frighten a prospect into buying": "Canon II — act honourably, honestly, justly, responsibly and legally",
+   "You spend an afternoon each month mentoring junior analysts with no billable work attached": "Canon IV — advance and protect the profession",
+   "You turn down a second client whose work would create a conflict of interest with your current engagement": "Canon III — provide diligent and competent service to principals",
+   "You tell a client up front that a specialised cloud engagement is beyond what you are qualified to deliver": "Canon III — provide diligent and competent service to principals",
+   "A vendor ignores your reports of a medical-device firmware flaw while patients remain at risk, and you keep pressing for a fix": "Canon I — protect society and the infrastructure"
+  },
+  "ambiguous": [
+   {
+    "item": "You refuse to scan a network you have no written authorisation to test",
+    "alternative": "Canon I — protect society and the infrastructure",
+    "why": "I read the situation as being about the practitioner's own legality (unauthorised scanning is unlawful), which is Canon II. A practitioner could equally argue it is fundamentally about not endangering someone else's infrastructure, which is Canon I."
+   },
+   {
+    "item": "You turn down a second client whose work would create a conflict of interest with your current engagement",
+    "alternative": "Canon II — act honourably, honestly, justly, responsibly and legally",
+    "why": "Conflict-of-interest avoidance is stated under the duty owed to principals (Canon III), which is why I placed it there. But 'avoid apparent or actual conflicts of interest' is also read as a matter of personal honour and justice, giving a defensible Canon II answer."
+   },
+   {
+    "item": "You decline to exaggerate a threat in a sales pitch to frighten a prospect into buying",
+    "alternative": "Canon IV — advance and protect the profession",
+    "why": "The act is personal honesty (Canon II), but FUD-selling is also the classic example of conduct that damages the standing and reputation of the security profession, so Canon IV is defensible."
+   }
+  ],
+  "misleading_hints": []
+ },
+ {
+  "module": "isc2.cc.d1.risk-lifecycle",
+  "site": "isc2.cc.d1.risk.d7.classify",
+  "assignment": {
+   "Enforce MFA on all remote access": "Mitigate",
+   "Roll out full-disk encryption on every laptop": "Mitigate",
+   "Discontinue the legacy file-sharing service entirely": "Avoid",
+   "Buy a cyber-insurance policy covering breach response costs": "Transfer",
+   "Add a clause making the hosting provider financially responsible for data loss": "Transfer",
+   "Document the remaining chance of a laptop stolen while unlocked, and have the head of IT sign it off": "Accept"
+  },
+  "ambiguous": [],
+  "misleading_hints": []
+ },
+ {
+  "module": "isc2.cc.d1.governance",
+  "site": "gate",
+  "assignment": {
+   "Data at rest must be encrypted with AES-256": "Standard",
+   "Where practical, prefer a passphrase of four or more words": "Guideline",
+   "All production servers must run the approved hardened OS image": "Standard",
+   "HIPAA's requirements for safeguarding protected health information": "Law or regulation",
+   "The organisation will protect the confidentiality of all customer data": "Policy",
+   "Every system must have a named owner who is accountable for its security": "Policy",
+   "Step 1: open the admin console. Step 2: select Enrol device. Step 3: scan the QR code": "Procedure",
+   "To report a suspected phishing email, click Report, then forward it to the security inbox": "Procedure"
+  },
+  "ambiguous": [
+   {
+    "item": "Every system must have a named owner who is accountable for its security",
+    "alternative": "Standard",
+    "why": "It is mandatory and organisation-wide but assigns accountability rather than specifying a technology, which reads as Policy. A practitioner who applies the 'mandatory + specific requirement = Standard' test literally would call it a Standard, since it states a concrete, testable requirement rather than an intention."
+   }
+  ],
+  "misleading_hints": []
+ }
+]

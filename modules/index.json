@@ -1,0 +1,60 @@
+{
+  "corpus_version": "1.0.0",
+  "spec_version": "4.3.0",
+  "domain": "cc.d1",
+  "generated_for": "AEGIS 1.6.0",
+  "modules": [
+    {
+      "file": "d1-00-cia-triad.arc-module.json",
+      "id": "isc2.cc.d1.cia-triad",
+      "title": "The CIA Triad",
+      "dag_branch": "cc.d1.principles",
+      "prerequisites": []
+    },
+    {
+      "file": "d1-01-authn-nonrep-privacy.arc-module.json",
+      "id": "isc2.cc.d1.authn-nonrep-privacy",
+      "title": "Authentication, Non-repudiation & Privacy",
+      "dag_branch": "cc.d1.principles",
+      "prerequisites": [
+        "isc2.cc.d1.cia-triad"
+      ]
+    },
+    {
+      "file": "d1-02-control-types.arc-module.json",
+      "id": "isc2.cc.d1.control-types",
+      "title": "Control Types: Technical, Administrative, Physical",
+      "dag_branch": "cc.d1.principles",
+      "prerequisites": [
+        "isc2.cc.d1.cia-triad"
+      ]
+    },
+    {
+      "file": "d1-03-code-of-ethics.arc-module.json",
+      "id": "isc2.cc.d1.code-of-ethics",
+      "title": "The ISC2 Code of Ethics",
+      "dag_branch": "cc.d1.principles",
+      "prerequisites": [
+        "isc2.cc.d1.cia-triad"
+      ]
+    },
+    {
+      "file": "d1-04-risk-lifecycle.arc-module.json",
+      "id": "isc2.cc.d1.risk-lifecycle",
+      "title": "The Risk Management Lifecycle",
+      "dag_branch": "cc.d1.principles",
+      "prerequisites": [
+        "isc2.cc.d1.cia-triad"
+      ]
+    },
+    {
+      "file": "d1-05-governance.arc-module.json",
+      "id": "isc2.cc.d1.governance",
+      "title": "Governance: Policies, Standards, Procedures & Laws",
+      "dag_branch": "cc.d1.principles",
+      "prerequisites": [
+        "isc2.cc.d1.cia-triad"
+      ]
+    }
+  ]
+}

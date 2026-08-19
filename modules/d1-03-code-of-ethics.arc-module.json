@@ -1,0 +1,171 @@
+{
+  "id": "isc2.cc.d1.code-of-ethics",
+  "version": "1.0.0",
+  "domain": "ISC2 Certified in Cybersecurity — Domain 1: Security Principles",
+  "dag_branch": "cc.d1.principles",
+  "profile": "CONCEPT",
+  "prerequisites": [
+    "isc2.cc.d1.cia-triad"
+  ],
+  "invalidation_policy": "REVIEW",
+  "provenance": {
+    "authored_by": "hybrid",
+    "generator_id": "arc-aegis-phase1/4.3.0",
+    "reviewed_by": null,
+    "reviewed_at": null
+  },
+  "content": {
+    "title": "The ISC2 Code of Ethics",
+    "prequestion": {
+      "prompt": "Before reading: your employer asks you to stay quiet about a flaw that puts the public at mild risk. Whose interest wins?",
+      "options": [
+        "The employer's — they are your principal and they pay you",
+        "The public's — society outranks duty to principals",
+        "Whichever causes less disruption",
+        "Not sure"
+      ]
+    },
+    "reading_markdown": "## Ethics is a condition of certification\n\nEvery ISC2 credential, CC through CISSP, requires you to commit to four canons. Violating one can cost you the certification through a peer-review panel. This is not a footnote — it is enforceable.\n\n## The four canons, in priority order\n\n1. **Canon I** — Protect society, the common good, necessary public trust and confidence, and the infrastructure.\n2. **Canon II** — Act honourably, honestly, justly, responsibly and legally.\n3. **Canon III** — Provide diligent and competent service to principals (your employers and clients).\n4. **Canon IV** — Advance and protect the profession.\n\n**The order matters.** ISC2 publishes four *mandatory* canons in this fixed sequence and states that they are not equal — where they conflict, you resolve it by giving more weight to the higher-ranked one. Society before your client. Your own integrity before what your client would prefer. If you remember one thing, remember that Canon I outranks Canon III; that single relationship settles most of the hard cases.\n\nWorth knowing precisely: the published Code does not spell out a numbered precedence *rule*, so treat \"lower number wins\" as the resolution method ISC2 expects and the exam tests, rather than as a line you can quote from the Code itself.\n\nAnd keep two different questions apart. **Which canon is this situation about?** is classification — answered by subject matter. **Which canon wins?** is conflict resolution — answered by rank, and only when two canons demand different actions. Refusing to falsify an audit report is *about* your own honesty (II); it does not become Canon I merely because audit reports also support public trust.\n\n## What each one actually asks of you\n\n**Canon I** is about consequences beyond the contract: report the dangerous flaw, do not sit on it because disclosure is awkward. **Canon II** is about your own conduct wherever you are: do not lie, do not break the law, and do not peddle fear, uncertainty and doubt to make a sale. **Canon III** is about what you owe the people who hired you: work within your qualifications, say so when you are out of your depth, avoid conflicts of interest, and protect their confidentiality. **Canon IV** is about the field itself: keep your skills current, mentor, and do not associate with people who damage the profession — exam cheating is the standard example.\n\n## Who can complain\n\nStanding follows the canons. **Anyone** may report a Canon I or II breach. Only **principals** — employers and clients — may report Canon III. Only **other members** may report Canon IV. And observing a violation and staying silent is itself a Canon IV breach.\n\n## Worked example\n\nA vendor ignores your reports of a flaw in medical-device firmware while patients remain at risk. Canon III says serve your client; Canon I says protect the public. Canon I is lower-numbered, so it wins: you keep pressing, responsibly, until it is fixed."
+  },
+  "gate": {
+    "type": "CLASSIFY",
+    "scoring_class": "B",
+    "expected_duration_s": 150,
+    "pass_threshold": {
+      "min_correct": 7,
+      "item_count": 8
+    },
+    "prompt": "Each situation is most directly about one canon's subject matter: public safety and the infrastructure (I), your own honesty and legality (II), what you owe the client who hired you (III), or the standing of the profession (IV). Sort them. Note that ranking settles conflicts of *duty* — it is not how you classify what a situation is about.",
+    "hints": [
+      "Ask who is primarily being protected: the public, your own integrity, the client who hired you, or the profession itself.",
+      "More than one canon can be true of the same act. Ask which one the situation is fundamentally *about*, not which others it also touches."
+    ],
+    "validation_payload": {
+      "accuracy_metric": "bucket_assignment",
+      "buckets": {
+        "Canon I — protect society and the infrastructure": [
+          "A vendor ignores your reports of a medical-device firmware flaw while patients remain at risk, and you keep pressing for a fix",
+          "You report a vulnerability you found in a city's emergency dispatch system"
+        ],
+        "Canon II — act honourably, honestly, justly, responsibly and legally": [
+          "You refuse to scan a network you have no written authorisation to test",
+          "You decline to exaggerate a threat in a sales pitch to frighten a prospect into buying"
+        ],
+        "Canon III — provide diligent and competent service to principals": [
+          "You tell a client up front that a specialised cloud engagement is beyond what you are qualified to deliver",
+          "You turn down a second client whose work would create a conflict of interest with your current engagement"
+        ],
+        "Canon IV — advance and protect the profession": [
+          "You report a peer who is selling leaked ISC2 exam questions to candidates",
+          "You spend an afternoon each month mentoring junior analysts with no billable work attached"
+        ]
+      },
+      "normalisation": {
+        "strip_diacritics": false
+      }
+    },
+    "accessible_equivalent": "Keyboard-navigable list pairing each situation with one of the four canons, each canon labelled with its full text; scored identically as bucket_assignment."
+  },
+  "analog_synthesis": {
+    "taxonomy_type": "COMPARATIVE",
+    "prompt": "Away from the screen, take a case where two canons genuinely pull against each other. Use this one, or your own: a client leans on you to overstate their security posture in an audit report — that is your own honesty (II) against what you owe the principal who hired you (III), and because third parties will rely on that report, arguably public trust (I) as well. On paper: name every canon in play, state what each demands, decide which wins and why, and write the sentence you would actually say to the client. Do not consult the lesson.",
+    "calibration_question": "Before checking: did you resolve the conflict by the canons' priority order, or by which choice was less uncomfortable — and would your answer change if the public risk were severe rather than mild?",
+    "accessible_equivalent": "Talk the same case through aloud as a recorded or transcribed response, or debate it with a partner reading the four canons from the printed list."
+  },
+  "drills": [
+    {
+      "id": "isc2.cc.d1.ethics.d1.cloze",
+      "type": "CLOZE",
+      "scoring_class": "B",
+      "interval_tier": "RECOGNITION",
+      "expected_duration_s": 50,
+      "pass_threshold": {
+        "min_correct": 3,
+        "item_count": 4
+      },
+      "prompt": "Complete the canon each phrase belongs to, by number (I, II, III or IV): protect society and the infrastructure ______; act honourably, honestly and legally ______; diligent and competent service to principals ______; advance and protect the profession ______.",
+      "validation_payload": {
+        "accuracy_metric": "correct_slot_ratio",
+        "accept": [
+          [
+            "i",
+            "1",
+            "canon i"
+          ],
+          [
+            "ii",
+            "2",
+            "canon ii"
+          ],
+          [
+            "iii",
+            "3",
+            "canon iii"
+          ],
+          [
+            "iv",
+            "4",
+            "canon iv"
+          ]
+        ],
+        "normalisation": {
+          "strip_diacritics": false
+        }
+      },
+      "accessible_equivalent": "The same four phrases as a screen-reader accessible select-one list drawn from {Canon I, Canon II, Canon III, Canon IV}.",
+      "explanation": "The numbering is not arbitrary — it is the priority order, so knowing which is which is what lets you resolve a conflict."
+    },
+    {
+      "id": "isc2.cc.d1.ethics.d7.order",
+      "type": "ORDER_SEQUENCE",
+      "scoring_class": "B",
+      "interval_tier": "APPLICATION",
+      "expected_duration_s": 60,
+      "pass_threshold": {
+        "min_correct": 6,
+        "item_count": 6
+      },
+      "prompt": "Put the four canons in the order ISC2 gives them — highest priority first. When two conflict, the earlier one wins.",
+      "validation_payload": {
+        "accuracy_metric": "kendall_tau",
+        "correct": [
+          "Protect society, the common good, and the infrastructure",
+          "Act honourably, honestly, justly, responsibly and legally",
+          "Provide diligent and competent service to principals",
+          "Advance and protect the profession"
+        ]
+      },
+      "accessible_equivalent": "The four canons as a keyboard-reorderable list with 'move up' / 'move down' controls and screen-reader-announced positions; scored identically as kendall_tau.",
+      "explanation": "Society, then your own integrity, then your client, then the profession. Every conflict question in the exam bank resolves by reading this order off."
+    },
+    {
+      "id": "isc2.cc.d1.ethics.d30.freerecall",
+      "type": "FREE_RECALL",
+      "scoring_class": "C",
+      "interval_tier": "GENERATIVE",
+      "expected_duration_s": 180,
+      "pass_threshold": {
+        "min_correct": 5,
+        "item_count": 7
+      },
+      "prompt": "Without notes: state all four canons in priority order; explain what the ordering is for and give a case where Canon I overrides Canon III; and say who has standing to report a breach of each canon.",
+      "validation_payload": {
+        "accuracy_metric": "keyword_density",
+        "required_keywords": [
+          "society",
+          "infrastructure",
+          "honestly",
+          "legally",
+          "principals",
+          "profession",
+          "priority"
+        ],
+        "normalisation": {
+          "strip_diacritics": false
+        }
+      },
+      "accessible_equivalent": "Spoken response transcribed via speech-to-text and scored on the same keyword set.",
+      "explanation": "Reciting the four canons is recall. Being able to say why they are numbered, and to work a conflict through from the ordering, is the marker that you could actually use them under pressure."
+    }
+  ]
+}

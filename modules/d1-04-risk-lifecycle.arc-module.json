@@ -1,0 +1,160 @@
+{
+  "id": "isc2.cc.d1.risk-lifecycle",
+  "version": "1.0.0",
+  "domain": "ISC2 Certified in Cybersecurity — Domain 1: Security Principles",
+  "dag_branch": "cc.d1.principles",
+  "profile": "CONCEPT",
+  "prerequisites": [
+    "isc2.cc.d1.cia-triad"
+  ],
+  "invalidation_policy": "REVIEW",
+  "provenance": {
+    "authored_by": "hybrid",
+    "generator_id": "arc-aegis-phase1/4.3.0",
+    "reviewed_by": null,
+    "reviewed_at": null
+  },
+  "content": {
+    "title": "The Risk Management Lifecycle",
+    "prequestion": {
+      "prompt": "Before reading: your company buys cyber-insurance that covers the cost of a breach. Has the *likelihood* of a breach gone down?",
+      "options": [
+        "Yes — transferring the risk reduces the chance it happens",
+        "No — the cost is covered, but the attacker is unaffected",
+        "Only if the insurer requires security controls",
+        "Not sure"
+      ]
+    },
+    "reading_markdown": "## Three words people mix up\n\n- **Threat** — what could go wrong: a thief, ransomware, a flood, a careless employee.\n- **Vulnerability** — the weakness it could exploit: an unlocked door, unpatched software, a reused password.\n- **Risk** — the *combination*: how likely a threat is to exploit a vulnerability, and how badly it would hurt.\n\nAn unpatched server is not a risk. It is a **vulnerability**. It becomes a risk once you name what could exploit it and what that would cost you. Getting this vocabulary right is not pedantry — a register full of \"risks\" that are actually vulnerabilities cannot be ranked, because nothing in it has a likelihood or an impact.\n\n## The process\n\n```\nIDENTIFY  ->  ASSESS  ->  TREAT\n(asset,      (likelihood   (choose a\n threat,      x impact)     response)\n vuln)\n```\n\n**Identify** the asset, the threats to it, and the vulnerabilities those threats could use. **Assess** each risk on likelihood x impact so you can rank them. Then **treat** the ones that matter. You will never treat all of them, and pretending otherwise is how a security programme spends its budget on trivia while the real exposure sits untouched.\n\n## The four treatments\n\n- **Mitigate** — add a control that reduces likelihood or impact. The usual answer.\n- **Transfer** — move the *financial* impact elsewhere: insurance, or a contractual liability clause.\n- **Avoid** — stop doing the risky thing at all.\n- **Accept** — knowingly live with it, documented and signed off.\n\nThe trap: **transfer does not reduce the chance of a breach.** Cyber-insurance pays for the damage; it does not deter the attacker. Only *mitigate* and *avoid* change likelihood. And accepting a risk is a perfectly legitimate choice — but only when it is a decision on the record with a name against it, not a shrug.\n\nChoosing the treatment is not the end of it. A control that was bought but never switched on, or switched on but never checked, has changed nothing. **Apply it, then verify it actually works** — the encryption is enforced on every laptop, not just available on them.\n\n## Residual risk\n\nWhatever remains after your controls is **residual risk**. There is always some. Someone with authority must accept it explicitly. Unowned residual risk is how an organisation discovers, in the post-incident review, that nobody ever actually decided.\n\n## Worked example\n\nLaptops get stolen (threat) and their disks are unencrypted (vulnerability). Assessed: moderate likelihood, high impact, because they hold customer data. You **mitigate** with full-disk encryption. The remaining chance that a laptop is taken while unlocked and logged in is **residual risk** — which the head of IT formally accepts, in writing."
+  },
+  "gate": {
+    "type": "ORDER_SEQUENCE",
+    "scoring_class": "B",
+    "expected_duration_s": 75,
+    "pass_threshold": {
+      "min_correct": 10,
+      "item_count": 10
+    },
+    "prompt": "A new risk has just been raised: an internet-facing server is running unpatched software. Put the five steps of handling it in the order you would actually perform them.",
+    "hints": [
+      "You cannot rank a risk before you have judged how likely it is and what it would cost.",
+      "Choosing a treatment is not the last step — something always remains afterwards, and it needs a named owner."
+    ],
+    "validation_payload": {
+      "accuracy_metric": "kendall_tau",
+      "correct": [
+        "Identify the asset, the threats to it, and the vulnerabilities they could exploit",
+        "Assess likelihood x impact and rank it against the other risks",
+        "Choose a treatment: mitigate, transfer, avoid or accept",
+        "Apply the control and verify it actually works",
+        "Document the residual risk and have it formally accepted"
+      ]
+    },
+    "accessible_equivalent": "The same five steps as a keyboard-reorderable list with 'move up' / 'move down' controls and a screen-reader-announced position ('step 2 of 5'); scored identically as kendall_tau."
+  },
+  "analog_synthesis": {
+    "taxonomy_type": "SEQUENTIAL",
+    "prompt": "Away from the screen, pick one real risk in your own life — a laptop with no backup, a reused password, an unlocked side door. On paper, run it through all five steps: name the asset, the threat, the vulnerability; judge likelihood and impact; pick one of the four treatments and say why; then write the residual risk that is left over and who accepts it. One page, no notes.",
+    "calibration_question": "Before checking: at which step did you first have to guess rather than recall — and was your treatment a genuine mitigation, or did you write down 'accept' because you did not want to change anything?",
+    "accessible_equivalent": "Dictate the same five steps as a recorded or transcribed spoken response, or work through them aloud with a partner using the printed step list as a prompt."
+  },
+  "drills": [
+    {
+      "id": "isc2.cc.d1.risk.d1.cloze",
+      "type": "CLOZE",
+      "scoring_class": "B",
+      "interval_tier": "RECOGNITION",
+      "expected_duration_s": 45,
+      "pass_threshold": {
+        "min_correct": 2,
+        "item_count": 3
+      },
+      "prompt": "Complete: An unpatched web server is a ______. The ransomware crew who would exploit it is a ______. How likely they are to succeed, times what it would cost you, is the ______.",
+      "validation_payload": {
+        "accuracy_metric": "correct_slot_ratio",
+        "accept": [
+          [
+            "vulnerability"
+          ],
+          [
+            "threat"
+          ],
+          [
+            "risk"
+          ]
+        ],
+        "normalisation": {
+          "strip_diacritics": false
+        }
+      },
+      "accessible_equivalent": "The same three prompts as a screen-reader accessible select-one list drawn from {threat, vulnerability, risk, control}.",
+      "explanation": "The weakness is the vulnerability; the actor who could use it is the threat; likelihood x impact is the risk. A register that confuses these cannot be ranked."
+    },
+    {
+      "id": "isc2.cc.d1.risk.d7.classify",
+      "type": "CLASSIFY",
+      "scoring_class": "B",
+      "interval_tier": "APPLICATION",
+      "expected_duration_s": 90,
+      "pass_threshold": {
+        "min_correct": 5,
+        "item_count": 6
+      },
+      "prompt": "Sort each decision under the risk treatment it represents.",
+      "validation_payload": {
+        "accuracy_metric": "bucket_assignment",
+        "buckets": {
+          "Mitigate": [
+            "Roll out full-disk encryption on every laptop",
+            "Enforce MFA on all remote access"
+          ],
+          "Transfer": [
+            "Buy a cyber-insurance policy covering breach response costs",
+            "Add a clause making the hosting provider financially responsible for data loss"
+          ],
+          "Avoid": [
+            "Discontinue the legacy file-sharing service entirely"
+          ],
+          "Accept": [
+            "Document the remaining chance of a laptop stolen while unlocked, and have the head of IT sign it off"
+          ]
+        },
+        "normalisation": {
+          "strip_diacritics": false
+        }
+      },
+      "accessible_equivalent": "Keyboard-navigable list pairing each decision with one of {Mitigate, Transfer, Avoid, Accept}; scored identically as bucket_assignment.",
+      "explanation": "Insurance and liability clauses move the cost, not the likelihood — that is transfer, not mitigation. Shutting the service down is the only option here that removes the exposure rather than reducing or funding it."
+    },
+    {
+      "id": "isc2.cc.d1.risk.d30.freerecall",
+      "type": "FREE_RECALL",
+      "scoring_class": "C",
+      "interval_tier": "GENERATIVE",
+      "expected_duration_s": 180,
+      "pass_threshold": {
+        "min_correct": 6,
+        "item_count": 8
+      },
+      "prompt": "Without notes: define threat, vulnerability and risk and say how they differ; name all four treatments; explain why buying insurance does not make a breach less likely; and say what is left over after your controls and who has to accept it.",
+      "validation_payload": {
+        "accuracy_metric": "keyword_density",
+        "required_keywords": [
+          "threat",
+          "vulnerability",
+          "risk",
+          "mitigate",
+          "transfer",
+          "avoid",
+          "accept",
+          "residual"
+        ],
+        "normalisation": {
+          "strip_diacritics": false
+        }
+      },
+      "accessible_equivalent": "Spoken response transcribed via speech-to-text and scored on the same keyword set.",
+      "explanation": "Being able to say unprompted that transfer moves impact but not likelihood — and that residual risk needs a named owner — is the marker that this has become a decision tool rather than four memorised words."
+    }
+  ]
+}

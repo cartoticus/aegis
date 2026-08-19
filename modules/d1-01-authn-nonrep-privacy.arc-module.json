@@ -1,0 +1,168 @@
+{
+  "id": "isc2.cc.d1.authn-nonrep-privacy",
+  "version": "1.0.0",
+  "domain": "ISC2 Certified in Cybersecurity — Domain 1: Security Principles",
+  "dag_branch": "cc.d1.principles",
+  "profile": "CONCEPT",
+  "prerequisites": [
+    "isc2.cc.d1.cia-triad"
+  ],
+  "invalidation_policy": "REVIEW",
+  "provenance": {
+    "authored_by": "hybrid",
+    "generator_id": "arc-aegis-phase1/4.3.0",
+    "reviewed_by": null,
+    "reviewed_at": null
+  },
+  "content": {
+    "title": "Authentication, Non-repudiation & Privacy",
+    "prequestion": {
+      "prompt": "Before reading: a system logs you in with a password, then a second password. Is that multi-factor authentication?",
+      "options": [
+        "Yes — two separate secrets is two factors",
+        "No — both are the same kind of factor",
+        "Only if the second password is longer",
+        "Not sure"
+      ]
+    },
+    "reading_markdown": "## Three ideas about *who* is acting\n\nThese three govern identity and accountability. They are separate questions, and mixing them up is one of the most common Domain 1 errors.\n\n## Authentication — proving identity\n\nYou prove who you are using one or more **factors**:\n\n- Something you **know** — a password, a PIN, an answer to a security question.\n- Something you **have** — a phone, a hardware token, a smart card.\n- Something you **are** — a fingerprint, a face, an iris.\n\nCombining factors from **different categories** is **multi-factor authentication (MFA)**. Two passwords are not MFA — they are the same factor twice, and one phishing page captures both. A password plus a code from your phone is MFA, because stealing the password alone gets the attacker nowhere.\n\nDo not confuse authentication with **authorization**. Authentication asks *who are you*; authorization asks *what are you allowed to do*, and it happens afterwards. A correctly authenticated user can still be denied.\n\n## Non-repudiation — you cannot deny it\n\nNon-repudiation is the assurance that someone cannot credibly deny an action they took. It is built from **digital signatures** and trustworthy, tamper-evident **logging**. This is what makes accountability real: without it, every investigation ends in \"prove it was me.\"\n\n## Privacy — control over personal data\n\nPrivacy is an individual's control over their own personal information. It drives law — GDPR, HIPAA — and one practical principle above all: **collect only the data you actually need**. Data you never collected cannot be breached, subpoenaed or leaked. Privacy and security overlap but are not the same: a system can be perfectly secure and still invade privacy by hoovering up data it has no business holding.\n\n## Worked example\n\nYou sign in with a password *and* a code from your phone — two different factors, so this is **authentication** by MFA. The system signs and logs your approval of a payment, so you cannot later deny it — **non-repudiation**. And it stored only the fields the payment actually required — **privacy**."
+  },
+  "gate": {
+    "type": "CLASSIFY",
+    "scoring_class": "B",
+    "expected_duration_s": 100,
+    "pass_threshold": {
+      "min_correct": 5,
+      "item_count": 6
+    },
+    "prompt": "Sort each measure under the property it primarily provides.",
+    "hints": [
+      "Ask what each measure exists *for*: establishing who someone is, making an action undeniable afterwards, or holding less data in the first place.",
+      "Several of these produce a side effect that belongs to a different bucket. Sort by the reason the measure was put there, not by everything it happens to help with."
+    ],
+    "validation_payload": {
+      "accuracy_metric": "bucket_assignment",
+      "buckets": {
+        "Authentication": [
+          "Requiring a password plus a one-time code from the user's phone",
+          "Unlocking a workstation with a registered fingerprint"
+        ],
+        "Non-repudiation": [
+          "Digitally signing an approved payment so it traces to one named employee",
+          "Keeping a tamper-evident audit log of who changed each record"
+        ],
+        "Privacy": [
+          "Collecting only the data fields the service actually needs",
+          "Honouring a customer's request to erase what you hold about them"
+        ]
+      },
+      "normalisation": {
+        "strip_diacritics": false
+      }
+    },
+    "accessible_equivalent": "Keyboard-navigable list pairing each measure with one of {Authentication, Non-repudiation, Privacy}; scored identically as bucket_assignment."
+  },
+  "analog_synthesis": {
+    "taxonomy_type": "COMPARATIVE",
+    "prompt": "Away from the screen, pick one account you use every day. On paper, write down every factor it currently asks you for and label each one know / have / are. Then answer in writing: is it genuinely multi-factor, or the same factor twice? What evidence would exist if someone else used it — could you prove it was not you? And what personal data does it hold that it does not need?",
+    "calibration_question": "Before checking: did you count a security question or a memorable date as a separate factor from your password — and if so, what does a single phishing page capture?",
+    "accessible_equivalent": "Work through the same three questions aloud as a recorded or transcribed spoken response, or with a partner reading the prompts."
+  },
+  "drills": [
+    {
+      "id": "isc2.cc.d1.anp.d1.cloze",
+      "type": "CLOZE",
+      "scoring_class": "B",
+      "interval_tier": "RECOGNITION",
+      "expected_duration_s": 45,
+      "pass_threshold": {
+        "min_correct": 2,
+        "item_count": 3
+      },
+      "prompt": "Complete: A password is something you ______. A hardware token is something you ______. A fingerprint is something you ______.",
+      "validation_payload": {
+        "accuracy_metric": "correct_slot_ratio",
+        "accept": [
+          [
+            "know"
+          ],
+          [
+            "have"
+          ],
+          [
+            "are"
+          ]
+        ],
+        "normalisation": {
+          "strip_diacritics": false
+        }
+      },
+      "accessible_equivalent": "The same three prompts as a screen-reader accessible select-one list drawn from {know, have, are}.",
+      "explanation": "Know / have / are are the three factor categories. Two items from the same category are not multi-factor, however different they feel."
+    },
+    {
+      "id": "isc2.cc.d1.anp.d7.classify",
+      "type": "CLASSIFY",
+      "scoring_class": "B",
+      "interval_tier": "APPLICATION",
+      "expected_duration_s": 90,
+      "pass_threshold": {
+        "min_correct": 5,
+        "item_count": 6
+      },
+      "prompt": "For each sign-in step, decide which factor category it draws on. Ask what an attacker would have to get hold of: something stored only in your memory, a specific enrolled device, or a measurement of your body. A code is not a memory factor just because it can be read out — what was enrolled is the device that generates it.",
+      "validation_payload": {
+        "accuracy_metric": "bucket_assignment",
+        "buckets": {
+          "Something you know": [
+            "The answer to the security question you chose when you opened the account",
+            "The master passphrase that unlocks your password manager"
+          ],
+          "Something you have": [
+            "A rotating code read from an authenticator app registered to one handset",
+            "A signing key that never leaves the TPM chip soldered to your laptop"
+          ],
+          "Something you are": [
+            "An iris pattern the door camera measures against a stored template",
+            "A fingerprint the reader matches against an enrolled scan"
+          ]
+        },
+        "normalisation": {
+          "strip_diacritics": false
+        }
+      },
+      "accessible_equivalent": "Keyboard-navigable list pairing each method with one of {Something you know, Something you have, Something you are}; scored identically as bucket_assignment.",
+      "explanation": "A key held in a TPM is something you *have* — the chip holds it and cannot export it, so possessing the laptop is the factor. A security question is still something you know, which is why pairing it with a password is single-factor twice over and falls to one phishing page."
+    },
+    {
+      "id": "isc2.cc.d1.anp.d30.freerecall",
+      "type": "FREE_RECALL",
+      "scoring_class": "C",
+      "interval_tier": "GENERATIVE",
+      "expected_duration_s": 180,
+      "pass_threshold": {
+        "min_correct": 6,
+        "item_count": 8
+      },
+      "prompt": "Without notes: name the three authentication factor categories with an example of each; explain the difference between authentication and authorization; say what non-repudiation gives you and the two mechanisms that deliver it; and state the one practical privacy principle that reduces breach impact most.",
+      "validation_payload": {
+        "accuracy_metric": "keyword_density",
+        "required_keywords": [
+          "know",
+          "have",
+          "are",
+          "authorization",
+          "non-repudiation",
+          "signature",
+          "logging",
+          "privacy"
+        ],
+        "normalisation": {
+          "strip_diacritics": false
+        }
+      },
+      "accessible_equivalent": "Spoken response transcribed via speech-to-text and scored on the same keyword set.",
+      "explanation": "Stating unprompted that authorization happens *after* authentication, and that data never collected cannot be breached, is the marker that these are three distinct tools rather than one blurred idea about logging in."
+    }
+  ]
+}
