@@ -533,6 +533,30 @@ li.hidden{display:none}
 .arc-btn{flex:none;background:rgba(232,176,75,.1);border:1px solid rgba(232,176,75,.4);color:var(--gold);font-family:var(--mono);font-size:10px;letter-spacing:.05em;padding:4px 9px;border-radius:7px;cursor:pointer;margin-left:8px;margin-top:1px;white-space:nowrap}
 .arc-btn:hover{background:rgba(232,176,75,.2)}
 .arc-note{background:rgba(240,88,107,.06);border:1px solid rgba(240,88,107,.25);border-radius:10px;padding:11px 14px;font-size:12.5px;color:var(--muted);margin-top:12px}
+/* ---------- v1.7.0 · Step A: meters, welcome card, explainer, exits ---------- */
+.arcm{min-width:0}
+.arcm-row{margin-top:14px;min-width:0}
+.arcm-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.arcm-top b{font-family:var(--disp);font-size:14px}
+.arcm-pct{font-family:var(--mono);font-size:13px;color:var(--text)}
+.arcm-sub{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.45}
+.arcm .bar{margin-top:8px}
+.arcm-two{display:flex;height:7px;border-radius:99px;background:var(--line-soft);overflow:hidden;margin-top:8px}
+.arcm-two i{display:block;height:100%}
+.arcm-two .m{background:var(--gold)}
+.arcm-two .g{background:rgba(232,176,75,.38)}
+.arcm-split{background:none;border:0;padding:0;margin:0;width:100%;text-align:left;color:inherit;font:inherit;cursor:pointer;display:block}
+.arcm-detail{font-family:var(--mono);font-size:11px;color:var(--muted-2);margin-top:6px;overflow-wrap:anywhere}
+.arcm-honest .arcm-pct{color:var(--gold);font-size:15px}
+.welcome-card{margin-bottom:16px;border-color:rgba(232,176,75,.4);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.welcome-card .wc-main{min-width:0;flex:1 1 220px}
+.welcome-card .wc-main h3{font-size:16px;margin-top:6px;overflow-wrap:anywhere}
+.welcome-card .wc-main p{margin:6px 0 0;font-size:13px;overflow-wrap:anywhere}
+.welcome-card .wc-act{display:flex;gap:8px;flex-wrap:wrap}
+.arc-exits{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.arc-exits .btn{justify-content:flex-start;text-align:left;white-space:normal}
+.arc-block{background:rgba(127,162,224,.07);border:1px solid rgba(127,162,224,.3);border-radius:10px;padding:11px 14px;font-size:13px;color:var(--muted);margin-top:12px}
+.arc-foot.wrap-ok{flex-wrap:wrap}
 /* ---------- v1.6.1 · phone + narrow-column layout ---------- */
 .wordmark .sub{white-space:nowrap}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
@@ -584,7 +608,7 @@ li.hidden{display:none}
         </svg>
         <div class="wordmark">
           <span class="name">AE<b>GIS</b></span>
-          <span class="sub"><span class="sub-tag">ISC2-Aligned · </span>v1.6.1</span>
+          <span class="sub"><span class="sub-tag">ISC2-Aligned · </span>v1.7.0</span>
         </div>
       </div>
       <div class="top-spacer"></div>
@@ -897,6 +921,7 @@ li.hidden{display:none}
         <h4 style="font-size:14px">ARC learning mode <span class="pill gold">beta</span></h4>
         <p class="muted" style="font-size:12.5px;margin:6px 0 0">Domain 1 only. Replaces the &ldquo;mark complete&rdquo; click with a validated gate: you read, you prove it, you wait a day, then you retrieve it on a schedule. Your existing progress is untouched either way, and reading stays open whether or not you clear a gate.</p>
         <div class="mono" id="arcStatus" style="font-size:11px;color:var(--muted-2);margin-top:9px"></div>
+        <a href="#" id="explainerLink" style="display:inline-block;font-size:12.5px;margin-top:9px">How progress works: reading, gates &amp; mastery →</a>
       </div>
       <button class="btn ghost sm" id="arcToggle">Enable</button>
     </div>
@@ -930,6 +955,17 @@ li.hidden{display:none}
     <div class="lesson-foot">
       <span id="wnVer"></span>
       <button class="btn" id="wnDone">Let's go →</button>
+    </div>
+  </div>
+</div>
+
+<div class="lesson-overlay" id="explainerOverlay">
+  <div class="lesson-modal">
+    <button class="lesson-close" id="explainerClose" aria-label="Close">✕</button>
+    <div class="lesson-content" id="explainerContent"></div>
+    <div class="lesson-foot">
+      <span>You can reopen this any time from the Progress tab.</span>
+      <button class="btn" id="explainerDone">Got it →</button>
     </div>
   </div>
 </div>
@@ -974,8 +1010,17 @@ const KEY='aegis.state.v1';
 /* ============================================================
    VERSION + CHANGELOG (drives the "What's new" screen)
    ============================================================ */
-const APP_VERSION='1.6.1';
+const APP_VERSION='1.7.0';
 const CHANGELOG=[
+ {v:'1.7.0',date:'Nov 2026',items:[
+   '<b>Overall % is now Mastered-only and may read lower.</b> With ARC learning mode on, the Command dashboard shows a Domain 1 panel with three meters. <b>Overall</b> counts only objectives you have <i>mastered</i> (a review interval past 60 days), with no partial credit. It is meant to read lower than your reading progress and the classic percentage. The classic all-domain dashboard is unchanged.',
+   'The other two meters: <b>Reading</b> (what you have read, not what you have retained) and <b>ARC</b>, a two-tone bar of gates cleared vs mastered. Tap the bar for the exact split.',
+   'A <b>Today</b> card on the dashboard, once a day: reviews that are due come first, then a module that has just finished its 24-hour wait, then where you left off, then the next objective. Dismiss it any time.',
+   'A short <b>How progress works</b> explainer (reading vs gates vs mastery, the 24-hour wait, what "overdue" means). It opens on your very first visit and can be reopened from the Progress tab.',
+   '<b>Overdue reviews now pause new ARC material.</b> With 3 or more reviews overdue, or any one more than 48 hours late, starting a new module waits until you catch up. AEGIS says why and links straight to the most overdue review. Reading, the glossary and the Range are never blocked.',
+   'The 24-hour <b>consolidation screen</b> is no longer a dead end. It now links to another objective that is ready, the glossary and the Ethics Tribunal.',
+   'All twelve Domain 1 <b>gate hints</b> were reviewed blind, and ten were rewritten. Each hint now gives you a method to apply instead of restating the question. Hints still cost scheduling quality, so they are now worth that cost.'
+ ]},
  {v:'1.6.1',date:'Nov 2026',items:[
    '<b>Reorder reviews can be answered again.</b> On the up/down-arrow review questions the arrows worked, but the app undid each move the instant it was made, so the answer could never change. Your in-progress answer now belongs to the question, not to the screen redraw.',
    'Same widget: keyboard focus follows the item you moved, each move is announced to screen readers, and the first &uarr; and last &darr; are disabled instead of looking pressable.',
@@ -1043,7 +1088,7 @@ const today=()=>new Date().toISOString().slice(0,10);
 function loadState(){
   const s=Store.get(KEY)||{};
   return Object.assign({objectives:{},drills:{},quizBest:{},domQuiz:{},streak:{count:0,last:null},
-    ethicsAccepted:false,notes:'',srs:[],weekStart:today(),weekCount:0,lastSeenVersion:null,termsMastered:{},
+    ethicsAccepted:false,notes:'',srs:[],weekStart:today(),weekCount:0,lastSeenVersion:null,lastWelcomeSeen:null,termsMastered:{},
     arc:{enabled:false,fsm:{},cards:{},log:[]}},s);
 }
 let state=loadState();
@@ -1497,7 +1542,14 @@ function arcSubmitDrill(id, drill, draft) {
 function arcTick(id) {
   const s = arcFsm(id);
   if (s.state !== 'CONSOLIDATION_PENDING') return s;
-  return arcStep(id, { type: 'CLOCK_TICK', now: Date.now() });
+  const after = arcStep(id, { type: 'CLOCK_TICK', now: Date.now() });
+  // v1.7.0: record the moment consolidation resolves, so the welcome card can
+  // say "just finished consolidating" from the log instead of new state.
+  if (after.state !== 'CONSOLIDATION_PENDING') {
+    arcCfg().log.push({ module_id: id, site: 'consolidation', ts: new Date().toISOString(), state_after: after.state });
+    save();
+  }
+  return after;
 }
 function arcConsolidationRemainingMs(id) {
   const s = arcFsm(id);
@@ -2287,6 +2339,7 @@ function render(){
 
   // progress cards
   renderProgress();
+  renderArcDash();   // v1.7.0: Domain-1 meters (ARC on + corpus ready only)
 }
 
 /* ---------- view switching ---------- */
@@ -2294,6 +2347,7 @@ function switchView(v){
   $$('.view').forEach(s=>s.classList.toggle('active',s.id==='view-'+v));
   $$('.tab').forEach(t=>t.classList.toggle('active',t.dataset.view===v));
   window.scrollTo({top:0,behavior:'smooth'});
+  if(v==='dash')maybeShowWelcome();   // v1.7.0: once per calendar day
 }
 $('#tabs').addEventListener('click',e=>{const t=e.target.closest('.tab');if(t)switchView(t.dataset.view);});
 
@@ -3490,9 +3544,16 @@ function renderArc(){
 
   if(s.state==='LOCKED'){
     const ok=arcPrereqsMet(id);
+    // v1.7.0 overdue-review gate: blocks NEW material only, always says why and
+    // offers the way out. A disabled control that looks live is a locked door.
+    const gateNew=ok?arcOverdueBlocksNewMaterial():{blocked:false};
+    const worst=gateNew.blocked?arcMostOverdue():null;
+    const worstM=worst&&arcModule(worst.id);
     c.innerHTML=head+`<p class="muted">${ok?'This module is ready.':'Complete its prerequisite first — the foundation module has to be in your review queue before this one opens.'}</p>
-      <div class="arc-foot"><button class="btn" id="arcGo" ${ok?'':'disabled'}>Begin →</button></div>`;
-    if(ok)$('#arcGo').onclick=()=>{arcStep(id,{type:'PREREQ_RESOLVED'});renderArc();};
+      ${gateNew.blocked?`<div class="arc-block" id="arcBlocked"><b>New material is paused: ${escHtml(gateNew.reason)}.</b> Clear your due reviews first — reviewing on time is what makes the earlier modules stick. Reading, the glossary and the Range stay open.</div>`:''}
+      <div class="arc-foot wrap-ok">${worstM?`<button class="btn cyan" id="arcReviewFirst">Review ${escHtml(worstM.content.title)} →</button>`:''}<button class="btn" id="arcGo" ${ok&&!gateNew.blocked?'':'disabled'}>Begin →</button></div>`;
+    if(ok&&!gateNew.blocked)$('#arcGo').onclick=()=>{arcStep(id,{type:'PREREQ_RESOLVED'});renderArc();};
+    if(worstM)$('#arcReviewFirst').onclick=()=>openArcModule(worst.id);
     return;
   }
   if(s.state==='PHASE_0_PREQUESTION'){
@@ -3576,8 +3637,10 @@ function renderArc(){
       <p>You have done the work. Sleep is the next step, and that is not a figure of speech — the 24-hour wait is what turns this into spaced retrieval rather than a same-day repeat.</p>
       <div class="arc-count">${h}h ${mi}m</div>
       <p class="muted" style="font-size:13px">The first review unlocks then. Nothing you do here can shorten it.</p>
+      ${arcWaitExitsHTML(id)}
       <div class="arc-foot"><button class="btn ghost" id="arcClose2">Close</button></div>`;
     $('#arcClose2').onclick=closeArc;
+    arcWireWaitExits(c);
     return;
   }
   if(s.state==='PHASE_4_SPACED_QUEUE'||s.state==='MASTERED'){
@@ -3655,6 +3718,182 @@ function renderArcSettings(){
 }
 
 /* ============================================================
+   v1.7.0 · STEP A — Domain-1 progress meters, overdue-review gate,
+   welcome-back card, first-open explainer, consolidation exits.
+   Additive only: domainPct/vocabPct/overallPct/rankFor, arc-core, FSRS,
+   scoring and the gate are untouched. Everything here READS the FSM.
+   ============================================================ */
+const ARC_PAST_GATE=['PHASE_3_SYNTHESIS','CONSOLIDATION_PENDING','PHASE_4_SPACED_QUEUE','MASTERED','NEEDS_RECALIBRATION'];
+function arcDomain1ModuleIds(){ return Object.values(ARC_OBJECTIVE_MAP); } // 6 ids, d1 only
+function arcReadingPct(){
+  const ids=Object.keys(ARC_OBJECTIVE_MAP); // d1_0..d1_5
+  const done=ids.filter(k=>state.objectives[k]).length;
+  return ids.length?Math.round(done/ids.length*100):0;
+}
+function arcGateClearedCount(){
+  return arcDomain1ModuleIds().filter(id=>ARC_PAST_GATE.includes(arcCfg().fsm[id]?.state)).length;
+}
+function arcMasteredCount(){
+  return arcDomain1ModuleIds().filter(id=>arcCfg().fsm[id]?.state==='MASTERED').length;
+}
+function arcOverallPct(){ const n=arcDomain1ModuleIds().length; return n?Math.round(arcMasteredCount()/n*100):0; }
+/* Same guard syncArcButtons() uses: never mid-load, never on a failed fetch. */
+function arcLive(){ return !!arcCfg().enabled&&(ARC.status==='ready'||ARC.status==='degraded'); }
+
+/* ---- overdue-review gate ----
+   Only cards whose module actually loaded count: a card for a module that
+   failed to download could never be cleared, and the gate must always have a
+   way out. */
+function arcOverdueCards(){
+  const now=Date.now();
+  return Object.entries(arcCfg().cards||{})
+    .filter(([id,card])=>card&&arcModule(id)&&Date.parse(card.due)<=now)
+    .map(([id,card])=>({id,overdueMs:now-Date.parse(card.due)}));
+}
+function arcOverdueBlocksNewMaterial(){
+  const overdue=arcOverdueCards();
+  if(overdue.length>=3)return{blocked:true,reason:'3+ reviews are overdue'};
+  const worst=Math.max(0,...overdue.map(o=>o.overdueMs));
+  if(worst>48*3600*1000)return{blocked:true,reason:'a review is more than 48 hours overdue'};
+  return{blocked:false};
+}
+function arcMostOverdue(){
+  return arcOverdueCards().reduce((a,b)=>(!a||b.overdueMs>a.overdueMs)?b:a,null);
+}
+
+/* ---- the three meters: a Domain-1 card on the Command dashboard ---- */
+let ARCM_SPLIT_OPEN=false;
+function renderArcDash(){
+  if(!arcLive()){ $('#arcMeters')?.remove(); $('#welcomeCard')?.remove(); return; }
+  let card=$('#arcMeters');
+  if(!card){
+    card=document.createElement('div'); card.className='card arcm'; card.id='arcMeters';
+    $('#view-dash .dash-grid > div:last-child').prepend(card);
+  }
+  const n=arcDomain1ModuleIds().length, mastered=arcMasteredCount(), cleared=arcGateClearedCount();
+  const reading=arcReadingPct(), arcPct=n?Math.round(cleared/n*100):0, overall=arcOverallPct();
+  const mW=n?mastered/n*100:0, gW=n?(cleared-mastered)/n*100:0;
+  const split=`${mastered}/${n} mastered, ${cleared-mastered}/${n} gate-cleared but not yet retained`;
+  card.dataset.reading=reading; card.dataset.arc=arcPct; card.dataset.overall=overall;
+  card.dataset.mastered=mastered; card.dataset.cleared=cleared;
+  card.innerHTML=`<span class="eyebrow">Domain 1 · ARC progress</span>
+    <div class="arcm-row"><div class="arcm-top"><b>Reading</b><span class="arcm-pct" id="arcmReading">${reading}%</span></div>
+      <div class="bar"><i style="width:${reading}%"></i></div>
+      <div class="arcm-sub">What you've read, not what you've retained.</div></div>
+    <div class="arcm-row"><button type="button" class="arcm-split" id="arcmSplit" aria-expanded="${ARCM_SPLIT_OPEN}" aria-controls="arcmDetail" title="${escHtml(split)}">
+        <div class="arcm-top"><b>ARC</b><span class="arcm-pct" id="arcmArc">${arcPct}%</span></div>
+        <div class="arcm-two" aria-hidden="true"><i class="m" style="width:${mW}%"></i><i class="g" style="width:${gW}%"></i></div></button>
+      <div class="arcm-detail" id="arcmDetail" ${ARCM_SPLIT_OPEN?'':'hidden'}>${escHtml(split)}</div>
+      <div class="arcm-sub">Gates cleared. Tap the bar for the split.</div></div>
+    <div class="arcm-row arcm-honest"><div class="arcm-top"><b>Overall</b><span class="arcm-pct" id="arcmOverall">${overall}%</span></div>
+      <div class="bar"><i style="width:${overall}%"></i></div>
+      <div class="arcm-sub">Mastered only, no partial credit — the honest headline. It is allowed to read lower than the others.</div></div>`;
+  $('#arcmSplit').onclick=()=>{ARCM_SPLIT_OPEN=!ARCM_SPLIT_OPEN;
+    $('#arcmSplit').setAttribute('aria-expanded',ARCM_SPLIT_OPEN);$('#arcmDetail').hidden=!ARCM_SPLIT_OPEN;};
+}
+
+/* ---- welcome-back / Today card ----
+   Light and dismissible, at most once per calendar day, never on the same visit
+   as the first-open explainer. Priority ladder locked in the Step A brief. */
+let ARC_FIRST_EVER_VISIT=false;
+function arcWelcomePick(){
+  const a=arcCfg(), ids=arcDomain1ModuleIds().filter(id=>arcModule(id));
+  const title=id=>arcModule(id).content.title;
+  // Consolidation only resolves on a clock tick; give it the chance first.
+  ids.forEach(id=>{if(a.fsm[id]?.state==='CONSOLIDATION_PENDING')arcTick(id);});
+  const overdue=arcOverdueCards(), worst=arcMostOverdue();
+  if(worst)return{kind:'review',id:worst.id,title:`${overdue.length} review${overdue.length===1?' is':'s are'} due`,
+    sub:`Start with ${title(worst.id)} — it has waited longest. Reviewing on time is what turns reading into retention.`,cta:'Review now →'};
+  const log=a.log||[];
+  const fresh=ids.find(id=>a.fsm[id]?.state==='PHASE_4_SPACED_QUEUE'&&!a.cards[id]&&log.some(e=>e.module_id===id&&e.site==='consolidation'));
+  if(fresh)return{kind:'consolidated',id:fresh,title:`${title(fresh)} has finished consolidating`,
+    sub:'Its first spaced review is ready — this is the retrieval the 24-hour wait was for.',cta:'Start the review →'};
+  const mid=ids.find(id=>/^PHASE_[0-3]_/.test(a.fsm[id]?.state||'')||a.fsm[id]?.state==='NEEDS_RECALIBRATION');
+  if(mid)return{kind:'resume',id:mid,title:'Pick up where you left off',sub:`${title(mid)} is part-way through its loop.`,cta:'Resume →'};
+  const next=ids.find(id=>(a.fsm[id]?.state||'LOCKED')==='LOCKED'&&arcPrereqsMet(id));
+  if(next)return{kind:'next',id:next,title:`You're caught up — next: ${title(next)}`,sub:'Nothing is due. A good moment to start the next objective.',cta:'Begin →'};
+  return{kind:'done',id:null,title:"You're caught up",sub:'Nothing is due right now. Your reviews will come back on their own schedule.',cta:null};
+}
+function maybeShowWelcome(){
+  if(!arcLive()||ARC_FIRST_EVER_VISIT)return;
+  if(!$('#view-dash').classList.contains('active'))return;
+  if($('#welcomeCard'))return;
+  if(state.lastWelcomeSeen===today())return;
+  const p=arcWelcomePick();
+  state.lastWelcomeSeen=today(); save();
+  const card=document.createElement('div');
+  card.className='card welcome-card'; card.id='welcomeCard'; card.dataset.kind=p.kind; card.setAttribute('role','status');
+  card.innerHTML=`<div class="wc-main"><span class="eyebrow">Today</span><h3>${escHtml(p.title)}</h3><p class="muted">${escHtml(p.sub)}</p></div>
+    <div class="wc-act">${p.cta?`<button class="btn" id="wcGo">${escHtml(p.cta)}</button>`:''}<button class="btn ghost sm" id="wcDismiss">Dismiss</button></div>`;
+  $('#view-dash').prepend(card);
+  $('#wcDismiss').onclick=()=>card.remove();
+  if(p.cta)$('#wcGo').onclick=()=>{card.remove();openArcModule(p.id);};
+  renderArcDash();   // the tick above may have moved a module
+}
+
+/* ---- first-open explainer (its own overlay; What's New is untouched) ---- */
+let EXPLAINER_THEN_WN=false;
+const EXPLAINER_HTML=`<span class="l-eyebrow">How progress works</span><h3>Reading, gates &amp; mastery</h3>
+  <p>AEGIS separates three things that most study apps blur together.</p>
+  <h4>Reading is a bookmark</h4>
+  <p><b>Learn ›</b> opens a lesson and ticks the objective once you have read it. That tells you what you have <i>covered</i>. It says nothing about what you can still recall next week, so on its own it earns no completion.</p>
+  <h4>A gate is proof</h4>
+  <p>With <b>ARC learning mode</b> on (Progress tab, Domain 1 for now), each objective ends in a <b>gate</b>: a short task you have to get right, with your confidence recorded before you see the answer. Clearing it means you understood it today. There is no "mark complete" button in that path.</p>
+  <h4>Why there is a 24-hour wait</h4>
+  <p>After a gate, the module consolidates for a day before its first review. Recalling something after a night's sleep is what builds long-term memory. Repeating it the same afternoon mostly measures short-term memory, so nothing you do can shorten the wait. Other objectives, the glossary and the Range stay open meanwhile.</p>
+  <h4>Mastery is retention</h4>
+  <p>Reviews then come back on a spaced schedule. An objective is <b>mastered</b> only once its review interval passes 60 days, which means you have kept recalling it correctly over weeks. <b>Overall %</b> counts mastered objectives only, so it is meant to read lower than the others.</p>
+  <h4>What "overdue" means</h4>
+  <p>A review is overdue once its due time has passed. If 3 or more are overdue, or any one is more than 48 hours late, AEGIS pauses <i>new</i> ARC material until you catch up. It always tells you why and links straight to the review. Reading, the glossary and the Range trainers are never blocked.</p>`;
+function openExplainer(){
+  $('#explainerContent').innerHTML=EXPLAINER_HTML;
+  $('#explainerOverlay').classList.add('show'); document.body.style.overflow='hidden';
+}
+function closeExplainer(){
+  $('#explainerOverlay').classList.remove('show'); document.body.style.overflow='';
+  // First-ever open: the explainer goes first, then What's New exactly as before.
+  if(EXPLAINER_THEN_WN){EXPLAINER_THEN_WN=false;if(state.lastSeenVersion!==APP_VERSION)openWhatsNew();}
+}
+function initExplainer(){
+  $('#explainerClose').onclick=closeExplainer; $('#explainerDone').onclick=closeExplainer;
+  $('#explainerOverlay').addEventListener('click',e=>{if(e.target.id==='explainerOverlay')closeExplainer();});
+  $('#explainerLink').onclick=e=>{e.preventDefault();openExplainer();};
+}
+
+/* ---- consolidation-wait screen: real exits, no new content ---- */
+function arcWaitNextModule(exceptId){
+  const a=arcCfg();
+  return arcDomain1ModuleIds().find(id=>{
+    if(id===exceptId||!arcModule(id))return false;
+    const st=a.fsm[id]?.state||'LOCKED';
+    if(st==='MASTERED'||st==='CONSOLIDATION_PENDING')return false;
+    if(st==='LOCKED')return arcPrereqsMet(id);
+    if(st==='PHASE_4_SPACED_QUEUE'){const c=a.cards[id];return !c||Date.parse(c.due)<=Date.now();}
+    return true;   // mid-loop: PHASE_0..3 or NEEDS_RECALIBRATION
+  })||null;
+}
+function arcTrainerUnlocked(tid){
+  const t=TRAINERS.find(x=>x.id===tid); return !!t&&(!t.off||state.ethicsAccepted);
+}
+function arcWaitExitsHTML(id){
+  const next=arcWaitNextModule(id);
+  return `<div class="arc-exits" id="arcExits">
+    ${next?`<button class="btn" data-exit="module" data-mid="${escHtml(next)}">While you wait: ${escHtml(arcModule(next).content.title)} is ready →</button>`:''}
+    <button class="btn ghost" data-exit="glossary">Browse the glossary →</button>
+    ${arcTrainerUnlocked('ethicsjudge')?'<button class="btn ghost" data-exit="tribunal">Run Ethics Tribunal →</button>':''}
+  </div>`;
+}
+function arcWireWaitExits(root){
+  root.querySelectorAll('[data-exit]').forEach(b=>b.onclick=()=>{
+    const k=b.dataset.exit;
+    if(k==='module'){openArcModule(b.dataset.mid);return;}
+    closeArc();
+    if(k==='glossary')switchView('glossary');
+    if(k==='tribunal')openTrainer('ethicsjudge');
+  });
+}
+
+/* ============================================================
    TOAST + BOOT
    ============================================================ */
 let toastTmr;
@@ -3662,15 +3901,19 @@ function toast(title,sub){const t=$('#toast');t.innerHTML=`<b>${title}</b> &nbsp
   clearTimeout(toastTmr);toastTmr=setTimeout(()=>t.classList.remove('show'),2600);}
 
 function boot(){
-  buildDomains();buildTrainers();buildEthics();buildLabs();buildCerts();buildTemplates();buildProgress();initLessons();initWhatsNew();initGlossary();linkifyDomains();
+  buildDomains();buildTrainers();buildEthics();buildLabs();buildCerts();buildTemplates();buildProgress();initLessons();initWhatsNew();initExplainer();initGlossary();linkifyDomains();
   $('#arcClose').onclick=closeArc; $('#arcCloseFoot').onclick=closeArc;
   $('#arcOverlay').addEventListener('click',e=>{if(e.target.id==='arcOverlay')closeArc();});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#arcOverlay').classList.contains('show'))closeArc();});
   // Restore the beta across reloads without ever fetching when it is off.
-  if(arcCfg().enabled)loadArcCorpus().then(()=>{syncArcButtons();renderArcSettings();});
+  if(arcCfg().enabled)loadArcCorpus().then(()=>{syncArcButtons();renderArcSettings();renderArcDash();maybeShowWelcome();});
   selectDomain(0);
   render();
-  if(state.lastSeenVersion!==APP_VERSION){openWhatsNew();}
+  // v1.7.0: the very first open belongs to the explainer (What's New follows it);
+  // the welcome-back card is suppressed for the rest of that visit.
+  ARC_FIRST_EVER_VISIT=state.lastSeenVersion==null;
+  if(ARC_FIRST_EVER_VISIT){EXPLAINER_THEN_WN=true;openExplainer();}
+  else if(state.lastSeenVersion!==APP_VERSION){openWhatsNew();}
   if(!Store.ok){
     setTimeout(()=>toast('Heads up','Download &amp; open this file to save progress between sessions.'),700);
   }

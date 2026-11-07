@@ -2,7 +2,7 @@
 
 ![AEGIS](docs/screenshot.png)
 
-![Version](https://img.shields.io/badge/version-1.6.1-E8B04B)
+![Version](https://img.shields.io/badge/version-1.7.0-E8B04B)
 ![PWA](https://img.shields.io/badge/PWA-installable-E8B04B)
 ![Works offline](https://img.shields.io/badge/works-offline-4FD7C9)
 ![No build](https://img.shields.io/badge/build-none-5BD6A0)
@@ -70,7 +70,7 @@ Bump these together — `npm test` fails if they disagree:
 
 - `APP_VERSION` and the header badge in `index.html`
 - the top entry of the in-app `CHANGELOG` in `index.html` (this drives **What's New**)
-- `CACHE` in `sw.js` (e.g. `aegis-v1.6.1`) — this is what makes installed apps refresh
+- `CACHE` in `sw.js` (e.g. `aegis-v1.7.0`) — this is what makes installed apps refresh
 - `version` in `package.json`
 
 Then regenerate the repo changelog with `npm run changelog`.

@@ -37,8 +37,8 @@
     },
     "prompt": "Sort each control by its TYPE — how it does its job. Ignore when it acts; that is its function, not its type.",
     "hints": [
-      "Ask what actually does the enforcing: a machine, a rule that people follow, or a barrier in the physical world.",
-      "A control can be preventive or detective and still be any of the three types. Type and function are separate questions — answer the one being asked."
+      "Ask what an attacker would have to defeat to get past it: logic running in software or hardware, a policy or process the organisation imposes on people, or a physical obstacle.",
+      "A control's type doesn't follow from what it protects. Something guarding a computer may be enforced by people, and something guarding a building may be enforced by software. Classify by the enforcer, never by the asset."
     ],
     "validation_payload": {
       "accuracy_metric": "bucket_assignment",

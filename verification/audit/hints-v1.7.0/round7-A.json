@@ -1,0 +1,14 @@
+[
+  {
+    "module": "isc2.cc.d1.risk-lifecycle",
+    "hint_index": 1,
+    "verdict": "CHANGES_APPROACH",
+    "reason": "It settles the one ordering a novice is most likely to get wrong: whether formal acceptance of residual risk comes right after choosing a treatment or only after the control has been applied and verified. The test is 'is the remaining risk forecast or known?', and it puts sign-off after verification, so last. Hint 0 covers the start of the sequence (identify before assess), so this hint adds something new. It does not mislead on any of the other steps. It is a little oblique: 'nothing left to find out' needs one step of inference to connect to 'verify it actually works'."
+  },
+  {
+    "module": "isc2.cc.d1.governance",
+    "hint_index": 1,
+    "verdict": "CHANGES_APPROACH",
+    "reason": "Two things are new. It defuses the 'must means policy' (or 'must means law') trap, and it gives a concrete check for separating policy from standard: would an auditor verify this by inspecting a system's settings, or by looking at how the organisation is run? Hint 0 only says how much detail each layer has; this tells the learner how to test it. Checked against every item: hardened OS image -> settings -> Standard; AES-256 -> settings -> Standard; named accountable owner -> how the org is run -> Policy; the steps lists are excluded by the 'isn't a list of steps' scope; the guideline isn't binding; HIPAA isn't internal. All correct. Weakest case: 'protect the confidentiality of all customer data' could tempt a learner to think an auditor checks encryption settings, which would point to Standard. But no single setting can show that the statement is met, and 'the organisation will' points to Policy. A small risk, not enough to call it misleading."
+  }
+]

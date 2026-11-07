@@ -1,0 +1,32 @@
+[
+  {
+    "module": "isc2.cc.d1.control-types",
+    "hint_index": 0,
+    "verdict": "CHANGES_APPROACH",
+    "reason": "Gives a test you can apply: picture what an attacker has to defeat (software/hardware logic, a rule imposed on people, or a physical barrier). That test sorts all six items correctly: firewall and FDE are logic, AUP and background checks are rules or processes, door and fence are physical. It differs from hint 1, which is about the enforcer and not the asset. One small risk: 'hardware' sitting next to 'physical obstacle' could make someone think of a lock as hardware, but 'logic running in' covers that."
+  },
+  {
+    "module": "isc2.cc.d1.code-of-ethics",
+    "hint_index": 1,
+    "verdict": "CHANGES_APPROACH",
+    "reason": "Deals with the honesty trap that hint 0 leaves open. Under hint 0's test ('would you owe this if nobody hired you?') a learner may answer that honesty is always owed and send the 'beyond what I'm qualified for' disclosure to Canon II. Hint 1 sends it to Canon III, which matches the code: rendering only services you are competent for is Canon III guidance. It also sends the exam-leak report to Canon IV, and keeps the sales-pitch exaggeration (a prospect, not a principal) and the unauthorised scan in Canon II. Some overlap with hint 0 on the principal question, but it adds a distinct test: is honesty 'the whole point'?"
+  },
+  {
+    "module": "isc2.cc.d1.risk-lifecycle",
+    "hint_index": 0,
+    "verdict": "CHANGES_APPROACH",
+    "reason": "Separates a raised concern from a characterised risk and makes 'compare with anything else on your list' depend on first recording asset, threats and vulnerabilities, which puts Identify before Assess. It is narrow: it only fixes the first two steps and says nothing about the treat/apply/document tail, which hint 1 covers. It is actionable and does not mislead."
+  },
+  {
+    "module": "isc2.cc.d1.risk-lifecycle",
+    "hint_index": 1,
+    "verdict": "CHANGES_APPROACH",
+    "reason": "Turns abstract steps into concrete records (risk register entry, rating, treatment decision, control test result, signed residual-risk acceptance) and orders them by what each depends on. The key point is that residual-risk evidence cannot exist before the control is applied and verified. That is a real method, not a restatement. A small circularity remains: a learner still has to see that residual depends on the applied control."
+  },
+  {
+    "module": "isc2.cc.d1.governance",
+    "hint_index": 1,
+    "verdict": "MISLEADS",
+    "reason": "The 'survives a full technology replacement' test misfires on standards. 'All production servers must run the approved hardened OS image' stays word-for-word true after a tech refresh (only the approved image changes), so the hint pushes it to Policy. 'AES-256 at rest' is an algorithm requirement that also outlives a platform swap, so it can drift to Policy too. The test sorts by product-specificity, not by whether a statement mandates a specific technology or setting, which is what makes something a Standard. It also adds nothing on Standard vs Procedure beyond hint 0's goal/technology/steps scale, so in practice it repeats hint 0's policy-vs-standard split with a less reliable test."
+  }
+]

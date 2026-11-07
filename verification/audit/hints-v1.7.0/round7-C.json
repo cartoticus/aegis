@@ -1,0 +1,14 @@
+[
+  {
+    "module": "isc2.cc.d1.risk-lifecycle",
+    "hint_index": 1,
+    "verdict": "CHANGES_APPROACH",
+    "reason": "Gives a usable test that hint 0 doesn't: you can only know the residual risk after the control has been applied and verified, so formal acceptance of it goes last, after 'apply and verify'. It also helps the learner tell the 'accept' treatment option in step 3 apart from signing off on residual risk at the end. The forecast-vs-known wording is a little riddle-like, but a stuck learner can act on it. Minor nit: 'nothing left to find out' overstates it, because risk keeps being monitored, but it doesn't send any item to the wrong place in this five-step sequence."
+  },
+  {
+    "module": "isc2.cc.d1.governance",
+    "hint_index": 1,
+    "verdict": "CHANGES_APPROACH",
+    "reason": "Defuses the 'must' trap, since policy, standard, procedure and law all bind, which is accurate for ISC2 CC. It then adds a concrete auditor test: inspect a system's settings (standard: hardened OS image, AES-256) or look at how the organisation is run (policy: named accountable owner, protecting customer confidentiality). This puts hint 0's 'how much does it specify' axis into practice instead of repeating it. Small risk: a learner could picture an auditor checking an owner field in an asset inventory and call the named-owner item a Standard, but the word 'only' and the emphasis on accountability make the policy reading more likely."
+  }
+]

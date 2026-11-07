@@ -1,0 +1,8 @@
+[
+  {
+    "module": "isc2.cc.d1.risk-lifecycle",
+    "hint_index": 1,
+    "verdict": "CHANGES_APPROACH",
+    "reason": "It targets the one ordering a learner is most likely to get wrong: whether formal residual-risk acceptance comes straight after choosing a treatment or after the control is applied and verified. The forecast-versus-demonstrated distinction gives a reason to put 'apply and verify' before 'document and accept', and it doesn't overlap hint 0, which covers identify-before-assess. It's consistent with CC's lifecycle, where residual risk is what remains after controls are applied. Minor note: the rhetorical-question framing is a little oblique, but the conclusion is clear enough to act on."
+  }
+]

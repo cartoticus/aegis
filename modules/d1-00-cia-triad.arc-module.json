@@ -36,7 +36,7 @@
     "prompt": "Sort each incident under the leg of the CIA triad it primarily attacks.",
     "hints": [
       "Name the property the attacker destroyed, not the technology they used. The same technology shows up as a control on one side and a weapon on the other.",
-      "If two legs seem to fit, ask which loss the victim notices first, and which one they could still be suffering without knowing."
+      "Ask what the attacker needed to happen for the attack to succeed: someone sees the data, the data changes, or its owner can't use it. Classify by that goal, even if other damage follows along the way."
     ],
     "validation_payload": {
       "accuracy_metric": "bucket_assignment",

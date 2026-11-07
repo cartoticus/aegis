@@ -1,0 +1,9 @@
+[
+  {
+    "module": "isc2.cc.d1.risk-lifecycle",
+    "hint_index": 1,
+    "leak": "MED",
+    "factual_problem": null,
+    "reason": "Steps already obvious without any hint: 'Identify...' goes first (the verb and the prompt's 'just been raised' make it the natural opener), and 'Document the residual risk...' goes last for most learners because 'residual' means 'what is left over'. The real conceptual work is in the middle: assess comes before choose, and choose comes before apply. The hint does nothing there. What it does add is a firm 'Apply/verify before Document residual' constraint. That is the defining distinction of residual risk (what remains after controls are implemented), so it is not HIGH by itself. It drops to MED, not LOW, because of a lexical echo: 'as they ACTUALLY exist' matches 'verify it ACTUALLY works' in the step text. A learner who doesn't understand residual risk can still key on the shared word and put Apply/verify directly before Document. That also stops the plausible mistake of placing Document right after Choose, on the reasoning that 'accept' is one of the treatments. 'Work out which steps have to be finished before...' also tells the learner outright that Document comes after several steps, which reinforces positions 4-5. Fix: drop 'actually' (e.g. 'as implemented and confirmed, not as planned') or reword so it doesn't repeat the step's wording. Factual nit (not wrong at CC level): planned residual risk is routinely estimated when choosing a treatment. 'Not as they were planned' is fair for the final documented and accepted figure, but it slightly overstates the case."
+  }
+]

@@ -20,7 +20,7 @@ import { join } from 'node:path';
 
 const REPO = join(import.meta.dirname, '..');
 const SRC = readFileSync(join(REPO, 'index.html'), 'utf8');
-const LOOP = 'verification/verify-arc-loop.mjs', UI = 'verification/verify-mobile-ui.mjs';
+const LOOP = 'verification/verify-arc-loop.mjs', UI = 'verification/verify-mobile-ui.mjs', STEPA = 'verification/verify-step-a.mjs';
 
 // The last release that shipped the reorder bug. Pinned, so this fault keeps
 // meaning "the real v1.6.0" after later releases. Needs non-shallow history.
@@ -67,6 +67,28 @@ const FAULTS = [
   ['H6', 'all room-makers removed',                 UI, sub(ROOM, '')],
   ['H7', 'version badge allowed to wrap',           UI, sub('.wordmark .sub{white-space:nowrap}', '')],
   ['H8', 'brand pinned instead of making room',     UI, sub(ROOM, '.brand{flex:none}')],
+  // ── v1.7.0 · Step A (step-a suite; layout faults in the interface suite) ──
+  ['S1',  'meter counts gate-cleared as mastered',   STEPA, sub("return arcDomain1ModuleIds().filter(id=>arcCfg().fsm[id]?.state==='MASTERED').length;", 'return arcDomain1ModuleIds().filter(id=>ARC_PAST_GATE.includes(arcCfg().fsm[id]?.state)).length;')],
+  ['S2',  'NEEDS_RECALIBRATION not gate-cleared',    STEPA, sub("'PHASE_4_SPACED_QUEUE','MASTERED','NEEDS_RECALIBRATION'];\nfunction arcDomain1ModuleIds", "'PHASE_4_SPACED_QUEUE','MASTERED'];\nfunction arcDomain1ModuleIds")],
+  ['S3',  'Overall averaged with Reading',           STEPA, sub('return n?Math.round(arcMasteredCount()/n*100):0; }', 'return n?Math.round((arcMasteredCount()/n*100+arcReadingPct())/2):0; }')],
+  ['S4',  'meters shown without the corpus guard',   STEPA, sub("function arcLive(){ return !!arcCfg().enabled&&(ARC.status==='ready'||ARC.status==='degraded'); }", 'function arcLive(){ return !!arcCfg().enabled; }')],
+  ['S5',  'meters not re-rendered on corpus load',   STEPA, sub('renderArcSettings();renderArcDash();maybeShowWelcome();', 'renderArcSettings();')],
+  ['S6',  'turning ARC off leaves the meters',       STEPA, sub("if(!arcLive()){ $('#arcMeters')?.remove(); $('#welcomeCard')?.remove(); return; }", 'if(!arcLive()){ return; }')],
+  ['S7',  'welcome card not throttled',              STEPA, sub('if(state.lastWelcomeSeen===today())return;', '')],
+  ['S8',  'welcome card on the first-ever visit',    STEPA, sub('if(!arcLive()||ARC_FIRST_EVER_VISIT)return;', 'if(!arcLive())return;')],
+  ['S9',  'consolidation resolution not logged',     STEPA, sub("arcCfg().log.push({ module_id: id, site: 'consolidation'", "if(0)arcCfg().log.push({ module_id: id, site: 'consolidation'")],
+  ['S10', 'explainer does not own the first open',   STEPA, sub('  if(ARC_FIRST_EVER_VISIT){EXPLAINER_THEN_WN=true;openExplainer();}\n  else if(state.lastSeenVersion!==APP_VERSION){openWhatsNew();}', '  if(state.lastSeenVersion!==APP_VERSION){openWhatsNew();}')],
+  ['S11', 'overdue threshold off by one (>3)',       STEPA, sub('if(overdue.length>=3)', 'if(overdue.length>3)')],
+  ['S12', '48-hour rule loosened to 72',             STEPA, sub('if(worst>48*3600*1000)', 'if(worst>72*3600*1000)')],
+  ['S13', 'blocked Begin left enabled',              STEPA, sub("${ok&&!gateNew.blocked?'':'disabled'}", "${ok?'':'disabled'}")],
+  ['S14', 'blocked state offers no way out',         STEPA, sub('const worst=gateNew.blocked?arcMostOverdue():null;', 'const worst=null;')],
+  ['S15', 'unloaded module card can lock you out',   STEPA, sub('card&&arcModule(id)&&Date.parse(card.due)<=now', 'card&&Date.parse(card.due)<=now')],
+  ['S16', 'consolidation exits removed',             STEPA, sub('      ${arcWaitExitsHTML(id)}\n', '')],
+  ['S17', 'while-you-wait ignores unlocked modules', STEPA, sub("if(st==='LOCKED')return arcPrereqsMet(id);", "if(st==='LOCKED')return false;")],
+  ['S18', 'explainer re-open link removed',          STEPA, both(sub('<a href="#" id="explainerLink"', '<a href="#" id="explainerLinkGone"'), sub("$('#explainerLink').onclick=", "($('#explainerLink')||{}).onclick="))],
+  ['W1',  'welcome row forced onto one line',        UI, both(sub('justify-content:space-between;flex-wrap:wrap;gap:12px}\n.welcome-card .wc-main', 'justify-content:space-between;flex-wrap:nowrap;gap:12px}\n.welcome-card .wc-main'), sub('.welcome-card .wc-main{min-width:0;flex:1 1 220px}', '.welcome-card .wc-main{flex:1 0 220px}'))],
+  ['W2',  'welcome card stacks on desktop too',      UI, sub('.welcome-card .wc-main{min-width:0;flex:1 1 220px}', '.welcome-card .wc-main{min-width:0;flex:1 1 100%}')],
+  ['W3',  'meter split text can overflow the card',  UI, sub('.arcm-detail{font-family:var(--mono);font-size:11px;color:var(--muted-2);margin-top:6px;overflow-wrap:anywhere}', '.arcm-detail{font-family:var(--mono);font-size:11px;color:var(--muted-2);margin-top:6px;white-space:nowrap}')],
 ];
 
 const only = process.argv.slice(2);

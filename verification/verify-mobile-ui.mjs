@@ -220,6 +220,63 @@ for (const width of [300, 320, 360, 390, 420, 480, 768, 1024, 1280]) {
   await ctx.close();
 }
 
+/* ══ 5. Step A surfaces (v1.7.0): meter card, welcome card, explainer ══════
+   Same two halves as the header: nothing overlaps its neighbour AND the page
+   never scrolls sideways — plus the desktop half of the welcome card's wrap
+   (actions beside the text when there is room). */
+const rectsOverlap = (a, b) => a && b && a.left < b.right - 0.5 && b.left < a.right - 0.5 && a.top < b.bottom - 0.5 && b.top < a.bottom - 0.5;
+for (const width of [300, 320, 360, 390, 1280]) {
+  const { ctx, page } = await open({ width });
+  await page.evaluate(async () => {
+    arcCfg().enabled = true; save(); await loadArcCorpus();
+    const a = arcCfg(); a.fsm = {}; a.cards = {};
+    const ids = Object.values(ARC_OBJECTIVE_MAP);
+    a.fsm[ids[0]] = { ...ARC.engine.initialState('LOCKED'), state: 'MASTERED' };
+    a.fsm[ids[1]] = { ...ARC.engine.initialState('LOCKED'), state: 'NEEDS_RECALIBRATION' };
+    // longest module title, so the welcome card carries the worst-case heading
+    a.fsm[ids[3]] = { ...ARC.engine.initialState('LOCKED'), state: 'PHASE_1_CHUNK' };
+    state.lastWelcomeSeen = null; save();
+    switchView('progress'); switchView('dash');
+    document.getElementById('arcmSplit').click();
+  });
+  const g = await page.evaluate(() => {
+    const r = el => { if (!el) return null; const b = el.getBoundingClientRect(); return { left: b.left, right: b.right, top: b.top, bottom: b.bottom, width: b.width }; };
+    const tops = [...document.querySelectorAll('#arcMeters .arcm-top')].map(t => [r(t.querySelector('b')), r(t.querySelector('.arcm-pct'))]);
+    return {
+      meter: r(document.getElementById('arcMeters')), detail: r(document.getElementById('arcmDetail')), tops,
+      wc: r(document.getElementById('welcomeCard')), wcMain: r(document.querySelector('#welcomeCard .wc-main')),
+      wcAct: r(document.querySelector('#welcomeCard .wc-act')),
+      wcBtns: [...document.querySelectorAll('#welcomeCard .wc-act .btn')].map(r),
+      scrollW: document.documentElement.scrollWidth, vw: innerWidth,
+    };
+  });
+  ok(`step A @${width}: meter card and welcome card both present (precondition)`, !!g.meter && !!g.wc && g.tops.length === 3, JSON.stringify(g));
+  if (g.meter && g.wc) {
+    ok(`step A @${width}: no horizontal page scroll`, g.scrollW <= g.vw, `${g.scrollW} > ${g.vw}`);
+    ok(`step A @${width}: meter card inside the viewport`, g.meter.left >= 0 && g.meter.right <= g.vw + 0.5, JSON.stringify(g.meter));
+    ok(`step A @${width}: meter labels never overlap their percentages`, g.tops.every(([b, p]) => !rectsOverlap(b, p)), JSON.stringify(g.tops));
+    ok(`step A @${width}: split detail stays inside the meter card`, g.detail && g.detail.right <= g.meter.right + 0.5 && g.detail.left >= g.meter.left - 0.5, JSON.stringify(g.detail));
+    ok(`step A @${width}: welcome card inside the viewport`, g.wc.left >= 0 && g.wc.right <= g.vw + 0.5, JSON.stringify(g.wc));
+    ok(`step A @${width}: welcome actions never overlap its text`, !rectsOverlap(g.wcMain, g.wcAct), JSON.stringify([g.wcMain, g.wcAct]));
+    ok(`step A @${width}: welcome buttons never overlap each other`, g.wcBtns.length === 2 && !rectsOverlap(g.wcBtns[0], g.wcBtns[1]), JSON.stringify(g.wcBtns));
+    if (width >= 1024) ok(`step A @${width}: desktop — welcome actions sit beside the text, not below`, g.wcAct.top < g.wcMain.bottom, JSON.stringify([g.wcMain, g.wcAct]));
+  }
+  // Explainer overlay
+  await page.evaluate(() => openExplainer());
+  const e = await page.evaluate(() => {
+    const r = el => { const b = el.getBoundingClientRect(); return { left: b.left, right: b.right, top: b.top, bottom: b.bottom }; };
+    const modal = document.querySelector('#explainerOverlay .lesson-modal');
+    return { modal: r(modal), close: r(document.getElementById('explainerClose')), h3: r(document.querySelector('#explainerContent h3')),
+      done: r(document.getElementById('explainerDone')), scrollW: document.documentElement.scrollWidth, vw: innerWidth,
+      innerScrollW: modal.scrollWidth, innerW: modal.clientWidth };
+  });
+  ok(`explainer @${width}: modal inside the viewport`, e.modal.left >= 0 && e.modal.right <= e.vw + 0.5, JSON.stringify(e.modal));
+  ok(`explainer @${width}: no horizontal page scroll`, e.scrollW <= e.vw, `${e.scrollW} > ${e.vw}`);
+  ok(`explainer @${width}: content does not scroll sideways inside the modal`, e.innerScrollW <= e.innerW + 1, `${e.innerScrollW} > ${e.innerW}`);
+  ok(`explainer @${width}: close button does not overlap the heading`, !rectsOverlap(e.close, e.h3), JSON.stringify([e.close, e.h3]));
+  await ctx.close();
+}
+
 await browser.close();
 server.close();
 ok('no page errors', errors.length === 0, errors.join(' | '));

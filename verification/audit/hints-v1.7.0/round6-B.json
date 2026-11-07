@@ -1,0 +1,14 @@
+[
+  {
+    "module": "isc2.cc.d1.risk-lifecycle",
+    "hint_index": 1,
+    "verdict": "CHANGES_APPROACH",
+    "reason": "Without hints my only real hesitation was the last two steps: residual risk can be estimated when you choose a treatment, so 'Document the residual risk' might seem to come before 'Apply the control'. The hint settles this with a test. It separates estimating residual risk in advance from confirming it once the control is in place and checked, then asks which step depends on that confirmation. The answer is 'Document residual + formal acceptance', which puts it after 'Apply and verify'. It does not repeat hint 0, which covers the front of the order (identify before assess). Applied to any step, it never pushes toward a wrong position."
+  },
+  {
+    "module": "isc2.cc.d1.governance",
+    "hint_index": 1,
+    "verdict": "CHANGES_APPROACH",
+    "reason": "Without hints I hesitated over 'Every system must have a named owner...' (it says 'must', is fairly specific and covers every system, so it reads like a standard) and somewhat over 'hardened OS image'. Hint 0 asks how much an item specifies, but a named-owner requirement sits between a responsibility and a setting. This hint adds a test hint 0 lacks: how would an auditor check it? You check AES-256 and the hardened image by inspecting system configuration, so they are standards. You check named ownership and the confidentiality commitment by looking at how the organisation is run, so they are policies. It also stops 'must' from being treated as the deciding word. Minor edge case, not misleading: someone could argue that confidentiality is checked through encryption settings, or that ownership is checked in a CMDB field, but the word 'only' and the hint's framing still point to the right layer."
+  }
+]

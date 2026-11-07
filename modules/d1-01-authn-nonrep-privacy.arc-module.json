@@ -37,8 +37,8 @@
     },
     "prompt": "Sort each measure under the property it primarily provides.",
     "hints": [
-      "Ask what each measure exists *for*: establishing who someone is, making an action undeniable afterwards, or holding less data in the first place.",
-      "Several of these produce a side effect that belongs to a different bucket. Sort by the reason the measure was put there, not by everything it happens to help with."
+      "Two of these properties involve identity, so check which job the measure does: verifying a person before they are allowed to act, or leaving evidence of an action that someone else could check later.",
+      "Ask whose interest the measure serves first: the organisation's need to know who is acting and what they did, or the individual's control over information about themselves."
     ],
     "validation_payload": {
       "accuracy_metric": "bucket_assignment",

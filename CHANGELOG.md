@@ -2,6 +2,16 @@
 
 Generated from the in-app **What’s New** list in `index.html` (`npm run changelog`). Edit it there, not here.
 
+## v1.7.0 — Nov 2026
+
+- **Overall % is now Mastered-only and may read lower.** With ARC learning mode on, the Command dashboard shows a Domain 1 panel with three meters. **Overall** counts only objectives you have *mastered* (a review interval past 60 days), with no partial credit. It is meant to read lower than your reading progress and the classic percentage. The classic all-domain dashboard is unchanged.
+- The other two meters: **Reading** (what you have read, not what you have retained) and **ARC**, a two-tone bar of gates cleared vs mastered. Tap the bar for the exact split.
+- A **Today** card on the dashboard, once a day: reviews that are due come first, then a module that has just finished its 24-hour wait, then where you left off, then the next objective. Dismiss it any time.
+- A short **How progress works** explainer (reading vs gates vs mastery, the 24-hour wait, what "overdue" means). It opens on your very first visit and can be reopened from the Progress tab.
+- **Overdue reviews now pause new ARC material.** With 3 or more reviews overdue, or any one more than 48 hours late, starting a new module waits until you catch up. AEGIS says why and links straight to the most overdue review. Reading, the glossary and the Range are never blocked.
+- The 24-hour **consolidation screen** is no longer a dead end. It now links to another objective that is ready, the glossary and the Ethics Tribunal.
+- All twelve Domain 1 **gate hints** were reviewed blind, and ten were rewritten. Each hint now gives you a method to apply instead of restating the question. Hints still cost scheduling quality, so they are now worth that cost.
+
 ## v1.6.1 — Nov 2026
 
 - **Reorder reviews can be answered again.** On the up/down-arrow review questions the arrows worked, but the app undid each move the instant it was made, so the answer could never change. Your in-progress answer now belongs to the question, not to the screen redraw.

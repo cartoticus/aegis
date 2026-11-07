@@ -1,0 +1,20 @@
+[
+  {
+    "module": "isc2.cc.d1.control-types",
+    "hint_index": 0,
+    "verdict": "CHANGES_APPROACH",
+    "reason": "Gives a concrete test (what would an attacker have to defeat?) and maps each answer to one bucket: software/hardware logic for Technical, a policy or process on people for Administrative, a physical obstacle for Physical. Walked through all six items, it lands each one correctly: firewall and FDE are logic, the AUP and background checks are policy/process, the door and fence are obstacles. It is different from hint 1, which warns against classifying by the asset; this hint gives the three categories positively. Minor: the 'attacker defeats' framing fits awkwardly for an AUP (policies do not physically stop anyone), but it still points to Administrative. 'Hardware' could make a learner wonder about a mechanical lock, but 'logic running in' rules that out."
+  },
+  {
+    "module": "isc2.cc.d1.risk-lifecycle",
+    "hint_index": 1,
+    "verdict": "CHANGES_APPROACH",
+    "reason": "Targets the likely trap, which is putting residual-risk documentation/acceptance right after choosing a treatment (especially 'accept'). It says residual risk is measured, not predicted, so it has to come after the control is applied and verified. This matches NIST RMF practice: residual risk is determined after controls are implemented and assessed, then accepted. It does not overlap with hint 0, which covers identify-before-assess. A little cryptic: 'first gives you anything real to measure' could briefly make a learner think the likelihood x impact assessment counts as measuring. That can't produce a wrong order, though, because a control can't be applied before a treatment is chosen."
+  },
+  {
+    "module": "isc2.cc.d1.governance",
+    "hint_index": 1,
+    "verdict": "MISLEADS",
+    "reason": "It offers only three audiences (leadership setting direction -> Policy, engineer checking against a requirement -> Standard, someone mid-task following along -> Procedure) for a five-bucket sort, so a learner who applies it has nowhere to put Guideline or Law. 'Where practical, prefer a passphrase of four or more words' is read by a user in the middle of a task (choosing a password), so it gets steered to Procedure. 'HIPAA's requirements...' reads as direction imposed on everyone, so it gets steered to Policy. These three audiences also repeat hint 0's specificity axis (goal / named setting / series of actions) without adding the binding-vs-advised or internal-vs-external distinctions, so it adds little beyond hint 0. Fix: either add the two missing audiences (an outside authority binding the organisation; anyone free to adapt advice) or replace it with a hint about the guideline/law boundary."
+  }
+]

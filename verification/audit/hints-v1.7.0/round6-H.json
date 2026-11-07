@@ -1,0 +1,16 @@
+[
+  {
+    "module": "isc2.cc.d1.risk-lifecycle",
+    "hint_index": 1,
+    "leak": "HIGH",
+    "factual_problem": null,
+    "reason": "Without any hint, the first three positions are easy to guess: Identify, then Assess, then Choose a treatment (the prompt's 'just been raised' plus the usual identify-assess-decide pattern gives them away). The only real test is the order of 'Apply the control and verify it actually works' versus 'Document the residual risk and have it formally accepted', and this hint settles it by matching words. 'What a response ought to leave behind' is plain-English 'residual', and 'in place and has been checked' repeats 'Apply ... and verify'. The hint then asks which step depends on that confirmation, which points straight at Document-residual and puts it after Apply/verify. A learner who has never thought about why residual risk is accepted only after implementation still gets positions 4-5 right just by matching the paraphrase. The hint gives away the one non-obvious step. A non-leaking version would ask what the risk owner is actually signing off on, without echoing 'verify' and 'leave behind'. Facts: correct. RMF Authorize comes after Assess controls."
+  },
+  {
+    "module": "isc2.cc.d1.governance",
+    "hint_index": 1,
+    "leak": "MED",
+    "factual_problem": "Mildly misleading. (1) 'Laws, policies and standards all bind' leaves out procedures, which suggests procedures are advisory. At ISC2 CC level, procedures are mandatory too; only guidelines are optional. (2) The auditor test is a proxy, not the definition (policy = high-level intent and responsibility, standard = specific mandatory technology or setting), and it can misfire. A policy such as 'protect confidentiality of customer data' is in practice often checked by inspecting encryption settings. 'Every system must have a named owner' can be checked by inspecting an asset register or CMDB field, which a learner may read as 'inspecting a system's settings' and wrongly call a Standard.",
+    "reason": "The hint first rules out Procedure ('isn't a list of steps') and Law ('internal'), then splits the four remaining 'must/will' items into Standard and Policy with a mechanical test. 'Can I look at a box's config?' gets hardened OS image and AES-256 into Standard without understanding specificity, and leaves the two org-level statements for Policy. That narrows specific items beyond teaching a method. It is not HIGH, because it is close to the real policy/standard distinction (specificity of the requirement) and the learner still has to judge each item. In fact the proxy can steer the 'named owner' item the wrong way, so it fails both as a shortcut and as teaching. Suggested fix: name 'procedures' as binding as well, and frame the test as 'does it name a specific technology or setting, or only state intent and accountability?'"
+  }
+]

@@ -1,0 +1,143 @@
+[
+ {
+  "module": "isc2.cc.d1.cia-triad",
+  "kind": "CLASSIFY",
+  "prompt": "Sort each incident under the leg of the CIA triad it primarily attacks.",
+  "buckets": [
+   "Confidentiality",
+   "Integrity",
+   "Availability"
+  ],
+  "items": [
+   "Attacker reads unencrypted traffic on public Wi-Fi",
+   "Botnet floods the public website with traffic",
+   "Customer database exfiltrated and posted online",
+   "Firmware replaced with a tampered build",
+   "Payroll figures silently altered in the database",
+   "Ransomware encrypts the file server"
+  ],
+  "hints": [
+   "Name the property the attacker destroyed, not the technology they used. The same technology shows up as a control on one side and a weapon on the other.",
+   "Ask what the attacker needed to happen for the attack to succeed: someone sees the data, the data changes, or its owner can't use it. Classify by that goal, even if other damage follows along the way."
+  ],
+  "hints_under_review": []
+ },
+ {
+  "module": "isc2.cc.d1.authn-nonrep-privacy",
+  "kind": "CLASSIFY",
+  "prompt": "Sort each measure under the property it primarily provides.",
+  "buckets": [
+   "Authentication",
+   "Non-repudiation",
+   "Privacy"
+  ],
+  "items": [
+   "Collecting only the data fields the service actually needs",
+   "Digitally signing an approved payment so it traces to one named employee",
+   "Honouring a customer's request to erase what you hold about them",
+   "Keeping a tamper-evident audit log of who changed each record",
+   "Requiring a password plus a one-time code from the user's phone",
+   "Unlocking a workstation with a registered fingerprint"
+  ],
+  "hints": [
+   "Two of these properties involve identity, so check which job the measure does: verifying a person before they are allowed to act, or leaving evidence of an action that someone else could check later.",
+   "Ask whose interest the measure serves first: the organisation's need to know who is acting and what they did, or the individual's control over information about themselves."
+  ],
+  "hints_under_review": []
+ },
+ {
+  "module": "isc2.cc.d1.control-types",
+  "kind": "CLASSIFY",
+  "prompt": "Sort each control by its TYPE \u2014 how it does its job. Ignore when it acts; that is its function, not its type.",
+  "buckets": [
+   "Technical",
+   "Administrative",
+   "Physical"
+  ],
+  "items": [
+   "A firewall filtering inbound traffic by rule",
+   "A locked door on the server room",
+   "A perimeter fence around the data centre",
+   "An acceptable-use policy signed by every employee",
+   "Background checks run before a new hire starts",
+   "Full-disk encryption on every laptop"
+  ],
+  "hints": [
+   "Ask what an attacker would have to defeat to get past it: logic running in software or hardware, a policy or process the organisation imposes on people, or a physical obstacle.",
+   "A control's type doesn't follow from what it protects. Something guarding a computer may be enforced by people, and something guarding a building may be enforced by software. Classify by the enforcer, never by the asset."
+  ],
+  "hints_under_review": []
+ },
+ {
+  "module": "isc2.cc.d1.code-of-ethics",
+  "kind": "CLASSIFY",
+  "prompt": "Each situation is most directly about one canon's subject matter: public safety and the infrastructure (I), your own honesty and legality (II), what you owe the client who hired you (III), or the standing of the profession (IV). Sort them. Note that ranking settles conflicts of *duty* \u2014 it is not how you classify what a situation is about.",
+  "buckets": [
+   "Canon I \u2014 protect society and the infrastructure",
+   "Canon II \u2014 act honourably, honestly, justly, responsibly and legally",
+   "Canon III \u2014 provide diligent and competent service to principals",
+   "Canon IV \u2014 advance and protect the profession"
+  ],
+  "items": [
+   "A vendor ignores your reports of a medical-device firmware flaw while patients remain at risk, and you keep pressing for a fix",
+   "You decline to exaggerate a threat in a sales pitch to frighten a prospect into buying",
+   "You refuse to scan a network you have no written authorisation to test",
+   "You report a peer who is selling leaked ISC2 exam questions to candidates",
+   "You report a vulnerability you found in a city's emergency dispatch system",
+   "You spend an afternoon each month mentoring junior analysts with no billable work attached",
+   "You tell a client up front that a specialised cloud engagement is beyond what you are qualified to deliver",
+   "You turn down a second client whose work would create a conflict of interest with your current engagement"
+  ],
+  "hints": [
+   "Test the duty, not the people who benefit: would you owe this even if nobody had hired you? If not, it is about your principals. If you would, decide whether it is about harm reaching the public, your own conduct, or the field as a whole.",
+   "Honesty is Canon II's subject when your own honesty or lawfulness is the whole point. If the honest act is really part of serving the people who hired you, or of looking after the profession, the situation is about that relationship instead."
+  ],
+  "hints_under_review": []
+ },
+ {
+  "module": "isc2.cc.d1.risk-lifecycle",
+  "kind": "ORDER_SEQUENCE",
+  "prompt": "A new risk has just been raised: an internet-facing server is running unpatched software. Put the five steps of handling it in the order you would actually perform them.",
+  "items": [
+   "Apply the control and verify it actually works",
+   "Assess likelihood x impact and rank it against the other risks",
+   "Choose a treatment: mitigate, transfer, avoid or accept",
+   "Document the residual risk and have it formally accepted",
+   "Identify the asset, the threats to it, and the vulnerabilities they could exploit"
+  ],
+  "hints": [
+   "Raising a concern is not the same as understanding it. Ask what you would need to write down about this server before you could compare it with anything else on your list.",
+   "Residual risk is whatever is left over from the controls as they actually exist, not as they were planned. Work out which steps have to be finished before anyone can honestly describe that."
+  ],
+  "hints_under_review": [
+   1
+  ]
+ },
+ {
+  "module": "isc2.cc.d1.governance",
+  "kind": "CLASSIFY",
+  "prompt": "Sort each document or statement into the governance layer it belongs to.",
+  "buckets": [
+   "Policy",
+   "Standard",
+   "Procedure",
+   "Guideline",
+   "Law or regulation"
+  ],
+  "items": [
+   "All production servers must run the approved hardened OS image",
+   "Data at rest must be encrypted with AES-256",
+   "Every system must have a named owner who is accountable for its security",
+   "HIPAA's requirements for safeguarding protected health information",
+   "Step 1: open the admin console. Step 2: select Enrol device. Step 3: scan the QR code",
+   "The organisation will protect the confidentiality of all customer data",
+   "To report a suspected phishing email, click Report, then forward it to the security inbox",
+   "Where practical, prefer a passphrase of four or more words"
+  ],
+  "hints": [
+   "Ask two separate questions of each item: is it binding or only advised, and how much does it specify \u2014 a goal or responsibility with no 'how', a named technology or setting, or a series of actions? Then check whether it comes from inside the organisation at all.",
+   "'Must' doesn't settle the layer \u2014 policies, standards and procedures all bind, and so does the law. For a binding internal statement that isn't a list of steps, ask how an auditor would check it: by inspecting a system's settings, or only by looking at how the organisation is run."
+  ],
+  "hints_under_review": []
+ }
+]

@@ -1,6 +1,6 @@
 /* AEGIS service worker — network-first app shell so the newest version
    always loads when online; cached copies are used only offline. */
-const CACHE = 'aegis-v1.6.1';
+const CACHE = 'aegis-v1.7.0';
 
 /* Must-have shell — and ONLY what is genuinely must-have. If either of these
    fails the install SHOULD fail, because an app that cannot boot offline is not

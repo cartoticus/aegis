@@ -1,11 +1,12 @@
 {
   "name": "aegis",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "private": true,
   "description": "AEGIS \u2014 ISC2-aligned cybersecurity learning system. Static PWA; no build step.",
   "type": "module",
   "scripts": {
-    "test": "node verification/verify-version.mjs && npm run test:fsrs && node verification/arc-module-probe.mjs --expect-root isc2.cc.d1.cia-triad --policy REVIEW && node verification/verify-module-seam.mjs && node verification/verify-arc-loop.mjs && node verification/verify-mobile-ui.mjs",
+    "test": "node verification/verify-version.mjs && npm run test:fsrs && node verification/arc-module-probe.mjs --expect-root isc2.cc.d1.cia-triad --policy REVIEW && node verification/verify-module-seam.mjs && node verification/verify-arc-loop.mjs && node verification/verify-step-a.mjs && node verification/verify-mobile-ui.mjs",
+    "test:stepa": "node verification/verify-step-a.mjs",
     "test:content": "node verification/arc-module-probe.mjs --expect-root isc2.cc.d1.cia-triad --policy REVIEW",
     "test:seam": "node verification/verify-module-seam.mjs",
     "test:loop": "node verification/verify-arc-loop.mjs",

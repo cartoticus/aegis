@@ -37,8 +37,8 @@
     },
     "prompt": "A new risk has just been raised: an internet-facing server is running unpatched software. Put the five steps of handling it in the order you would actually perform them.",
     "hints": [
-      "You cannot rank a risk before you have judged how likely it is and what it would cost.",
-      "Choosing a treatment is not the last step — something always remains afterwards, and it needs a named owner."
+      "Raising a concern is not the same as understanding it. Ask what you would need to write down about this server before you could compare it with anything else on your list.",
+      "Residual risk is whatever is left over from the controls as they actually exist, not as they were planned. Work out which steps have to be finished before anyone can honestly describe that."
     ],
     "validation_payload": {
       "accuracy_metric": "kendall_tau",

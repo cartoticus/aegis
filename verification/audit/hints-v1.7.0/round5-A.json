@@ -1,0 +1,20 @@
+[
+  {
+    "module": "isc2.cc.d1.control-types",
+    "hint_index": 0,
+    "verdict": "CHANGES_APPROACH",
+    "reason": "It gives a concrete test: picture the attacker and ask what they have to beat. The prompt's 'how it does its job' does not give you that. The answer comes straight off the item: firewall and FDE mean beating logic, so Technical. AUP and background checks mean getting round a process imposed on people (breaking the policy, lying on the application), so Administrative. Door and fence mean beating a physical barrier, so Physical. This is a different lens from hint 1's enforcer-vs-asset test, not a paraphrase of it. Small risk: a learner might read 'hardware' as covering a mechanical door lock. The word 'logic' mostly blocks that reading, and 'physical obstacle' takes it."
+  },
+  {
+    "module": "isc2.cc.d1.risk-lifecycle",
+    "hint_index": 1,
+    "verdict": "MISLEADS",
+    "reason": "What the hint means (residual risk is only known after a control is applied and verified, so documenting it comes last) is sound. But 'which step first gives you anything real to measure' is ambiguous to a novice. 'Assess likelihood x impact' sounds exactly like measuring, and arguably comes first. A learner who takes Assess as 'the measuring step' and reads 'risk left is something you measure' can then put 'Document the residual risk' straight after Assess, before Choose and Apply. That is the very misplacement the hint is meant to prevent. The fix is to name the anchor without giving the answer, e.g. 'you can only measure what is left once something has been put in place and tested'."
+  },
+  {
+    "module": "isc2.cc.d1.governance",
+    "hint_index": 1,
+    "verdict": "MISLEADS",
+    "reason": "The audience lens works for Policy, Standard and Procedure (named owner and protect-confidentiality go to leadership; hardened image and AES-256 go to an engineer checking; enrol-device steps and phishing reporting go to someone mid-task). But it lists three audiences as if that covered everything, and five buckets exist. Tested against every item: the passphrase guideline is advice for someone in the middle of creating a password, so it gets pushed toward Procedure (or Standard). HIPAA reads as 'direction for everyone' and gets pushed toward Policy. Hint 0 does cover binding vs advised and inside vs outside the organisation, but this hint's either/or wording invites applying it on its own to all eight items. Fix: scope it explicitly, e.g. 'Once you know it is a binding internal rule, ask who it is written for...'."
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "module": "isc2.cc.d1.risk-lifecycle",
+    "hint_index": 1,
+    "verdict": "CHANGES_APPROACH",
+    "reason": "Unhinted, my one hesitation was whether documenting and accepting residual risk belongs right after choosing a treatment (residual estimated at decision time) or after the control is applied and verified. The hint's forecast-vs-known test settles it: sign-off can only cover what is known to remain, so acceptance comes after verification. It doesn't restate hint 0 (which is about identify vs assess), and it doesn't misplace 'accept' as a treatment option, because choosing a treatment still happens before applying the control."
+  },
+  {
+    "module": "isc2.cc.d1.governance",
+    "hint_index": 1,
+    "verdict": "CHANGES_APPROACH",
+    "reason": "Unhinted, I hesitated over 'approved hardened OS image' (policy or standard?) and 'named owner accountable' (policy or standard?), since both say 'must'. The auditor test is a concrete check hint 0 doesn't give. Inspecting a system's settings means standard (hardened image, AES-256). Checking only how the organisation is run means policy (named owner, confidentiality goal). It explicitly removes 'must' as a cue and leaves step lists, guidelines and law to the other tests. Small risk: someone could argue the named owner is checked through an asset-register field, but 'only by looking at how the organisation is run' still points to policy. I found no placement it pushes the wrong way."
+  }
+]

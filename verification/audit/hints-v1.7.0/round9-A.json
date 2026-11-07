@@ -1,0 +1,8 @@
+[
+ {
+  "module": "isc2.cc.d1.risk-lifecycle",
+  "hint_index": 1,
+  "verdict": "CHANGES_APPROACH",
+  "reason": "It gives a dependency test that works backward from the last step. Residual risk can only be described once controls exist as built, so it has to come after 'apply the control and verify it actually works'. That catches the common mistake of recording or accepting residual risk right after choosing a treatment. It covers the end of the sequence, while hint 0 covers the start (identify before assess), so the two don't overlap. It doesn't restate the prompt, and nothing in it pushes toward a wrong order. Minor note: the words 'as they actually exist' echo 'verify it actually works' closely and come near to pointing at the answer, but the learner still has to apply the reasoning."
+ }
+]

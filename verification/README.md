@@ -8,6 +8,7 @@ npm test             # lockstep + FSRS oracle + four Playwright/content suites
 npm run test:content # modules: schema · ARC semantics V1-V13 · live scoring
 npm run test:seam    # fetched modules + service worker, incl. offline
 npm run test:loop    # the 5-phase loop, all six modules to MASTERED
+npm run test:stepa   # v1.7.0 meters, Today card, explainer, overdue gate, consolidation exits
 npm run test:ui      # touch vs mouse, phone vs desktop, 300px → 1280px
 npm run test:fsrs    # inlined FSRS-6 vs the py-fsrs 6.3.2 oracle
 npm run test:faults  # fault injection: revert each fix, require a suite to fail
@@ -20,12 +21,13 @@ npm run test:faults  # fault injection: revert each fix, require a suite to fail
 
 | suite | proves |
 |---|---|
-| `verify-version.mjs` | `APP_VERSION`, header badge, CHANGELOG head and `sw.js` CACHE all agree |
+| `verify-version.mjs` | `APP_VERSION`, header badge, CHANGELOG head, `sw.js` CACHE and `package.json` all agree |
 | `arc-module-probe.mjs` | every module is schema-valid, ARC-legal, **and actually scorable** |
 | `verify-module-seam.mjs` | the corpus loads, degrades and survives offline |
 | `verify-arc-loop.mjs` | the gate gates, consolidation can't be rushed, confidence precedes feedback |
 | `verify-fsrs-oracle.mjs` | the FSRS-6 code sliced out of `index.html` matches the reference implementation |
-| `verify-mobile-ui.mjs` | tooltips behave on touch and mouse; objective rows and the header fit every width from 300px to 1280px |
+| `verify-step-a.mjs` | the Domain-1 meters count honestly, the Today card is throttled and ranked, the explainer owns the first open, the overdue gate blocks at the locked thresholds (and only new material), the consolidation screen has exits. Toggle off = v1.6.1 dashboard byte-for-byte (needs history: commit `5a2e98d`) |
+| `verify-mobile-ui.mjs` | tooltips behave on touch and mouse; objective rows, the header and the Step A cards/explainer fit every width from 300px to 1280px |
 | `verify-rollback.mjs` | reverting to the previous release loses no learner data |
 
 `verify-rollback.mjs` needs two checkouts. Make the old one a worktree first:
@@ -39,6 +41,13 @@ The third layer of the probe is the one that earns its keep: `validateSemantics`
 proves a module is *legal*, never that its payload is shaped correctly for the
 function that will consume it. A module can pass schema and V1–V13 and still
 throw on the first learner submission.
+
+## Hint audit
+
+Gate hints are audited the same way as item banks: answer-key-free task files, three
+independent cooperative reviewers plus one hostile reviewer, fresh each round, until
+every hint is unanimous and none leaks HIGH. The v1.7.0 record is
+`docs/HINT-AUDIT-v1.7.0.md`; raw task and verdict files are in `audit/hints-v1.7.0/`.
 
 ## Content QA for new modules
 

@@ -1,0 +1,23 @@
+[
+  {
+    "module": "isc2.cc.d1.control-types",
+    "hint_index": 0,
+    "leak": "LOW",
+    "factual_problem": "Minor ambiguity: 'logic running in software or HARDWARE' vs 'a physical obstacle'. A door lock or fence is hardware too, so a weak learner could put the locked door under Technical. 'Logic' does separate them, but only if the learner reads it closely. The attacker framing also sits a little oddly on background checks: the thing defeating that control is a lying applicant, not an attacker getting past a process. Defensible, though.",
+    "reason": "Restates the three type definitions in bucket order (Technical/Administrative/Physical), which is the defining distinction, not a shortcut. The one keyword echo is 'a policy' -> 'acceptable-use policy', but that item, the fence and the locked door are trivially placed without any hint. The cases that need thought (full-disk encryption on laptops, background checks) still need the learner to understand what enforces the control. The hint adds nothing beyond a definitional nudge."
+  },
+  {
+    "module": "isc2.cc.d1.risk-lifecycle",
+    "hint_index": 1,
+    "leak": "MED",
+    "factual_problem": "'Residual risk is something you measure, not something you predict' is overstated. In NIST SP 800-30/800-39 practice, expected residual risk is estimated when you choose a treatment (that is how 'accept' is weighed) and then confirmed after implementation. Stated as an absolute, this teaches a false dichotomy. Also 'which steps can only happen after that' (plural) implies more than one step follows Apply/verify, when only one does, which could push a learner to put Apply third.",
+    "reason": "Already obvious without any hint: Identify first, and 'Document the residual risk...' last ('residual' is plain English for leftover). What the hint adds: 'risk left at the end' locks Document-residual into last place, and 'which step first gives you anything real to measure' points straight at 'Apply the control and VERIFY it actually works' (measure <-> verify is a near-verb match). That settles the one genuinely confusable pair (accepting/documenting residual before vs after applying the control) by wording alone, without the learner understanding treatment. It gives no help on Assess vs Choose, so it falls short of pinning everything; MED, borderline HIGH for position 4."
+  },
+  {
+    "module": "isc2.cc.d1.governance",
+    "hint_index": 1,
+    "leak": "MED",
+    "factual_problem": "It mixes up author and audience. A policy is written BY leadership FOR everyone, but the hint lists 'leadership setting direction for everyone' as who the item is 'written for'. Worse, the 'engineer checking a system against a requirement' cue misdirects the hardest item: 'Every SYSTEM must have a named owner who is accountable' (a Policy: it assigns responsibility and says no 'how') reads as something an engineer can check a system against, so the hint actively pushes it into Standard. The hint is also silent on Guideline and Law, so a learner using only this hint has no way to handle those two buckets.",
+    "reason": "Gives three audience personas mapping 1:1 to Policy/Standard/Procedure. The procedure persona ('in the middle of a task following along') matches the two step-by-step items, but they are obvious from format anyway. The standard persona invites surface matching on 'system/server' plus 'must', which narrows the AES-256 and hardened-image items to Standard without the learner understanding specificity. That is MED: a surface heuristic beyond method. Its main defect is that it misleads on the owner-accountability item rather than leaking it."
+  }
+]

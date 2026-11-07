@@ -37,8 +37,8 @@
     },
     "prompt": "Sort each document or statement into the governance layer it belongs to.",
     "hints": [
-      "Work down in order: is it imposed on you from outside, is it optional, and does it state an intention, a specific requirement, or a sequence of actions?",
-      "Force and specificity are two separate axes. Something can be mandatory and vague, or detailed and optional — the pair of answers picks the layer."
+      "Ask two separate questions of each item: is it binding or only advised, and how much does it specify — a goal or responsibility with no 'how', a named technology or setting, or a series of actions? Then check whether it comes from inside the organisation at all.",
+      "'Must' doesn't settle the layer — policies, standards and procedures all bind, and so does the law. For a binding internal statement that isn't a list of steps, ask how an auditor would check it: by inspecting a system's settings, or only by looking at how the organisation is run."
     ],
     "validation_payload": {
       "accuracy_metric": "bucket_assignment",

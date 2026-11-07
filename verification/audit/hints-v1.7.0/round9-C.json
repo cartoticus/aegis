@@ -1,0 +1,8 @@
+[
+  {
+    "module": "isc2.cc.d1.risk-lifecycle",
+    "hint_index": 1,
+    "verdict": "CHANGES_APPROACH",
+    "reason": "Gives a usable rule for the likely swap at the end of the order. Residual risk depends on controls as they were actually implemented, so 'Document residual risk' has to come after 'Apply the control and verify it actually works', not straight after choosing a treatment. The 'accept' option in the treatment step makes that early placement tempting. It works by dependency: which steps have to be finished first. It does not repeat hint 0, which covers identify-before-assess at the start of the order, so the two hints cover opposite ends. It matches ISC2 CC's definition of residual risk, the risk left after controls are applied. Small weakness: it pins only the last two steps, and the middle (assess, then choose) rests on hint 0 and on common sense."
+  }
+]

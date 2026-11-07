@@ -1,0 +1,8 @@
+[
+  {
+    "module": "isc2.cc.d1.risk-lifecycle",
+    "hint_index": 1,
+    "verdict": "CHANGES_APPROACH",
+    "reason": "Gives a test for the tail of the sequence, which is the spot a novice gets wrong: is the residual risk being signed a forecast or a demonstrated result? Asking that question puts 'apply and verify' before 'document residual risk and have it accepted', instead of signing off right after choosing a treatment. It doesn't overlap hint 0, which covers identify-before-assess. It is a bit riddle-like ('what the work has been shown to leave behind'), but it doesn't steer anyone wrong. It also helps keep 'accept' as a treatment option separate from formal sign-off on residual risk."
+  }
+]

@@ -37,8 +37,8 @@
     },
     "prompt": "Each situation is most directly about one canon's subject matter: public safety and the infrastructure (I), your own honesty and legality (II), what you owe the client who hired you (III), or the standing of the profession (IV). Sort them. Note that ranking settles conflicts of *duty* — it is not how you classify what a situation is about.",
     "hints": [
-      "Ask who is primarily being protected: the public, your own integrity, the client who hired you, or the profession itself.",
-      "More than one canon can be true of the same act. Ask which one the situation is fundamentally *about*, not which others it also touches."
+      "Test the duty, not the people who benefit: would you owe this even if nobody had hired you? If not, it is about your principals. If you would, decide whether it is about harm reaching the public, your own conduct, or the field as a whole.",
+      "Honesty is Canon II's subject when your own honesty or lawfulness is the whole point. If the honest act is really part of serving the people who hired you, or of looking after the profession, the situation is about that relationship instead."
     ],
     "validation_payload": {
       "accuracy_metric": "bucket_assignment",

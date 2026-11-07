@@ -1,0 +1,14 @@
+[
+  {
+    "module": "isc2.cc.d1.risk-lifecycle",
+    "hint_index": 1,
+    "verdict": "CHANGES_APPROACH",
+    "reason": "Gives a dependency test for the steps a novice is most likely to swap: residual risk can be estimated at treatment time, but it can only be documented and formally accepted after the control has been applied and verified. So 'Document residual risk' has to come after 'Apply and verify'. This does not restate hint 0, which covers the front of the sequence (identify before assess). It is a little abstract ('response' means the treatment), but it does not point toward a wrong order: the confirmation step is apply/verify, and the step that depends on it is documentation."
+  },
+  {
+    "module": "isc2.cc.d1.governance",
+    "hint_index": 1,
+    "verdict": "CHANGES_APPROACH",
+    "reason": "Removes a common trap (treating 'must' as proof of a layer) and adds an auditor test that hint 0 does not give. Checking a system's settings means Standard (hardened OS image, AES-256). Checking only how the organisation is run means Policy (named system owner, protect customer-data confidentiality). It also separates the two cases hint 0 leaves fuzziest, since 'approved hardened OS image' is not obviously a 'named technology'. Limiting the test to binding, internal, non-step items keeps it off HIPAA, the procedures and the guideline. Small risk: a learner could argue that 'protect confidentiality of all customer data' can be audited through access-control settings, but the word 'only' and the absence of any named mechanism point to Policy."
+  }
+]

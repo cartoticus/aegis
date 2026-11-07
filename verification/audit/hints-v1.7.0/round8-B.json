@@ -1,0 +1,8 @@
+[
+  {
+    "module": "isc2.cc.d1.risk-lifecycle",
+    "hint_index": 1,
+    "verdict": "CHANGES_APPROACH",
+    "reason": "Unaided, I hesitated only on where 'Document the residual risk and have it formally accepted' goes: before applying the control (when the treatment is chosen, since 'accept' is one of the options and the residual can be estimated then) or after verification. The hint gives a test that settles it: is the sign-off on a forecast residual or on one the work has been shown to leave? 'Shown' ties acceptance to the outcome of 'apply and verify', so it goes last. It doesn't restate the prompt or hint 0 (which covers identify vs assess), it doesn't name the answer, and applying it can't push the item to a wrong position. Small caveat: the question-shaped wording is a bit riddle-like, but the test inside it is concrete."
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "module": "isc2.cc.d1.control-types",
+    "hint_index": 0,
+    "verdict": "CHANGES_APPROACH",
+    "reason": "The test 'what would an attacker have to defeat' settles the two items I hesitated over. Full-disk encryption feels physical because it protects a stolen laptop, but a thief who already holds the laptop still has to break the encryption logic, so it is Technical. A malicious new hire has to get past a vetting process, so background checks are Administrative. The test works on all six items and pushes none of them into the wrong bucket. It is close to the bucket definitions, but the attacker framing gives you something to actually check, which hint 1's enforcer framing does not."
+  },
+  {
+    "module": "isc2.cc.d1.risk-lifecycle",
+    "hint_index": 1,
+    "verdict": "CHANGES_APPROACH",
+    "reason": "My only hesitation was whether documenting residual risk comes at the treatment-choice step (as a predicted figure) or comes last. Saying residual risk is measured, not predicted, puts it after 'apply and verify', the first step that produces something real to measure. That settles the last two places, and hint 0 covers the first one. Small caveat: in practice residual risk is often an estimate, so 'measured, not predicted' overstates the doctrine a little. The order it leads to is still correct."
+  },
+  {
+    "module": "isc2.cc.d1.governance",
+    "hint_index": 1,
+    "verdict": "MISLEADS",
+    "reason": "The hint lists three audiences (leadership, engineer, someone mid-task), which map to Policy, Standard and Procedure, for a question with five buckets. Read as a complete list, it can push two items into the wrong bucket. The passphrase guideline is written for a user in the middle of choosing a password, which suggests Procedure. HIPAA can read as 'direction for everyone', which suggests Policy, and mixing up policy and law is a common exam trap. On the items I did hesitate over (hardened OS image, named owner, phishing-report steps), it only restates hint 0's specificity axis (goal / named setting / series of actions) from the audience's angle, so even without the misleading pull it would be at best RESTATES."
+  }
+]

@@ -1,0 +1,8 @@
+[
+ {
+  "module": "isc2.cc.d1.risk-lifecycle",
+  "hint_index": 1,
+  "verdict": "CHANGES_APPROACH",
+  "reason": "Unhinted, my one hesitation was the last two steps. 'Document the residual risk and have it formally accepted' can look like part of choosing a treatment, since you weigh what you will accept when you decide. The hint gives a test: residual risk is measured against controls as they actually exist, not as planned. That puts documentation and acceptance after 'apply and verify', and implies the full chain identify -> assess -> treat -> apply -> residual. It doesn't repeat hint 0, which covers identify vs assess, and following it leads to no wrong placement. Minor overlap: the step text 'verify it actually works' already points the same way."
+ }
+]

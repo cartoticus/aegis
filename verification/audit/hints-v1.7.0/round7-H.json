@@ -1,0 +1,16 @@
+[
+  {
+    "module": "isc2.cc.d1.risk-lifecycle",
+    "hint_index": 1,
+    "leak": "MED",
+    "factual_problem": "'A signature carries weight only when there is nothing left to find out' overstates it. Residual risk is never fully known, and risk keeps being monitored after acceptance. In ISO 27005-style practice, management often accepts the residual risk when it approves the treatment plan, which can come before implementation. The ordering the item wants (verify the control, then accept) is defensible at CC level, but this sentence makes it sound like an absolute rule. Suggest: 'carries weight only when it reflects what the control was shown to leave behind'.",
+    "reason": "Steps that need no hint: Identify comes first, then Assess, then Choose treatment (the verbs and the phrase 'rank it against the other risks' give this away). The only pair a learner could get wrong is Apply/verify versus Document/accept residual. This hint settles that pair. 'Put their name to a risk' matches 'formally accepted' by keyword, and 'nothing left to find out' tells you that step goes after verification. A learner can place Document/accept last from those words without understanding residual risk. It is not HIGH because 'residual' already suggests the step comes after a control, so many learners would put it last anyway. It still removes the item's only real trap."
+  },
+  {
+    "module": "isc2.cc.d1.governance",
+    "hint_index": 1,
+    "leak": "MED",
+    "factual_problem": "Mildly misleading: saying standards are what an auditor checks 'by inspecting a system's settings' defines standards too narrowly. Standards can be non-technical, such as a mandatory data-classification scheme or a required framework. Policies are often audited partly through system evidence too. Also, 'Every system must have a named owner' could reasonably be checked by inspecting an asset inventory or CMDB field, which a learner may read as a 'system setting'. That makes the test unclear on one of the policy items.",
+    "reason": "This is mostly the defining distinction between policy (a goal or responsibility) and standard (a specific mandated technology or setting), so it is not HIGH. But the auditor test is a proxy anyone can run without knowing what either layer is. Of the four binding internal statements that aren't step lists, it splits them cleanly into two pairs. AES-256 and the hardened OS image are 'inspect settings', so Standard. Named owner and protecting customer confidentiality are 'how the org is run', so Policy. Together with hint 0, which removes Law (not internal), Guideline (only advised) and the Procedures (step lists), the two hints sort the whole board almost mechanically. The 'Must doesn't settle the layer' opening is good method and does defeat the 'must means Policy' shortcut."
+  }
+]

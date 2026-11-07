@@ -1,0 +1,14 @@
+[
+  {
+    "module": "isc2.cc.d1.risk-lifecycle",
+    "hint_index": 1,
+    "verdict": "CHANGES_APPROACH",
+    "reason": "Targets the likeliest tail error: putting 'document residual risk and have it accepted' straight after 'choose a treatment', since 'accept' appears as a treatment option. It separates residual risk you estimate when choosing a treatment from residual risk you can only confirm after the control is applied and verified, which tells the learner which of the last two steps comes later. Hint 0 covers the start of the sequence (identify before assess), so the two don't overlap. Applied to any step, it points the right way. The wording is a little abstract ('response'), but the learner can act on it."
+  },
+  {
+    "module": "isc2.cc.d1.governance",
+    "hint_index": 1,
+    "verdict": "CHANGES_APPROACH",
+    "reason": "It knocks out 'must' as a cue, which matters because the policy, standard and law items all use binding language, and it gives the learner a test they can run: could an auditor check this by inspecting a system's settings (hardened OS image, AES-256 means Standard), or only by looking at how the organisation is run (named system owner, protecting customer confidentiality means Policy)? It sets procedures aside up front (lists of steps), and HIPAA and guidelines are left to hint 0's 'from inside the organisation' and 'binding or advised' questions. It overlaps hint 0's goal-versus-setting split, but it puts that split into a test hint 0 doesn't give. I found no item it would push into the wrong bucket. The 'only' in 'only by looking at how the organisation is run' keeps the confidentiality goal from being read as settings-checkable."
+  }
+]
