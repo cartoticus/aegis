@@ -2,160 +2,142 @@
 
 ![AEGIS](docs/screenshot.png)
 
-![Version](https://img.shields.io/badge/version-1.4.0-E8B04B)
+![Version](https://img.shields.io/badge/version-1.6.1-E8B04B)
 ![PWA](https://img.shields.io/badge/PWA-installable-E8B04B)
 ![Works offline](https://img.shields.io/badge/works-offline-4FD7C9)
 ![No build](https://img.shields.io/badge/build-none-5BD6A0)
-![Dependencies](https://img.shields.io/badge/dependencies-0-5BD6A0)
-![Vanilla JS](https://img.shields.io/badge/vanilla-JS-7FA2E0)
+![Runtime dependencies](https://img.shields.io/badge/runtime%20deps-0-5BD6A0)
 ![License: MIT](https://img.shields.io/badge/license-MIT-blue)
 
-A self-contained cybersecurity range built on the ISC2 framework. AEGIS turns the five **Certified in Cybersecurity (CC)** domains into a guided **learn → drill → prove** loop: read the lesson, practice it hands-on, then pass the domain quiz at 80%.
+A free, self-contained cybersecurity range for **ISC2 Certified in Cybersecurity (CC)** and
+**CompTIA Security+** prep. AEGIS turns the five CC domains into a guided
+**learn → drill → prove** loop, and — in its ARC learning mode — replaces "mark complete"
+with mastery you actually have to demonstrate.
 
-It's an installable **Progressive Web App** — add it to your phone's home screen and it runs full-screen and **offline**, like a native app. No build step, no dependencies. Progress saves on-device.
+It's an installable **Progressive Web App**: add it to your phone's home screen and it runs
+full-screen and **offline**. No build step, no runtime dependencies, no accounts. Progress
+saves on the device.
+
+**Live:** <https://cartoticus.github.io/aegis/>
 
 ---
 
 ## Features
 
-- **In-app lessons** — plain-language explanations with diagrams and worked examples. Every Beginner objective across all five domains is covered, plus all of Domain 1.
-- **7 hands-on trainers** — SOC terminal, subnet/CIDR calculator, incident-response simulator, least-privilege workshop, phishing triage, ethics tribunal, and a mixed exam bank. All in-browser, no setup.
-- **Per-domain quizzes** with a real **80% pass gate**, drawn from a 38-question bank.
-- **Code of Ethics gate** — the offensive trainers unlock only after you accept the four ISC2 canons.
-- **Certification map** — CC → SSCP → CISSP → CCSP, alongside Security+, CySA+, CEH, CISM, and OSCP.
-- **Difficulty flags** — every objective, trainer, and lab is tagged Beginner / Intermediate / Advanced, with a filter.
-- **Progress tracking** — study streak, spaced-repetition review queue, and field notes, saved locally.
-- **Outline currency check** — the Cert Map shows the exam edition each certification is aligned to, flags when a newer outline is published, and links to the official source in one tap.
-- **Glossary** — a searchable dictionary of ~95 cybersecurity terms and acronyms (definition, why it matters, CC domain, example). Terms auto-highlight in lessons: hover for a definition, tap for the full entry, and term pages cross-link.
+- **In-app lessons** — plain-language explanations with diagrams and worked examples.
+- **ARC learning mode (beta, Domain 1)** — switch it on under **Progress**. Each objective runs
+  a five-phase loop: a question before you read, the reading, a **gate you have to pass**, a
+  paper exercise away from the screen, then spaced retrieval scheduled by **FSRS-6**. You record
+  your confidence *before* seeing the answer, and there's a 24-hour wait before the first review.
+  Content lives in `modules/*.json`; the engine is `arc-core.mjs`.
+- **FSRS-6 review queue** — Again / Hard / Good / Easy grading; a miss genuinely brings a card
+  back sooner. Mastering a glossary term files a card automatically.
+- **7 hands-on trainers** — SOC terminal, subnet/CIDR, incident-response simulator,
+  least-privilege workshop, phishing triage, ethics tribunal, and a mixed exam bank.
+- **Per-domain quizzes** with a real **80% pass gate**.
+- **Code of Ethics gate** — offensive trainers unlock only after you accept the four canons.
+- **Glossary** — ~95 terms and acronyms, auto-highlighted in lessons (hover on desktop, tap on touch).
+- **Certification map + outline currency check** — flags when a newer exam outline is listed.
+- **Phone-first** — tested from 300px to 1280px, touch and mouse.
 
 ## The trainers
 
 | Trainer | Domain | What you do |
 |---|---|---|
 | SOC Terminal | 5 · Security Ops | Simulated Linux shell — hunt a brute-force attack in the auth log, verify file integrity |
-| Subnet & CIDR Trainer | 4 · Networking | Compute network/broadcast addresses, host counts, and masks with real IPv4 math |
+| Subnet & CIDR Trainer | 4 · Networking | Network/broadcast addresses, host counts and masks with real IPv4 math |
 | Incident Response Sim | 2 · BC/DR/IR | Branching ransomware scenario scored on making the right calls in order |
-| Least-Privilege Workshop | 3 · Access Controls | Provision a new analyst with exactly the access they need — nothing more |
+| Least-Privilege Workshop | 3 · Access Controls | Provision a new analyst with exactly the access they need |
 | Phishing Triage | 5 · Awareness | Flag phishing vs. legitimate mail and name the red flags |
-| Ethics Tribunal | 1 · Ethics | Decide which ISC2 canon governs each gray-area dilemma |
+| Ethics Tribunal | 1 · Ethics | Decide which canon governs each gray-area dilemma |
 | CC Exam Bank | All | 12-question mixed exam across every domain |
 
-## Install on your phone (Galaxy S25+ / Android)
+## Install on your phone
 
-Once the app is live on the web (see **Deploy** below), on your S25+:
+1. Open <https://cartoticus.github.io/aegis/> in **Chrome** (Android) or **Safari** (iPhone/iPad).
+2. Chrome: tap **Install AEGIS** (bottom-right) or ⋮ → **Install app**. Safari: **Share → Add to Home Screen**.
+3. After the first load it works offline.
 
-1. Open the page in **Chrome**.
-2. Tap it around a bit so Chrome sees it's a real app — an **"Install AEGIS"** button appears bottom-right, or use the browser menu (⋮) → **Add to Home screen / Install app**.
-3. Confirm. AEGIS lands on your home screen with its own icon and launches full-screen.
-4. After the first load it works **offline** — no signal needed to study.
+## Deploy
 
-> iPhone/iPad: open in **Safari**, tap **Share → Add to Home Screen**.
+Every push to `main` deploys to GitHub Pages via `.github/workflows/deploy.yml` (about 20
+seconds). The repo *is* the site — there is no build step. **A release isn't shipped until it's
+on `main` and the Pages run is green.**
 
-## Deploy with GitHub Pages (free hosting + HTTPS)
+## Releasing a version
 
-A PWA needs HTTPS; GitHub Pages provides it automatically. This repo ships a
-**GitHub Actions workflow** (`.github/workflows/deploy.yml`) that publishes the
-site on every push to `main` — no manual steps after the one-time setup.
+Bump these together — `npm test` fails if they disagree:
 
-**Recommended — automatic (GitHub Actions):**
+- `APP_VERSION` and the header badge in `index.html`
+- the top entry of the in-app `CHANGELOG` in `index.html` (this drives **What's New**)
+- `CACHE` in `sw.js` (e.g. `aegis-v1.6.1`) — this is what makes installed apps refresh
+- `version` in `package.json`
 
-1. Create a repository (e.g. **`aegis`**) and upload the contents of this folder to the repo root (`index.html` at the top level).
-2. In the repo: **Settings → Pages → Build and deployment → Source → GitHub Actions**.
-3. Push any commit (the initial upload counts). The **Deploy AEGIS to GitHub Pages** workflow runs automatically under the **Actions** tab.
-4. When it finishes (~1 min), your app is live at:
-   `https://<your-username>.github.io/aegis/`
+Then regenerate the repo changelog with `npm run changelog`.
 
-From then on, every push auto-deploys. You can also trigger it manually from
-**Actions → Deploy AEGIS to GitHub Pages → Run workflow**.
+## Run locally
 
-**Alternative — no workflow (deploy from a branch):**
+Service workers and `fetch()` need an origin, so `file://` won't run ARC mode. Serve it:
 
-Delete `.github/` if you prefer, then **Settings → Pages → Source: Deploy from a
-branch → `main` / `/ (root)`**. Same URL, but you manage it manually.
+```bash
+npm run serve        # python3 -m http.server 8080
+```
 
-## Versioning & releases
+## Testing
 
-The app shows its version in the header and footer, and greets you with a
-**"What's new"** changelog screen whenever the version changes (tap **What's new**
-in the footer to reopen it). To cut a new release, bump all three in lockstep:
+```bash
+npm install          # dev-only: Playwright
+npm test             # version lockstep, FSRS oracle, modules, seam, 5-phase loop, interface
+npm run test:faults  # revert each fix in turn and require a test to notice
+```
 
-- `APP_VERSION` in `index.html`
-- the top entry of `CHANGELOG` in `index.html` (what changed)
-- `CACHE` in `sw.js` (e.g. `aegis-v1.2.0`) — this is what tells installed apps to refresh their offline cache
-
-## Run it locally (no phone / no hosting)
-
-Just open `index.html` in any browser. Everything works except the install prompt and offline caching, which require HTTPS. Progress still saves via `localStorage`.
+See [`verification/README.md`](verification/README.md) for what each suite proves. The rule
+the suite is built on: **an assertion only counts if it fails when the thing it names is gone.**
 
 ## Repository layout
 
 ```
 aegis/
-├─ index.html               ← the entire app
-├─ manifest.webmanifest     ← PWA metadata (name, icons, theme)
-├─ sw.js                    ← service worker (offline app shell)
-├─ icons/                   ← app icons (192, 512, maskable, apple-touch)
-├─ docs/screenshot.png      ← README image (swap for your own capture)
-├─ .github/workflows/
-│  └─ deploy.yml            ← auto-deploys to GitHub Pages on every push
-├─ README.md
-├─ LICENSE
-└─ .gitignore
+├─ index.html               ← the app (inline CSS + vanilla JS)
+├─ sw.js                    ← service worker (network-first shell, cached modules)
+├─ arc-core.mjs             ← ARC v4.3.0 engine, unmodified
+├─ modules/                 ← ARC content: index.json + one *.arc-module.json per objective
+├─ manifest.webmanifest     ← PWA metadata
+├─ outline-versions.json    ← maintained list of current exam outlines (see below)
+├─ icons/
+├─ verification/            ← test suites, fault injection, content-QA tooling (never served to the app)
+├─ docs/                    ← build reports, item banks, content-sourcing rules + source registry
+├─ CHANGELOG.md             ← generated from the in-app changelog
+└─ .github/workflows/deploy.yml
 ```
 
-> The screenshot is the app's landing view. To use your own, take a capture on
-> your S25+ (**Power + Volume Down**) and replace `docs/screenshot.png`.
+## Writing content
+
+All module content follows [`docs/CONTENT-SOURCING-GUIDELINES.md`](docs/CONTENT-SOURCING-GUIDELINES.md):
+teach concepts, never copy expression; source from the tiers in
+[`docs/sources-registry.json`](docs/sources-registry.json); never source from ISC2, CompTIA,
+paywalled ISO/IEC standards or exam-dump sites. New modules pass three-layer validation
+(schema · ARC semantics V1–V13 · live scoring) and a blind cooperative-plus-hostile item audit
+before they ship.
 
 ## Keeping outlines current
 
-Certification bodies don't publish a machine-readable feed of exam-outline
-versions, so AEGIS uses a maintained list you control: **`outline-versions.json`**
-at the repo root. The app fetches it and, if it advertises a newer outline than
-the edition baked into the app, flags that certification on the Cert Map
-(**Upcoming** for a future effective date, **Update** for one already in effect).
-Everything degrades gracefully offline, and every cert links to its official
-outline page so the source of truth is always one tap away.
-
-When a vendor announces a new outline, edit one file:
-
-1. In `outline-versions.json`, bump that cert's `outline` label and `asOf` date
-   (format `YYYY-MM-DD`), and add a short `note`.
-2. Commit. Every installed copy shows the flag on its next online load — no app
-   rebuild needed.
-
-To fully re-align the app to a new outline (not just flag it), update the cert's
-baked `outline`/`asOf` in `index.html` and refresh the affected domain content,
-then cut a version bump.
-
-> Example shipped in this version: the **ISC2 CC outline effective Sept 1, 2026**
-> is listed in `outline-versions.json`, so AEGIS flags CC as an upcoming refresh
-> automatically.
-
-## Tech notes
-
-- One HTML file for the app: inline CSS + vanilla JavaScript, zero runtime dependencies.
-- Service worker caches the app shell for offline use; state lives in `localStorage` (reset control on the Progress tab).
-- Fonts load from Google Fonts online and fall back to a system stack offline.
-- No tracking, no analytics.
-
-## Roadmap
-
-- [ ] Intermediate lessons — SIEM, hardening, encryption, VPNs, packet analysis, routing, NAC, RTO/RPO, separation of duties, DAC/MAC/RBAC
-- [ ] Advanced networking lessons — SDN/microsegmentation, ZTNA/SASE, BGP security & RPKI, deep packet inspection, covert-channel detection
-- [ ] Cumulative mock exam — 25 questions weighted across domains with a per-domain breakdown
-- [ ] Packet-capture triage trainer (spot C2 beaconing in a simulated PCAP)
-- [ ] Firewall ruleset builder · passphrase-entropy visualizer
-
-## Contributing
-
-Because it's a single file, the whole app is in one place — no toolchain to set up. Welcome PRs: new lessons (follow the `LESSONS` object), new quiz questions (add to `QUIZ` with a `Domain N ·` label so they map automatically), new trainers, and accuracy fixes against the current ISC2 outline.
+Vendors don't publish a machine-readable feed of exam outlines, so AEGIS reads
+**`outline-versions.json`**. If it lists a newer outline than the edition baked into the app,
+the Cert Map flags that certification (**Upcoming** for a future date, **Update** for one in
+effect). To flag a new outline, bump that cert's `outline` and `asOf` (`YYYY-MM-DD`) and add a
+`note`; every installed copy shows it on its next online load.
 
 ## Disclaimer
 
-AEGIS is an **independent study aid**. It is **not affiliated with, endorsed by, or sponsored by ISC2**. "CC," "SSCP," "CISSP," "CCSP," and related names are trademarks of their respective owners, used here only to describe the material.
+AEGIS is an **independent study tool** and is **not affiliated with, endorsed by, or sponsored
+by ISC2® or CompTIA®**. Certification names are trademarks of their owners and are used only to
+describe what the material aligns to. AEGIS is exam prep, not a credential; any completion
+record it produces is not an accredited certification.
 
-Practice offensive techniques **only** against systems you own or are explicitly authorized to test. Unauthorized scanning or access is illegal under laws such as the U.S. CFAA — mirroring Canon I and Canon II of the ISC2 Code of Ethics.
+Practice offensive techniques **only** against systems you own or are explicitly authorized to
+test. Unauthorized scanning or access is illegal under laws such as the U.S. CFAA.
 
 ## License
 
-Released under the **MIT License** — see [`LICENSE`](LICENSE). Remember to replace `<your name>` in the license file.
+MIT — see [`LICENSE`](LICENSE).

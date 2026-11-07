@@ -111,8 +111,15 @@ async function open({ width = 390, height = 844, touch = false } = {}) {
   // without moving the mouse off the term (the touch path, on a mouse).
   await g.hover();
   ok('precondition: tooltip visible before openTerm', await page.evaluate(() => getComputedStyle(document.getElementById('glossTip')).display === 'block'));
-  await page.evaluate(() => openTerm(document.querySelector('#domPanels .dom-panel.active .gloss').dataset.term));
-  ok('opening a term dismisses a visible tooltip', await page.evaluate(() => document.getElementById('glossTip').style.display) === 'none');
+  // Read the result in the SAME task as openTerm(). Once the overlay paints over
+  // the cursor the browser may send its own mouseout and hide the tooltip anyway,
+  // which made this check pass with the fix removed (flaky under load). Reading
+  // synchronously leaves openTerm's own dismissal as the only thing that can pass it.
+  const dismissed = await page.evaluate(() => {
+    openTerm(document.querySelector('#domPanels .dom-panel.active .gloss').dataset.term);
+    return document.getElementById('glossTip').style.display;
+  });
+  ok('opening a term dismisses a visible tooltip', dismissed === 'none', dismissed);
   await page.evaluate(() => closeTerm());
 
   // Each dismissal check first proves the tooltip is VISIBLE — otherwise it

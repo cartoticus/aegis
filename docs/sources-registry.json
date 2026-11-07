@@ -1,0 +1,179 @@
+{
+  "$schema_note": "Companion database to CONTENT-SOURCING-GUIDELINES.md. Each entry is referenced by ID from a module's provenance.sources array. Seed list — verify URLs and expand per-domain before relying on it at scale. 'domains' uses the same dag_branch-style codes as arc-module_schema.json.",
+  "registry_version": "1.0.0",
+  "last_reviewed": "2026-09-02",
+  "sources": [
+    {
+      "id": "nist-sp800-30r1",
+      "title": "NIST SP 800-30 Rev. 1 — Guide for Conducting Risk Assessments",
+      "publisher": "NIST",
+      "url": "https://csrc.nist.gov/pubs/sp/800/30/r1/final",
+      "tier": "A",
+      "license": "Public domain (US Government work)",
+      "domains": ["cc.d1.principles"],
+      "notes": "Primary reference for risk lifecycle / threat-vulnerability-risk-treatment content."
+    },
+    {
+      "id": "nist-sp800-53r5",
+      "title": "NIST SP 800-53 Rev. 5 — Security and Privacy Controls for Information Systems and Organizations",
+      "publisher": "NIST",
+      "url": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final",
+      "tier": "A",
+      "license": "Public domain (US Government work)",
+      "domains": ["cc.d1.principles", "cc.d3.access-controls"],
+      "notes": "Control families reference — technical / administrative / physical control classification."
+    },
+    {
+      "id": "nist-sp800-61r2",
+      "title": "NIST SP 800-61 Rev. 2 — Computer Security Incident Handling Guide",
+      "publisher": "NIST",
+      "url": "https://csrc.nist.gov/pubs/sp/800/61/r2/final",
+      "tier": "A",
+      "license": "Public domain (US Government work)",
+      "domains": ["cc.d2.bcdr"],
+      "notes": "Incident response lifecycle content."
+    },
+    {
+      "id": "nist-csf-2.0",
+      "title": "NIST Cybersecurity Framework 2.0",
+      "publisher": "NIST",
+      "url": "https://www.nist.gov/cyberframework",
+      "tier": "A",
+      "license": "Public domain (US Government work)",
+      "domains": ["cc.d1.principles", "cc.d5.security-ops"],
+      "notes": "Govern/Identify/Protect/Detect/Respond/Recover functions — useful structural backbone, don't mirror its own section headers verbatim."
+    },
+    {
+      "id": "nist-ai-rmf-1.0",
+      "title": "NIST AI Risk Management Framework 1.0",
+      "publisher": "NIST",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "tier": "A",
+      "license": "Public domain (US Government work)",
+      "domains": ["aegis.d6.ai-security"],
+      "notes": "Core AI risk framework, published Jan 2023. Also tracked on the AEGIS roadmap for Domain 6 content."
+    },
+    {
+      "id": "nist-ai-600-1",
+      "title": "NIST AI 600-1 — Generative AI Profile",
+      "publisher": "NIST",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "tier": "A",
+      "license": "Public domain (US Government work)",
+      "domains": ["aegis.d6.ai-security"],
+      "notes": "12-risk GenAI companion profile to the AI RMF, published Jul 2024."
+    },
+    {
+      "id": "cisa-guidance",
+      "title": "CISA Cybersecurity Advisories & Best Practices",
+      "publisher": "CISA (US Cybersecurity and Infrastructure Security Agency)",
+      "url": "https://www.cisa.gov/topics/cybersecurity-best-practices",
+      "tier": "A",
+      "license": "Public domain (US Government work)",
+      "domains": ["cc.d2.bcdr", "cc.d5.security-ops"],
+      "notes": "Use for current threat advisories and operational guidance; content changes frequently, re-verify per module."
+    },
+    {
+      "id": "owasp-top10-2021",
+      "title": "OWASP Top 10:2021",
+      "publisher": "OWASP Foundation",
+      "url": "https://owasp.org/Top10/",
+      "tier": "B",
+      "license": "Creative Commons Attribution-ShareAlike",
+      "domains": ["cc.d4.network-security", "cc.d5.security-ops"],
+      "notes": "Attribute OWASP by name when referenced. Paraphrase vulnerability descriptions — do not reuse their category text verbatim."
+    },
+    {
+      "id": "owasp-genai-llm-top10",
+      "title": "OWASP Top 10 for LLM & GenAI Applications",
+      "publisher": "OWASP Foundation",
+      "url": "https://owasp.org/www-project-top-10-for-large-language-model-applications/",
+      "tier": "B",
+      "license": "Creative Commons Attribution-ShareAlike",
+      "domains": ["aegis.d6.ai-security"],
+      "notes": "Roadmap notes a 2026 edition superseding 2025 v2.0, published Aug 4, 2026 — confirm current edition at time of authoring, this project moves fast."
+    },
+    {
+      "id": "mitre-attack",
+      "title": "MITRE ATT&CK",
+      "publisher": "MITRE",
+      "url": "https://attack.mitre.org/",
+      "tier": "B",
+      "license": "Free to use with attribution under MITRE's ATT&CK terms of use",
+      "domains": ["cc.d5.security-ops"],
+      "notes": "Tactics/techniques taxonomy — good structural reference for SOC/incident-response content. Cite technique IDs (e.g. T1566) rather than reproducing MITRE's descriptions."
+    },
+    {
+      "id": "mitre-atlas",
+      "title": "MITRE ATLAS (Adversarial Threat Landscape for AI Systems)",
+      "publisher": "MITRE",
+      "url": "https://atlas.mitre.org/",
+      "tier": "B",
+      "license": "Free to use with attribution under MITRE's terms",
+      "domains": ["aegis.d6.ai-security"],
+      "notes": "AI/ML-specific adversarial tactics matrix. Confirm matrix version at build per roadmap note."
+    },
+    {
+      "id": "ietf-rfc2196",
+      "title": "RFC 2196 — Site Security Handbook",
+      "publisher": "IETF",
+      "url": "https://www.rfc-editor.org/rfc/rfc2196",
+      "tier": "B",
+      "license": "Freely available; IETF reproduction terms apply — paraphrase, don't republish RFC text",
+      "domains": ["cc.d1.principles"],
+      "notes": "Foundational, somewhat dated (1997) — good for concepts (AUPs, security policy structure), not for current technical specifics."
+    },
+    {
+      "id": "cis-controls-v8",
+      "title": "CIS Critical Security Controls v8",
+      "publisher": "Center for Internet Security",
+      "url": "https://www.cisecurity.org/controls",
+      "tier": "B",
+      "license": "Free to use with attribution; CIS license has non-commercial conditions — check current terms before use",
+      "domains": ["cc.d1.principles", "cc.d3.access-controls"],
+      "notes": "18-control structure, useful as a secondary triangulation source alongside NIST SP 800-53."
+    },
+    {
+      "id": "aws-security-docs",
+      "title": "AWS Security Documentation (IAM, Well-Architected Security Pillar)",
+      "publisher": "Amazon Web Services",
+      "url": "https://docs.aws.amazon.com/security/",
+      "tier": "C",
+      "license": "Copyrighted vendor documentation — cite as source, never reproduce",
+      "domains": ["cc.d3.access-controls", "cc.d4.network-security"],
+      "notes": "Use for real-world cloud IAM/network examples; always paraphrase and build original worked examples."
+    },
+    {
+      "id": "azure-security-docs",
+      "title": "Microsoft Learn — Azure Security Documentation",
+      "publisher": "Microsoft",
+      "url": "https://learn.microsoft.com/en-us/security/",
+      "tier": "C",
+      "license": "Copyrighted vendor documentation — cite as source, never reproduce",
+      "domains": ["cc.d3.access-controls", "cc.d4.network-security"],
+      "notes": "Same usage rule as AWS entry above."
+    }
+  ],
+  "restricted_do_not_source": [
+    {
+      "publisher": "ISC2",
+      "reason": "Copyrighted CBK, courseware, and exam outline text. Domain alignment (naming which CC domain a module maps to) is fine — sourcing content from ISC2 text is not."
+    },
+    {
+      "publisher": "CompTIA",
+      "reason": "Copyrighted exam objectives documents and courseware. Same domain-alignment vs. content-sourcing distinction as ISC2."
+    },
+    {
+      "publisher": "ISO/IEC",
+      "reason": "Paywalled standards documents (e.g. 27001, 27002) — not open, regardless of citation frequency elsewhere. Reference their existence/purpose only."
+    },
+    {
+      "publisher": "Any exam-dump / braindump site",
+      "reason": "Copyright risk plus certification-revocation risk for learners who studied from the same leaked material CompTIA screens for."
+    },
+    {
+      "publisher": "Other paid prep providers (Udemy courses, Boson, etc.)",
+      "reason": "Their expression of a concept is their own copyrighted work, same reasoning as ISC2/CompTIA."
+    }
+  ]
+}

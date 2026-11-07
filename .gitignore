@@ -8,3 +8,4 @@ Thumbs.db
 # logs
 *.log
 node_modules/
+verification/fsrs-inline.mjs
