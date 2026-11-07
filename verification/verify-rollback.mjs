@@ -21,9 +21,15 @@ import { createServer } from 'node:http';
 import { readFileSync, existsSync } from 'node:fs';
 
 // Point these at two checkouts of the repo at the versions you want to compare:
-//   git worktree add /tmp/aegis-prev v1.5.1
+//   git worktree add /tmp/aegis-prev HEAD~1   # the previous release commit
 const V16 = process.env.NEW_ROOT || import.meta.dirname + '/../';
 const V15 = process.env.OLD_ROOT || '/tmp/aegis-prev/';
+// Versions are READ from each tree, never hardcoded. A rollback test that has to
+// be hand-edited every patch release gets skipped on patch releases — exactly
+// when a rollback is most likely to be needed.
+const verOf = root => readFileSync(root + 'index.html', 'utf8').match(/const APP_VERSION='([^']+)'/)[1];
+const NEW_V = verOf(V16), OLD_V = verOf(V15);
+const OLD_HAS_ARC = /function loadArcCorpus/.test(readFileSync(V15 + 'index.html', 'utf8'));
 let serving = V16;                       // flipped mid-test to simulate the revert
 
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.json': 'application/json', '.webmanifest': 'application/manifest+json' };
@@ -44,7 +50,7 @@ const ctx = await browser.newContext();
 const page = await ctx.newPage();
 page.setDefaultTimeout(15000);
 const errors = [];
-page.on('pageerror', e => errors.push('v' + (serving === V16 ? '1.6.0' : '1.5.1') + ': ' + e.message));
+page.on('pageerror', e => errors.push('v' + (serving === V16 ? NEW_V : OLD_V) + ': ' + e.message));
 
 /* ── 1. Use v1.6.0 for real: master a module, leave FSRS cards behind ────── */
 await page.goto(URL_);
@@ -65,14 +71,14 @@ const built = await page.evaluate(async () => {
   save();
   return { arcState: arcCfg().fsm[mid].state, srs: state.srs.length, ver: APP_VERSION };
 });
-ok('v1.6.0: module reached MASTERED', built.arcState === 'MASTERED', built.arcState);
-ok('v1.6.0: an FSRS card exists', built.srs >= 1, String(built.srs));
-ok('v1.6.0: version is 1.6.0', built.ver === '1.6.0', built.ver);
+ok('new: module reached MASTERED', built.arcState === 'MASTERED', built.arcState);
+ok('new: an FSRS card exists', built.srs >= 1, String(built.srs));
+ok('new: serves its own APP_VERSION', built.ver === NEW_V, built.ver);
 
 await page.evaluate(() => navigator.serviceWorker.ready);
 await page.waitForTimeout(1000);
 const cachedBefore = await page.evaluate(async () => (await caches.keys()));
-ok('v1.6.0: its own cache exists', cachedBefore.includes('aegis-v1.6.0'), cachedBefore.join(','));
+ok('new: its own cache exists', cachedBefore.includes('aegis-v' + NEW_V), cachedBefore.join(','));
 
 /* ── 2. THE REVERT. Same origin, older files. ────────────────────────────── */
 serving = V15;
@@ -101,12 +107,12 @@ const after = await page.evaluate(() => ({
   arcMastered: state.arc?.fsm?.['isc2.cc.d1.cia-triad']?.state,
   hasArcCode: typeof window.loadArcCorpus === 'function',
 }));
-ok('rollback: the app serves v1.5.1', after.ver === '1.5.1', after.ver);
-ok('rollback: the ARC code really is gone', after.hasArcCode === false);
+ok('rollback: the app serves the previous version', after.ver === OLD_V, after.ver);
+ok(OLD_HAS_ARC ? 'rollback: the previous build still has its own ARC code' : 'rollback: the ARC code really is gone', after.hasArcCode === OLD_HAS_ARC);
 ok('rollback: SRS cards survive', after.srs >= 1 && !!after.card, JSON.stringify(after.card || null));
 // A never-reviewed card has stability null by design — FSRS derives it from the
 // first grade. What matters is that the v1.6.0 SHAPE survived the older build.
-ok('rollback: the card keeps its v1.6.0 shape',
+ok('rollback: the card keeps its new shape',
    after.card && 'stability' in after.card && 'lapses' in after.card && after.card.state === 'new'
    && after.card.a === '22' && !('step' in after.card), JSON.stringify(after.card));
 ok('rollback: notes survive', after.notes === 'do not lose me', after.notes);
@@ -123,7 +129,7 @@ ok('rollback: the mastered module is still recorded', after.arcMastered === 'MAS
 // The next version bump clears it. Assert the property that actually matters —
 // the right version is served and offline still works — not cache housekeeping.
 const cachedAfter = await page.evaluate(async () => (await caches.keys()));
-ok('rollback: the rolled-back version has its own cache', cachedAfter.includes('aegis-v1.5.1'), cachedAfter.join(','));
+ok('rollback: the rolled-back version has its own cache', cachedAfter.includes('aegis-v' + OLD_V), cachedAfter.join(','));
 console.log(`  [info] cache buckets after rollback: ${cachedAfter.join(', ')} (stale bucket is harmless)`);
 
 // The one that matters: offline, after a rollback, you get the OLD app, not a
@@ -134,7 +140,7 @@ await page.waitForTimeout(800);
 if (await page.locator('#wnOverlay.show').count()) await page.click('#wnDone');
 const offlineVer = await page.evaluate(() => APP_VERSION);
 ok('rollback: OFFLINE still serves the rolled-back version, not the new one',
-   offlineVer === '1.5.1', offlineVer);
+   offlineVer === OLD_V, offlineVer);
 ok('rollback: offline app still renders', await page.evaluate(() =>
    !!document.querySelector('.wordmark .name')));
 await ctx.setOffline(false);
@@ -152,7 +158,7 @@ const back = await page.evaluate(async () => {
   return { ver: APP_VERSION, enabled: arcCfg().enabled, state: arcCfg().fsm[mid]?.state,
            corpus: ARC.status, srs: state.srs.length };
 });
-ok('roll forward: back on v1.6.0', back.ver === '1.6.0', back.ver);
+ok('roll forward: back on the new version', back.ver === NEW_V, back.ver);
 ok('roll forward: the beta is still enabled', back.enabled === true);
 ok('roll forward: the mastered module is still mastered', back.state === 'MASTERED', String(back.state));
 ok('roll forward: the corpus loads again', back.corpus === 'ready', back.corpus);
@@ -161,7 +167,7 @@ ok('roll forward: no page errors', errors.length === 0, errors.join(' | '));
 
 await browser.close();
 server.close();
-console.log('\nv1.6.0 → v1.5.1 → v1.6.0 round trip');
+console.log(`\nv${NEW_V} → v${OLD_V} → v${NEW_V} round trip`);
 console.log('─'.repeat(58));
 console.log(`  ${pass} checks passed, ${fail} failed`);
 if (fail) { fails.forEach(f => console.log('  ✗ ' + f)); process.exit(1); }

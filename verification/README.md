@@ -4,10 +4,11 @@ No build step — AEGIS is static files. These only test.
 
 ```bash
 npm install          # playwright, dev-only
-npm test             # all four suites
+npm test             # all five suites
 npm run test:content # modules: schema · ARC semantics V1-V13 · live scoring
 npm run test:seam    # fetched modules + service worker, incl. offline
 npm run test:loop    # the 5-phase loop, all six modules to MASTERED
+npm run test:ui      # touch vs mouse, phone vs desktop, 300px → 1280px
 ```
 
 `npm run serve` then open <http://localhost:8080>. Use a real server, not
@@ -21,12 +22,13 @@ npm run test:loop    # the 5-phase loop, all six modules to MASTERED
 | `arc-module-probe.mjs` | every module is schema-valid, ARC-legal, **and actually scorable** |
 | `verify-module-seam.mjs` | the corpus loads, degrades and survives offline |
 | `verify-arc-loop.mjs` | the gate gates, consolidation can't be rushed, confidence precedes feedback |
+| `verify-mobile-ui.mjs` | tooltips behave on touch and mouse; objective rows and the header fit every width from 300px to 1280px |
 | `verify-rollback.mjs` | reverting to the previous release loses no learner data |
 
 `verify-rollback.mjs` needs two checkouts. Make the old one a worktree first:
 
 ```bash
-git worktree add /tmp/aegis-prev v1.5.1
+git worktree add /tmp/aegis-prev HEAD~1   # the previous release commit
 npm run test:rollback
 ```
 

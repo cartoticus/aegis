@@ -533,6 +533,32 @@ li.hidden{display:none}
 .arc-btn{flex:none;background:rgba(232,176,75,.1);border:1px solid rgba(232,176,75,.4);color:var(--gold);font-family:var(--mono);font-size:10px;letter-spacing:.05em;padding:4px 9px;border-radius:7px;cursor:pointer;margin-left:8px;margin-top:1px;white-space:nowrap}
 .arc-btn:hover{background:rgba(232,176,75,.2)}
 .arc-note{background:rgba(240,88,107,.06);border:1px solid rgba(240,88,107,.25);border-radius:10px;padding:11px 14px;font-size:12.5px;color:var(--muted);margin-top:12px}
+/* ---------- v1.6.1 · phone + narrow-column layout ---------- */
+.wordmark .sub{white-space:nowrap}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+/* The top bar never fitted a phone: the brand was the only item willing to
+   shrink, and its content is unbreakable, so the wordmark slid under the streak
+   chip. Make the ROW fit instead of pinning the brand (pinning trades the
+   overlap for horizontal page scroll). The number and the ring carry the same
+   information; the words are on the Command screen. */
+@media(max-width:420px){
+  .sub-tag,.streak-unit,.rank-chip .rk-name{display:none}
+  .rank-chip{padding:4px}
+}
+/* Tooltips are a hover affordance. Touch never fires mouseout, so on a device
+   without hover they can only get stuck. Belt to the JS check's braces. */
+@media(hover:none){#glossTip{display:none!important}}
+/* Objective rows reflow on the width of their OWN column, not the viewport:
+   the Domains grid gives this column ~340px even at 1280px, and below 880px it
+   gives it the whole window. A viewport query is wrong at both ends. */
+.obj-list{container-type:inline-size}
+@container (max-width:420px){
+  .obj{flex-wrap:wrap;position:relative;padding-left:26px;row-gap:7px;column-gap:8px}
+  .obj input{position:absolute;left:0;top:0}
+  .obj > span:first-of-type{flex:0 0 100%}
+  .obj .lvl{margin-left:0;align-self:center}
+  .obj .learn-btn,.obj .arc-btn{flex:1 1 0;max-width:180px;margin:0;padding:8px 10px;text-align:center}
+}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -558,11 +584,11 @@ li.hidden{display:none}
         </svg>
         <div class="wordmark">
           <span class="name">AE<b>GIS</b></span>
-          <span class="sub">ISC2-Aligned · v1.6.0</span>
+          <span class="sub"><span class="sub-tag">ISC2-Aligned · </span>v1.6.1</span>
         </div>
       </div>
       <div class="top-spacer"></div>
-      <div class="streak" title="Study streak — keep it alive by completing something each day">⚡ <b id="streakNum">0</b>&nbsp;day</div>
+      <div class="streak" title="Study streak — keep it alive by completing something each day">⚡ <b id="streakNum">0</b><span class="streak-unit">&nbsp;day</span></div>
       <div class="rank-chip">
         <div>
           <div class="rk-label">Readiness</div>
@@ -925,6 +951,7 @@ li.hidden{display:none}
   <div class="lesson-modal">
     <button class="lesson-close" id="arcClose" aria-label="Close">✕</button>
     <div class="lesson-content" id="arcContent"></div>
+    <div id="arcLive" class="sr-only" aria-live="polite" aria-atomic="true"></div>
     <div class="lesson-foot">
       <span>ARC learning mode · beta. Reading and the glossary always stay open.</span>
       <button class="btn ghost" id="arcCloseFoot">Close</button>
@@ -947,8 +974,15 @@ const KEY='aegis.state.v1';
 /* ============================================================
    VERSION + CHANGELOG (drives the "What's new" screen)
    ============================================================ */
-const APP_VERSION='1.6.0';
+const APP_VERSION='1.6.1';
 const CHANGELOG=[
+ {v:'1.6.1',date:'Nov 2026',items:[
+   '<b>Reorder reviews can be answered again.</b> On the up/down-arrow review questions the arrows worked, but the app undid each move the instant it was made, so the answer could never change. Your in-progress answer now belongs to the question, not to the screen redraw.',
+   'Same widget: keyboard focus follows the item you moved, each move is announced to screen readers, and the first &uarr; and last &darr; are disabled instead of looking pressable.',
+   'Glossary tooltips no longer get stuck on screen on phones and tablets. On touch, tapping a term opens the full entry; mouse hover on a desktop works as before.',
+   'Objective rows on the Domains screen reflow when their column is narrow &mdash; on a phone <i>and</i> in the cramped middle column on a desktop. The title gets the full width and the buttons sit underneath it.',
+   'The top bar now fits a phone: the version stays on one line, and the AEGIS wordmark no longer slides under the streak counter on narrow screens.'
+ ]},
  {v:'1.6.0',date:'Aug 2026',items:[
    '<b>ARC learning mode (beta)</b> — Domain 1 only, off by default, switch it on under <b>Progress</b>. It replaces the &ldquo;Got it &mdash; mark complete&rdquo; click with a five-phase loop: a question before you read, the reading, a <b>gate you have to actually pass</b>, a paper exercise away from the screen, then spaced retrieval scheduled by FSRS-6.',
    '<b>The gate is the point.</b> Marking something complete never meant you knew it. Now an objective only counts when you sort, order or recall it correctly against a threshold the module itself declares &mdash; and the engine checks that independently of anything the screen displays.',
@@ -1284,8 +1318,17 @@ async function loadArcCorpus() {
 const ARC_UI = {
   moduleId: null, module: null, draft: null, confidence: null,
   confidenceAt: null, feedbackShown: false, result: null,
-  hintsUsed: 0, startedAt: 0, revealed: false,
+  hintsUsed: 0, startedAt: 0, revealed: false, draftFor: null,
 };
+/* A half-written answer belongs to a QUESTION, not to a render pass. v1.6.0
+   reset the draft on every Phase 4 render, and the reorder buttons trigger a
+   render, so each move was wiped the instant it was made. Reset only when the
+   question actually changes. */
+function arcDraftSite(key){
+  if(ARC_UI.draftFor===key)return;
+  ARC_UI.draftFor=key;
+  ARC_UI.draft=null;
+}
 
 function arcCfg() { return (state.arc = state.arc || { enabled: false, fsm: {}, cards: {}, log: [] }); }
 function arcFsm(id) {
@@ -2915,7 +2958,9 @@ function linkifyGlossary(root,opts){
 function linkifyDomains(){
   $$('#domPanels .obj-list, #domPanels .ai-note').forEach(el=>linkifyGlossary(el));
 }
+function hideGlossTip(){const t=document.getElementById('glossTip');if(t){t.classList.remove('show');t.style.display='none';}}
 function openTerm(slug){
+  hideGlossTip();
   const g=GLOSSARY[slug];if(!g)return;
   $('#termContent').innerHTML=`<span class="l-eyebrow">Glossary term</span>
     <h3>${g.t}${g.d?` <span class="term-dom">${g.d}</span>`:''}</h3>
@@ -3017,14 +3062,19 @@ function initGlossary(){
   $('#termOverlay').addEventListener('click',e=>{if(e.target.id==='termOverlay')closeTerm();});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#termOverlay').classList.contains('show'))closeTerm();});
   const tip=document.createElement('div');tip.id='glossTip';document.body.appendChild(tip);
-  document.addEventListener('mouseover',e=>{const g=e.target.closest&&e.target.closest('.gloss');if(!g)return;
+  // Asked at event time, not once at load: a hybrid machine changes pointer mid-session.
+  document.addEventListener('mouseover',e=>{if(!matchMedia('(hover: hover)').matches)return;
+    const g=e.target.closest&&e.target.closest('.gloss');if(!g)return;
     const t=GLOSSARY[g.dataset.term];if(!t)return;
     tip.innerHTML=`<span class="gt-term">${t.t}</span>${t.def}<span class="gt-hint">tap for full entry</span>`;
     tip.style.display='block';const r=g.getBoundingClientRect();const tw=tip.offsetWidth;
     let left=r.left+r.width/2-tw/2;left=Math.max(8,Math.min(left,window.innerWidth-tw-8));
     let top=r.top-tip.offsetHeight-8;if(top<8)top=r.bottom+8;
     tip.style.left=left+'px';tip.style.top=top+'px';tip.classList.add('show');});
-  document.addEventListener('mouseout',e=>{if(e.target.closest&&e.target.closest('.gloss')){tip.classList.remove('show');tip.style.display='none';}});
+  document.addEventListener('mouseout',e=>{if(e.target.closest&&e.target.closest('.gloss'))hideGlossTip();});
+  // Touch never sends mouseout, so dismiss on any tap elsewhere and on scroll too.
+  document.addEventListener('pointerdown',e=>{if(!(e.target.closest&&e.target.closest('.gloss')))hideGlossTip();},true);
+  window.addEventListener('scroll',hideGlossTip,{passive:true,capture:true});
   document.addEventListener('click',e=>{const g=e.target.closest&&e.target.closest('.gloss');if(g){e.preventDefault();e.stopPropagation();openTerm(g.dataset.term);}});
 }
 
@@ -3341,7 +3391,7 @@ const CONF_LABELS={1:'Guessing',2:'Shaky',3:'Fairly sure',4:'Confident',5:'Certa
 
 function openArcModule(id){
   ARC_UI.moduleId=id; ARC_UI.module=arcModule(id);
-  ARC_UI.draft=null; ARC_UI.confidence=null; ARC_UI.confidenceAt=null;
+  ARC_UI.draft=null; ARC_UI.draftFor=null; ARC_UI.confidence=null; ARC_UI.confidenceAt=null;
   ARC_UI.feedbackShown=false; ARC_UI.result=null; ARC_UI.hintsUsed=0; ARC_UI.revealed=false;
   ARC_UI.startedAt=Date.now();
   $('#arcOverlay').classList.add('show'); document.body.style.overflow='hidden';
@@ -3371,7 +3421,8 @@ function arcGateWidget(spec,onChange){
   }
   if(metric==='kendall_tau'){
     ARC_UI.draft=ARC_UI.draft||vp.correct.slice().sort((a,b)=>a.length-b.length||a.localeCompare(b));
-    return `<ol class="arc-order">${ARC_UI.draft.map((s,i)=>`<li><span>${escHtml(s)}</span><span class="arc-mv"><button class="btn ghost sm" data-mv="${i}:-1" aria-label="move up">↑</button><button class="btn ghost sm" data-mv="${i}:1" aria-label="move down">↓</button></span></li>`).join('')}</ol>`;
+    const n=ARC_UI.draft.length;
+    return `<ol class="arc-order">${ARC_UI.draft.map((s,i)=>`<li><span>${escHtml(s)}</span><span class="arc-mv"><button class="btn ghost sm" data-mv="${i}:-1" aria-label="Move up: ${escHtml(s)}, currently ${i+1} of ${n}" ${i===0?'disabled':''}>↑</button><button class="btn ghost sm" data-mv="${i}:1" aria-label="Move down: ${escHtml(s)}, currently ${i+1} of ${n}" ${i===n-1?'disabled':''}>↓</button></span></li>`).join('')}</ol>`;
   }
   if(metric==='keyword_density'){
     ARC_UI.draft=ARC_UI.draft||'';
@@ -3396,9 +3447,27 @@ function arcWireWidget(spec,root,rerender){
     root.dispatchEvent(new CustomEvent('arcdraft'));});
   if(metric==='kendall_tau')root.querySelectorAll('[data-mv]').forEach(b=>b.onclick=()=>{
     const [i,d]=b.dataset.mv.split(':').map(Number),j=i+d;
-    if(j<0||j>=ARC_UI.draft.length)return;
-    const a=ARC_UI.draft;[a[i],a[j]]=[a[j],a[i]];rerender();});
+    if(j<0||j>=ARC_UI.draft.length)return;   // backstop behind the disabled edge buttons
+    const a=ARC_UI.draft;[a[i],a[j]]=[a[j],a[i]];rerender();
+    arcAfterMove(root,a,j,d);});
   if(metric==='keyword_density')root.querySelector('.arc-free').oninput=e=>{ARC_UI.draft=e.target.value;root.dispatchEvent(new CustomEvent('arcdraft'));};
+}
+/* Redraw ONLY the answer widget. A full renderArc() rebuilds the confidence row
+   (dropping the chip highlight) and detaches the node the handlers closed over. */
+function arcRedrawWidget(spec,root){
+  root.innerHTML=arcGateWidget(spec);
+  arcWireWidget(spec,root,()=>arcRedrawWidget(spec,root));
+  root.dispatchEvent(new CustomEvent('arcdraft'));
+}
+/* Focus follows the moved item (to the sibling button when the natural target
+   is disabled at an edge), and the new position is announced. */
+function arcAfterMove(root,order,j,d){
+  const li=root.querySelectorAll('.arc-order li')[j];
+  let b=li&&li.querySelector(`[data-mv="${j}:${d}"]`);
+  if(!b||b.disabled)b=li&&li.querySelector(`[data-mv="${j}:${-d}"]`);
+  if(b)b.focus();
+  const live=document.getElementById('arcLive');
+  if(live)live.textContent=`${order[j]} — now ${j+1} of ${order.length}`;
 }
 function arcDraftComplete(spec){
   const metric=spec.validation_payload.accuracy_metric,d=ARC_UI.draft;
@@ -3451,6 +3520,7 @@ function renderArc(){
   if(s.state==='PHASE_2_GATE'||s.state==='NEEDS_RECALIBRATION'){
     const gate=m.gate;
     if(!ARC_UI.feedbackShown){
+      arcDraftSite('gate:'+id);
       c.innerHTML=head+`<div class="arc-phase">Phase 2 · Gate${s.gate_attempts?` · attempt ${s.gate_attempts+1}`:''}</div>
         <div class="q-text" style="font-size:16px">${escHtml(gate.prompt)}</div>
         <div id="arcWidget">${arcGateWidget(gate)}</div>
@@ -3464,7 +3534,7 @@ function renderArc(){
         $('#arcSubmit').disabled=!(done&&conf);
         $('#arcReady').textContent=!done?'Answer every part to continue':(!conf?'Record your confidence to continue':'');
       };
-      arcWireWidget(gate,w,()=>{renderArc();});
+      arcWireWidget(gate,w,()=>arcRedrawWidget(gate,w));
       w.addEventListener('arcdraft',refresh);
       c.querySelectorAll('[data-conf]').forEach(b=>b.onclick=()=>{
         if(!arcSetConfidence(+b.dataset.conf))return;
@@ -3487,7 +3557,7 @@ function renderArc(){
       ${r.cal.alert==='OVERCONFIDENCE'?`<div class="arc-alert over"><b>Illusion of competence detected.</b> You said ${CONF_LABELS[r.cal===null?3:ARC_UI.confidence].toLowerCase()} and the answer did not hold up. That gap is the single most useful signal here — it is exactly what re-reading hides from you.</div>`:''}
       ${r.cal.alert==='UNDERCONFIDENCE'?`<div class="arc-alert under"><b>You knew that better than you thought.</b> Worth noticing: under-confidence makes people re-study things they already have.</div>`:''}
       <div class="arc-foot"><button class="btn" id="arcNext">Continue →</button></div>`;
-    $('#arcNext').onclick=()=>{ARC_UI.feedbackShown=false;ARC_UI.draft=null;ARC_UI.confidence=null;ARC_UI.result=null;ARC_UI.hintsUsed=0;ARC_UI.startedAt=Date.now();renderArc();};
+    $('#arcNext').onclick=()=>{ARC_UI.feedbackShown=false;ARC_UI.draft=null;ARC_UI.draftFor=null;ARC_UI.confidence=null;ARC_UI.result=null;ARC_UI.hintsUsed=0;ARC_UI.startedAt=Date.now();renderArc();};
     return;
   }
   if(s.state==='PHASE_3_SYNTHESIS'){
@@ -3526,12 +3596,12 @@ function renderArc(){
       $('#arcClose4').onclick=closeArc; return;
     }
     const drill=arcDrillFor(id);
-    ARC_UI.draft=null;
+    arcDraftSite('drill:'+drill.id);
     c.innerHTML=head+`<div class="arc-phase">Phase 4 · ${drill.interval_tier.toLowerCase()} retrieval</div>
       <div class="q-text" style="font-size:16px">${escHtml(drill.prompt)}</div>
       <div id="arcWidget">${arcGateWidget(drill)}</div>
       <div class="arc-foot"><button class="btn" id="arcDrill">Submit</button></div>`;
-    arcWireWidget(drill,$('#arcWidget'),()=>renderArc());
+    {const w=$('#arcWidget');arcWireWidget(drill,w,()=>arcRedrawWidget(drill,w));}
     $('#arcDrill').onclick=()=>{
       const r=arcSubmitDrill(id,drill,ARC_UI.draft);
       if(r.error){const w=$('#arcWidget');let n=w.parentElement.querySelector('.arc-refuse');

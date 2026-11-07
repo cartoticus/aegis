@@ -319,6 +319,133 @@ await reset();
   ok('ordering widget actually reorders', shuffled.moved === true);
 }
 
+/* ══ D2. The reorder drill, driven through the REAL DOM (v1.6.1) ═══════════
+   v1.6.0 shipped with ORDER_SEQUENCE drills unanswerable and 81 checks green on
+   both sides of the hole: the widget click test above runs on the Phase 2 GATE
+   (which had no reset line), and section E calls arcSubmitDrill() DIRECTLY.
+   So drill scoring was proven and drill input never was. This section crosses
+   that seam: real clicks on the real ↑/↓ buttons, the DISPLAYED order read back,
+   the real Submit pressed. And two submissions, not one — a correct order alone
+   would pass even if the widget were ignored and the answer key scored. */
+{
+  const ETH = await page.evaluate(() =>
+    ARC.modules.find(m => m.drills.some(d => d.id === 'isc2.cc.d1.ethics.d7.order')).id);
+
+  // Stand the module up in Phase 4 with a 10-day card: that selects the
+  // APPLICATION tier, which is the kendall_tau drill.
+  const standUp = () => page.evaluate(mid => {
+    const a = arcCfg();
+    const s = ARC.engine.initialState('PHASE_4_SPACED_QUEUE'); s.interval_days = 10;
+    a.fsm[mid] = s;
+    const now = Date.now();
+    a.cards[mid] = { stability: 10, difficulty: 5, state: 'review', reps: 3, lapses: 0,
+      last_review: new Date(now - 11 * 864e5).toISOString(), due: new Date(now - 864e5).toISOString() };
+    a.log = []; save();
+    openArcModule(mid);
+    return arcDrillFor(mid).id;
+  }, ETH);
+  const shown = () => page.$$eval('#arcWidget .arc-order li > span:first-child', els => els.map(e => e.textContent));
+  const correct = await page.evaluate(() => arcModule(ARC.modules.find(m => m.drills.some(d => d.id === 'isc2.cc.d1.ethics.d7.order')).id)
+    .drills.find(d => d.id === 'isc2.cc.d1.ethics.d7.order').validation_payload.correct);
+
+  // Bubble-sort the list into `target` using nothing but clicks on ↓.
+  const clickSort = async target => {
+    const rank = new Map(target.map((v, i) => [v, i]));
+    for (let guard = 0; guard < 60; guard++) {
+      const cur = await shown();
+      const i = cur.findIndex((v, k) => k < cur.length - 1 && rank.get(v) > rank.get(cur[k + 1]));
+      if (i < 0) return cur;
+      await page.click(`#arcWidget [data-mv="${i}:1"]`);
+    }
+    return shown();
+  };
+
+  const drillId = await standUp();
+  ok('D2: a 10-day card selects the ordering drill', drillId === 'isc2.cc.d1.ethics.d7.order', drillId);
+
+  const before = await shown();
+  await page.click('#arcWidget [data-mv="0:1"]');
+  const after = await shown();
+  ok('D2: ↓ MOVES THE ITEM ON SCREEN', after[0] === before[1] && after[1] === before[0], JSON.stringify({ before, after }));
+  ok('D2: the screen and the draft agree', JSON.stringify(after) === JSON.stringify(await page.evaluate(() => ARC_UI.draft)));
+  await page.click('#arcWidget [data-mv="1:-1"]');
+  ok('D2: a second move holds too (moves accumulate, not reset)', JSON.stringify(await shown()) === JSON.stringify(before));
+
+  // The invariant itself, not just the symptom: a half-written answer belongs to
+  // the QUESTION. Any full re-render of the same drill — not only the one the
+  // move button used to trigger — must keep it. With the widget redrawing in
+  // place, the moves alone no longer exercise this, so force the render.
+  await page.click('#arcWidget [data-mv="0:1"]');
+  const moved = await shown();
+  await page.evaluate(() => renderArc());
+  ok('D2: a full re-render of the same drill keeps the in-progress order', JSON.stringify(await shown()) === JSON.stringify(moved),
+     JSON.stringify({ moved, now: await shown() }));
+  await page.click('#arcWidget [data-mv="0:1"]');   // put it back
+
+  // Accessibility of the same widget.
+  await page.click('#arcWidget [data-mv="0:1"]');
+  const a11y = await page.evaluate(() => {
+    const f = document.activeElement;
+    const btns = [...document.querySelectorAll('#arcWidget [data-mv]')];
+    return { focus: f && f.dataset ? f.dataset.mv : null, live: document.getElementById('arcLive')?.textContent || '',
+             liveOutside: !document.getElementById('arcContent').contains(document.getElementById('arcLive')),
+             firstUp: btns[0].disabled, lastDown: btns[btns.length - 1].disabled,
+             middle: btns.slice(1, -1).every(b => !b.disabled), label: btns[1].getAttribute('aria-label') };
+  });
+  ok('D2: focus follows the moved item', a11y.focus === '1:1', a11y.focus);
+  ok('D2: the move is announced with its new position', /now 2 of \d/.test(a11y.live), a11y.live);
+  ok('D2: the live region survives redraws (sits outside #arcContent)', a11y.liveOutside === true);
+  ok('D2: first ↑ and last ↓ are disabled, not merely inert', a11y.firstUp && a11y.lastDown && a11y.middle, JSON.stringify(a11y));
+  ok('D2: buttons say what they move and where it is', /^Move down: .+, currently 1 of \d+$/.test(a11y.label || ''), a11y.label);
+  // Focus at an edge skips to the sibling: move the item now at index 1 to the bottom.
+  {
+    const n = (await shown()).length;
+    for (let k = 1; k < n - 1; k++) await page.click(`#arcWidget [data-mv="${k}:1"]`);
+    const f = await page.evaluate(() => document.activeElement?.dataset?.mv);
+    ok('D2: at the bottom edge, focus lands on the live ↑ instead', f === `${n - 1}:-1`, f);
+  }
+
+  // Submission 1: click-sorted into the CORRECT order → scores 1.0.
+  const sorted = await clickSort(correct);
+  ok('D2: the list can be click-sorted into the correct order', JSON.stringify(sorted) === JSON.stringify(correct), JSON.stringify(sorted));
+  await page.click('#arcDrill');
+  const good = await page.evaluate(() => arcCfg().log.filter(x => x.site === 'isc2.cc.d1.ethics.d7.order').at(-1));
+  ok('D2: the correct on-screen order scores 1.0', good && good.raw_accuracy === 1, JSON.stringify(good));
+
+  // Submission 2: click-sorted into the REVERSE order → must score 0.
+  await standUp();
+  const rev = correct.slice().reverse();
+  const revShown = await clickSort(rev);
+  ok('D2: the list can be click-sorted into reverse', JSON.stringify(revShown) === JSON.stringify(rev), JSON.stringify(revShown));
+  await page.click('#arcDrill');
+  const bad = await page.evaluate(() => arcCfg().log.filter(x => x.site === 'isc2.cc.d1.ethics.d7.order').at(-1));
+  ok('D2: the reversed on-screen order scores 0 — the screen is what gets scored', bad && bad.raw_accuracy === 0, JSON.stringify(bad));
+
+  // The gate shares the widget: recording confidence, THEN reordering, must not
+  // clear the chip highlight (a full redraw rebuilt the row and dropped it).
+  const gateCase = await page.evaluate(() => {
+    const mid = 'isc2.cc.d1.risk-lifecycle', a = arcCfg();
+    delete a.fsm[mid]; save();
+    openArcModule(mid);
+    arcStep(mid, { type: 'PREREQ_RESOLVED' }); arcStep(mid, { type: 'PREQUESTION_DONE' });
+    arcStep(mid, { type: 'CHUNK_DONE', reading_ratio: 1 });
+    renderArc();
+    return true;
+  });
+  await page.click('#arcContent [data-conf="4"]');
+  const g0 = await shown();
+  await page.click('#arcWidget [data-mv="0:1"]');
+  const g1 = await shown();
+  const chip = await page.evaluate(() => ({ on: document.querySelector('#arcContent [data-conf="4"]').classList.contains('on'),
+    conf: ARC_UI.confidence, submit: !document.getElementById('arcSubmit').disabled }));
+  ok('D2 gate: reorder still moves the item on the gate', gateCase && g1[0] === g0[1], JSON.stringify({ g0, g1 }));
+  await page.evaluate(() => renderArc());
+  ok('D2 gate: a full re-render keeps the gate\'s in-progress order', JSON.stringify(await shown()) === JSON.stringify(g1));
+  ok('D2 gate: the confidence chip stays highlighted after a move', chip.on === true, JSON.stringify(chip));
+  ok('D2 gate: confidence is still recorded and Submit is enabled', chip.conf === 4 && chip.submit === true, JSON.stringify(chip));
+  await page.evaluate(() => { closeArc(); const a = arcCfg(); delete a.fsm['isc2.cc.d1.risk-lifecycle']; delete a.fsm[ARC.modules.find(m => m.drills.some(d => d.id === 'isc2.cc.d1.ethics.d7.order')).id]; delete a.cards[ARC.modules.find(m => m.drills.some(d => d.id === 'isc2.cc.d1.ethics.d7.order')).id]; a.log = []; save(); });
+}
+
 /* ══ E. All six modules, each driven to MASTERED ═══════════════════════════ */
 {
   const all = await page.evaluate(async () => {

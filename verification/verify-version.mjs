@@ -10,7 +10,8 @@ const html = readFileSync(import.meta.dirname + '/../index.html', 'utf8');
 const sw = readFileSync(import.meta.dirname + '/../sw.js', 'utf8');
 
 const appVersion = html.match(/const APP_VERSION='([^']+)'/)?.[1];
-const headerSub = html.match(/<span class="sub">ISC2-Aligned · v([\d.]+)<\/span>/)?.[1];
+// v1.6.1 wrapped the tagline in .sub-tag so phones can drop it and keep the version.
+const headerSub = html.match(/<span class="sub">(?:<span class="sub-tag">)?ISC2-Aligned · (?:<\/span>)?v([\d.]+)<\/span>/)?.[1];
 const changelogTop = html.match(/const CHANGELOG=\[\s*\{v:'([^']+)'/)?.[1];
 const swCache = sw.match(/const CACHE = 'aegis-v([\d.]+)'/)?.[1];
 
