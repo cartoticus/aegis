@@ -4,6 +4,7 @@
  * A green suite you have never broken on purpose may be inert. For every fault
  * below, this copies the app into a temp dir, reverts ONE fix in index.html, runs
  * the suite that is supposed to catch it, and requires that suite to FAIL.
+ * (A fault may name a different app file — e.g. a module — as its 5th element.)
  * An "escape" (suite still green) means a test is asserting something the base
  * case already satisfies — fix the test, not the fault list.
  *
@@ -35,6 +36,7 @@ const both = (...fs) => s => fs.reduce((acc, f) => f(acc), s);
 
 const ROOM = '.sub-tag,.streak-unit,.rank-chip .rk-name{display:none}';
 const HOVER_JS = "if(!matchMedia('(hover: hover)').matches)return;";
+const RISK_MOD = 'modules/d1-04-risk-lifecycle.arc-module.json';
 const HOVER_CSS = '@media(hover:none){#glossTip{display:none!important}}';
 
 const FAULTS = [
@@ -88,6 +90,11 @@ const FAULTS = [
   ['S18', 'explainer re-open link removed',          STEPA, both(sub('<a href="#" id="explainerLink"', '<a href="#" id="explainerLinkGone"'), sub("$('#explainerLink').onclick=", "($('#explainerLink')||{}).onclick="))],
   ['W1',  'welcome row forced onto one line',        UI, both(sub('justify-content:space-between;flex-wrap:wrap;gap:12px}\n.welcome-card .wc-main', 'justify-content:space-between;flex-wrap:nowrap;gap:12px}\n.welcome-card .wc-main'), sub('.welcome-card .wc-main{min-width:0;flex:1 1 220px}', '.welcome-card .wc-main{flex:1 0 220px}'))],
   ['W2',  'welcome card stacks on desktop too',      UI, sub('.welcome-card .wc-main{min-width:0;flex:1 1 220px}', '.welcome-card .wc-main{min-width:0;flex:1 1 100%}')],
+  // ── v1.7.1 · open on Command (step-a suite §S9) and the reworded risk step (loop suite §D3) ──
+  ['O1',  'opens on Domains with ARC on',             STEPA, sub("  if(arcCfg().enabled)switchView('dash');\n", '')],
+  ['O2',  'opens on Command with ARC off',            STEPA, sub("  if(arcCfg().enabled)switchView('dash');\n", "  switchView('dash');\n")],
+  ['O3',  'Command switch bypasses the daily throttle', STEPA, sub("  if(arcCfg().enabled)switchView('dash');\n", "  if(arcCfg().enabled){state.lastWelcomeSeen=null;switchView('dash');}\n")],
+  ['R1',  'risk step text differs from its other copies', LOOP, sub('"Implement the chosen treatment and verify it"', '"Implement the chosen treatment and verify it works"'), RISK_MOD],
   ['W3',  'meter split text can overflow the card',  UI, sub('.arcm-detail{font-family:var(--mono);font-size:11px;color:var(--muted-2);margin-top:6px;overflow-wrap:anywhere}', '.arcm-detail{font-family:var(--mono);font-size:11px;color:var(--muted-2);margin-top:6px;white-space:nowrap}')],
 ];
 
@@ -95,14 +102,15 @@ const only = process.argv.slice(2);
 const todo = FAULTS.filter(([id]) => !only.length || only.some(o => id === o || id.startsWith(o)));
 const APP_FILES = ['index.html', 'sw.js', 'arc-core.mjs', 'manifest.webmanifest', 'outline-versions.json', 'modules', 'icons'];
 
-function runOne([id, name, suite, mutate], port) {
+// A fault mutates index.html unless it names another app file (5th element).
+function runOne([id, name, suite, mutate, target = 'index.html'], port) {
   return new Promise(resolve => {
     let html;
-    try { html = mutate(SRC); }
+    try { html = mutate(target === 'index.html' ? SRC : readFileSync(join(REPO, target), 'utf8')); }
     catch (e) { return resolve({ id, name, status: 'BROKEN', detail: e.message.split('\n')[0] }); }
     const dir = mkdtempSync(join(tmpdir(), `aegis-fault-${id}-`));
     for (const f of APP_FILES) if (existsSync(join(REPO, f))) cpSync(join(REPO, f), join(dir, f), { recursive: true });
-    writeFileSync(join(dir, 'index.html'), html);
+    writeFileSync(join(dir, target), html);
     const p = spawn('node', [suite], { cwd: REPO, env: { ...process.env, APP_ROOT: dir + '/', PORT_BASE: String(port) } });
     let out = '';
     p.stdout.on('data', d => (out += d)); p.stderr.on('data', d => (out += d));

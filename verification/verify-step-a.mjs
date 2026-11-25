@@ -360,6 +360,66 @@ const welcome = page => page.evaluate(() => { const c = document.getElementById(
   await ctx.close();
 }
 
+/* ══ S9. v1.7.1 — which view the app opens on ════════════════════════════════
+   ARC on → Command, so the Today card greets the learner once the corpus loads.
+   ARC off → Domains, exactly as v1.7.0. The once-a-day throttle must survive
+   the Command switch: a same-day reload lands on Command with no second card.
+   State is seeded BEFORE the first paint (addInitScript), so boot() itself
+   decides the view — nothing in the test calls switchView. */
+{
+  const SRC_HTML = readFileSync(ROOT + 'index.html', 'utf8');
+  const VER = (SRC_HTML.match(/const APP_VERSION='([^']+)'/) || [])[1];
+  ok('S9: APP_VERSION readable from the served index.html (precondition)', !!VER);
+  const views = page => page.evaluate(() => ({
+    dash: document.getElementById('view-dash').classList.contains('active'),
+    domains: document.getElementById('view-domains').classList.contains('active'),
+    tab: document.querySelector('.tab.active')?.dataset.view || null,
+    primed: !!document.querySelector('.dom-panel.active[data-idx="0"]'),
+  }));
+  const corpusReady = page => page.waitForFunction(() => ARC.status === 'ready' || ARC.status === 'degraded', null, { timeout: 15000 })
+    .then(() => true, () => false);
+  const seedArc = enabled => ({ lastSeenVersion: VER, lastWelcomeSeen: null,
+    arc: { enabled, fsm: {}, cards: {}, log: [] } });
+
+  // ARC ON — first open of the day.
+  {
+    const { ctx, page } = await open({ seed: seedArc(true) });
+    const v = await views(page);
+    ok('S9 ARC on: boot lands on Command (#view-dash.active)', v.dash && !v.domains, JSON.stringify(v));
+    ok('S9 ARC on: the Command tab is the highlighted tab', v.tab === 'dash', v.tab);
+    ok('S9 ARC on: the Domains panel is still primed underneath (selectDomain(0) kept)', v.primed);
+    ok('S9 ARC on: the corpus loads (precondition for the card)', await corpusReady(page));
+    const card = await page.waitForSelector('#welcomeCard', { timeout: 5000 }).then(() => true, () => false);
+    ok('S9 ARC on: the Today card appears once the corpus loads, with no tap', card);
+    ok('S9 ARC on: … and today is recorded as seen', await page.evaluate(() => state.lastWelcomeSeen === today()));
+    ok('S9 ARC on: no What\'s New overlay on a returning same-version open (precondition)',
+      await page.evaluate(() => !document.getElementById('wnOverlay').classList.contains('show')));
+
+    // Same-day reload: the seed does not re-apply (sessionStorage flag), so this
+    // is the learner's own saved state coming back.
+    await page.reload();
+    const v2 = await views(page);
+    ok('S9 reload same day: still opens on Command', v2.dash && !v2.domains, JSON.stringify(v2));
+    ok('S9 reload same day: the corpus loads again (precondition)', await corpusReady(page));
+    await page.waitForSelector('#arcMeters', { timeout: 5000 }).catch(() => {});
+    ok('S9 reload same day: the corpus-load callback ran (meters drawn) — so a card had its chance',
+      await page.evaluate(() => !!document.getElementById('arcMeters')));
+    await page.waitForTimeout(400);
+    ok('S9 reload same day: NO second Today card — the throttle holds', await page.evaluate(() => !document.getElementById('welcomeCard')));
+    await ctx.close();
+  }
+  // ARC OFF — v1.7.0 behaviour.
+  {
+    const { ctx, page } = await open({ seed: seedArc(false) });
+    const v = await views(page);
+    ok('S9 ARC off: boot lands on Domains, as v1.7.0', v.domains && !v.dash, JSON.stringify(v));
+    ok('S9 ARC off: the Domains tab is the highlighted tab', v.tab === 'domains', v.tab);
+    await page.waitForTimeout(300);
+    ok('S9 ARC off: no Today card', await page.evaluate(() => !document.getElementById('welcomeCard')));
+    await ctx.close();
+  }
+}
+
 /* ══ S8. Hints: every Domain-1 gate still has its hints (audit replaced, never deleted) ══ */
 {
   const { ctx, page } = await returning();

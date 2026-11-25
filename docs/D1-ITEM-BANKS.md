@@ -85,7 +85,7 @@ Items marked ⚑ were flagged by both cooperative classifiers and kept under a *
   - Unlocking a workstation with a registered fingerprint
 - **Non-repudiation**
   - Digitally signing an approved payment so it traces to one named employee
-  - Keeping a tamper-evident audit log of who changed each record
+  - Requiring each engineer to approve change requests with a private key that only they hold
 - **Privacy**
   - Collecting only the data fields the service actually needs
   - Honouring a customer's request to erase what you hold about them
@@ -230,7 +230,7 @@ Items marked ⚑ were flagged by both cooperative classifiers and kept under a *
   1. Identify the asset, the threats to it, and the vulnerabilities they could exploit
   2. Assess likelihood x impact and rank it against the other risks
   3. Choose a treatment: mitigate, transfer, avoid or accept
-  4. Apply the control and verify it actually works
+  4. Implement the chosen treatment and verify it
   5. Document the residual risk and have it formally accepted
 
 **Analog / synthesis** (SEQUENTIAL). Away from the screen, pick one real risk in your own life — a laptop with no backup, a reused password, an unlocked side door. On paper, run it through all five steps: name the asset, the threat, the vulnerability; judge likelihood and impact; pick one of the four treatments and say why; then write the residual risk that is left over and who accepts it. One page, no notes.

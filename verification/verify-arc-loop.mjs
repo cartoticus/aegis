@@ -446,6 +446,87 @@ await reset();
   await page.evaluate(() => { closeArc(); const a = arcCfg(); delete a.fsm['isc2.cc.d1.risk-lifecycle']; delete a.fsm[ARC.modules.find(m => m.drills.some(d => d.id === 'isc2.cc.d1.ethics.d7.order')).id]; delete a.cards[ARC.modules.find(m => m.drills.some(d => d.id === 'isc2.cc.d1.ethics.d7.order')).id]; a.log = []; save(); });
 }
 
+/* ══ D3. The risk gate's reworded step 4 (v1.7.1) ═════════════════════════════
+   kendall_tau needs the response to be a permutation of `correct`, so the same
+   step must read identically everywhere it appears. One canonical string, checked
+   against every ORDER_SEQUENCE payload (gate + drills) the app actually loaded,
+   then the gate itself driven through the real DOM: a right order and a wrong one. */
+{
+  const RISK_STEP4 = 'Implement the chosen treatment and verify it';
+  const RISK = 'isc2.cc.d1.risk-lifecycle';
+  const mods = await page.evaluate(() => JSON.parse(JSON.stringify(ARC.modules)));
+  // Any step that is "the do-it-and-check-it step" — old or new wording, any variant.
+  const isStep4 = s => /verif/i.test(s) && /(treatment|control)/i.test(s);
+  const drift = ms => {
+    const bad = [];
+    for (const m of ms) for (const site of [m.gate, ...(m.drills || [])]) {
+      const vp = site?.validation_payload;
+      if (vp?.accuracy_metric !== 'kendall_tau') continue;
+      for (const s of vp.correct) if (isStep4(s) && s !== RISK_STEP4) bad.push(`${m.id}/${site.id || 'gate'}: ${s}`);
+    }
+    if (ms.some(m => JSON.stringify(m).includes('Apply the control and verify'))) bad.push('old v1.7.0 step text still present');
+    return bad;
+  };
+  const risk = mods.find(m => m.id === RISK);
+  ok('D3: the risk module is loaded (precondition)', !!risk);
+  ok('D3: the risk gate\'s step 4 is the canonical v1.7.1 text', risk?.gate.validation_payload.correct[3] === RISK_STEP4,
+    risk?.gate.validation_payload.correct[3]);
+  const d = drift(mods);
+  ok('D3: every ordering payload that reuses the step uses the identical text', d.length === 0, d.join(' | '));
+  // The checker itself must discriminate: a drill that reuses the step with drifted
+  // text has to be flagged, or the check above proves nothing.
+  const planted = JSON.parse(JSON.stringify(mods));
+  planted.find(m => m.id === RISK).drills.push({ id: 'planted', validation_payload: { accuracy_metric: 'kendall_tau',
+    correct: risk.gate.validation_payload.correct.map((s, i) => i === 3 ? 'Implement the chosen treatment and verify it works' : s) } });
+  ok('D3: the drift check flags a drill whose copy of the step differs (checker discriminates)', drift(planted).length === 1);
+
+  // Real DOM: stand the gate up, record confidence, click-sort, press Submit.
+  const shown = () => page.$$eval('#arcWidget .arc-order li > span:first-child', els => els.map(e => e.textContent));
+  const clickSort = async target => {
+    const rank = new Map(target.map((v, i) => [v, i]));
+    for (let guard = 0; guard < 60; guard++) {
+      const cur = await shown();
+      const i = cur.findIndex((v, k) => k < cur.length - 1 && rank.get(v) > rank.get(cur[k + 1]));
+      if (i < 0) return cur;
+      await page.click(`#arcWidget [data-mv="${i}:1"]`);
+    }
+    return shown();
+  };
+  const standGate = () => page.evaluate(mid => {
+    const a = arcCfg(); delete a.fsm[mid]; delete a.cards[mid]; a.log = []; save();
+    openArcModule(mid);
+    arcStep(mid, { type: 'PREREQ_RESOLVED' }); arcStep(mid, { type: 'PREQUESTION_DONE' });
+    arcStep(mid, { type: 'CHUNK_DONE', reading_ratio: 1 });
+    renderArc();
+    return arcFsm(mid).state;
+  }, RISK);
+  const submitGate = async target => {
+    await page.click('#arcContent [data-conf="3"]');
+    const s = await clickSort(target);
+    await page.click('#arcSubmit');
+    const log = await page.evaluate(mid => arcCfg().log.filter(x => x.module_id === mid && x.site === 'gate').at(-1), RISK);
+    const state = await page.evaluate(mid => arcFsm(mid).state, RISK);
+    return { s, log, state };
+  };
+  const correct = risk.gate.validation_payload.correct;
+
+  ok('D3 risk gate: stands up at the gate (precondition)', (await standGate()) === 'PHASE_2_GATE');
+  ok('D3 risk gate: the new step text is what the learner sees', (await shown()).includes(RISK_STEP4), JSON.stringify(await shown()));
+  const good = await submitGate(correct);
+  ok('D3 risk gate: click-sorted into the correct order', JSON.stringify(good.s) === JSON.stringify(correct), JSON.stringify(good.s));
+  ok('D3 risk gate: the right order scores 1.0 and passes', good.log?.raw_accuracy === 1 && good.log?.passed === true, JSON.stringify(good.log));
+  ok('D3 risk gate: … and step() advances past the gate', good.state !== 'PHASE_2_GATE', good.state);
+
+  await standGate();
+  // Wrong order: steps 4 and 5 swapped — the exact confusion the reword is about.
+  const wrong = correct.slice(); [wrong[3], wrong[4]] = [wrong[4], wrong[3]];
+  const bad = await submitGate(wrong);
+  ok('D3 risk gate: click-sorted into the wrong order', JSON.stringify(bad.s) === JSON.stringify(wrong), JSON.stringify(bad.s));
+  ok('D3 risk gate: one swapped pair scores below 1 and does NOT pass', bad.log && bad.log.raw_accuracy < 1 && bad.log.passed === false, JSON.stringify(bad.log));
+  ok('D3 risk gate: … and step() keeps the learner at the gate', bad.state === 'PHASE_2_GATE', bad.state);
+  await page.evaluate(mid => { closeArc(); const a = arcCfg(); delete a.fsm[mid]; delete a.cards[mid]; a.log = []; save(); }, RISK);
+}
+
 /* ══ E. All six modules, each driven to MASTERED ═══════════════════════════ */
 {
   const all = await page.evaluate(async () => {

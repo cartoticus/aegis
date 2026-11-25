@@ -49,7 +49,7 @@
         ],
         "Non-repudiation": [
           "Digitally signing an approved payment so it traces to one named employee",
-          "Keeping a tamper-evident audit log of who changed each record"
+          "Requiring each engineer to approve change requests with a private key that only they hold"
         ],
         "Privacy": [
           "Collecting only the data fields the service actually needs",

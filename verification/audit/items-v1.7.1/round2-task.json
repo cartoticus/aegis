@@ -1,0 +1,78 @@
+[
+ {
+  "module": "isc2.cc.d1.authn-nonrep-privacy",
+  "kind": "CLASSIFY",
+  "prompt": "Sort each measure under the property it primarily provides.",
+  "buckets": [
+   "Authentication",
+   "Non-repudiation",
+   "Privacy"
+  ],
+  "items": [
+   "Collecting only the data fields the service actually needs",
+   "Digitally signing an approved payment so it traces to one named employee",
+   "Honouring a customer's request to erase what you hold about them",
+   "Requiring a password plus a one-time code from the user's phone",
+   "Requiring each engineer to approve change requests with a private key that only they hold",
+   "Unlocking a workstation with a registered fingerprint"
+  ],
+  "hints": [
+   "Two of these properties involve identity, so check which job the measure does: verifying a person before they are allowed to act, or leaving evidence of an action that someone else could check later.",
+   "Ask whose interest the measure serves first: the organisation's need to know who is acting and what they did, or the individual's control over information about themselves."
+  ],
+  "items_under_review": [
+   "Requiring each engineer to approve change requests with a private key that only they hold"
+  ]
+ },
+ {
+  "module": "isc2.cc.d1.code-of-ethics",
+  "kind": "CLASSIFY",
+  "prompt": "Each situation is most directly about one canon's subject matter: public safety and the infrastructure (I), your own honesty and legality (II), what you owe the client who hired you (III), or the standing of the profession (IV). Sort them. Note that ranking settles conflicts of *duty* — it is not how you classify what a situation is about.",
+  "buckets": [
+   "Canon I — protect society and the infrastructure",
+   "Canon II — act honourably, honestly, justly, responsibly and legally",
+   "Canon III — provide diligent and competent service to principals",
+   "Canon IV — advance and protect the profession"
+  ],
+  "items": [
+   "A vendor ignores your reports of a medical-device firmware flaw while patients remain at risk, and you keep pressing for a fix",
+   "You decline to exaggerate a threat in a sales pitch to frighten a prospect into buying",
+   "You refuse to scan a network you have no written authorisation to test",
+   "You report a peer who is selling leaked ISC2 exam questions to candidates",
+   "You report a vulnerability you found in a city's emergency dispatch system",
+   "You spend an afternoon each month mentoring junior analysts with no billable work attached",
+   "You tell a client up front that a specialised cloud engagement is beyond what you are qualified to deliver",
+   "You turn down a second client whose work would create a conflict of interest with your current engagement"
+  ],
+  "hints": [
+   "Test the duty, not the people who benefit: would you owe this even if nobody had hired you? If not, it is about your principals. If you would, decide whether it is about harm reaching the public, your own conduct, or the field as a whole.",
+   "Honesty is Canon II's subject when your own honesty or lawfulness is the whole point. If the honest act is really part of serving the people who hired you, or of looking after the profession, the situation is about that relationship instead."
+  ],
+  "items_under_review": [
+   "You report a peer who is selling leaked ISC2 exam questions to candidates",
+   "You tell a client up front that a specialised cloud engagement is beyond what you are qualified to deliver"
+  ]
+ },
+ {
+  "module": "isc2.cc.d1.risk-lifecycle",
+  "kind": "ORDER_SEQUENCE",
+  "prompt": "A new risk has just been raised: an internet-facing server is running unpatched software. Put the five steps of handling it in the order you would actually perform them.",
+  "steps_alphabetical": [
+   "Assess likelihood x impact and rank it against the other risks",
+   "Choose a treatment: mitigate, transfer, avoid or accept",
+   "Document the residual risk and have it formally accepted",
+   "Identify the asset, the threats to it, and the vulnerabilities they could exploit",
+   "Implement the chosen treatment and verify it"
+  ],
+  "hints": [
+   "Raising a concern is not the same as understanding it. Ask what you would need to write down about this server before you could compare it with anything else on your list.",
+   "Residual risk is whatever is left over from the response as it actually exists, not as it was planned. Work out which steps have to be finished before anyone can honestly describe that."
+  ],
+  "items_under_review": [
+   "Implement the chosen treatment and verify it"
+  ],
+  "hints_under_review": [
+   1
+  ]
+ }
+]

@@ -1,6 +1,6 @@
 {
   "name": "aegis",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "private": true,
   "description": "AEGIS \u2014 ISC2-aligned cybersecurity learning system. Static PWA; no build step.",
   "type": "module",

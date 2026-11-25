@@ -1,0 +1,76 @@
+{
+  "reviewer": "B",
+  "answers": {
+    "isc2.cc.d1.authn-nonrep-privacy": {
+      "Collecting only the data fields the service actually needs": "Privacy",
+      "Digitally signing an approved payment so it traces to one named employee": "Non-repudiation",
+      "Honouring a customer's request to erase what you hold about them": "Privacy",
+      "Requiring a password plus a one-time code from the user's phone": "Authentication",
+      "Requiring each engineer to sign their change requests with a private key that only they hold": "Non-repudiation",
+      "Unlocking a workstation with a registered fingerprint": "Authentication"
+    },
+    "isc2.cc.d1.code-of-ethics": {
+      "A vendor ignores your reports of a medical-device firmware flaw while patients remain at risk, and you keep pressing for a fix": "Canon I — protect society and the infrastructure",
+      "You decline to exaggerate a threat in a sales pitch to frighten a prospect into buying": "Canon II — act honourably, honestly, justly, responsibly and legally",
+      "You refuse to scan a network you have no written authorisation to test": "Canon II — act honourably, honestly, justly, responsibly and legally",
+      "You report a peer who is selling leaked ISC2 exam questions to candidates": "Canon IV — advance and protect the profession",
+      "You report a vulnerability you found in a city's emergency dispatch system": "Canon I — protect society and the infrastructure",
+      "You spend an afternoon each month mentoring junior analysts with no billable work attached": "Canon IV — advance and protect the profession",
+      "You tell a client up front that a specialised cloud engagement is beyond what you are qualified to deliver": "Canon III — provide diligent and competent service to principals",
+      "You turn down a second client whose work would create a conflict of interest with your current engagement": "Canon III — provide diligent and competent service to principals"
+    },
+    "isc2.cc.d1.risk-lifecycle": [
+      "Identify the asset, the threats to it, and the vulnerabilities they could exploit",
+      "Assess likelihood x impact and rank it against the other risks",
+      "Choose a treatment: mitigate, transfer, avoid or accept",
+      "Implement the chosen treatment and verify it",
+      "Document the residual risk and have it formally accepted"
+    ]
+  },
+  "items_under_review": [
+    {
+      "module": "isc2.cc.d1.authn-nonrep-privacy",
+      "item": "Requiring each engineer to sign their change requests with a private key that only they hold",
+      "your_answer": "Non-repudiation",
+      "verdict": "CLEAN",
+      "confidence": 4,
+      "reason": "Digital signature with a key held solely by the signer is the textbook CC example of non-repudiation; the slight pull toward Authentication (proving who submitted) is outweighed by the signed-artifact framing, and the payment-signing item makes the pattern consistent.",
+      "suggested_fix": null
+    },
+    {
+      "module": "isc2.cc.d1.code-of-ethics",
+      "item": "You report a peer who is selling leaked ISC2 exam questions to candidates",
+      "your_answer": "Canon IV — advance and protect the profession",
+      "verdict": "CLEAN",
+      "confidence": 4,
+      "reason": "Protecting the integrity of the certification and acting against a colleague who degrades it is the classic Canon IV scenario; Canon II is a weaker pull because the dishonesty is the peer's, not yours.",
+      "suggested_fix": null
+    },
+    {
+      "module": "isc2.cc.d1.code-of-ethics",
+      "item": "You tell a client up front that a specialised cloud engagement is beyond what you are qualified to deliver",
+      "your_answer": "Canon III — provide diligent and competent service to principals",
+      "verdict": "CLEAN",
+      "confidence": 3,
+      "reason": "ISC2's Canon III guidance explicitly covers rendering only services you are competent and qualified for, so III is defensible and expected, though the phrase 'tell ... up front' leans on candor and could draw a less-prepared candidate to Canon II (the prompt note and hint 1 mitigate this).",
+      "suggested_fix": "Optional tightening: 'You decline a specialised cloud engagement for a client because it is beyond what you are qualified to deliver' — keeps the competence focus and drops the candor cue."
+    },
+    {
+      "module": "isc2.cc.d1.risk-lifecycle",
+      "item": "Implement the chosen treatment and verify it",
+      "your_answer": "Position 4 (after choosing a treatment, before documenting/accepting residual risk)",
+      "verdict": "CLEAN",
+      "confidence": 4,
+      "reason": "Treatment must be implemented and verified before residual risk can be honestly characterized and accepted; the only alternative reading (management signs off residual risk at decision time, before implementation) is a minority view at CC level.",
+      "suggested_fix": null
+    }
+  ],
+  "hints": [
+    {"module": "isc2.cc.d1.authn-nonrep-privacy", "hint_index": 0, "verdict": "OK", "reason": "The 'verify before acting' vs 'evidence checkable later' split cleanly separates the fingerprint/MFA items from both signing items."},
+    {"module": "isc2.cc.d1.authn-nonrep-privacy", "hint_index": 1, "verdict": "OK", "reason": "Correctly separates organisational identity/accountability needs from individual data control; does not misdirect any item."},
+    {"module": "isc2.cc.d1.code-of-ethics", "hint_index": 0, "verdict": "OK", "reason": "The 'would you owe this if nobody hired you' test routes competence and conflict-of-interest to III and the rest correctly to I/II/IV; the sales-pitch item to a prospect still lands in II."},
+    {"module": "isc2.cc.d1.code-of-ethics", "hint_index": 1, "verdict": "OK", "reason": "Directly resolves the honesty-vs-client pull on the competence item toward III and does not push the sales-pitch or unauthorised-scan items out of II."},
+    {"module": "isc2.cc.d1.risk-lifecycle", "hint_index": 0, "verdict": "OK", "reason": "Points to identification preceding assessment/ranking; accurate."},
+    {"module": "isc2.cc.d1.risk-lifecycle", "hint_index": 1, "verdict": "OK", "reason": "Correctly places residual-risk documentation after implementation; somewhat telegraphs the last position but does not mislead."}
+  ]
+}

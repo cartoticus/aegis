@@ -1,0 +1,103 @@
+{
+  "reviewer": "H",
+  "answers": {
+    "isc2.cc.d1.authn-nonrep-privacy": {
+      "Collecting only the data fields the service actually needs": "Privacy",
+      "Digitally signing an approved payment so it traces to one named employee": "Non-repudiation",
+      "Honouring a customer's request to erase what you hold about them": "Privacy",
+      "Requiring a password plus a one-time code from the user's phone": "Authentication",
+      "Requiring each engineer to sign their change requests with a private key that only they hold": "Non-repudiation",
+      "Unlocking a workstation with a registered fingerprint": "Authentication"
+    },
+    "isc2.cc.d1.code-of-ethics": {
+      "A vendor ignores your reports of a medical-device firmware flaw while patients remain at risk, and you keep pressing for a fix": "Canon I — protect society and the infrastructure",
+      "You decline to exaggerate a threat in a sales pitch to frighten a prospect into buying": "Canon II — act honourably, honestly, justly, responsibly and legally",
+      "You refuse to scan a network you have no written authorisation to test": "Canon II — act honourably, honestly, justly, responsibly and legally",
+      "You report a peer who is selling leaked ISC2 exam questions to candidates": "Canon IV — advance and protect the profession",
+      "You report a vulnerability you found in a city's emergency dispatch system": "Canon I — protect society and the infrastructure",
+      "You spend an afternoon each month mentoring junior analysts with no billable work attached": "Canon IV — advance and protect the profession",
+      "You tell a client up front that a specialised cloud engagement is beyond what you are qualified to deliver": "Canon III — provide diligent and competent service to principals",
+      "You turn down a second client whose work would create a conflict of interest with your current engagement": "Canon III — provide diligent and competent service to principals"
+    },
+    "isc2.cc.d1.risk-lifecycle": [
+      "Identify the asset, the threats to it, and the vulnerabilities they could exploit",
+      "Assess likelihood x impact and rank it against the other risks",
+      "Choose a treatment: mitigate, transfer, avoid or accept",
+      "Implement the chosen treatment and verify it",
+      "Document the residual risk and have it formally accepted"
+    ]
+  },
+  "items_under_review": [
+    {
+      "module": "isc2.cc.d1.authn-nonrep-privacy",
+      "item": "Requiring each engineer to sign their change requests with a private key that only they hold",
+      "your_answer": "Non-repudiation",
+      "defect": "MED",
+      "reason": "Same mechanism as the payment item: both Non-repudiation items are digital signatures, and they are the only two items containing 'sign'. A learner can get both by matching 'sign' to Non-repudiation without learning that non-repudiation can come from other mechanisms. The bucket therefore never tests anything except 'signature = non-repudiation'. The answer itself is correct and unambiguous at CC level. The best case for Authentication (a key only they hold proves who they are) is weak, and hint 1 heads it off.",
+      "suggested_fix": "Replace it with a non-repudiation measure that is not a signature, so the bucket tests the concept and not the word. For example: 'Recording every approval in a tamper-evident, append-only log tied to each approver's individual account, with no shared logins.' Or keep the signature idea but avoid the word 'sign' in one of the two items."
+    },
+    {
+      "module": "isc2.cc.d1.code-of-ethics",
+      "item": "You report a peer who is selling leaked ISC2 exam questions to candidates",
+      "your_answer": "Canon IV — advance and protect the profession",
+      "defect": "LOW",
+      "reason": "The strongest hostile case is Canon II: reporting wrongdoing is the honourable, lawful act. But the dishonesty belongs to the peer, not to you, and the harm falls on the credential and the field, so a prepared candidate picks IV. Hint 2 also covers this. A small cue: 'ISC2 exam' points toward 'profession', but the reasoning lands in the same place anyway.",
+      "suggested_fix": null
+    },
+    {
+      "module": "isc2.cc.d1.code-of-ethics",
+      "item": "You tell a client up front that a specialised cloud engagement is beyond what you are qualified to deliver",
+      "your_answer": "Canon III — provide diligent and competent service to principals",
+      "defect": "LOW",
+      "reason": "The strongest hostile case is Canon II, because 'tell ... up front' frames it as honesty about yourself. Rendering only the services you are competent to deliver is a duty owed to the principal, and the item names 'a client', so III holds; hint 2 tackles this exact confusion. Minor word-match: 'qualified' echoes 'competent' in the Canon III label. It does not share a sub-theme with the conflict-of-interest item, so it is not a duplicate.",
+      "suggested_fix": null
+    },
+    {
+      "module": "isc2.cc.d1.risk-lifecycle",
+      "item": "Implement the chosen treatment and verify it",
+      "your_answer": "Position 4 (after 'Choose a treatment', before 'Document the residual risk')",
+      "defect": "MED",
+      "reason": "Step 3 lists 'accept' as a treatment. A candidate who thinks of acceptance as the treatment decision may put 'Document the residual risk and have it formally accepted' straight after choosing, then implement, because 'accept' appears in both steps and implementing an 'accept' treatment means nothing. A prepared candidate who knows residual risk is measured after the controls are in place (NIST RMF: implement, assess, then authorize) still puts this step 4th. The item can also be placed by word-chaining alone: 'chosen treatment' links back to 'Choose a treatment'.",
+      "suggested_fix": "Separate the two acceptances. Reword step 5 to 'Document the risk that remains after treatment and have the risk owner sign it off', or drop 'accept' from step 3's list (for example, 'mitigate, transfer or avoid, or decide to retain it'). Optionally reword step 4 to 'Put the treatment in place and verify it works' so it doesn't echo 'Choose'."
+    }
+  ],
+  "hints": [
+    {
+      "module": "isc2.cc.d1.authn-nonrep-privacy",
+      "hint_index": 0,
+      "verdict": "OK",
+      "reason": "It correctly splits Authentication (verify before acting) from Non-repudiation (evidence checkable later). It points the engineer-signing item toward Non-repudiation and the fingerprint and MFA items toward Authentication."
+    },
+    {
+      "module": "isc2.cc.d1.authn-nonrep-privacy",
+      "hint_index": 1,
+      "verdict": "OK",
+      "reason": "It separates the two Privacy items (data minimisation, erasure) from the identity items. It does not try to split Authentication from Non-repudiation, which is fine because hint 0 does that."
+    },
+    {
+      "module": "isc2.cc.d1.code-of-ethics",
+      "hint_index": 0,
+      "verdict": "OK",
+      "reason": "The 'would you owe this even if nobody had hired you?' test sends the prospect sales pitch (nobody has hired you) to II rather than III, and sends the qualification and conflict-of-interest items to III. Slight strain: mentoring is hardly 'owed', but the hint still points to 'the field as a whole', so it does not mislead."
+    },
+    {
+      "module": "isc2.cc.d1.code-of-ethics",
+      "hint_index": 1,
+      "verdict": "OK",
+      "reason": "It handles the honesty-flavoured III item (the qualification disclosure) and the IV item (reporting the exam-leak peer) correctly, and keeps the sales pitch and the unauthorised scan in II."
+    },
+    {
+      "module": "isc2.cc.d1.risk-lifecycle",
+      "hint_index": 0,
+      "verdict": "OK",
+      "reason": "It points to identification before assessment, which is consistent with the steps."
+    },
+    {
+      "module": "isc2.cc.d1.risk-lifecycle",
+      "hint_index": 1,
+      "verdict": "MISLEADS",
+      "reason": "Vocabulary mismatch: the hint says residual risk is what is left over 'from the controls', but the steps talk about a 'treatment', which may be transfer, avoid or accept, none of which is a control. A learner who has 'transfer' or 'accept' in mind may decide there are no controls to wait for and put the residual-risk step earlier. It also comes close to giving away the position of the item under review.",
+      "suggested_fix": "'Residual risk is whatever is left after the chosen treatment as it was actually carried out, not as it was planned. Work out which steps have to be finished before anyone can honestly describe it.'"
+    }
+  ]
+}

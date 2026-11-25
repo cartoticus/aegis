@@ -24,9 +24,9 @@ npm run test:faults  # fault injection: revert each fix, require a suite to fail
 | `verify-version.mjs` | `APP_VERSION`, header badge, CHANGELOG head, `sw.js` CACHE and `package.json` all agree |
 | `arc-module-probe.mjs` | every module is schema-valid, ARC-legal, **and actually scorable** |
 | `verify-module-seam.mjs` | the corpus loads, degrades and survives offline |
-| `verify-arc-loop.mjs` | the gate gates, consolidation can't be rushed, confidence precedes feedback |
+| `verify-arc-loop.mjs` | the gate gates, consolidation can't be rushed, confidence precedes feedback; §D3 (v1.7.1) keeps the risk gate's step 4 identical everywhere and submits a right and a wrong order through the real DOM |
 | `verify-fsrs-oracle.mjs` | the FSRS-6 code sliced out of `index.html` matches the reference implementation |
-| `verify-step-a.mjs` | the Domain-1 meters count honestly, the Today card is throttled and ranked, the explainer owns the first open, the overdue gate blocks at the locked thresholds (and only new material), the consolidation screen has exits. Toggle off = v1.6.1 dashboard byte-for-byte (needs history: commit `5a2e98d`) |
+| `verify-step-a.mjs` | the Domain-1 meters count honestly, the Today card is throttled and ranked, the explainer owns the first open, the overdue gate blocks at the locked thresholds (and only new material), the consolidation screen has exits. Toggle off = v1.6.1 dashboard byte-for-byte (needs history: commit `5a2e98d`). §S9 (v1.7.1): ARC on opens on Command, ARC off on Domains, and a same-day reload shows no second Today card |
 | `verify-mobile-ui.mjs` | tooltips behave on touch and mouse; objective rows, the header and the Step A cards/explainer fit every width from 300px to 1280px |
 | `verify-rollback.mjs` | reverting to the previous release loses no learner data |
 
@@ -71,5 +71,7 @@ suite **fail**. An *escape* means a test asserts something the base case already
 satisfies — fix the test. A *broken* fault means its pattern no longer matches
 the code (the fix moved) — update the fault. Fault `C` replays the exact v1.6.0
 `index.html` (commit `5abdf43`), so it needs full history, not a shallow clone.
+
+A fault mutates `index.html` unless it names another app file as its 5th element (fault `R1` mutates a module).
 
 **When you add a fix, add its fault.** `FAULT_JOBS` (default 3) sets parallelism.

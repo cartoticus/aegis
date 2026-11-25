@@ -1,0 +1,112 @@
+{
+  "reviewer": "C",
+  "answers": {
+    "isc2.cc.d1.authn-nonrep-privacy": {
+      "Collecting only the data fields the service actually needs": "Privacy",
+      "Digitally signing an approved payment so it traces to one named employee": "Non-repudiation",
+      "Honouring a customer's request to erase what you hold about them": "Privacy",
+      "Requiring a password plus a one-time code from the user's phone": "Authentication",
+      "Requiring each engineer to approve change requests with a private key that only they hold": "Non-repudiation",
+      "Unlocking a workstation with a registered fingerprint": "Authentication"
+    },
+    "isc2.cc.d1.code-of-ethics": {
+      "A vendor ignores your reports of a medical-device firmware flaw while patients remain at risk, and you keep pressing for a fix": "Canon I — protect society and the infrastructure",
+      "You decline to exaggerate a threat in a sales pitch to frighten a prospect into buying": "Canon II — act honourably, honestly, justly, responsibly and legally",
+      "You refuse to scan a network you have no written authorisation to test": "Canon II — act honourably, honestly, justly, responsibly and legally",
+      "You report a peer who is selling leaked ISC2 exam questions to candidates": "Canon IV — advance and protect the profession",
+      "You report a vulnerability you found in a city's emergency dispatch system": "Canon I — protect society and the infrastructure",
+      "You spend an afternoon each month mentoring junior analysts with no billable work attached": "Canon IV — advance and protect the profession",
+      "You tell a client up front that a specialised cloud engagement is beyond what you are qualified to deliver": "Canon III — provide diligent and competent service to principals",
+      "You turn down a second client whose work would create a conflict of interest with your current engagement": "Canon III — provide diligent and competent service to principals"
+    },
+    "isc2.cc.d1.risk-lifecycle": [
+      "Identify the asset, the threats to it, and the vulnerabilities they could exploit",
+      "Assess likelihood x impact and rank it against the other risks",
+      "Choose a treatment: mitigate, transfer, avoid or accept",
+      "Implement the chosen treatment and verify it",
+      "Document the residual risk and have it formally accepted"
+    ]
+  },
+  "items_under_review": [
+    {
+      "module": "isc2.cc.d1.authn-nonrep-privacy",
+      "item": "Requiring each engineer to approve change requests with a private key that only they hold",
+      "your_answer": "Non-repudiation",
+      "verdict": "CLEAN",
+      "confidence": 4,
+      "reason": "Approving a change with an exclusively held private key is a signature on an action, so it tests the concept (sole possession of the key gives undeniable evidence) without echoing 'non-repudiation' or 'sign'; the only pull toward Authentication is that private keys are also used to log in (e.g. SSH), but 'approve change requests' makes the action-evidence role clear.",
+      "suggested_fix": null
+    },
+    {
+      "module": "isc2.cc.d1.code-of-ethics",
+      "item": "You report a peer who is selling leaked ISC2 exam questions to candidates",
+      "your_answer": "Canon IV — advance and protect the profession",
+      "verdict": "CLEAN",
+      "confidence": 4,
+      "reason": "The harm is to the integrity of the credential and the field, not to the public, a client or your own honesty, so a candidate who reasons about whose interest is damaged lands on IV; there is a weak pull to II because the peer's act is illegal, but the item is about your response to someone else's conduct, not your own lawfulness.",
+      "suggested_fix": null
+    },
+    {
+      "module": "isc2.cc.d1.code-of-ethics",
+      "item": "You tell a client up front that a specialised cloud engagement is beyond what you are qualified to deliver",
+      "your_answer": "Canon III — provide diligent and competent service to principals",
+      "verdict": "CLEAN",
+      "confidence": 3,
+      "reason": "Offering only services you are competent to deliver is the core of Canon III, but the act is framed as candour so an unhinted candidate could pick II, and from a learning-design view the word 'client' is shared only with the other Canon III item and matches the prompt's gloss of III ('the client who hired you'), so it can be answered by word-matching rather than understanding.",
+      "suggested_fix": "Optionally drop the shared cue word so the competence idea carries the item, e.g. 'You turn down an engagement offer for specialised cloud work because it is beyond what you are qualified to deliver', or vary the other III item's noun (e.g. 'a second organisation')."
+    },
+    {
+      "module": "isc2.cc.d1.risk-lifecycle",
+      "item": "Implement the chosen treatment and verify it",
+      "your_answer": "position 4",
+      "verdict": "CLEAN",
+      "confidence": 4,
+      "reason": "Implementing and verifying follows choosing a treatment and comes before documenting residual risk; some frameworks accept planned residual risk at plan approval, which could pull a candidate to swap 4 and 5, but 'and verify it' plus residual risk being what remains after the control actually exists makes position 4 defensible at CC level.",
+      "suggested_fix": null
+    }
+  ],
+  "hints": [
+    {
+      "module": "isc2.cc.d1.authn-nonrep-privacy",
+      "hint_index": 0,
+      "verdict": "OK",
+      "approach": null,
+      "reason": "Gives a working test (verify before acting vs evidence checkable later) that cleanly separates Authentication from Non-repudiation, including the private-key item; it does not duplicate hint 1."
+    },
+    {
+      "module": "isc2.cc.d1.authn-nonrep-privacy",
+      "hint_index": 1,
+      "verdict": "OK",
+      "approach": null,
+      "reason": "Separates Privacy (individual's control) from the two identity properties; complementary to hint 0, not a duplicate."
+    },
+    {
+      "module": "isc2.cc.d1.code-of-ethics",
+      "hint_index": 0,
+      "verdict": "OK",
+      "approach": null,
+      "reason": "The 'would you owe this if nobody had hired you' test correctly isolates III and then routes the peer-reporting item to IV; no item is pushed wrong."
+    },
+    {
+      "module": "isc2.cc.d1.code-of-ethics",
+      "hint_index": 1,
+      "verdict": "OK",
+      "approach": null,
+      "reason": "Directly resolves the II-vs-III pull on the 'beyond what you are qualified' item and keeps the sales-pitch item (prospect, not yet a principal) in II; it overlaps a little with hint 0 on III but is aimed at the honesty boundary, so not a duplicate."
+    },
+    {
+      "module": "isc2.cc.d1.risk-lifecycle",
+      "hint_index": 0,
+      "verdict": "OK",
+      "approach": null,
+      "reason": "Points to identification (asset/threat/vulnerability) before assessment and ranking without naming the step."
+    },
+    {
+      "module": "isc2.cc.d1.risk-lifecycle",
+      "hint_index": 1,
+      "verdict": "OK",
+      "approach": "CHANGES_APPROACH",
+      "reason": "Gives a usable dependency rule (residual risk can only be described once the treatment really exists and is checked) that settles the one plausible swap, implement vs document residual, without just restating the steps; distinct from hint 0."
+    }
+  ]
+}

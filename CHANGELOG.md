@@ -2,6 +2,11 @@
 
 Generated from the in-app **What’s New** list in `index.html` (`npm run changelog`). Edit it there, not here.
 
+## v1.7.1 — Nov 2026
+
+- **AEGIS now opens on Command when ARC mode is on**, so the Today card greets you without a tap. With ARC off it still opens on Domains, and the Today card still shows only once a day.
+- Two Domain 1 questions reworded for accuracy: a clearer **non-repudiation** example, and the risk-lifecycle step *Implement the chosen treatment and verify it*, which now covers transfer, avoid and accept as well as controls. The ethics items were checked against the current ISC2 Code and stay where they were.
+
 ## v1.7.0 — Nov 2026
 
 - **Overall % is now Mastered-only and may read lower.** With ARC learning mode on, the Command dashboard shows a Domain 1 panel with three meters. **Overall** counts only objectives you have *mastered* (a review interval past 60 days), with no partial credit. It is meant to read lower than your reading progress and the classic percentage. The classic all-domain dashboard is unchanged.
