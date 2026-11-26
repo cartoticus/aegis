@@ -1,0 +1,197 @@
+{
+  "reviewer": "A",
+  "items": {
+    "isc2.cc.d2.incident-response::gate": {
+      "answer": ["B","C","E","A","D"],
+      "confidence": 3,
+      "flag": "AMBIGUOUS",
+      "severity": "MED",
+      "note": "B and C are both containment, and nothing in the lesson makes one depend on the other. With encryption already spreading on the share, a careful novice could shut off the drive and the other machines first (C before B). E->A->D is clearly fixed. I hesitated only on B vs C."
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d1.cloze": {
+      "answer": ["Analysis","Eradication","Preparation"],
+      "confidence": 5,
+      "flag": "GIVEAWAY",
+      "severity": "LOW",
+      "note": "Blank 3 asks for 'the first phase', and the prompt has just named it (Preparation) at the start of the same sentence, so you can copy it."
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d7.classify": {
+      "answer": {"1":"Detection & analysis","2":"Detection & analysis","3":"Containment, eradication & recovery","4":"Post-incident activity","5":"Preparation","6":"Containment, eradication & recovery","7":"Post-incident activity","8":"Preparation"},
+      "confidence": 4,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "Statement 7 (record how long detection took) made me pause: it sounds like Detection, but the clause 'to measure improvement' points to the lessons-learned review. Statement 1 relies on the lesson's 'how serious it is' under Detection & analysis."
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d30.freerecall": {
+      "answer": "The four phases are Preparation, Detection and Analysis, Containment-Eradication-Recovery, and Post-incident activity. You contain first so the attacker cannot spread further or keep steering the machine while you work; if you start cleaning while they still have access, they can undo it or move elsewhere. You keep a compromised machine powered on because its memory holds running processes and live connections, which are evidence that is lost when the power goes. A playbook is the written plan for one specific kind of incident, such as ransomware or a lost laptop, as concrete steps with named owners. The final phase, the lessons-learned review, feeds back into Preparation so the next response is better.",
+      "confidence": 4,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    },
+    "isc2.cc.d3.least-privilege::gate": {
+      "answer": ["A","E","H","I"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": "The job description maps directly: monitor (I), triage/document (A), escalate (E), plus playbooks (H). I didn't hesitate."
+    },
+    "isc2.cc.d3.least-privilege::isc2.cc.d3.lp.d1.cloze": {
+      "answer": ["privilege","creep","Just"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    },
+    "isc2.cc.d3.least-privilege::isc2.cc.d3.lp.d7.classify": {
+      "answer": {"1":"Remove it","2":"Remove it","3":"Needs it","4":"Remove it","5":"Remove it","6":"Needs it","7":"Needs it"},
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "Statement 1 is the one that needs real understanding (the manager approves, so self-approval breaks separation of duties). Statement 5 (the CEO's email) is obvious from common sense, but that is fine as a filler item."
+    },
+    "isc2.cc.d3.least-privilege::isc2.cc.d3.lp.d30.freerecall": {
+      "answer": "Least privilege means every account, whether a person, service or script, gets only the minimum access its job needs. Need-to-know applies the same idea to information: even someone cleared for a kind of data sees only the records their work requires. Blast radius is how much an attacker can reach once an account is compromised; a tightly scoped account limits the damage. Privilege creep is access piling up as people change roles and keep old rights. Regular access reviews fix it by removing what is no longer needed. The right to delete audit logs is dangerous because it lets someone erase the record of what they did, which breaks separation of duties and hides an intruder.",
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    },
+    "isc2.cc.d4.subnetting::gate": {
+      "answer": ["172.16.45.128","172.16.45.191","62","255.255.255.192"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": "/26 gives a block of 64, so 130 falls in the 128 block. The check 191-128 = 63 passes."
+    },
+    "isc2.cc.d4.subnetting::isc2.cc.d4.subnet.d1.cloze": {
+      "answer": ["0","128","240"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    },
+    "isc2.cc.d4.subnetting::isc2.cc.d4.subnet.d7.cloze": {
+      "answer": ["192.168.10.192","192.168.10.207","14"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    },
+    "isc2.cc.d4.subnetting::isc2.cc.d4.subnet.d30.freerecall": {
+      "answer": "Subtract the prefix from 32 to get the host bits. Find the mask value in the last octet (128, 192, 224, 240, 248 or 252) and subtract it from 256 to get the block size. Subnets start at multiples of the block size. The network address is the multiple at or just below the address, with all host bits 0. The broadcast address is the next multiple minus one, with all host bits 1. Usable hosts are 2 to the power of the host bits, minus 2. Check that broadcast minus network equals block size minus one. Two addresses cannot go to a device: the network address names the subnet itself, and the broadcast address reaches every host at once.",
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    },
+    "isc2.cc.d5.security-awareness::gate": {
+      "answer": {"1":"Legitimate","2":"Phishing","3":"Phishing","4":"Legitimate","5":"Phishing","6":"Legitimate","7":"Legitimate","8":"Legitimate","9":"Phishing","10":"Legitimate","11":"Phishing","12":"Phishing"},
+      "confidence": 4,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "Statement 9 is the one that needs understanding (a real internal address, but the request skips approval), and the lesson covers it explicitly. On 10 I briefly checked whether the calendar.yourcompany.com subdomain was a trick. Reading from the right settles it as legitimate. On 6, a deadline alone is not proof of phishing, so it is legitimate."
+    },
+    "isc2.cc.d5.security-awareness::isc2.cc.d5.sa.d1.cloze": {
+      "answer": ["vishing","tailgating","pretexting"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    },
+    "isc2.cc.d5.security-awareness::isc2.cc.d5.sa.d7.classify": {
+      "answer": {"1":"Follows guidance","2":"Follows guidance","3":"Works against it","4":"Follows guidance","5":"Works against it","6":"Works against it","7":"Follows guidance"},
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    },
+    "isc2.cc.d5.security-awareness::isc2.cc.d5.sa.d30.freerecall": {
+      "answer": "Three forms are phishing by email (including spear phishing and whaling), vishing by phone, and pretexting, where an invented story makes a request seem normal. They rely on urgency, authority, secrecy, and requests that skip the normal process. To check a suspicious message, first look at the real sender address, reading the domain from the right, not the display name. Next ask what it wants: a credential, money or a file opened. Then ask whether that request would normally arrive this way. Verify through a channel you already know and report it. On passwords, favour long passphrases over forced complexity, use a unique password per site in a password manager, turn on MFA, and change passwords only when exposed.",
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    },
+    "isc2.cc.d5.logging-monitoring::gate": {
+      "answer": ["203.0.113.66","5","3","8","no"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "There is a mild trap: the 07:39:55 'Accepted' line is from 10.0.0.5, not the attacker. A hasty novice might answer yes to blank 5, but 'from that address' makes it unambiguous. That is good discrimination."
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d1.cloze": {
+      "answer": ["correlates","fatigue","order"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d7.classify": {
+      "answer": {"1":"Password guessing","2":"Normal activity","3":"Password spraying","4":"Password guessing","5":"Normal activity","6":"Password spraying"},
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d30.freerecall": {
+      "answer": "Log successful and failed sign-ins with their source, privilege changes such as new or newly promoted accounts, configuration changes such as firewall rules or installed software, access to sensitive data, and security tool alerts. A SIEM collects logs from across the organisation, normalises them into one format, correlates events from different sources and raises alerts when a rule matches. Clocks must be synchronised so events can be put in order. Logs must be sent to a separate protected store so an intruder with admin rights cannot delete the evidence. For a suspected brute-force attack, answer where the attempts came from, how many there were, which accounts were tried, over what time span, and whether any attempt from that source succeeded.",
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    }
+  },
+  "hints": {
+    "isc2.cc.d2.incident-response::hint0": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "LOW",
+      "note": "It gives a useful test that firmly puts E before A: restoring while the attacker is present can be undone. It does not help separate B from C, since neither containment step can be undone."
+    },
+    "isc2.cc.d2.incident-response::hint1": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "LOW",
+      "note": "Sorting into phases is a good method. However, 'ask which step the others depend on' implies there is a dependency inside containment (B vs C), and I could not find one in the lesson. A learner may hunt for a dependency that the lesson never states."
+    },
+    "isc2.cc.d3.least-privilege::hint0": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "LOW",
+      "note": "The blast-radius framing is a method, not a shortcut."
+    },
+    "isc2.cc.d3.least-privilege::hint1": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "MED",
+      "note": "'Sign off their own work' and 'erase the record' map almost one-to-one onto B (approve & close alone) and C (delete audit logs). It narrows those two specific options, although it echoes the lesson's own phrasing."
+    },
+    "isc2.cc.d4.subnetting::hint0": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "LOW",
+      "note": "A genuinely different route (binary) to the network and broadcast addresses. The gate does not count hinted attempts, so this is practice only."
+    },
+    "isc2.cc.d4.subnetting::hint1": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "LOW",
+      "note": "Reframing the block size as 2^host bits is a real alternative to mask subtraction. It teaches a method only."
+    },
+    "isc2.cc.d5.security-awareness::hint0": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "LOW",
+      "note": "Reading to the end pushes the learner to catch statements 5 and 11, where the display looks familiar. It is a method, and it echoes the lesson's 'read it from the right'."
+    },
+    "isc2.cc.d5.security-awareness::hint1": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "MED",
+      "note": "This is the hint a learner needs for statement 9, the internal address with an approval-skipping request. It effectively points at the one correct-address phishing item, but it states the concept rather than the answer."
+    },
+    "isc2.cc.d5.logging-monitoring::hint0": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "LOW",
+      "note": "Filtering first stops the analyst lines from 10.0.0.5 being counted in."
+    },
+    "isc2.cc.d5.logging-monitoring::hint1": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "LOW",
+      "note": "Summarising first is a method. It somewhat conflicts with hint0's 'filter before reading', but it still points back to the lines for confirmation, so I would not call it misleading."
+    }
+  }
+}

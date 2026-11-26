@@ -533,6 +533,20 @@ li.hidden{display:none}
 .arc-btn{flex:none;background:rgba(232,176,75,.1);border:1px solid rgba(232,176,75,.4);color:var(--gold);font-family:var(--mono);font-size:10px;letter-spacing:.05em;padding:4px 9px;border-radius:7px;cursor:pointer;margin-left:8px;margin-top:1px;white-space:nowrap}
 .arc-btn:hover{background:rgba(232,176,75,.2)}
 .arc-note{background:rgba(240,88,107,.06);border:1px solid rgba(240,88,107,.25);border-radius:10px;padding:11px 14px;font-size:12.5px;color:var(--muted);margin-top:12px}
+/* ---------- v1.8.0 · Phase 2: labelled findings, skill-gate rule, gate terminal ---------- */
+/* Phishing lines carry long unbroken addresses (helpdesk@yourcompany.com.mailbox-support.io):
+   let them break anywhere rather than push the modal sideways. */
+.arc-item .ai-txt{min-width:0;overflow-wrap:anywhere}
+.arc-slots.labelled .arc-slot{flex-direction:column;align-items:stretch;gap:5px}
+.arc-slots.labelled .arc-slot span{width:auto;font-size:11.5px;line-height:1.35;color:var(--muted)}
+.arc-slots.labelled .arc-in{min-width:0;width:100%;box-sizing:border-box;font-family:var(--mono);font-size:16px}
+.arc-skill{background:rgba(232,176,75,.07);border-color:rgba(232,176,75,.3)}
+.arc-term{margin:14px 0 4px}
+.arc-term .term-body{height:220px;padding:11px 12px;font-size:12.5px}
+.arc-term .term-line{min-width:0}
+.arc-term .term-input{min-width:0;width:100%;font-size:16px}
+.arc-term .term-bar .title{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+@media (max-width:420px){.arc-term .term-body{height:190px;font-size:12px}}
 /* ---------- v1.7.0 · Step A: meters, welcome card, explainer, exits ---------- */
 .arcm{min-width:0}
 .arcm-row{margin-top:14px;min-width:0}
@@ -608,7 +622,7 @@ li.hidden{display:none}
         </svg>
         <div class="wordmark">
           <span class="name">AE<b>GIS</b></span>
-          <span class="sub"><span class="sub-tag">ISC2-Aligned · </span>v1.7.1</span>
+          <span class="sub"><span class="sub-tag">ISC2-Aligned · </span>v1.8.0</span>
         </div>
       </div>
       <div class="top-spacer"></div>
@@ -934,7 +948,7 @@ li.hidden{display:none}
   </div>
 </section>
 
-<div class="foot wrap">AEGIS <b id="footVer" style="color:var(--gold)">v1.1.0</b> · <a href="#" id="footWhatsNew">What's new</a> · ISC2-aligned learning system · progress saves on this device</div>
+<div class="foot wrap">AEGIS <b id="footVer" style="color:var(--gold)">v1.8.0</b> · <a href="#" id="footWhatsNew">What's new</a> · ISC2-aligned learning system · progress saves on this device</div>
 </main>
 
 <div class="lesson-overlay" id="termOverlay">
@@ -1010,8 +1024,14 @@ const KEY='aegis.state.v1';
 /* ============================================================
    VERSION + CHANGELOG (drives the "What's new" screen)
    ============================================================ */
-const APP_VERSION='1.7.1';
+const APP_VERSION='1.8.0';
 const CHANGELOG=[
+ {v:'1.8.0',date:'Nov 2026',items:[
+   '<b>Five new ARC objectives across Domains 2–5, each gated by a Range trainer.</b> Incident response (put the response in order), least privilege (provision the analyst), subnetting (a timed skill gate), phishing (classify twelve messages) and logging &amp; SIEM (investigate in a SOC terminal, then report your findings). Turn on ARC learning mode under Progress and look for <b>ARC ›</b> on those objectives.',
+   '<b>The Range is unchanged and still free to play.</b> The gates borrow the trainers’ scenarios as fixed question sets; the free-play trainers keep their own scoring and their “cleared ✓”.',
+   'The Domain 1 meters still measure Domain 1 only — the new objectives never change those percentages. The Today card, the while-you-wait suggestions and the overdue-review check now include them.',
+   'Subnetting is a <b>skill gate</b>: it clears only when every answer is right, no hint is revealed, and you finish within four minutes. The result screen now says so when you were right but not yet fluent.',
+ ]},
  {v:'1.7.1',date:'Nov 2026',items:[
    '<b>AEGIS now opens on Command when ARC mode is on</b>, so the Today card greets you without a tap. With ARC off it still opens on Domains, and the Today card still shows only once a day.',
    'Two Domain 1 questions reworded for accuracy: a clearer <b>non-repudiation</b> example, and the risk-lifecycle step <i>Implement the chosen treatment and verify it</i>, which now covers transfer, avoid and accept as well as controls. The ethics items were checked against the current ISC2 Code and stay where they were.',
@@ -1391,7 +1411,9 @@ function arcModule(id) { return ARC.modules.find(m => m.id === id); }
 function arcStep(id, event) {
   const m = arcModule(id);
   const before = arcFsm(id);
-  const after = ARC.engine.step(before, event, { profile: m.profile, now: Date.now() });
+  // has_prequestion: a SKILL module that ships a prequestion gets Phase 0 too
+  // (the engine's own row 1-2 rule; CONCEPT always has one, V8).
+  const after = ARC.engine.step(before, event, { profile: m.profile, now: Date.now(), has_prequestion: !!m.content?.prequestion });
   arcCfg().fsm[id] = after;
   save();
   return after;
@@ -1648,7 +1670,10 @@ const DOMAINS=[
    drill:'phish',drillLabel:'Phishing triage'}
 ];
 const LVL_NAME={b:'Beg',i:'Int',a:'Adv'};
-/* Objective key -> ARC module id. Domain 1 only in Phase 1. */
+/* Objective key -> ARC module id. Domain 1 since Phase 1; v1.8.0 (Phase 2) adds
+   five pilot objectives across Domains 2-5, each gated by a Range trainer.
+   The Domain 1 meters read ONLY the d1_* keys (arcDomain1ModuleIds); everything
+   that should see every module uses arcAllModuleIds(). */
 const ARC_OBJECTIVE_MAP={
   d1_0:'isc2.cc.d1.cia-triad',
   d1_1:'isc2.cc.d1.authn-nonrep-privacy',
@@ -1656,6 +1681,11 @@ const ARC_OBJECTIVE_MAP={
   d1_3:'isc2.cc.d1.code-of-ethics',
   d1_4:'isc2.cc.d1.risk-lifecycle',
   d1_5:'isc2.cc.d1.governance',
+  d2_3:'isc2.cc.d2.incident-response',
+  d3_1:'isc2.cc.d3.least-privilege',
+  d4_1:'isc2.cc.d4.subnetting',
+  d5_1:'isc2.cc.d5.security-awareness',
+  d5_2:'isc2.cc.d5.logging-monitoring',
 };
 
 /* ============================================================
@@ -2504,105 +2534,118 @@ Apr 14 07:38:47 sshd: Failed password for admin from 203.0.113.66 port 40518
 Apr 14 07:38:49 sshd: Failed password for test from 203.0.113.66 port 40520
 Apr 14 07:39:55 sshd: Accepted password for analyst from 10.0.0.5 port 51140`}
 };
-let termState;
+/* v1.8.0: the terminal is an INSTANCE bound to a root element, not a set of
+   global ids. The free-play Range trainer owns one (mission checklist, the
+   teaching commentary, completeDrill on clearing); the d5_2 ARC gate hosts its
+   own copy as a workspace (no mission, no commentary that would hand over the
+   findings, and no drills.terminal side effect). Commands are never scored. */
+function createTerminal(o){
+  const T={cwd:'/home/analyst',tasks:{explore:false,grep:false,hash:false},history:[],cleared:false,
+    body:o.body,tasksEl:o.tasks||null,mission:!!o.mission,autofocus:o.autofocus!==false};
+  const inputOf=()=>T.body.querySelector('.term-input:not([disabled])');
+  T.print=(text,cls='')=>{const d=document.createElement('div');d.className='out '+cls;d.textContent=text;T.body.appendChild(d);T.body.scrollTop=T.body.scrollHeight;};
+  // Mission commentary is teaching text for the free-play trainer only.
+  T.note=(text,cls)=>{if(T.mission)T.print(text,cls);};
+  T.renderTasks=()=>{
+    if(!T.tasksEl)return;const t=T.tasks;
+    T.tasksEl.innerHTML=[
+      ['explore','Explore the box: list files (try `ls`, `cat`)'],
+      ['grep','Find the attacker: grep "Failed password" /var/log/auth.log'],
+      ['hash','Verify integrity: run `sha256sum notes.txt`']
+    ].map(([k,txt])=>`<div class="mtask ${t[k]?'done':''}"><span class="chk">${t[k]?'✓':''}</span><span class="mt-txt">${txt}</span></div>`).join('');
+  };
+  T.newPromptLine=(focus)=>{
+    const line=document.createElement('div');line.className='term-line';
+    line.innerHTML=`<span class="term-prompt">analyst@soc:${T.cwd.replace('/home/analyst','~')}$</span>`;
+    const inp=document.createElement('input');inp.className='term-input';inp.autocomplete='off';inp.spellcheck=false;
+    inp.setAttribute('autocapitalize','off');inp.setAttribute('autocorrect','off');inp.setAttribute('aria-label','terminal command');
+    line.appendChild(inp);T.body.appendChild(line);
+    if(focus)inp.focus({preventScroll:!T.mission});
+    inp.addEventListener('keydown',ev=>{
+      if(ev.key==='Enter'){const v=inp.value;inp.disabled=true;T.run(v);}
+    });
+    T.body.scrollTop=T.body.scrollHeight;
+  };
+  T.resolvePath=(arg)=>{
+    if(!arg)return T.cwd;
+    if(arg.startsWith('/'))return arg.replace(/\/$/,'')||'/';
+    if(arg==='~')return'/home/analyst';
+    if(arg==='..'){return T.cwd.split('/').slice(0,-1).join('/')||'/';}
+    return (T.cwd==='/'?'':T.cwd)+'/'+arg;
+  };
+  T.run=(raw)=>{
+    const termPrint=T.print,resolvePath=T.resolvePath;
+    const cmd=raw.trim();T.history.push(cmd);
+    const [c,...args]=cmd.split(/\s+/);
+    switch(c){
+      case'':break;
+      case'help':termPrint('Commands: ls, cat <file>, cd <dir>, pwd, whoami, grep "<text>" <file>, sha256sum <file>, history, clear');break;
+      case'pwd':termPrint(T.cwd);break;
+      case'whoami':termPrint('analyst');break;
+      case'clear':T.body.innerHTML='';break;
+      case'history':termPrint(T.history.map((h,i)=>` ${i+1}  ${h}`).join('\n'));break;
+      case'ls':{
+        const p=resolvePath(args[0]);const node=FS[p];
+        if(node&&node.type==='dir'){termPrint(node.children.join('   '),'term-c-cyan');T.tasks.explore=true;}
+        else if(node)termPrint(args[0]);
+        else termPrint('ls: cannot access \''+(args[0]||'')+'\': No such file or directory','term-c-alert');
+        break;}
+      case'cd':{
+        const p=resolvePath(args[0]||'~');const node=FS[p];
+        if(node&&node.type==='dir')T.cwd=p;
+        else termPrint('cd: '+(args[0]||'')+': No such directory','term-c-alert');
+        break;}
+      case'cat':{
+        let p=resolvePath(args[0]);let node=FS[p];
+        if(!node){p=resolvePath(args[0]);node=FS[(T.cwd==='/home/analyst'?'/home/analyst/':T.cwd+'/')+args[0]];}
+        // try relative within cwd
+        if(!node&&args[0]){const cand=(T.cwd+'/'+args[0]).replace('//','/');node=FS[cand];}
+        if(node&&node.type==='file'){termPrint(node.content);T.tasks.explore=true;}
+        else termPrint('cat: '+(args[0]||'')+': No such file','term-c-alert');
+        break;}
+      case'grep':{
+        const m=cmd.match(/grep\s+"([^"]+)"\s+(\S+)/)||cmd.match(/grep\s+'([^']+)'\s+(\S+)/)||cmd.match(/grep\s+(\S+)\s+(\S+)/);
+        if(!m){termPrint('usage: grep "text" <file>','term-c-muted');break;}
+        const needle=m[1];const fp=resolvePath(m[2]);const node=FS[fp]||FS[(T.cwd+'/'+m[2]).replace('//','/')];
+        if(node&&node.type==='file'){
+          const hits=node.content.split('\n').filter(l=>l.toLowerCase().includes(needle.toLowerCase()));
+          if(hits.length){termPrint(hits.join('\n'),'term-c-gold');
+            if(/fail/i.test(needle)){T.tasks.grep=true;
+              T.note('\n→ Five failed logins from 203.0.113.66 in 8 seconds against root/admin/test — a brute-force attempt. That source IP is your indicator of compromise.','term-c-green');}
+          } else termPrint('(no matches)','term-c-muted');
+        } else termPrint('grep: '+m[2]+': No such file','term-c-alert');
+        break;}
+      case'sha256sum':{
+        let node=FS[resolvePath(args[0])]||FS[(T.cwd+'/'+args[0]).replace('//','/')];
+        if(node&&node.type==='file'){
+          termPrint('9f2c1a7e4b... '+(args[0]||''),'term-c-cyan');
+          T.tasks.hash=true;
+          T.note('→ Hash matches the expected baseline (9f2c1a...). File integrity confirmed — no tampering.','term-c-green');
+        } else termPrint('sha256sum: '+(args[0]||'')+': No such file','term-c-alert');
+        break;}
+      default:termPrint(c+': command not found','term-c-alert');
+    }
+    T.renderTasks();
+    const t=T.tasks;
+    if(T.mission&&t.explore&&t.grep&&t.hash&&!T.cleared){
+      T.cleared=true;
+      termPrint('\n✓ MISSION COMPLETE — you investigated the host, identified a brute-force source, and verified file integrity. That\'s core Domain 5 work.','term-c-green');
+      if(o.onCleared)o.onCleared();
+    }
+    T.newPromptLine(true);
+  };
+  T.body.innerHTML='';
+  (o.banner||[]).forEach(([text,cls])=>T.print(text,cls));
+  T.newPromptLine(T.autofocus);
+  T.renderTasks();
+  T.body.onclick=()=>{const inp=inputOf();if(inp)inp.focus();};
+  return T;
+}
+let termState;   // the free-play instance (kept under its old name)
 function initTerminal(){
-  termState={cwd:'/home/analyst',tasks:{explore:false,grep:false,hash:false},history:[]};
-  const tb=$('#termBody');tb.innerHTML='';
-  termPrint('AEGIS SOC training shell — type "help"','term-c-muted');
-  termPrint('Mission: investigate the failed logins and verify file integrity.\n','term-c-muted');
-  newPromptLine();
-  renderTermTasks();
-  tb.onclick=()=>{const inp=$('.term-input');if(inp)inp.focus();};
-}
-function renderTermTasks(){
-  const t=termState.tasks;
-  $('#termTasks').innerHTML=[
-    ['explore','Explore the box: list files (try `ls`, `cat`)'],
-    ['grep','Find the attacker: grep "Failed password" /var/log/auth.log'],
-    ['hash','Verify integrity: run `sha256sum notes.txt`']
-  ].map(([k,txt])=>`<div class="mtask ${t[k]?'done':''}"><span class="chk">${t[k]?'✓':''}</span><span class="mt-txt">${txt}</span></div>`).join('');
-}
-function termPrint(text,cls=''){
-  const tb=$('#termBody');const d=document.createElement('div');d.className='out '+cls;d.textContent=text;tb.appendChild(d);tb.scrollTop=tb.scrollHeight;
-}
-function newPromptLine(){
-  const tb=$('#termBody');
-  const line=document.createElement('div');line.className='term-line';
-  line.innerHTML=`<span class="term-prompt">analyst@soc:${termState.cwd.replace('/home/analyst','~')}$</span>`;
-  const inp=document.createElement('input');inp.className='term-input';inp.autocomplete='off';inp.spellcheck=false;
-  line.appendChild(inp);tb.appendChild(line);inp.focus();
-  inp.addEventListener('keydown',ev=>{
-    if(ev.key==='Enter'){const v=inp.value;inp.disabled=true;runCmd(v);}
-  });
-  tb.scrollTop=tb.scrollHeight;
-}
-function resolvePath(arg){
-  if(!arg)return termState.cwd;
-  if(arg.startsWith('/'))return arg.replace(/\/$/,'')||'/';
-  if(arg==='~')return'/home/analyst';
-  if(arg==='..'){return termState.cwd.split('/').slice(0,-1).join('/')||'/';}
-  return (termState.cwd==='/'?'':termState.cwd)+'/'+arg;
-}
-function runCmd(raw){
-  const cmd=raw.trim();termState.history.push(cmd);
-  const [c,...args]=cmd.split(/\s+/);
-  const arg=args.join(' ');
-  switch(c){
-    case'':break;
-    case'help':termPrint('Commands: ls, cat <file>, cd <dir>, pwd, whoami, grep "<text>" <file>, sha256sum <file>, history, clear');break;
-    case'pwd':termPrint(termState.cwd);break;
-    case'whoami':termPrint('analyst');break;
-    case'clear':$('#termBody').innerHTML='';break;
-    case'history':termPrint(termState.history.map((h,i)=>` ${i+1}  ${h}`).join('\n'));break;
-    case'ls':{
-      const p=resolvePath(args[0]);const node=FS[p];
-      if(node&&node.type==='dir'){termPrint(node.children.join('   '),'term-c-cyan');termState.tasks.explore=true;}
-      else if(node)termPrint(args[0]);
-      else termPrint('ls: cannot access \''+(args[0]||'')+'\': No such file or directory','term-c-alert');
-      break;}
-    case'cd':{
-      const p=resolvePath(args[0]||'~');const node=FS[p];
-      if(node&&node.type==='dir')termState.cwd=p;
-      else termPrint('cd: '+(args[0]||'')+': No such directory','term-c-alert');
-      break;}
-    case'cat':{
-      let p=resolvePath(args[0]);let node=FS[p];
-      if(!node){p=resolvePath(args[0]);node=FS[(termState.cwd==='/home/analyst'?'/home/analyst/':termState.cwd+'/')+args[0]];}
-      // try relative within cwd
-      if(!node&&args[0]){const cand=(termState.cwd+'/'+args[0]).replace('//','/');node=FS[cand];}
-      if(node&&node.type==='file'){termPrint(node.content);termState.tasks.explore=true;}
-      else termPrint('cat: '+(args[0]||'')+': No such file','term-c-alert');
-      break;}
-    case'grep':{
-      const m=cmd.match(/grep\s+"([^"]+)"\s+(\S+)/)||cmd.match(/grep\s+'([^']+)'\s+(\S+)/)||cmd.match(/grep\s+(\S+)\s+(\S+)/);
-      if(!m){termPrint('usage: grep "text" <file>','term-c-muted');break;}
-      const needle=m[1];const fp=resolvePath(m[2]);const node=FS[fp]||FS[(termState.cwd+'/'+m[2]).replace('//','/')];
-      if(node&&node.type==='file'){
-        const hits=node.content.split('\n').filter(l=>l.toLowerCase().includes(needle.toLowerCase()));
-        if(hits.length){termPrint(hits.join('\n'),'term-c-gold');
-          if(/fail/i.test(needle)){termState.tasks.grep=true;
-            termPrint('\n→ Five failed logins from 203.0.113.66 in 8 seconds against root/admin/test — a brute-force attempt. That source IP is your indicator of compromise.','term-c-green');}
-        } else termPrint('(no matches)','term-c-muted');
-      } else termPrint('grep: '+m[2]+': No such file','term-c-alert');
-      break;}
-    case'sha256sum':{
-      let node=FS[resolvePath(args[0])]||FS[(termState.cwd+'/'+args[0]).replace('//','/')];
-      if(node&&node.type==='file'){
-        termPrint('9f2c1a7e4b... '+(args[0]||''),'term-c-cyan');
-        termState.tasks.hash=true;
-        termPrint('→ Hash matches the expected baseline (9f2c1a...). File integrity confirmed — no tampering.','term-c-green');
-      } else termPrint('sha256sum: '+(args[0]||'')+': No such file','term-c-alert');
-      break;}
-    default:termPrint(c+': command not found','term-c-alert');
-  }
-  renderTermTasks();
-  const t=termState.tasks;
-  if(t.explore&&t.grep&&t.hash&&!termState.cleared){
-    termState.cleared=true;
-    termPrint('\n✓ MISSION COMPLETE — you investigated the host, identified a brute-force source, and verified file integrity. That\'s core Domain 5 work.','term-c-green');
-    completeDrill('terminal');toast('SOC Terminal cleared','Domain 5 drill logged.');
-  }
-  newPromptLine();
+  termState=createTerminal({body:$('#termBody'),tasks:$('#termTasks'),mission:true,
+    banner:[['AEGIS SOC training shell — type "help"','term-c-muted'],['Mission: investigate the failed logins and verify file integrity.\n','term-c-muted']],
+    onCleared:()=>{completeDrill('terminal');toast('SOC Terminal cleared','Domain 5 drill logged.');}});
 }
 
 /* ---------- Quiz ---------- */
@@ -3470,7 +3513,9 @@ function arcGateWidget(spec,onChange){
   }
   if(metric==='correct_slot_ratio'){
     ARC_UI.draft=ARC_UI.draft||vp.accept.map(()=>'');
-    return `<div class="arc-slots">${vp.accept.map((_,i)=>`<label class="arc-slot"><span>Blank ${i+1}</span><input class="arc-in" data-slot="${i}" autocomplete="off"></label>`).join('')}</div>`;
+    // v1.8.0: optional slot_labels name each blank (subnet and SOC findings).
+    const lab=i=>(vp.slot_labels||[])[i]||`Blank ${i+1}`;
+    return `<div class="arc-slots${vp.slot_labels?' labelled':''}">${vp.accept.map((_,i)=>`<label class="arc-slot"><span>${escHtml(lab(i))}</span><input class="arc-in" data-slot="${i}" autocomplete="off" autocapitalize="off" spellcheck="false" value="${escHtml(ARC_UI.draft[i]||'')}"></label>`).join('')}</div>`;
   }
   if(metric==='set_f1'){
     const all=[...vp.correct_set,...(vp.distractors||[])].slice().sort();
@@ -3588,12 +3633,18 @@ function renderArc(){
       arcDraftSite('gate:'+id);
       c.innerHTML=head+`<div class="arc-phase">Phase 2 · Gate${s.gate_attempts?` · attempt ${s.gate_attempts+1}`:''}</div>
         <div class="q-text" style="font-size:16px">${escHtml(gate.prompt)}</div>
+        ${m.profile==='SKILL'?`<div class="arc-note arc-skill" id="arcSkillRule"><b>Skill gate.</b> It clears only with all ${gate.pass_threshold.item_count} right, no hint revealed, and within ${Math.round(gate.expected_duration_s/60)} minutes of starting.</div>`:''}
+        ${gate.workspace==='soc-terminal'?`<div class="terminal arc-term" id="arcTerm"><div class="term-bar"><div class="lights"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></div><span class="title">analyst@aegis-soc: ~ · workspace</span></div><div class="term-body" id="arcTermBody" tabindex="0"></div></div>`:''}
         <div id="arcWidget">${arcGateWidget(gate)}</div>
-        ${(gate.hints||[]).length?`<div class="arc-hints"><button class="btn ghost sm" id="arcHint">Show a hint (costs scheduling quality)</button><div id="arcHintBody"></div></div>`:''}
+        ${(gate.hints||[]).length?`<div class="arc-hints"><button class="btn ghost sm" id="arcHint">${m.profile==='SKILL'?'Show a hint (this attempt then cannot clear a skill gate)':'Show a hint (costs scheduling quality)'}</button><div id="arcHintBody"></div></div>`:''}
         <div class="arc-conf" id="arcConf"><div class="arc-conf-q">Before you see the answer — how confident are you?</div>
           <div class="arc-conf-row">${[1,2,3,4,5].map(v=>`<button class="btn ghost sm" data-conf="${v}">${v} · ${CONF_LABELS[v]}</button>`).join('')}</div></div>
         <div class="arc-foot"><span class="muted mono" style="font-size:11px" id="arcReady"></span><button class="btn" id="arcSubmit" disabled>Submit</button></div>`;
       const w=$('#arcWidget');
+      // The SOC gate's workspace: its own terminal instance — no mission, no
+      // commentary, no drills.terminal. Nothing typed here reaches the score.
+      ARC_UI.term=gate.workspace==='soc-terminal'?createTerminal({body:$('#arcTermBody'),mission:false,autofocus:false,
+        banner:[['Investigation workspace — type "help". Nothing you type here is scored; only your findings below are.','term-c-muted']]}):null;
       const refresh=()=>{
         const done=arcDraftComplete(gate), conf=ARC_UI.confidence!=null;
         $('#arcSubmit').disabled=!(done&&conf);
@@ -3613,11 +3664,21 @@ function renderArc(){
       return;
     }
     const r=ARC_UI.result;
+    // v1.8.0: the heading follows the ENGINE's verdict (step() recomputes
+    // passage, and for SKILL also the fluency guard), never the display copy.
+    const cleared=['PHASE_3_SYNTHESIS','PHASE_4_SPACED_QUEUE'].includes(r.state);
+    const notFluent=r.passed&&!cleared&&m.profile==='SKILL';
+    const last=(arcCfg().log||[]).filter(e=>e.module_id===id&&e.site==='gate').at(-1)||{};
+    const isSet=gate.validation_payload.accuracy_metric==='set_f1';
+    const extra=isSet?Math.max(0,(ARC_UI.draft||[]).length-r.scored.correct_count):0;
+    const need=gate.pass_threshold.min_correct!==undefined?`${gate.pass_threshold.min_correct} of ${gate.pass_threshold.item_count}`
+      :(isSet&&gate.pass_threshold.ratio===1?'exactly the right set, with nothing extra':`${Math.round(gate.pass_threshold.ratio*100)}%`);
     c.innerHTML=head+`<div class="arc-phase">Phase 2 · Result</div>
-      <div class="scn-feedback show ${r.passed?'good':'bad'}">
-        <h4>${r.passed?'✓ Gate cleared':'✗ Not yet'}</h4>
-        ${r.scored.correct_count} of ${r.scored.item_count} correct — this gate needs ${gate.pass_threshold.min_correct!==undefined?`${gate.pass_threshold.min_correct} of ${gate.pass_threshold.item_count}`:`${Math.round(gate.pass_threshold.ratio*100)}%`}.
-        ${r.passed?'':'<div style="margin-top:6px">Nothing is lost — the reading stays open and you can try again. Three misses in a row send you back to re-read.</div>'}
+      <div class="scn-feedback show ${cleared?'good':'bad'}">
+        <h4>${cleared?'✓ Gate cleared':'✗ Not yet'}</h4>
+        ${isSet?`${r.scored.correct_count} of ${r.scored.item_count} needed selected${extra?`, plus ${extra} that should not be there`:''}`:`${r.scored.correct_count} of ${r.scored.item_count} correct`} — this gate needs ${need}.
+        ${notFluent?`<div id="arcNotFluent" style="margin-top:6px">All correct, but a skill gate also has to be fluent: no hint revealed and within ${Math.round(gate.expected_duration_s/60)} minutes. This attempt ${last.hints_used?'used a hint':''}${last.hints_used&&last.latency_ms>gate.expected_duration_s*1000?' and ':''}${last.latency_ms>gate.expected_duration_s*1000?`took ${Math.ceil(last.latency_ms/60000)} minutes`:''}. Run it again — fluency is the point.</div>`:''}
+        ${cleared?'':'<div style="margin-top:6px">Nothing is lost — the reading stays open and you can try again. Three misses in a row send you back to re-read.</div>'}
       </div>
       ${r.cal.alert==='OVERCONFIDENCE'?`<div class="arc-alert over"><b>Illusion of competence detected.</b> You said ${CONF_LABELS[r.cal===null?3:ARC_UI.confidence].toLowerCase()} and the answer did not hold up. That gap is the single most useful signal here — it is exactly what re-reading hides from you.</div>`:''}
       ${r.cal.alert==='UNDERCONFIDENCE'?`<div class="arc-alert under"><b>You knew that better than you thought.</b> Worth noticing: under-confidence makes people re-study things they already have.</div>`:''}
@@ -3728,9 +3789,14 @@ function renderArcSettings(){
    scoring and the gate are untouched. Everything here READS the FSM.
    ============================================================ */
 const ARC_PAST_GATE=['PHASE_3_SYNTHESIS','CONSOLIDATION_PENDING','PHASE_4_SPACED_QUEUE','MASTERED','NEEDS_RECALIBRATION'];
-function arcDomain1ModuleIds(){ return Object.values(ARC_OBJECTIVE_MAP); } // 6 ids, d1 only
+/* v1.8.0: the meters are a Domain 1 panel (locked in Step A, kept for Phase 2).
+   A Domain 2-5 module must never move a Domain 1 percentage, so these read the
+   d1_* keys only. Anything that should see EVERY module uses arcAllModuleIds(). */
+const arcDomain1Keys=()=>Object.keys(ARC_OBJECTIVE_MAP).filter(k=>/^d1_/.test(k));
+function arcDomain1ModuleIds(){ return arcDomain1Keys().map(k=>ARC_OBJECTIVE_MAP[k]); } // 6 ids, d1 only
+function arcAllModuleIds(){ return Object.values(ARC_OBJECTIVE_MAP); }                  // every ARC objective
 function arcReadingPct(){
-  const ids=Object.keys(ARC_OBJECTIVE_MAP); // d1_0..d1_5
+  const ids=arcDomain1Keys(); // d1_0..d1_5
   const done=ids.filter(k=>state.objectives[k]).length;
   return ids.length?Math.round(done/ids.length*100):0;
 }
@@ -3801,7 +3867,7 @@ function renderArcDash(){
    as the first-open explainer. Priority ladder locked in the Step A brief. */
 let ARC_FIRST_EVER_VISIT=false;
 function arcWelcomePick(){
-  const a=arcCfg(), ids=arcDomain1ModuleIds().filter(id=>arcModule(id));
+  const a=arcCfg(), ids=arcAllModuleIds().filter(id=>arcModule(id));
   const title=id=>arcModule(id).content.title;
   // Consolidation only resolves on a clock tick; give it the chance first.
   ids.forEach(id=>{if(a.fsm[id]?.state==='CONSOLIDATION_PENDING')arcTick(id);});
@@ -3842,7 +3908,7 @@ const EXPLAINER_HTML=`<span class="l-eyebrow">How progress works</span><h3>Readi
   <h4>Reading is a bookmark</h4>
   <p><b>Learn ›</b> opens a lesson and ticks the objective once you have read it. That tells you what you have <i>covered</i>. It says nothing about what you can still recall next week, so on its own it earns no completion.</p>
   <h4>A gate is proof</h4>
-  <p>With <b>ARC learning mode</b> on (Progress tab, Domain 1 for now), each objective ends in a <b>gate</b>: a short task you have to get right, with your confidence recorded before you see the answer. Clearing it means you understood it today. There is no "mark complete" button in that path.</p>
+  <p>With <b>ARC learning mode</b> on (Progress tab; all of Domain 1 plus five objectives in Domains 2–5 so far), each objective ends in a <b>gate</b>: a short task you have to get right, with your confidence recorded before you see the answer. Clearing it means you understood it today. There is no "mark complete" button in that path.</p>
   <h4>Why there is a 24-hour wait</h4>
   <p>After a gate, the module consolidates for a day before its first review. Recalling something after a night's sleep is what builds long-term memory. Repeating it the same afternoon mostly measures short-term memory, so nothing you do can shorten the wait. Other objectives, the glossary and the Range stay open meanwhile.</p>
   <h4>Mastery is retention</h4>
@@ -3867,7 +3933,7 @@ function initExplainer(){
 /* ---- consolidation-wait screen: real exits, no new content ---- */
 function arcWaitNextModule(exceptId){
   const a=arcCfg();
-  return arcDomain1ModuleIds().find(id=>{
+  return arcAllModuleIds().find(id=>{
     if(id===exceptId||!arcModule(id))return false;
     const st=a.fsm[id]?.state||'LOCKED';
     if(st==='MASTERED'||st==='CONSOLIDATION_PENDING')return false;

@@ -1,0 +1,99 @@
+{
+  "reviewer": "A",
+  "items": {
+    "isc2.cc.d2.incident-response::gate": {
+      "answer": ["B", "E", "D", "A", "C"],
+      "confidence": 4,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "Before the hints I briefly wondered whether E (scoping the other machines) belongs before B. The phrase 'the isolated workstation' in E settles it, but because the wording decides the order rather than reasoning, B-before-E is slightly a giveaway. I also hesitated over D vs E. The lesson never says outright that eradication destroys the live connection evidence, so a novice has to work out that E comes before D."
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d1.cloze": {
+      "answer": ["Preparation", "Analysis", "Eradication"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d7.classify": {
+      "answer": {
+        "1": "Detection & analysis",
+        "2": "Detection & analysis",
+        "3": "Containment, eradication & recovery",
+        "4": "Post-incident activity",
+        "5": "Preparation",
+        "6": "Containment, eradication & recovery",
+        "7": "Post-incident activity",
+        "8": "Preparation"
+      },
+      "confidence": 4,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "Statement 7 (recording how long detection took) is not covered explicitly. The lesson's post-incident section talks only about 'what worked, what did not', so a novice could see the word 'detection' and pick Detection & analysis. 'To measure improvement' points to Post-incident. Statement 4's 'blameless' is also never taught, but the word 'review' carries it."
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d30.freerecall": {
+      "answer": "The four phases are Preparation, Detection and analysis, Containment, eradication and recovery, and Post-incident activity. You contain first because cutting a compromised machine off the network stops the attack spreading and stops the attacker controlling it while you work. If you tried to clean it while it was still connected, the attacker could re-infect it or move elsewhere. You keep the machine powered on because memory holds running processes and live connections, which are evidence that is lost when the power goes. A playbook is the written plan for one specific kind of incident, such as ransomware, with concrete steps and owners. The final phase, the lessons-learned review, feeds back into preparation so the next response is better.",
+      "confidence": 4,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "The prompt asks why you contain before you eradicate, but the lesson only explains contain-first in terms of stopping spread and eradicate-before-recover. A learner has to infer the contain-before-eradicate reasoning. That is minor."
+    },
+    "isc2.cc.d5.logging-monitoring::gate": {
+      "answer": ["203.0.113.66", "5", "3", "8", "no"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "Before the hints, the trap for a novice is the two 'Accepted' lines (from 10.0.0.5), which could prompt a careless 'yes' on blank 5. Reading the address separates them. On blank 4, someone might count inclusively or misread 07:38:41 to 07:38:49 and answer 10 rather than 8."
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d1.cloze": {
+      "answer": ["correlates", "fatigue", "order"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d7.classify": {
+      "answer": {
+        "1": "Password guessing",
+        "2": "Normal activity",
+        "3": "Password spraying",
+        "4": "Password guessing",
+        "5": "Normal activity",
+        "6": "Password spraying"
+      },
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d30.freerecall": {
+      "answer": "Worth logging: sign-ins that succeed and fail and where they came from, privilege changes such as new admin accounts, configuration changes, access to sensitive data, and alerts from the security tools. A SIEM collects logs from across the organisation, normalises them into one format, correlates events from different sources and raises alerts when a rule matches. Clocks must be synchronised to one time source, or events cannot be put in order. Logs must be sent to a separate protected store so an intruder with admin rights cannot delete them, and kept for a defined retention period. To investigate brute force, establish where the attempts came from, how many there were, which accounts were tried and over what time span, then check whether any attempt from that source succeeded.",
+      "confidence": 4,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    }
+  },
+  "hints": {
+    "isc2.cc.d2.incident-response::hint0": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "LOW",
+      "note": "Gives a test that puts recovery (A) after eradication (D), and both after containment. It does not settle B vs E or E vs D, so it teaches a method rather than the order."
+    },
+    "isc2.cc.d2.incident-response::hint1": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "MED",
+      "note": "This resolved my main hesitation. Live connections exist only while the workstation is powered on and not yet cleaned, so E must follow B and come before D. It narrows the specific B-E-D placement but still needs the lesson's power-on point to apply."
+    },
+    "isc2.cc.d5.logging-monitoring::hint0": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "LOW",
+      "note": "This is a sound method: isolate the 203.0.113.66 lines before counting, so the analyst lines do not inflate the counts."
+    },
+    "isc2.cc.d5.logging-monitoring::hint1": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "MED",
+      "note": "Steers the learner to look for an 'Accepted' line from the same source, which guards against the 10.0.0.5 trap. It points directly at how to answer blank 5 but still requires reading the log."
+    }
+  }
+}

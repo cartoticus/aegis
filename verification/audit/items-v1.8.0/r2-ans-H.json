@@ -1,0 +1,157 @@
+{
+  "reviewer": "H",
+  "items": {
+    "isc2.cc.d2.incident-response::gate": {
+      "answer": ["B","C","E","A","D"],
+      "confidence": 3,
+      "flag": "AMBIGUOUS",
+      "severity": "HIGH",
+      "note": "B and C are both containment and neither depends on the other. With encryption actively spreading across the shared drive, a competent responder can reasonably shut off the share and the reached machines first (C before B), or do both at once. Neither the lesson nor hint1 ('which step the others depend on') settles the order. The defect stands even though I keyed B first: an exact-order gate will fail a defensible C,B,E,A,D. Either accept both, merge B and C, or rewrite C so it clearly depends on B (e.g. 'after isolating the source, trace and disconnect...'). Minor giveaway: B ('cut off... leave it powered on') and A ('offline copies... checked') repeat the lesson's wording, and D is plainly last."
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d1.cloze": {
+      "answer": ["Analysis","Eradication","Preparation"],
+      "confidence": 5,
+      "flag": "GIVEAWAY",
+      "severity": "MED",
+      "note": "Blank 3 is answered by the prompt itself: 'Preparation' is printed as the first phase in the same sentence, and the blank only asks for the first phase's name again. Ask for something else in blank 3, or remove 'Preparation' from the chain."
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d7.classify": {
+      "answer": {"1":"Detection & analysis","2":"Detection & analysis","3":"Containment, eradication & recovery","4":"Post-incident activity","5":"Preparation","6":"Containment, eradication & recovery","7":"Post-incident activity","8":"Preparation"},
+      "confidence": 4,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "Statement 7: detection timestamps are recorded during detection & analysis, but 'to measure improvement' points to post-incident metrics, which matches NIST's lessons-learned section. Statement 1: prioritising and setting severity belongs to detection & analysis in 800-61r2, as keyed."
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d30.freerecall": {
+      "answer": "The four phases are preparation, detection and analysis, containment eradication and recovery, and post-incident activity. You contain first because isolating the compromised system stops the attack spreading and cuts off the attacker's control while you work out how to remove it. If you eradicate or restore before containing, the attacker can reinfect what you clean. You keep the machine powered on because memory holds running processes, network connections and other volatile evidence that is lost at shutdown. A playbook is the written, step-by-step plan for one type of incident, such as ransomware or a compromised mailbox, with named owners for each step. Post-incident lessons learned feed back into preparation, improving the plan for next time.",
+      "confidence": 4,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "The prompt asks 'why you contain before you eradicate', but the lesson's actual reason for that order is thin. It explains contain-first (stop the spread) and eradicate-before-recover, but not directly why containment must come before eradication. Rubric graders should accept 'stop the spread / cut attacker control while you clean'."
+    },
+    "isc2.cc.d3.least-privilege::gate": {
+      "answer": ["A","E","H","I"],
+      "confidence": 5,
+      "flag": "GIVEAWAY",
+      "severity": "MED",
+      "note": "No distractor is plausible. All five wrong options (B, C, D, F, G) are blatant admin or destructive rights, and all four right ones are benign read/note/escalate actions, so a learner can pass by rejecting anything that sounds powerful. B ('Approve & close major incidents alone') also repeats the prompt's 'close out major incidents on their own'. Add near-miss options such as 'Close low-severity false positives', 'Read HR records' or 'Isolate a host via EDR' so the gate tests scoping to the job."
+    },
+    "isc2.cc.d3.least-privilege::isc2.cc.d3.lp.d1.cloze": {
+      "answer": ["privilege","creep","Just"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "Blank 3 ('___-in-time') is close to a free answer at recognition tier. That is acceptable."
+    },
+    "isc2.cc.d3.least-privilege::isc2.cc.d3.lp.d7.classify": {
+      "answer": {"1":"Remove it","2":"Remove it","3":"Needs it","4":"Remove it","5":"Remove it","6":"Needs it","7":"Needs it"},
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    },
+    "isc2.cc.d3.least-privilege::isc2.cc.d3.lp.d30.freerecall": {
+      "answer": "Least privilege means every account, whether a person, service or script, gets only the minimum access its job requires. Need-to-know applies the same idea to information: even a cleared person sees only the records their work needs. Blast radius is how much an attacker can reach after compromising an account, which is exactly what that account could reach, so tight scoping limits the damage. Privilege creep is access building up as people change roles and keep old rights. Regular access reviews that remove what is no longer needed fix it. Deleting audit logs is especially dangerous because it lets someone erase the record of their own actions, which breaks separation of duties and accountability and hides an attacker's tracks.",
+      "confidence": 4,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    },
+    "isc2.cc.d4.subnetting::gate": {
+      "answer": ["172.16.45.128","172.16.45.191","62","255.255.255.192"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": "Checked: /26 gives block 64, and .130 falls in the 128 block, so the network is .128, the broadcast is .191 and there are 2^6-2 = 62 usable hosts."
+    },
+    "isc2.cc.d4.subnetting::isc2.cc.d4.subnet.d1.cloze": {
+      "answer": ["0","128","240"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    },
+    "isc2.cc.d4.subnetting::isc2.cc.d4.subnet.d7.cloze": {
+      "answer": ["192.168.10.192","192.168.10.207","14"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    },
+    "isc2.cc.d4.subnetting::isc2.cc.d4.subnet.d30.freerecall": {
+      "answer": "Subtract the prefix from 32 to get the host bits. In the last octet, the block size is 256 minus the mask value, which is the same as 2 to the power of the host bits. Subnets start at multiples of the block size, so the network address is the multiple at or just below the host's last octet, with all host bits zero. The broadcast address is the next multiple minus one, with all host bits one. Usable hosts are 2 to the host bits minus 2. Those two addresses cannot go to a device: the network address identifies the subnet itself, and the broadcast address delivers to every host on it.",
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "In the lesson, '8 times as many hosts' (/27 to /24) is exact for addresses (256/32) but not for usable hosts (254/30). That is a nit."
+    },
+    "isc2.cc.d5.security-awareness::gate": {
+      "answer": {"1":"Legitimate","2":"Phishing","3":"Phishing","4":"Legitimate","5":"Phishing","6":"Legitimate","7":"Legitimate","8":"Legitimate","9":"Phishing","10":"Legitimate","11":"Phishing","12":"Phishing"},
+      "confidence": 5,
+      "flag": "GIVEAWAY",
+      "severity": "MED",
+      "note": "The request column alone decides every item. Every phishing line asks for a credential, money, secrecy or skipping approval, and every legitimate line asks for something harmless through 'the usual/normal portal'. So the lesson's main skill, reading the domain right-to-left (statements 5, 10, 11), is never actually needed. Add a lookalike sender with a mundane request (e.g. a fake-domain 'meeting notes' with a link) and a real subdomain making a normal request, so the address has to be read. Statement 9 (a real internal address with a bad request) is good and well supported by the lesson."
+    },
+    "isc2.cc.d5.security-awareness::isc2.cc.d5.sa.d1.cloze": {
+      "answer": ["vishing","tailgating","pretexting"],
+      "confidence": 5,
+      "flag": "AMBIGUOUS",
+      "severity": "LOW",
+      "note": "Blank 2: 'piggybacking' is a common synonym, and some sources treat it as the consensual form. The grader should accept it or the prompt should say 'without permission'."
+    },
+    "isc2.cc.d5.security-awareness::isc2.cc.d5.sa.d7.classify": {
+      "answer": {"1":"Follows guidance","2":"Follows guidance","3":"Works against it","4":"Follows guidance","5":"Works against it","6":"Works against it","7":"Follows guidance"},
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "Statement 3: eight characters is still NIST's absolute minimum when the password is used with MFA. The 'Works against it' key rests on it being a dictionary word with predictable substitutions, which NIST blocklists, and that part is sound. Lesson check: SP 800-63B does favour length, prohibit periodic forced changes and require change on evidence of compromise, so it is correct as stated."
+    },
+    "isc2.cc.d5.security-awareness::isc2.cc.d5.sa.d30.freerecall": {
+      "answer": "Three forms are phishing by email, vishing by phone, and pretexting, where an invented story makes a request seem normal. Tailgating and business email compromise are others. They rely on urgency, authority, secrecy and requests that skip normal process. To check a suspicious message, read the real sender address from the right to see which domain controls it, not the display name. Then ask what it wants (a credential, money or a file opened) and whether that request would normally arrive this way. Verify through a channel you already know, such as the directory phone number, and report it. For passwords, use long passphrases, a different password per site in a password manager, and MFA. Change a password only when it may have been exposed, not on a timer.",
+      "confidence": 4,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    },
+    "isc2.cc.d5.logging-monitoring::gate": {
+      "answer": ["203.0.113.66","5","3","8","no"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "Checked: 07:38:41 to 07:38:49 is 8 seconds, the accounts tried are root, admin and test, and both Accepted lines are from 10.0.0.5. Nit: five attempts across three default usernames looks more like default-account probing than the lesson's 'many attempts against one account'. Only findings are scored, so this does not affect the answers."
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d1.cloze": {
+      "answer": ["correlates","fatigue","order"],
+      "confidence": 5,
+      "flag": "AMBIGUOUS",
+      "severity": "LOW",
+      "note": "Blank 3: 'sequence' is equally correct, and blank 1 may come back as 'correlate'. The grader should accept both."
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d7.classify": {
+      "answer": {"1":"Password guessing","2":"Normal activity","3":"Password spraying","4":"Password guessing","5":"Normal activity","6":"Password spraying"},
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "Statement 6 'spaced to avoid lockouts' echoes the lesson's 'stay under lockout limits'. That is a mild wording match, acceptable at application tier."
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d30.freerecall": {
+      "answer": "Log authentication successes and failures with their source, privilege changes such as new accounts or admin group additions, configuration changes, access to sensitive data, and security tool alerts. A SIEM collects these logs from across the organisation, normalises them into one format, correlates events from different sources and raises alerts when patterns match rules. Clocks must be synchronised to one time source or events cannot be put in order. Logs must be protected by sending them to a separate store as they are written, so an intruder cannot delete the evidence, and kept for a set retention period. For suspected brute force, find where the attempts came from, how many there were, which accounts were tried, the time span, and whether any attempt from that source succeeded.",
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": "Lesson ATT&CK IDs verified: T1110 Brute Force, T1110.001 Password Guessing, T1110.003 Password Spraying are correct."
+    }
+  },
+  "hints": {
+    "isc2.cc.d2.incident-response::hint0": {"verdict": "CHANGES_APPROACH", "leak": "LOW", "note": "Teaches the reversibility test that orders eradication before recovery. It does not resolve the B/C ambiguity."},
+    "isc2.cc.d2.incident-response::hint1": {"verdict": "CHANGES_APPROACH", "leak": "LOW", "note": "Phase-sorting is a sound method. But 'which step the others depend on' implies there is a dependency between B and C when there is none, which could leave a learner stuck or arbitrarily wrong."},
+    "isc2.cc.d3.least-privilege::hint0": {"verdict": "CHANGES_APPROACH", "leak": "LOW", "note": "Blast-radius framing, method only."},
+    "isc2.cc.d3.least-privilege::hint1": {"verdict": "RESTATES", "leak": "MED", "note": "'Sign off their own work or erase the record of what they did' restates the lesson's separation-of-duties paragraph and points straight at B (approve/close alone) and C (delete audit logs). Those options are already obvious, so the hint costs quality for little."},
+    "isc2.cc.d4.subnetting::hint0": {"verdict": "CHANGES_APPROACH", "leak": "LOW", "note": "Offers a genuinely different (binary) method, without numbers."},
+    "isc2.cc.d4.subnetting::hint1": {"verdict": "CHANGES_APPROACH", "leak": "LOW", "note": "Host-bits-first route, method only."},
+    "isc2.cc.d5.security-awareness::hint0": {"verdict": "CHANGES_APPROACH", "leak": "LOW", "note": "Method for reading domains. It is close to the lesson's 'read it from the right' but does not single out items."},
+    "isc2.cc.d5.security-awareness::hint1": {"verdict": "CHANGES_APPROACH", "leak": "MED", "note": "Close to the lesson's 'a familiar address is not proof either', and aimed squarely at statement 9 (the internal address skipping approval). 'Without the usual checks' echoes statement 9's 'skipping the usual approval'."},
+    "isc2.cc.d5.logging-monitoring::hint0": {"verdict": "CHANGES_APPROACH", "leak": "LOW", "note": "Filtering first prevents counting the 10.0.0.5 Accepted lines, method only."},
+    "isc2.cc.d5.logging-monitoring::hint1": {"verdict": "CHANGES_APPROACH", "leak": "LOW", "note": "Narrative-first reading, method only. It somewhat contradicts hint0's 'filter first', but both are legitimate."}
+  }
+}

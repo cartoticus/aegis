@@ -1,0 +1,99 @@
+{
+  "reviewer": "B",
+  "items": {
+    "isc2.cc.d2.incident-response::gate": {
+      "answer": ["B", "E", "D", "A", "C"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "Matches my cold answer. Nit: some responders would argue for scoping (E) before isolating patient zero (B) to avoid tipping off the attacker, but with active encryption and possible spread, isolate first is the right call and E's wording (memory of the running workstation) works after B. Separately, real-world practice with ransomware still encrypting may take a memory image then hibernate/power off; the lesson's blanket 'leave it powered on' is the exam convention, fine at CC level."
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d1.cloze": {
+      "answer": ["Preparation", "Analysis", "Eradication"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d7.classify": {
+      "answer": {
+        "1": "Detection & analysis",
+        "2": "Detection & analysis",
+        "3": "Containment, eradication & recovery",
+        "4": "Post-incident activity",
+        "5": "Preparation",
+        "6": "Containment, eradication & recovery",
+        "7": "Post-incident activity",
+        "8": "Preparation"
+      },
+      "confidence": 4,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "Statement 1 (severity/prioritisation) is Detection & analysis in NIST 800-61r2, but the lesson only says 'work out its scope and how serious it is' -- adequate. Statement 7 is timed during the incident but used afterwards; lesson's post-incident text ('measurements such as how long the incident took to detect') supports Post-incident."
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d30.freerecall": {
+      "answer": "The four phases are Preparation; Detection and Analysis; Containment, Eradication and Recovery; and Post-incident activity. You contain first because isolating the affected system stops the incident spreading and cuts the attacker's control, so eradication isn't racing ongoing damage and cleaned systems aren't reinfected. You keep the compromised machine powered on because volatile memory holds running processes, network connections and other evidence that is lost at shutdown. A playbook is a pre-written, step-by-step plan with named owners for one specific type of incident, such as ransomware or a compromised mailbox. The post-incident lessons-learned review feeds back into Preparation, improving plans, playbooks and controls for the next incident.",
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    },
+    "isc2.cc.d5.logging-monitoring::gate": {
+      "answer": ["203.0.113.66", "5", "3", "8", "no"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": "Five failures from 203.0.113.66 (root x2, admin x2, test), 07:38:41 to 07:38:49 = 8 s; both Accepted lines are analyst from internal 10.0.0.5, a good distractor."
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d1.cloze": {
+      "answer": ["correlates", "fatigue", "order"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d7.classify": {
+      "answer": {
+        "1": "Password guessing",
+        "2": "Normal activity",
+        "3": "Password spraying",
+        "4": "Password guessing",
+        "5": "Normal activity",
+        "6": "Password spraying"
+      },
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d30.freerecall": {
+      "answer": "Log authentication successes and failures with their source, privilege changes such as new accounts or admin-group additions, configuration changes like firewall rules or installed software, access to sensitive data, and security tool alerts. A SIEM collects logs from across the organisation, normalises them to one format, correlates events from different sources and raises alerts when patterns match rules. Clocks must be synchronised to one time source or events can't be put in order, and logs must be shipped to a separate protected store so an intruder with admin rights cannot erase them, and kept for a defined retention period. For brute force, establish the source, how many attempts, which accounts, over what time span, and whether any attempt from that source succeeded.",
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    }
+  },
+  "hints": {
+    "isc2.cc.d2.incident-response::hint0": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "LOW",
+      "note": "Gives a test that separates stop-the-attacker steps (B, E) from undoable ones (D, A), which pushes eradicate/recover after containment. Doesn't settle B vs E or D vs A by itself."
+    },
+    "isc2.cc.d2.incident-response::hint1": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "MED",
+      "note": "Points to dependencies: E needs the machine still running, which B preserves, and A needs D done first. That narrows the B/E pair quite specifically, but you still have to reason it through, so it isn't a shortcut."
+    },
+    "isc2.cc.d5.logging-monitoring::hint0": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "LOW",
+      "note": "Teaches a method (filter before counting) that guards against counting the analyst lines. No answers given."
+    },
+    "isc2.cc.d5.logging-monitoring::hint1": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "LOW",
+      "note": "Steers the learner to look for an Accepted line from the same IP, not just any Accepted line, which defuses the analyst distractor. Teaches a method only."
+    }
+  }
+}

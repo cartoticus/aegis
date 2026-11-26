@@ -1,8 +1,8 @@
 {
   "corpus_version": "1.0.0",
   "spec_version": "4.3.0",
-  "domain": "cc.d1",
-  "generated_for": "AEGIS 1.6.0",
+  "domain": "cc",
+  "generated_for": "AEGIS 1.8.0",
   "modules": [
     {
       "file": "d1-00-cia-triad.arc-module.json",
@@ -52,6 +52,51 @@
       "id": "isc2.cc.d1.governance",
       "title": "Governance: Policies, Standards, Procedures & Laws",
       "dag_branch": "cc.d1.principles",
+      "prerequisites": [
+        "isc2.cc.d1.cia-triad"
+      ]
+    },
+    {
+      "file": "d2-03-incident-response.arc-module.json",
+      "id": "isc2.cc.d2.incident-response",
+      "title": "Incident Response: the Lifecycle and the Playbook",
+      "dag_branch": "cc.d2.bcdr",
+      "prerequisites": [
+        "isc2.cc.d1.cia-triad"
+      ]
+    },
+    {
+      "file": "d3-01-least-privilege.arc-module.json",
+      "id": "isc2.cc.d3.least-privilege",
+      "title": "Least Privilege & Need-to-Know",
+      "dag_branch": "cc.d3.access-controls",
+      "prerequisites": [
+        "isc2.cc.d1.cia-triad"
+      ]
+    },
+    {
+      "file": "d4-01-subnetting.arc-module.json",
+      "id": "isc2.cc.d4.subnetting",
+      "title": "IP Addressing & Subnetting",
+      "dag_branch": "cc.d4.network-security",
+      "prerequisites": [
+        "isc2.cc.d1.cia-triad"
+      ]
+    },
+    {
+      "file": "d5-01-security-awareness.arc-module.json",
+      "id": "isc2.cc.d5.security-awareness",
+      "title": "Security Awareness: Social Engineering & Passwords",
+      "dag_branch": "cc.d5.security-ops",
+      "prerequisites": [
+        "isc2.cc.d1.cia-triad"
+      ]
+    },
+    {
+      "file": "d5-02-logging-monitoring.arc-module.json",
+      "id": "isc2.cc.d5.logging-monitoring",
+      "title": "Logging & Monitoring: Reading the Evidence",
+      "dag_branch": "cc.d5.security-ops",
       "prerequisites": [
         "isc2.cc.d1.cia-triad"
       ]

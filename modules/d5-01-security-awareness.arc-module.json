@@ -1,0 +1,177 @@
+{
+  "id": "isc2.cc.d5.security-awareness",
+  "version": "1.0.0",
+  "domain": "ISC2 Certified in Cybersecurity — Domain 5: Security Operations",
+  "dag_branch": "cc.d5.security-ops",
+  "profile": "CONCEPT",
+  "prerequisites": [
+    "isc2.cc.d1.cia-triad"
+  ],
+  "invalidation_policy": "REVIEW",
+  "provenance": {
+    "authored_by": "hybrid",
+    "generator_id": "arc-aegis-phase2/4.3.0",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "sources": [
+      "nist-sp800-50r1",
+      "nist-sp800-63b4",
+      "cisa-guidance"
+    ]
+  },
+  "content": {
+    "title": "Security Awareness: Social Engineering & Passwords",
+    "prequestion": {
+      "prompt": "Before reading: which of these makes a password harder to guess?",
+      "options": [
+        "Swapping letters for symbols, like P@ssw0rd!",
+        "Making it much longer, like four unrelated words",
+        "Changing it every 30 days",
+        "Not sure"
+      ]
+    },
+    "reading_markdown": "## People are an attack surface\n\nMost intrusions involve a person being persuaded to do something: open a file, approve a payment, type a password into the wrong page. Training people to notice and report that is a **primary** control, not a courtesy. A trained workforce becomes a network of sensors — the idea behind the phrase \"human firewall\".\n\n## Social engineering\n\nSocial engineering manipulates people rather than machines. The channel changes; the levers do not.\n\n- **Phishing** — by email. *Spear phishing* targets one person with researched detail; *whaling* targets executives.\n- **Vishing** and **smishing** — by phone call and by text message.\n- **Pretexting** — a made-up story that makes a request seem normal (\"I'm the auditor, I need the supplier list today\").\n- **Tailgating** — following someone through a secure door before it closes.\n- **Business email compromise** — pretending to be an executive or supplier to redirect money.\n\nThe levers are **urgency** (act now), **authority** (the boss says so), **secrecy** (don't tell anyone), and **a request that skips the normal process** — a password by reply, a payment outside the usual approval, a login through a link.\n\n## How to read a suspicious message\n\nLook at three things, in this order. **Who really sent it:** the address, not the display name — a lookalike domain or a personal webmail account claiming to be an executive is a warning. The organisation that controls an address is the domain at its very end, so read it from the right: it.yourcompany.com belongs to yourcompany.com, but yourcompany.com.example-help.net belongs to example-help.net. **What it wants:** a credential, money, or a file opened. **Whether that request would normally arrive this way.** Legitimate services send you to the portal you already use; they do not ask for your password by email. Urgency alone is not proof — real deadlines exist — but urgency combined with an unusual request is the classic pattern. And a familiar address is not proof either: a colleague's or supplier's real account can be taken over, so a request that skips the normal process is suspicious whoever it appears to come from.\n\nWhen in doubt, **verify through a channel you already know** (call the number in the directory, not the one in the email) and **report it**. Fast reporting is what lets the security team pull the same message from everyone else's inbox.\n\n## Passwords\n\nCurrent NIST guidance (SP 800-63B) favours **length** over forced complexity. A long passphrase of unrelated words is far harder to guess than a short word with symbols swapped in, and much easier to remember. Use a **different password for every site** so one breach does not unlock the rest, keep them in a **password manager**, and turn on **multi-factor authentication** wherever it is offered. Forced changes on a timer are no longer recommended; change a password when there is reason to think it has been exposed.\n\n## Worked example\n\nAn accounts clerk gets an email from a known supplier's name saying their bank has changed and the next invoice should go to a new account. The address is one letter off the supplier's real domain. She phones the supplier on the number already on file, who confirms they have changed nothing, and she reports the email. The payment that would have gone to the fraudsters never leaves."
+  },
+  "gate": {
+    "type": "CLASSIFY",
+    "scoring_class": "B",
+    "expected_duration_s": 150,
+    "pass_threshold": {
+      "min_correct": 11,
+      "item_count": 12
+    },
+    "prompt": "Your company's real domain is yourcompany.com, and it books business travel through Northwind Travel (northwindtravel.com). Each line shows a message's sender address, its subject and what it asks you to do. Classify every message as Phishing or Legitimate.",
+    "hints": [
+      "Read the sender address character by character, all the way to the end. Ask which organisation actually controls that address, whatever name it claims.",
+      "A real account can be taken over, so a correct-looking address does not settle it. Judge the request on its own as well: would it normally arrive like this, from this person, without the usual checks?"
+    ],
+    "validation_payload": {
+      "accuracy_metric": "bucket_assignment",
+      "buckets": {
+        "Phishing": [
+          "security@m1crosoft-verify.com · “URGENT: Your account will be deleted in 24 hours” · asks you to click a link and enter your password",
+          "dana.reyes.ceo@gmail.com · “Quick favour — are you at your desk?” · asks you to buy gift cards for a client, send the codes and keep it quiet",
+          "payroll@yourcompany-hr.net · “Update your bank details before Friday's pay run” · asks you to sign in through the attached link with your work login",
+          "docs-share@dropbox-files.co · “Invoice_Q3.pdf has been shared with you” · asks you to enter your Microsoft 365 password to open it",
+          "helpdesk@yourcompany.com.mailbox-support.io · “Your mailbox is full” · asks you to reply with your username and password to get more space",
+          "m.chen@yourcompany.com · “Halvorsen payment — new bank details” · asks you to send today's supplier payment to a new account straight away, skipping the usual approval"
+        ],
+        "Legitimate": [
+          "it-support@yourcompany.com · “Scheduled maintenance this Saturday” · asks for nothing; questions go to the usual ticket portal",
+          "no-reply@calendar.yourcompany.com · “Invitation: Team retro — Thursday 3pm” · asks you to accept or decline in your calendar",
+          "hr@yourcompany.com · “Benefits enrolment closes 30 November” · asks you to make your choices in the HR portal you normally use",
+          "facilities@yourcompany.com · “Fire drill Wednesday at 10am” · asks you to leave by the nearest exit when the alarm sounds",
+          "j.okafor@yourcompany.com · “Notes from today's design review” · asks you to read the summary; the slides are on the team drive",
+          "bookings@northwindtravel.com · “Your itinerary for the Leeds trip” · asks you to check the dates; any changes go through the company travel portal"
+        ]
+      },
+      "normalisation": {
+        "strip_diacritics": false
+      }
+    },
+    "accessible_equivalent": "Keyboard-navigable list pairing each message summary with one of {Phishing, Legitimate}; every message must be classified before submitting; scored identically as bucket_assignment."
+  },
+  "analog_synthesis": {
+    "taxonomy_type": "COMPARATIVE",
+    "prompt": "Away from the screen, find two real messages you have received recently — one genuine request from a service you use, and one spam or scam. On paper, compare them line by line on three things: who really sent it, what it asked for, and whether that request would normally reach you that way. Then write the one check that would have caught the scam even if it had been perfectly written.",
+    "calibration_question": "Before rereading the lesson: did your 'one check' depend on spotting spelling mistakes or a bad logo — or would it still work against a flawless forgery?",
+    "accessible_equivalent": "Have the two messages read aloud by a screen reader and talk the comparison through with a partner, using the three questions as prompts."
+  },
+  "drills": [
+    {
+      "id": "isc2.cc.d5.sa.d1.cloze",
+      "type": "CLOZE",
+      "scoring_class": "B",
+      "interval_tier": "RECOGNITION",
+      "expected_duration_s": 45,
+      "pass_threshold": {
+        "min_correct": 2,
+        "item_count": 3
+      },
+      "prompt": "Complete: Social engineering by phone call is called ______. Following someone through a secure door before it shuts is ______. Inventing a believable story to make a request seem normal is ______.",
+      "validation_payload": {
+        "accuracy_metric": "correct_slot_ratio",
+        "accept": [
+          [
+            "vishing"
+          ],
+          [
+            "tailgating",
+            "piggybacking"
+          ],
+          [
+            "pretexting"
+          ]
+        ],
+        "normalisation": {
+          "strip_diacritics": false
+        }
+      },
+      "accessible_equivalent": "The same blanks as labelled text fields with screen-reader labels; scored identically as correct_slot_ratio.",
+      "explanation": "Vishing is voice phishing; tailgating (also called piggybacking) is a physical attack; pretexting supplies the cover story that makes any of them work."
+    },
+    {
+      "id": "isc2.cc.d5.sa.d7.classify",
+      "type": "CLASSIFY",
+      "scoring_class": "B",
+      "interval_tier": "APPLICATION",
+      "expected_duration_s": 90,
+      "pass_threshold": {
+        "min_correct": 6,
+        "item_count": 7
+      },
+      "prompt": "Sort each password practice: does it follow current guidance, or work against it?",
+      "validation_payload": {
+        "accuracy_metric": "bucket_assignment",
+        "buckets": {
+          "Follows guidance": [
+            "A long passphrase made of four unrelated words",
+            "A different password for every site, kept in a password manager",
+            "Turning on multi-factor authentication for email",
+            "Changing a password after a breach notice names that site"
+          ],
+          "Works against it": [
+            "Reusing one strong password everywhere",
+            "Forcing everyone to change passwords every 30 days",
+            "An eight-character word with letters swapped for symbols"
+          ]
+        },
+        "normalisation": {
+          "strip_diacritics": false
+        }
+      },
+      "accessible_equivalent": "Keyboard-navigable list pairing each item with one of {Follows guidance, Works against it}; scored identically as bucket_assignment.",
+      "explanation": "Length, uniqueness and MFA are what defeat guessing and credential reuse. Timed forced changes push people to predictable patterns, and one password reused everywhere turns one breach into many."
+    },
+    {
+      "id": "isc2.cc.d5.sa.d30.freerecall",
+      "type": "FREE_RECALL",
+      "scoring_class": "C",
+      "interval_tier": "GENERATIVE",
+      "expected_duration_s": 180,
+      "pass_threshold": {
+        "min_correct": 6,
+        "item_count": 8
+      },
+      "prompt": "Without notes: name three forms of social engineering and the psychological levers they rely on, describe how you would check a suspicious message, and give the current guidance on passwords.",
+      "validation_payload": {
+        "accuracy_metric": "keyword_density",
+        "required_keywords": [
+          "phishing",
+          "pretexting",
+          "urgency",
+          "authority",
+          "sender",
+          "verify",
+          "report",
+          "passphrase"
+        ],
+        "normalisation": {
+          "strip_diacritics": false
+        }
+      },
+      "accessible_equivalent": "Spoken response transcribed via speech-to-text and scored on the same keyword set.",
+      "explanation": "Naming the levers, the three checks and the verify-and-report habit — plus length over complexity — is what lets a trained person stop an attack no filter caught."
+    }
+  ]
+}

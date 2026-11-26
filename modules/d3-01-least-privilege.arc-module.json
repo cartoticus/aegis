@@ -1,0 +1,169 @@
+{
+  "id": "isc2.cc.d3.least-privilege",
+  "version": "1.0.0",
+  "domain": "ISC2 Certified in Cybersecurity — Domain 3: Access Controls Concepts",
+  "dag_branch": "cc.d3.access-controls",
+  "profile": "CONCEPT",
+  "prerequisites": [
+    "isc2.cc.d1.cia-triad"
+  ],
+  "invalidation_policy": "REVIEW",
+  "provenance": {
+    "authored_by": "hybrid",
+    "generator_id": "arc-aegis-phase2/4.3.0",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "sources": [
+      "nist-sp800-53r5",
+      "cis-controls-v8"
+    ]
+  },
+  "content": {
+    "title": "Least Privilege & Need-to-Know",
+    "prequestion": {
+      "prompt": "Before reading: a new IT starter will 'probably need admin eventually'. What is the safest way to set up their account?",
+      "options": [
+        "Give admin now to avoid a ticket later",
+        "Give only what today's tasks need, and add rights when a task needs them",
+        "Copy the permissions of the person they replaced",
+        "Not sure"
+      ]
+    },
+    "reading_markdown": "## The rule\n\n**Least privilege**: every account — a person, a service, a script — gets the minimum access its job needs, and nothing more. **Need-to-know** is the same idea applied to information: even someone cleared for a kind of data only sees the records their work actually requires.\n\n## Why it matters: blast radius\n\nAccounts get compromised. A password is phished, a laptop is stolen, an insider turns. When that happens, the attacker can reach exactly what that account could reach. A tightly scoped account turns a breach into an annoyance; an over-provisioned one turns it into a headline. Least privilege is the control that is already working on the day everything else has failed.\n\n## How access goes wrong\n\n- **Convenience grants.** \"Just give them admin so they stop asking.\" Every one is a door left open for whoever steals the account.\n- **Privilege creep.** Someone moves from payroll to marketing and keeps their payroll access. Repeat over five years and a mid-level account can reach half the company. Regular access reviews strip what is no longer needed.\n- **Copying a colleague.** Cloning the predecessor's permissions inherits all of their creep too.\n\n## Two techniques\n\n- **Just-in-time access** — elevated rights are granted for a task and expire afterwards, so nobody holds admin rights while reading email.\n- **Separate admin accounts** — administrators use an ordinary account day to day and a separate privileged one only for admin work.\n\n## Destructive and self-approving rights\n\nSome permissions are dangerous out of proportion to how often they are used: deleting audit logs, changing production firewall rules, managing every user account. A right that lets someone approve their own work, or erase the record of what they did, also breaks **separation of duties**. Those should sit with a small number of people, and never with someone whose job does not require them.\n\n## Worked example\n\nA hospital porter needs to see which ward a patient is on so they can move them. They do not need diagnoses, medication or billing. The porter role gets *location only*. If that login is phished, the attacker learns where patients are — not why they are there."
+  },
+  "gate": {
+    "type": "CONSTRUCT_SET",
+    "scoring_class": "B",
+    "expected_duration_s": 75,
+    "pass_threshold": {
+      "ratio": 1.0
+    },
+    "prompt": "Provision a new Junior SOC Analyst (Tier 1). Tier 1 monitors alerts, triages and documents them, and escalates. They do not administer systems or close out major incidents on their own. Select exactly the permissions this job needs — no more, no fewer.",
+    "hints": [
+      "Read each permission as if the account had already been stolen. Ask what the thief could do with it, then whether the job described actually needs that ability.",
+      "Some rights would let a person sign off their own work or erase the record of what they did. For each option, ask whether someone checking this analyst afterwards could still trust what they see if the analyst held it."
+    ],
+    "validation_payload": {
+      "accuracy_metric": "set_f1",
+      "correct_set": [
+        "Read SIEM dashboards & alerts",
+        "Add notes / triage tickets",
+        "Escalate to Tier-2",
+        "Read knowledge base / playbooks"
+      ],
+      "distractors": [
+        "Domain Administrator",
+        "Delete audit logs",
+        "Approve & close major incidents alone",
+        "Modify firewall rules in production",
+        "Manage all user accounts"
+      ],
+      "normalisation": {
+        "strip_diacritics": false
+      }
+    },
+    "accessible_equivalent": "Multi-select list of the nine permissions with screen-reader labels; scored identically as set_f1, where every extra permission granted lowers the score as much as a missing one."
+  },
+  "analog_synthesis": {
+    "taxonomy_type": "REDUCTIVE",
+    "prompt": "Away from the screen, pick a role you know well — your own job, or one in a shop, school or clinic. List every system and kind of data that role could touch today. Then cross out everything the role does not need for its actual tasks, and next to each crossed-out item write what a thief holding that login could have done with it.",
+    "calibration_question": "Before checking: how many items did you cross out — and for each one you kept, can you name the specific task that needs it, or did you keep it 'just in case'?",
+    "accessible_equivalent": "Dictate the same list and the reasons for each removal, or talk it through with a partner who reads out each access item."
+  },
+  "drills": [
+    {
+      "id": "isc2.cc.d3.lp.d1.cloze",
+      "type": "CLOZE",
+      "scoring_class": "B",
+      "interval_tier": "RECOGNITION",
+      "expected_duration_s": 45,
+      "pass_threshold": {
+        "min_correct": 2,
+        "item_count": 3
+      },
+      "prompt": "Complete: Giving an account only the access its job requires is least ______. Permissions that pile up as someone changes roles are called privilege ______. Granting elevated rights only for the duration of a task is ______-in-time access.",
+      "validation_payload": {
+        "accuracy_metric": "correct_slot_ratio",
+        "accept": [
+          [
+            "privilege"
+          ],
+          [
+            "creep"
+          ],
+          [
+            "just"
+          ]
+        ],
+        "normalisation": {
+          "strip_diacritics": false
+        }
+      },
+      "accessible_equivalent": "The same blanks as labelled text fields with screen-reader labels; scored identically as correct_slot_ratio.",
+      "explanation": "Least privilege limits what a stolen account can reach; privilege creep is what regular access reviews remove; just-in-time access stops elevated rights lingering."
+    },
+    {
+      "id": "isc2.cc.d3.lp.d7.classify",
+      "type": "CLASSIFY",
+      "scoring_class": "B",
+      "interval_tier": "APPLICATION",
+      "expected_duration_s": 90,
+      "pass_threshold": {
+        "min_correct": 6,
+        "item_count": 7
+      },
+      "prompt": "A payroll clerk applies salary changes that a manager has already approved, and runs the monthly payroll report. For each access, decide whether the clerk needs it or it should be removed.",
+      "validation_payload": {
+        "accuracy_metric": "bucket_assignment",
+        "buckets": {
+          "Needs it": [
+            "Edit salary records for approved changes",
+            "View the queue of approved change requests",
+            "Run the monthly payroll report"
+          ],
+          "Remove it": [
+            "Approve salary changes",
+            "Edit the payroll system's audit log",
+            "Create new user accounts in the HR system",
+            "Read the CEO's private email"
+          ]
+        },
+        "normalisation": {
+          "strip_diacritics": false
+        }
+      },
+      "accessible_equivalent": "Keyboard-navigable list pairing each item with one of {Needs it, Remove it}; scored identically as bucket_assignment.",
+      "explanation": "The clerk applies approved changes and reports on them. Approving changes would let them sign off their own edits, editing the audit log would let them hide them, and the last two are simply outside the job."
+    },
+    {
+      "id": "isc2.cc.d3.lp.d30.freerecall",
+      "type": "FREE_RECALL",
+      "scoring_class": "C",
+      "interval_tier": "GENERATIVE",
+      "expected_duration_s": 180,
+      "pass_threshold": {
+        "min_correct": 6,
+        "item_count": 8
+      },
+      "prompt": "Without notes: define least privilege and need-to-know, explain what 'blast radius' means for a compromised account, describe privilege creep and how it is fixed, and explain why the right to delete audit logs is especially dangerous.",
+      "validation_payload": {
+        "accuracy_metric": "keyword_density",
+        "required_keywords": [
+          "minimum",
+          "need",
+          "account",
+          "access",
+          "creep",
+          "review",
+          "audit",
+          "separation"
+        ],
+        "normalisation": {
+          "strip_diacritics": false
+        }
+      },
+      "accessible_equivalent": "Spoken response transcribed via speech-to-text and scored on the same keyword set.",
+      "explanation": "Explaining least privilege in terms of what a stolen account can reach — and why creep needs regular reviews — is what makes it a design habit rather than a definition."
+    }
+  ]
+}

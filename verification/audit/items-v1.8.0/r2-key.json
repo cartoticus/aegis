@@ -1,0 +1,285 @@
+{
+  "items": {
+    "isc2.cc.d2.incident-response::gate": {
+      "kind": "ORDER",
+      "answer": [
+        "B",
+        "C",
+        "E",
+        "A",
+        "D"
+      ]
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d1.cloze": {
+      "kind": "CLOZE",
+      "accept": [
+        [
+          "analysis"
+        ],
+        [
+          "eradication"
+        ],
+        [
+          "preparation"
+        ]
+      ]
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d7.classify": {
+      "kind": "CLASSIFY",
+      "answer": {
+        "1": "Detection & analysis",
+        "2": "Detection & analysis",
+        "3": "Containment, eradication & recovery",
+        "4": "Post-incident activity",
+        "5": "Preparation",
+        "6": "Containment, eradication & recovery",
+        "7": "Post-incident activity",
+        "8": "Preparation"
+      }
+    },
+    "isc2.cc.d3.least-privilege::gate": {
+      "kind": "SELECT",
+      "answer": [
+        "A",
+        "E",
+        "H",
+        "I"
+      ]
+    },
+    "isc2.cc.d3.least-privilege::isc2.cc.d3.lp.d1.cloze": {
+      "kind": "CLOZE",
+      "accept": [
+        [
+          "privilege"
+        ],
+        [
+          "creep"
+        ],
+        [
+          "just"
+        ]
+      ]
+    },
+    "isc2.cc.d3.least-privilege::isc2.cc.d3.lp.d7.classify": {
+      "kind": "CLASSIFY",
+      "answer": {
+        "1": "Remove it",
+        "2": "Remove it",
+        "3": "Needs it",
+        "4": "Remove it",
+        "5": "Remove it",
+        "6": "Needs it",
+        "7": "Needs it"
+      }
+    },
+    "isc2.cc.d4.subnetting::gate": {
+      "kind": "CLOZE",
+      "accept": [
+        [
+          "172.16.45.128"
+        ],
+        [
+          "172.16.45.191"
+        ],
+        [
+          "62"
+        ],
+        [
+          "255.255.255.192"
+        ]
+      ]
+    },
+    "isc2.cc.d4.subnetting::isc2.cc.d4.subnet.d1.cloze": {
+      "kind": "CLOZE",
+      "accept": [
+        [
+          "0"
+        ],
+        [
+          "128"
+        ],
+        [
+          "240"
+        ]
+      ]
+    },
+    "isc2.cc.d4.subnetting::isc2.cc.d4.subnet.d7.cloze": {
+      "kind": "CLOZE",
+      "accept": [
+        [
+          "192.168.10.192"
+        ],
+        [
+          "192.168.10.207"
+        ],
+        [
+          "14"
+        ]
+      ]
+    },
+    "isc2.cc.d5.security-awareness::gate": {
+      "kind": "CLASSIFY",
+      "answer": {
+        "1": "Legitimate",
+        "2": "Phishing",
+        "3": "Phishing",
+        "4": "Legitimate",
+        "5": "Phishing",
+        "6": "Legitimate",
+        "7": "Legitimate",
+        "8": "Legitimate",
+        "9": "Phishing",
+        "10": "Legitimate",
+        "11": "Phishing",
+        "12": "Phishing"
+      }
+    },
+    "isc2.cc.d5.security-awareness::isc2.cc.d5.sa.d1.cloze": {
+      "kind": "CLOZE",
+      "accept": [
+        [
+          "vishing"
+        ],
+        [
+          "tailgating",
+          "piggybacking"
+        ],
+        [
+          "pretexting"
+        ]
+      ]
+    },
+    "isc2.cc.d5.security-awareness::isc2.cc.d5.sa.d7.classify": {
+      "kind": "CLASSIFY",
+      "answer": {
+        "1": "Follows guidance",
+        "2": "Follows guidance",
+        "3": "Works against it",
+        "4": "Follows guidance",
+        "5": "Works against it",
+        "6": "Works against it",
+        "7": "Follows guidance"
+      }
+    },
+    "isc2.cc.d5.logging-monitoring::gate": {
+      "kind": "CLOZE",
+      "accept": [
+        [
+          "203.0.113.66"
+        ],
+        [
+          "5",
+          "five"
+        ],
+        [
+          "3",
+          "three"
+        ],
+        [
+          "8",
+          "eight",
+          "8s",
+          "8 s",
+          "8 seconds",
+          "8 sec"
+        ],
+        [
+          "no"
+        ]
+      ]
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d1.cloze": {
+      "kind": "CLOZE",
+      "accept": [
+        [
+          "correlates"
+        ],
+        [
+          "fatigue"
+        ],
+        [
+          "order",
+          "sequence"
+        ]
+      ]
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d7.classify": {
+      "kind": "CLASSIFY",
+      "answer": {
+        "1": "Password guessing",
+        "2": "Normal activity",
+        "3": "Password spraying",
+        "4": "Password guessing",
+        "5": "Normal activity",
+        "6": "Password spraying"
+      }
+    }
+  },
+  "recall": {
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d30.freerecall": {
+      "required_keywords": [
+        "preparation",
+        "detection",
+        "analysis",
+        "containment",
+        "eradication",
+        "recovery",
+        "evidence",
+        "playbook"
+      ],
+      "min_correct": 6
+    },
+    "isc2.cc.d3.least-privilege::isc2.cc.d3.lp.d30.freerecall": {
+      "required_keywords": [
+        "minimum",
+        "need",
+        "account",
+        "access",
+        "creep",
+        "review",
+        "audit",
+        "separation"
+      ],
+      "min_correct": 6
+    },
+    "isc2.cc.d4.subnetting::isc2.cc.d4.subnet.d30.freerecall": {
+      "required_keywords": [
+        "prefix",
+        "mask",
+        "block",
+        "network",
+        "broadcast",
+        "host",
+        "usable",
+        "multiple"
+      ],
+      "min_correct": 6
+    },
+    "isc2.cc.d5.security-awareness::isc2.cc.d5.sa.d30.freerecall": {
+      "required_keywords": [
+        "phishing",
+        "pretexting",
+        "urgency",
+        "authority",
+        "sender",
+        "verify",
+        "report",
+        "passphrase"
+      ],
+      "min_correct": 6
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d30.freerecall": {
+      "required_keywords": [
+        "siem",
+        "privilege",
+        "configuration",
+        "collects",
+        "source",
+        "evidence",
+        "rule",
+        "clocks"
+      ],
+      "min_correct": 6
+    }
+  }
+}

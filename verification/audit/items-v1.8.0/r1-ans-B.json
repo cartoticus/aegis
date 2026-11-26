@@ -1,0 +1,106 @@
+{
+  "reviewer": "B",
+  "items": {
+    "isc2.cc.d2.incident-response::gate": {
+      "answer": ["B","E","D","A","C"],
+      "confidence": 4,
+      "flag": "AMBIGUOUS",
+      "severity": "LOW",
+      "note": "B and E are both containment. With encryption actively spreading on the share, a responder could defensibly cut off the share (E) at the same moment as, or before, isolating the workstation (B). Isolating patient zero first is the textbook order, but E-before-B is not wrong in practice."
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d1.cloze": {
+      "answer": ["Analysis","Eradication","Preparation"],
+      "confidence": 5, "flag": "CLEAN", "severity": "NONE", "note": ""
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d7.classify": {
+      "answer": {"1":"Detection & analysis","2":"Detection & analysis","3":"Containment, eradication & recovery","4":"Post-incident activity","5":"Preparation","6":"Containment, eradication & recovery","7":"Post-incident activity","8":"Preparation"},
+      "confidence": 5, "flag": "CLEAN", "severity": "NONE", "note": ""
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d30.freerecall": {
+      "answer": "The four phases are preparation, detection and analysis, containment/eradication/recovery, and post-incident activity. You contain first because isolating the system stops the attack spreading and cuts the attacker's control, which buys time to work out what to remove. If you started cleaning while the attacker still had access, they could just come back in. You leave the machine powered on because memory holds running processes, network connections and possibly keys, and that evidence is lost at shutdown. A playbook is a written step-by-step procedure, with named owners, for one specific kind of incident such as ransomware or a compromised mailbox. The lessons learned in the post-incident phase feed back into preparation, so the plan and playbooks get better.",
+      "confidence": 5, "flag": "CLEAN", "severity": "NONE", "note": ""
+    },
+    "isc2.cc.d3.least-privilege::gate": {
+      "answer": ["A","E","H","I"],
+      "confidence": 5, "flag": "CLEAN", "severity": "NONE", "note": ""
+    },
+    "isc2.cc.d3.least-privilege::isc2.cc.d3.lp.d1.cloze": {
+      "answer": ["privilege","creep","just"],
+      "confidence": 5, "flag": "CLEAN", "severity": "NONE", "note": ""
+    },
+    "isc2.cc.d3.least-privilege::isc2.cc.d3.lp.d7.classify": {
+      "answer": {"1":"Remove it","2":"Remove it","3":"Needs it","4":"Remove it","5":"Remove it","6":"Needs it","7":"Needs it"},
+      "confidence": 4,
+      "flag": "AMBIGUOUS",
+      "severity": "LOW",
+      "note": "Statement 6 (run the monthly payroll report): the prompt defines the job only as processing approved salary changes, so 'Remove it' is defensible. A real payroll clerk usually runs that report, which is why I put 'Needs it'. Adding 'and runs payroll reporting' to the job description would settle it."
+    },
+    "isc2.cc.d3.least-privilege::isc2.cc.d3.lp.d30.freerecall": {
+      "answer": "Least privilege means every account, whether a person, a service or a script, gets only the minimum access its job needs. Need-to-know applies the same idea to information: even someone who is cleared only sees the records their work requires. Blast radius is how much damage an attacker can do with a compromised account, which is everything that account can reach, so tight scoping limits the harm. Privilege creep is access building up as people change roles and keep their old rights. Regular access reviews that remove what is no longer needed fix it. Deleting audit logs is especially dangerous because it lets someone, or an attacker using their account, erase the evidence of what they did, which defeats detection and accountability.",
+      "confidence": 5, "flag": "CLEAN", "severity": "NONE", "note": ""
+    },
+    "isc2.cc.d4.subnetting::gate": {
+      "answer": ["172.16.45.128","172.16.45.191","62","255.255.255.192"],
+      "confidence": 5, "flag": "CLEAN", "severity": "NONE", "note": "/26: block 64, blocks start at 0/64/128/192, so .130 is in the 128 block. Broadcast 191, 2^6-2 = 62."
+    },
+    "isc2.cc.d4.subnetting::isc2.cc.d4.subnet.d1.cloze": {
+      "answer": ["0","128","240"],
+      "confidence": 5, "flag": "CLEAN", "severity": "NONE", "note": ""
+    },
+    "isc2.cc.d4.subnetting::isc2.cc.d4.subnet.d7.cloze": {
+      "answer": ["192.168.10.192","192.168.10.207","14"],
+      "confidence": 5, "flag": "CLEAN", "severity": "NONE", "note": "/28: block 16, 200 falls in the 192 block, broadcast 207, 2^4-2 = 14."
+    },
+    "isc2.cc.d4.subnetting::isc2.cc.d4.subnet.d30.freerecall": {
+      "answer": "Subtract the prefix from 32 to get the host bits, and work only in the last octet. The mask value there is 128, 192, 224, 240, 248 or 252, and the block size is 256 minus that value. Subnets start at multiples of the block size. The network address is the multiple at or just below the given address, so all its host bits are zero. The broadcast address is the next multiple minus one, so all its host bits are one. Usable hosts are 2 to the power of the host bits, minus 2. Those two are subtracted because the network address identifies the subnet itself and the broadcast address reaches every host on it, so neither can be given to a single device.",
+      "confidence": 5, "flag": "CLEAN", "severity": "NONE", "note": ""
+    },
+    "isc2.cc.d5.security-awareness::gate": {
+      "answer": {"1":"Phishing","2":"Phishing","3":"Legitimate","4":"Phishing","5":"Legitimate","6":"Legitimate","7":"Legitimate","8":"Legitimate","9":"Phishing","10":"Phishing"},
+      "confidence": 5,
+      "flag": "GIVEAWAY",
+      "severity": "MED",
+      "note": "The sender domain alone separates the buckets perfectly: every yourcompany.com sender (including the calendar. subdomain) is legitimate, and every other sender is phishing. No item needs the 'does this request normally arrive this way' check, so that half of the lesson and hint1 are never tested. Consider adding a genuine-domain message with an out-of-process request (for example a compromised internal account asking for a password), or an outside-domain message that is legitimate (a known SaaS vendor's notice)."
+    },
+    "isc2.cc.d5.security-awareness::isc2.cc.d5.sa.d1.cloze": {
+      "answer": ["vishing","tailgating","pretexting"],
+      "confidence": 5, "flag": "CLEAN", "severity": "LOW", "note": "Some sources would accept 'piggybacking' for blank 2. That is worth adding as an alternate if the scorer matches strings exactly."
+    },
+    "isc2.cc.d5.security-awareness::isc2.cc.d5.sa.d7.classify": {
+      "answer": {"1":"Follows guidance","2":"Follows guidance","3":"Works against it","4":"Follows guidance","5":"Works against it","6":"Works against it","7":"Follows guidance"},
+      "confidence": 5, "flag": "CLEAN", "severity": "NONE", "note": ""
+    },
+    "isc2.cc.d5.security-awareness::isc2.cc.d5.sa.d30.freerecall": {
+      "answer": "Three forms are phishing by email, vishing by phone and pretexting, which is a made-up story that makes a request seem routine. Tailgating and business email compromise are others. They rely on urgency, authority, secrecy and requests that skip the normal process. To check a suspicious message, look at the real sender address rather than the display name, watching for lookalike domains. Then work out what it wants (credentials, money or a file opened) and whether that request would normally arrive this way. If unsure, verify through a channel you already know, such as the directory phone number, and report it. On passwords: use long passphrases rather than forced complexity, a unique password for every site kept in a password manager, and MFA. Change a password when it is exposed, not on a timer.",
+      "confidence": 5, "flag": "CLEAN", "severity": "NONE", "note": ""
+    },
+    "isc2.cc.d5.logging-monitoring::gate": {
+      "answer": ["203.0.113.66","5","3","8"],
+      "confidence": 5, "flag": "CLEAN", "severity": "LOW", "note": "07:38:41 to 07:38:49 is 8 s. Nit: 5 attempts across root/admin/test is closer to username enumeration or a small dictionary run than the 'many attempts against one account' guessing shape the lesson describes, but it is not scored as either, so there is no defect."
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d1.cloze": {
+      "answer": ["correlates","fatigue","order"],
+      "confidence": 5, "flag": "CLEAN", "severity": "NONE", "note": ""
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d7.classify": {
+      "answer": {"1":"Password guessing","2":"Normal activity","3":"Password spraying","4":"Password guessing","5":"Normal activity","6":"Password spraying"},
+      "confidence": 5, "flag": "CLEAN", "severity": "NONE", "note": ""
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d30.freerecall": {
+      "answer": "Log successful and failed sign-ins with their source, privilege changes such as new accounts or admin group additions, configuration changes, access to sensitive data, and alerts from security tools. A SIEM collects logs from across the organisation, normalises them into one format, correlates events from different sources and raises alerts when a rule matches. Clocks must be synchronised to one time source, or events from different systems cannot be put in order. Logs must be shipped to a separate protected store as they are written, so an intruder with admin rights cannot delete the evidence. For a suspected brute-force attack, establish the source, the number of attempts, which accounts were tried and over what time span, then check whether any attempt from that source succeeded.",
+      "confidence": 5, "flag": "CLEAN", "severity": "NONE", "note": ""
+    }
+  },
+  "hints": {
+    "isc2.cc.d2.incident-response::hint0": {"verdict": "CHANGES_APPROACH", "leak": "LOW", "note": "Gives a test (could the attacker undo it?) that orders containment, then eradication, then recovery without naming any step. It does not separate B from E, which is fine because both are containment."},
+    "isc2.cc.d2.incident-response::hint1": {"verdict": "CHANGES_APPROACH", "leak": "MED", "note": "'Without destroying what you will later need' points straight at 'leave it powered on' in B, so it effectively picks the first step. Acceptable, but it narrows that slot."},
+    "isc2.cc.d3.least-privilege::hint0": {"verdict": "CHANGES_APPROACH", "leak": "LOW", "note": "The stolen-account lens plus the job-need check is a method. It does not single out options."},
+    "isc2.cc.d3.least-privilege::hint1": {"verdict": "CHANGES_APPROACH", "leak": "LOW", "note": "Listing the job's verbs (monitor, triage, document, escalate) and mapping them to options is a sound method. Because the prompt's verbs map almost one-to-one onto A/E/I, it borders on MED."},
+    "isc2.cc.d4.subnetting::hint0": {"verdict": "CHANGES_APPROACH", "leak": "LOW", "note": "Tells the learner to focus on the last octet and find the block size, which is the method. 'Ignore the first three octets' is slightly loose, since the answer still has to include them, but it will not mislead."},
+    "isc2.cc.d4.subnetting::hint1": {"verdict": "CHANGES_APPROACH", "leak": "LOW", "note": "Gives a self-check that the broadcast minus the network equals the block size minus one. It catches the wrong-block error without supplying numbers."},
+    "isc2.cc.d5.security-awareness::hint0": {"verdict": "CHANGES_APPROACH", "leak": "MED", "note": "Because the gate splits perfectly on sender domain, this hint alone solves all 10 statements. The hint is fine; the item design makes it a near-complete key."},
+    "isc2.cc.d5.security-awareness::hint1": {"verdict": "CHANGES_APPROACH", "leak": "LOW", "note": "A good method, but no gate statement actually needs it (see the gate note)."},
+    "isc2.cc.d5.logging-monitoring::hint0": {"verdict": "CHANGES_APPROACH", "leak": "LOW", "note": "Filtering out the internal analyst logins is the key move to avoid miscounting."},
+    "isc2.cc.d5.logging-monitoring::hint1": {"verdict": "RESTATES", "leak": "MED", "note": "Says outright that the span is the last failure's timestamp minus the first, which is what the blank's label already asks. It gives little method and simply narrows blank 4."}
+  }
+}

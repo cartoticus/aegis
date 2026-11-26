@@ -1,0 +1,83 @@
+{
+  "reviewer": "B",
+  "items": {
+    "isc2.cc.d2.incident-response::gate": {
+      "answer": ["B","E","D","A","C"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "Matches how I'd run it: isolate patient zero, scope and contain the spread, eradicate everywhere, restore from clean offline backups, then lessons learned. Nit: E's phrase 'the isolated workstation' signals B comes first, but this is a dependency a responder must recognise anyway, so it isn't a real giveaway."
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d1.cloze": {
+      "answer": ["Preparation","Analysis","Eradication"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d7.classify": {
+      "answer": {"1":"Detection & analysis","2":"Detection & analysis","3":"Containment, eradication & recovery","4":"Post-incident activity","5":"Preparation","6":"Containment, eradication & recovery","7":"Post-incident activity","8":"Preparation"},
+      "confidence": 4,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "Nit: #7 (record detection time) could tempt someone towards Detection & analysis, because timestamps get captured during triage. 'To measure improvement' points it to post-incident metrics, which matches NIST. #1 (severity/prioritisation) sits in D&A both in NIST and in the lesson ('how serious it is')."
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d30.freerecall": {
+      "answer": "The four phases are Preparation; Detection and Analysis; Containment, Eradication and Recovery; and Post-incident Activity. You contain first because eradication takes time. While you work, an attacker who still has access can spread to other hosts or destroy data. Isolation stops that and cuts off their control. You keep the machine powered on because memory holds the running processes, network connections and keys that show what happened and where else the attacker went, and that is lost at shutdown. A playbook is a pre-written, step-by-step procedure for one incident type, such as ransomware or a compromised mailbox, with owners for each step. The lessons-learned review feeds back into Preparation, updating plans, playbooks and controls.",
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    },
+    "isc2.cc.d5.logging-monitoring::gate": {
+      "answer": ["203.0.113.66","5","3","8","no"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "Nit: blank 3 says 'different accounts tried' without 'by that address', so a careless learner might count 'analyst' and get 4. The prompt context makes the scope clear enough. The 07:39:55 success from 10.0.0.5 is a good discriminating distractor for blank 5."
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d1.cloze": {
+      "answer": ["correlates","fatigue","order"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "Blank 3 also accepts 'sequence' or 'chronological order'. The grader should accept these synonyms."
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d7.classify": {
+      "answer": {"1":"Password guessing","2":"Normal activity","3":"Password spraying","4":"Password guessing","5":"Normal activity","6":"Password spraying"},
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d30.freerecall": {
+      "answer": "Log authentication successes and failures with their source, privilege and account changes, configuration changes, access to sensitive data, and security tool alerts. A SIEM collects these from across the estate, normalises them into one format, correlates events across sources to expose patterns no single log shows, and alerts when rules match. Clocks must be synchronised to one time source, or events cannot be ordered or correlated. Logs must be forwarded to a protected store and retained, so an intruder with admin rights cannot erase the evidence. For suspected brute force, ask: which source address, how many attempts, which accounts, over what time span, and did any attempt from that source succeed?",
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    }
+  },
+  "hints": {
+    "isc2.cc.d2.incident-response::hint0": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "LOW",
+      "note": "Gives a test you can apply to every step: work that an active attacker could undo (recovery, eradication) waits until after containment. It forces the eradicate-before-recover reasoning without naming any step."
+    },
+    "isc2.cc.d2.incident-response::hint1": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "MED",
+      "note": "'Information that only exists while an earlier step's conditions still hold' points almost directly at E and its dependency on B (isolated but still powered on). It narrows the B-then-E pair, though the D/A/C ordering still needs understanding."
+    },
+    "isc2.cc.d5.logging-monitoring::hint0": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "LOW",
+      "note": "A sound triage method. It prevents counting the analyst lines into the attempts and accounts totals."
+    },
+    "isc2.cc.d5.logging-monitoring::hint1": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "LOW",
+      "note": "Tells the learner to scope the success check to the same source. That is the right method, and it defuses the 10.0.0.5 'Accepted' distractor without stating the answer, though it hints that a different-event line is worth checking for."
+    }
+  }
+}

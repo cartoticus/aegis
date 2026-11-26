@@ -16,6 +16,8 @@
  */
 import { chromium } from 'playwright';
 import { createServer } from 'node:http';
+// v1.8.0: one ARC objective per manifest entry (6 Domain 1 + 5 Phase 2 pilots).
+const NOBJ = JSON.parse((await import('node:fs')).readFileSync((process.env.APP_ROOT || import.meta.dirname + '/../') + '/modules/index.json', 'utf8')).modules.length;
 import { readFileSync } from 'node:fs';
 
 // Repo root: the app is served from the top level, so tests point one dir up.
@@ -204,7 +206,7 @@ await reset();
   ok('toggle off removes every ARC entry point from the DOM', off.buttons === 0, String(off.buttons));
   const on = await page.evaluate(() => { arcCfg().enabled = true; save(); syncArcButtons();
     return document.querySelectorAll('#domPanels .arc-btn').length; });
-  ok('toggle on restores them', on === 6, String(on));
+  ok('toggle on restores them (one per ARC objective)', on === NOBJ, `${on} of ${NOBJ}`);
 }
 
 /* ══ D. The widget → engine boundary, exercised on kendall_tau ═════════════
@@ -579,18 +581,19 @@ await reset();
         card.last_review = new Date(Date.parse(card.due) - 1000).toISOString();
       }
       out.push({ id: mid, gateOk, consolidating, state: arcFsm(mid).state, rounds, drills,
-                 interval: arcFsm(mid).interval_days, metric: vp.accuracy_metric });
+                 interval: arcFsm(mid).interval_days, metric: vp.accuracy_metric,
+                 mastery: arcModule(mid).mastery_interval_days ?? ARC.engine.PROFILE_DEFAULTS[arcModule(mid).profile].mastery_interval_days });
     }
     return out;
   });
 
-  ok('all six modules were driven', all.length === 6, String(all.length));
+  ok(`all ${NOBJ} modules were driven`, all.length === NOBJ, String(all.length));
   for (const r of all) {
     const short = r.id.split('.').pop();
     ok(`${short}: gate cleared on a perfect answer`, r.gateOk === true, JSON.stringify(r));
     ok(`${short}: reflection entered consolidation`, r.consolidating === true);
     ok(`${short}: reached MASTERED`, r.state === 'MASTERED', `${r.state} after ${r.rounds} drills: ${r.drills.join(', ')}`);
-    ok(`${short}: mastery interval >= 60d`, r.interval >= 60, String(r.interval));
+    ok(`${short}: mastery interval >= its profile's mastery mark (${r.mastery}d)`, r.interval >= r.mastery, String(r.interval));
   }
   const metrics = new Set(all.map(r => r.metric));
   ok('gates exercised more than one metric', metrics.size >= 2, [...metrics].join(', '));

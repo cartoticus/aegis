@@ -1,0 +1,205 @@
+{
+  "instructions": "see prompt",
+  "modules": [
+    {
+      "module": "isc2.cc.d2.incident-response",
+      "title": "Incident Response: the Lifecycle and the Playbook",
+      "reading": "## Why a lifecycle at all\n\nAn incident is the worst time to invent a process. People are stressed, information is partial, and the obvious move is often the wrong one. Incident response (IR) gives the team an order of work agreed in advance, so the first hour is spent executing rather than debating.\n\n## The four phases the exam tests\n\n```\nPREPARATION -> DETECTION & -> CONTAINMENT, ERADICATION -> POST-INCIDENT\n                ANALYSIS        & RECOVERY                 ACTIVITY\n     ^                                                         |\n     +---------------- lessons learned feed back --------------+\n```\n\n- **Preparation** — before anything happens: the plan, the playbooks, the contact list, the tools, the practice runs.\n- **Detection & analysis** — notice something, confirm it is a real incident rather than noise, work out its scope and how serious it is.\n- **Containment, eradication & recovery** — stop it spreading, remove the cause, then return systems to normal service.\n- **Post-incident activity** — the lessons-learned review. What worked, what did not, and what changes in the plan, backed by measurements such as how long the incident took to detect and to contain.\n\nThe arrow back to preparation is the point: every incident should leave the next response better than this one.\n\n## The order inside the third phase matters\n\n**Contain first.** Cutting a compromised machine off the network stops it spreading and stops the attacker steering it. Leave it **powered on** if you can: memory holds running processes and live connections, and that evidence disappears the moment the power goes.\n\n**Eradicate before you recover.** If the attacker still has a foothold — a hidden account, a scheduled task, a second infected host — anything you restore can simply be compromised again. Clean first, then rebuild.\n\n**Recover from something you trust.** A backup is only useful if it predates the compromise and has been checked. Copies kept offline are the ones an attacker could not reach.\n\n## Playbooks\n\nA **playbook** is the plan for one kind of incident — ransomware, a lost laptop, a compromised mailbox — written as concrete steps with owners. The lifecycle is the shape every playbook follows; the playbook is what a responder actually reads at 3 a.m.\n\n## A note on the source\n\nThis four-phase lifecycle comes from NIST SP 800-61 Revision 2 (2012), and it is the model the certification exams test. In April 2025 NIST replaced that guide with **Revision 3**, which no longer presents a stand-alone cycle: it maps incident response onto the six functions of the Cybersecurity Framework 2.0 (Govern, Identify, Protect, Detect, Respond, Recover). The work is the same; the framing is broader. Learn the four phases for the exam, and recognise the CSF framing when you meet it at work.\n\n## Worked example\n\nA finance manager's mailbox signs in from two countries an hour apart. **Detection & analysis:** the alert is checked against the user, who was at their desk all day, so it is real. **Containment:** the session is revoked and the password reset. **Eradication:** a hidden rule silently forwarding invoices to an outside address is found and deleted. **Recovery:** the account is re-enabled with MFA and watched for a week. **Post-incident:** the review asks why MFA was not on already, and the mailbox playbook gains a step to check forwarding rules.",
+      "items": [
+        {
+          "id": "isc2.cc.d2.incident-response::gate",
+          "bank": "gate",
+          "prompt": "07:42. A SIEM alert fires: a finance workstation is calling out to an unknown address every 60 seconds, its user reports files ending in .locked, and other machines may already be affected. Put the five response steps in the order you would carry them out.",
+          "kind": "ORDER",
+          "steps": [
+            {
+              "letter": "A",
+              "text": "Bring the data back from offline copies that have been checked and found clean"
+            },
+            {
+              "letter": "B",
+              "text": "Cut the infected workstation off the network but leave it powered on"
+            },
+            {
+              "letter": "C",
+              "text": "Hold a review of what happened and write the improvements into the response plan"
+            },
+            {
+              "letter": "D",
+              "text": "Remove the ransomware and anything it planted to survive a reboot, on every affected system"
+            },
+            {
+              "letter": "E",
+              "text": "Use the connection records still in the running workstation's memory to find the other machines it reached, then cut those off and disable the shared drive they write to"
+            }
+          ]
+        },
+        {
+          "id": "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d1.cloze",
+          "bank": "RECOGNITION",
+          "prompt": "Complete the lifecycle: ______ → Detection & ______ → Containment, ______ & Recovery → Post-incident activity.",
+          "kind": "CLOZE",
+          "blanks": [
+            "Blank 1",
+            "Blank 2",
+            "Blank 3"
+          ]
+        },
+        {
+          "id": "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d7.classify",
+          "bank": "APPLICATION",
+          "prompt": "Sort each activity under the incident response phase it belongs to.",
+          "kind": "CLASSIFY",
+          "buckets": [
+            "Containment, eradication & recovery",
+            "Detection & analysis",
+            "Post-incident activity",
+            "Preparation"
+          ],
+          "statements": [
+            {
+              "n": 1,
+              "text": "Assign a severity level to a confirmed incident"
+            },
+            {
+              "n": 2,
+              "text": "Confirm a SIEM alert is not a false positive"
+            },
+            {
+              "n": 3,
+              "text": "Disconnect a compromised server from the network"
+            },
+            {
+              "n": 4,
+              "text": "Hold a blameless review of the response"
+            },
+            {
+              "n": 5,
+              "text": "Keep an out-of-band contact list for the response team"
+            },
+            {
+              "n": 6,
+              "text": "Rebuild a server from a known-good image and return it to service"
+            },
+            {
+              "n": 7,
+              "text": "Record how long detection took, to measure improvement"
+            },
+            {
+              "n": 8,
+              "text": "Write and rehearse the ransomware playbook"
+            }
+          ]
+        },
+        {
+          "id": "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d30.freerecall",
+          "bank": "GENERATIVE",
+          "prompt": "Without notes: name the four incident response phases in order, explain why you contain before you eradicate and why you keep a compromised machine powered on, say what a playbook is, and say what the final phase feeds back into.",
+          "kind": "RECALL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "isc2.cc.d2.incident-response::hint0",
+          "for": "gate",
+          "text": "For each step, ask whether it could be undone if the attacker were still active when you did it. Anything that could be undone has to wait for the work that stops them."
+        },
+        {
+          "id": "isc2.cc.d2.incident-response::hint1",
+          "for": "gate",
+          "text": "Some steps rely on information that only exists while an earlier step's conditions still hold. For each step, ask what must already be true, or still be available, before it can work."
+        }
+      ]
+    },
+    {
+      "module": "isc2.cc.d5.logging-monitoring",
+      "title": "Logging & Monitoring: Reading the Evidence",
+      "reading": "## Logs are the record of what happened\n\nEvery system can write down what it does: who signed in, what was changed, which connections were made. Those **logs** are how you detect an attack in progress and how you reconstruct one afterwards. A system that does not log, or whose logs nobody reads, can be breached without anyone ever knowing.\n\n## What is worth logging\n\n- **Authentication** — sign-ins that succeed and fail, and where they came from.\n- **Privilege changes** — accounts created, added to admin groups, or given new rights.\n- **Configuration changes** — firewall rules, security settings, software installed.\n- **Access to sensitive data**, and the security tools' own alerts.\n\n## From scattered logs to a SIEM\n\nA single server's log shows one corner of the picture. A **SIEM** (security information and event management) system **collects** logs from across the organisation, **normalises** them into one format, **correlates** events from different sources, and **raises alerts** when a pattern matches a rule. Correlation is the valuable part: a failed VPN login, then a success from the same address, then a new admin account on a file server, means little in three separate logs and a great deal side by side.\n\nTwo things make correlation possible. **Synchronised clocks** — every system set from the same time source, or events cannot be put in order. And **protected logs** — sent to a separate store as they are written, so an intruder who gains admin rights cannot quietly delete the evidence. Logs are kept for a defined **retention** period, long enough to investigate an incident found months later.\n\nToo many low-value alerts cause **alert fatigue**: analysts start ignoring them. Tuning rules so alerts are rare and meaningful is part of the job.\n\n## Reading for a brute-force attack\n\nMITRE ATT&CK catalogues password attacks under **Brute Force (T1110)**. Two patterns are worth knowing by shape:\n\n- **Password guessing** (T1110.001) — many attempts against one or a few accounts, usually from the same source, in a short time.\n- **Password spraying** (T1110.003) — one or two common passwords tried against many accounts, slowly, to stay under lockout limits.\n\nWhen you investigate, answer four questions from the log itself: **where** the attempts came from, **how many** there were, **which accounts** were tried, and **over what time span**. Then ask the question that matters most: did any attempt from that source **succeed**?\n\n## Worked example\n\nA web portal's log shows 40 failed sign-ins for the account \"finance\" between 02:14:05 and 02:14:45, all from 198.51.100.23, then a successful sign-in for \"finance\" from the same address at 02:15:10. One account, one source, forty attempts in forty seconds: password guessing. The success afterwards turns a noisy attack into a confirmed compromise — the account is disabled, the session is killed, and the incident response playbook starts.",
+      "items": [
+        {
+          "id": "isc2.cc.d5.logging-monitoring::gate",
+          "bank": "gate",
+          "prompt": "An alert says someone may be guessing SSH passwords on this server. Investigate /var/log/auth.log in the terminal, then record your findings below. Only your findings are scored — the commands you type are not.",
+          "workspace_file": {
+            "path": "/var/log/auth.log",
+            "content": "Apr 14 07:10:02 sshd: Accepted password for analyst from 10.0.0.5 port 51122\nApr 14 07:38:41 sshd: Failed password for root from 203.0.113.66 port 40512\nApr 14 07:38:43 sshd: Failed password for root from 203.0.113.66 port 40514\nApr 14 07:38:45 sshd: Failed password for admin from 203.0.113.66 port 40516\nApr 14 07:38:47 sshd: Failed password for admin from 203.0.113.66 port 40518\nApr 14 07:38:49 sshd: Failed password for test from 203.0.113.66 port 40520\nApr 14 07:39:55 sshd: Accepted password for analyst from 10.0.0.5 port 51140"
+          },
+          "kind": "CLOZE",
+          "blanks": [
+            "Source IP address of the failed attempts",
+            "Number of failed password attempts",
+            "Number of different accounts tried",
+            "Seconds from the first to the last failed attempt",
+            "Did any attempt from that address succeed? (yes / no)"
+          ]
+        },
+        {
+          "id": "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d1.cloze",
+          "bank": "RECOGNITION",
+          "prompt": "Complete: A SIEM collects logs, normalises them, ______ events across sources and raises alerts. So many low-value alerts that analysts stop reading them is alert ______. Systems must share a time source, or events cannot be put in ______.",
+          "kind": "CLOZE",
+          "blanks": [
+            "Blank 1",
+            "Blank 2",
+            "Blank 3"
+          ]
+        },
+        {
+          "id": "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d7.classify",
+          "bank": "APPLICATION",
+          "prompt": "Sort each pattern seen in sign-in logs under the attack it most likely shows.",
+          "kind": "CLASSIFY",
+          "buckets": [
+            "Normal activity",
+            "Password guessing",
+            "Password spraying"
+          ],
+          "statements": [
+            {
+              "n": 1,
+              "text": "60 failed sign-ins for 'admin' in two minutes from one address"
+            },
+            {
+              "n": 2,
+              "text": "A user fails once, then succeeds a minute later from their usual laptop"
+            },
+            {
+              "n": 3,
+              "text": "One failed sign-in each for 300 different accounts, spread over an afternoon"
+            },
+            {
+              "n": 4,
+              "text": "Repeated failures for one user's account, every few seconds, from one source"
+            },
+            {
+              "n": 5,
+              "text": "Staff signing in from the office between 08:00 and 09:00"
+            },
+            {
+              "n": 6,
+              "text": "Two attempts per account across the whole staff directory, spaced to avoid lockouts"
+            }
+          ]
+        },
+        {
+          "id": "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d30.freerecall",
+          "bank": "GENERATIVE",
+          "prompt": "Without notes: say what events are worth logging, what a SIEM does with them, why clocks and log protection matter, and the questions you would answer from a log to investigate a suspected brute-force attack.",
+          "kind": "RECALL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "isc2.cc.d5.logging-monitoring::hint0",
+          "for": "gate",
+          "text": "Before you count anything, filter the log down to the lines that describe the suspicious activity, so you are not mixing it with normal sign-ins."
+        },
+        {
+          "id": "isc2.cc.d5.logging-monitoring::hint1",
+          "for": "gate",
+          "text": "Treat the last question separately from the counts: look for any line from that same source that records a different kind of event from the ones you counted."
+        }
+      ]
+    }
+  ]
+}

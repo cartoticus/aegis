@@ -1,7 +1,7 @@
 {
   "$schema_note": "Companion database to CONTENT-SOURCING-GUIDELINES.md. Each entry is referenced by ID from a module's provenance.sources array. Seed list — verify URLs and expand per-domain before relying on it at scale. 'domains' uses the same dag_branch-style codes as arc-module_schema.json.",
-  "registry_version": "1.0.0",
-  "last_reviewed": "2026-09-02",
+  "registry_version": "1.1.0",
+  "last_reviewed": "2026-11-26",
   "sources": [
     {
       "id": "nist-sp800-30r1",
@@ -10,7 +10,9 @@
       "url": "https://csrc.nist.gov/pubs/sp/800/30/r1/final",
       "tier": "A",
       "license": "Public domain (US Government work)",
-      "domains": ["cc.d1.principles"],
+      "domains": [
+        "cc.d1.principles"
+      ],
       "notes": "Primary reference for risk lifecycle / threat-vulnerability-risk-treatment content."
     },
     {
@@ -20,7 +22,10 @@
       "url": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final",
       "tier": "A",
       "license": "Public domain (US Government work)",
-      "domains": ["cc.d1.principles", "cc.d3.access-controls"],
+      "domains": [
+        "cc.d1.principles",
+        "cc.d3.access-controls"
+      ],
       "notes": "Control families reference — technical / administrative / physical control classification."
     },
     {
@@ -30,8 +35,12 @@
       "url": "https://csrc.nist.gov/pubs/sp/800/61/r2/final",
       "tier": "A",
       "license": "Public domain (US Government work)",
-      "domains": ["cc.d2.bcdr"],
-      "notes": "Incident response lifecycle content."
+      "domains": [
+        "cc.d2.bcdr"
+      ],
+      "notes": "Superseded by SP 800-61 Rev. 3 (April 2025). Still the origin of the four-phase lifecycle (preparation; detection & analysis; containment, eradication & recovery; post-incident activity) that the CC exam tests — cite it for that model, with the attribution that NIST has since reframed IR.",
+      "status": "superseded",
+      "superseded_by": "nist-sp800-61r3"
     },
     {
       "id": "nist-csf-2.0",
@@ -40,7 +49,10 @@
       "url": "https://www.nist.gov/cyberframework",
       "tier": "A",
       "license": "Public domain (US Government work)",
-      "domains": ["cc.d1.principles", "cc.d5.security-ops"],
+      "domains": [
+        "cc.d1.principles",
+        "cc.d5.security-ops"
+      ],
       "notes": "Govern/Identify/Protect/Detect/Respond/Recover functions — useful structural backbone, don't mirror its own section headers verbatim."
     },
     {
@@ -50,7 +62,9 @@
       "url": "https://www.nist.gov/itl/ai-risk-management-framework",
       "tier": "A",
       "license": "Public domain (US Government work)",
-      "domains": ["aegis.d6.ai-security"],
+      "domains": [
+        "aegis.d6.ai-security"
+      ],
       "notes": "Core AI risk framework, published Jan 2023. Also tracked on the AEGIS roadmap for Domain 6 content."
     },
     {
@@ -60,7 +74,9 @@
       "url": "https://www.nist.gov/itl/ai-risk-management-framework",
       "tier": "A",
       "license": "Public domain (US Government work)",
-      "domains": ["aegis.d6.ai-security"],
+      "domains": [
+        "aegis.d6.ai-security"
+      ],
       "notes": "12-risk GenAI companion profile to the AI RMF, published Jul 2024."
     },
     {
@@ -70,7 +86,10 @@
       "url": "https://www.cisa.gov/topics/cybersecurity-best-practices",
       "tier": "A",
       "license": "Public domain (US Government work)",
-      "domains": ["cc.d2.bcdr", "cc.d5.security-ops"],
+      "domains": [
+        "cc.d2.bcdr",
+        "cc.d5.security-ops"
+      ],
       "notes": "Use for current threat advisories and operational guidance; content changes frequently, re-verify per module."
     },
     {
@@ -80,7 +99,10 @@
       "url": "https://owasp.org/Top10/",
       "tier": "B",
       "license": "Creative Commons Attribution-ShareAlike",
-      "domains": ["cc.d4.network-security", "cc.d5.security-ops"],
+      "domains": [
+        "cc.d4.network-security",
+        "cc.d5.security-ops"
+      ],
       "notes": "Attribute OWASP by name when referenced. Paraphrase vulnerability descriptions — do not reuse their category text verbatim."
     },
     {
@@ -90,7 +112,9 @@
       "url": "https://owasp.org/www-project-top-10-for-large-language-model-applications/",
       "tier": "B",
       "license": "Creative Commons Attribution-ShareAlike",
-      "domains": ["aegis.d6.ai-security"],
+      "domains": [
+        "aegis.d6.ai-security"
+      ],
       "notes": "Roadmap notes a 2026 edition superseding 2025 v2.0, published Aug 4, 2026 — confirm current edition at time of authoring, this project moves fast."
     },
     {
@@ -100,8 +124,10 @@
       "url": "https://attack.mitre.org/",
       "tier": "B",
       "license": "Free to use with attribution under MITRE's ATT&CK terms of use",
-      "domains": ["cc.d5.security-ops"],
-      "notes": "Tactics/techniques taxonomy — good structural reference for SOC/incident-response content. Cite technique IDs (e.g. T1566) rather than reproducing MITRE's descriptions."
+      "domains": [
+        "cc.d5.security-ops"
+      ],
+      "notes": "Tactics/techniques taxonomy — good structural reference for SOC/incident-response content. Cite technique IDs (e.g. T1566) rather than reproducing MITRE's descriptions. Cite technique IDs (e.g. T1110 Brute Force, T1110.001 Password Guessing, T1110.003 Password Spraying); do not reproduce technique text."
     },
     {
       "id": "mitre-atlas",
@@ -110,7 +136,9 @@
       "url": "https://atlas.mitre.org/",
       "tier": "B",
       "license": "Free to use with attribution under MITRE's terms",
-      "domains": ["aegis.d6.ai-security"],
+      "domains": [
+        "aegis.d6.ai-security"
+      ],
       "notes": "AI/ML-specific adversarial tactics matrix. Confirm matrix version at build per roadmap note."
     },
     {
@@ -120,7 +148,9 @@
       "url": "https://www.rfc-editor.org/rfc/rfc2196",
       "tier": "B",
       "license": "Freely available; IETF reproduction terms apply — paraphrase, don't republish RFC text",
-      "domains": ["cc.d1.principles"],
+      "domains": [
+        "cc.d1.principles"
+      ],
       "notes": "Foundational, somewhat dated (1997) — good for concepts (AUPs, security policy structure), not for current technical specifics."
     },
     {
@@ -130,7 +160,10 @@
       "url": "https://www.cisecurity.org/controls",
       "tier": "B",
       "license": "Free to use with attribution; CIS license has non-commercial conditions — check current terms before use",
-      "domains": ["cc.d1.principles", "cc.d3.access-controls"],
+      "domains": [
+        "cc.d1.principles",
+        "cc.d3.access-controls"
+      ],
       "notes": "18-control structure, useful as a secondary triangulation source alongside NIST SP 800-53."
     },
     {
@@ -140,7 +173,10 @@
       "url": "https://docs.aws.amazon.com/security/",
       "tier": "C",
       "license": "Copyrighted vendor documentation — cite as source, never reproduce",
-      "domains": ["cc.d3.access-controls", "cc.d4.network-security"],
+      "domains": [
+        "cc.d3.access-controls",
+        "cc.d4.network-security"
+      ],
       "notes": "Use for real-world cloud IAM/network examples; always paraphrase and build original worked examples."
     },
     {
@@ -150,8 +186,108 @@
       "url": "https://learn.microsoft.com/en-us/security/",
       "tier": "C",
       "license": "Copyrighted vendor documentation — cite as source, never reproduce",
-      "domains": ["cc.d3.access-controls", "cc.d4.network-security"],
+      "domains": [
+        "cc.d3.access-controls",
+        "cc.d4.network-security"
+      ],
       "notes": "Same usage rule as AWS entry above."
+    },
+    {
+      "id": "nist-sp800-61r3",
+      "title": "NIST SP 800-61 Rev. 3 — Incident Response Recommendations and Considerations for Cybersecurity Risk Management: A CSF 2.0 Community Profile",
+      "publisher": "NIST",
+      "url": "https://csrc.nist.gov/pubs/sp/800/61/r3/final",
+      "tier": "A",
+      "license": "Public domain (US Government work)",
+      "domains": [
+        "cc.d2.bcdr"
+      ],
+      "notes": "Final April 2025; supersedes Rev. 2. Frames incident response through the six CSF 2.0 functions rather than a stand-alone lifecycle. Verified 26 Nov 2026."
+    },
+    {
+      "id": "cisa-ir-playbooks",
+      "title": "CISA — Federal Government Cybersecurity Incident and Vulnerability Response Playbooks",
+      "publisher": "CISA",
+      "url": "https://www.cisa.gov/news-events/news/incident-and-vulnerability-response-playbooks",
+      "tier": "A",
+      "license": "Public domain (US Government work)",
+      "domains": [
+        "cc.d2.bcdr"
+      ],
+      "notes": "Playbook concept and phase structure; paraphrase only."
+    },
+    {
+      "id": "ietf-rfc4632",
+      "title": "RFC 4632 — Classless Inter-domain Routing (CIDR)",
+      "publisher": "IETF",
+      "url": "https://www.rfc-editor.org/rfc/rfc4632",
+      "tier": "B",
+      "license": "IETF Trust — freely available; paraphrase",
+      "domains": [
+        "cc.d4.network-security"
+      ],
+      "notes": "Prefix notation and address blocks."
+    },
+    {
+      "id": "ietf-rfc1918",
+      "title": "RFC 1918 — Address Allocation for Private Internets",
+      "publisher": "IETF",
+      "url": "https://www.rfc-editor.org/rfc/rfc1918",
+      "tier": "B",
+      "license": "IETF Trust — freely available; paraphrase",
+      "domains": [
+        "cc.d4.network-security"
+      ],
+      "notes": "The three private IPv4 ranges."
+    },
+    {
+      "id": "nist-sp800-50r1",
+      "title": "NIST SP 800-50 Rev. 1 — Building a Cybersecurity and Privacy Learning Program",
+      "publisher": "NIST",
+      "url": "https://csrc.nist.gov/pubs/sp/800/50/r1/final",
+      "tier": "A",
+      "license": "Public domain (US Government work)",
+      "domains": [
+        "cc.d5.security-ops"
+      ],
+      "notes": "Final September 2024. Awareness and training as a programme."
+    },
+    {
+      "id": "nist-sp800-63b4",
+      "title": "NIST SP 800-63B-4 — Digital Identity Guidelines: Authentication and Authenticator Management",
+      "publisher": "NIST",
+      "url": "https://csrc.nist.gov/pubs/sp/800/63/b/4/final",
+      "tier": "A",
+      "license": "Public domain (US Government work)",
+      "domains": [
+        "cc.d5.security-ops",
+        "cc.d1.principles"
+      ],
+      "notes": "Final 2025. Password length over composition rules; no periodic forced changes without evidence of compromise."
+    },
+    {
+      "id": "nist-sp800-92",
+      "title": "NIST SP 800-92 — Guide to Computer Security Log Management",
+      "publisher": "NIST",
+      "url": "https://csrc.nist.gov/pubs/sp/800/92/final",
+      "tier": "A",
+      "license": "Public domain (US Government work)",
+      "domains": [
+        "cc.d5.security-ops"
+      ],
+      "notes": "Final 2006 and still the current final as of 26 Nov 2026. SP 800-92 Rev. 1 (Cybersecurity Log Management Planning Guide) exists only as an initial public draft (Oct 2023); re-check before citing the draft."
+    },
+    {
+      "id": "cisa-event-logging",
+      "title": "Best Practices for Event Logging and Threat Detection (ASD ACSC with CISA, FBI, NSA and partners)",
+      "publisher": "CISA / ASD ACSC",
+      "url": "https://www.cisa.gov/resources-tools/resources/best-practices-event-logging-and-threat-detection",
+      "tier": "A",
+      "license": "Public guidance (joint government publication); paraphrase",
+      "domains": [
+        "cc.d5.security-ops"
+      ],
+      "notes": "August 2024. Centralised logging, time synchronisation, log protection and retention."
     }
   ],
   "restricted_do_not_source": [

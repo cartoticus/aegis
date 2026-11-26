@@ -1,0 +1,99 @@
+{
+  "reviewer": "A",
+  "items": {
+    "isc2.cc.d2.incident-response::gate": {
+      "answer": ["B", "E", "D", "A", "C"],
+      "confidence": 4,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "Brief hesitation on B vs E: E reads memory, so a novice might wonder whether to read it before isolating. B explicitly keeps the machine powered on, which keeps memory available for E, so B then E holds up. E finishes containment, which keeps it ahead of D."
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d1.cloze": {
+      "answer": ["Preparation", "Analysis", "Eradication"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d7.classify": {
+      "answer": {
+        "1": "Detection & analysis",
+        "2": "Detection & analysis",
+        "3": "Containment, eradication & recovery",
+        "4": "Post-incident activity",
+        "5": "Preparation",
+        "6": "Containment, eradication & recovery",
+        "7": "Post-incident activity",
+        "8": "Preparation"
+      },
+      "confidence": 4,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "Statement 7 (record how long detection took): a novice might file it under Detection & analysis because it mentions detection. The phrase 'to measure improvement' and the lesson's line about post-incident measurements point to Post-incident activity."
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d30.freerecall": {
+      "answer": "The four phases are Preparation, then Detection and analysis, then Containment, eradication and recovery, then Post-incident activity. You contain first because isolating a compromised machine stops the attack spreading and stops the attacker controlling it. Only after that can cleanup stick; otherwise the attacker can reinfect what you clean. You keep the machine powered on because memory holds running processes and live network connections, and that evidence is lost when power is cut. A playbook is a written plan for one specific kind of incident, such as ransomware or a lost laptop, with concrete steps and named owners. The post-incident lessons-learned review feeds back into preparation, improving the plan and playbooks for the next incident.",
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    },
+    "isc2.cc.d5.logging-monitoring::gate": {
+      "answer": ["203.0.113.66", "5", "3", "8", "no"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": "The two Accepted lines come from 10.0.0.5, a different address, so the answer to whether that address succeeded is 'no'. The 07:39:55 success soon after the attack is a reasonable trap for someone who doesn't check the IP."
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d1.cloze": {
+      "answer": ["correlates", "fatigue", "order"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d7.classify": {
+      "answer": {
+        "1": "Password guessing",
+        "2": "Normal activity",
+        "3": "Password spraying",
+        "4": "Password guessing",
+        "5": "Normal activity",
+        "6": "Password spraying"
+      },
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d30.freerecall": {
+      "answer": "Log successful and failed sign-ins with their source, privilege changes such as new or newly promoted admin accounts, configuration changes like firewall rules or installed software, access to sensitive data, and security tool alerts. A SIEM collects logs from across the organisation, normalises them into one format, correlates events from different sources and raises alerts when a rule matches. Clocks must be synchronised to one time source so events can be put in order. Logs must be sent to a separate protected store as they are written so an intruder cannot erase them, and kept for a defined retention period. For a suspected brute force attack, establish where the attempts came from, how many there were, which accounts were tried, over what time span, and whether any attempt from that source succeeded.",
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    }
+  },
+  "hints": {
+    "isc2.cc.d2.incident-response::hint0": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "LOW",
+      "note": "Gives a test that separates recovery and eradication from containment (restored data or a cleaned host can be re-compromised). It teaches a reason for the order instead of naming the order."
+    },
+    "isc2.cc.d2.incident-response::hint1": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "MED",
+      "note": "Points toward the dependency between E (memory records) and B (left powered on), so it narrows the B/E placement, which was the one spot I hesitated. Still a method, and it doesn't quote any step."
+    },
+    "isc2.cc.d5.logging-monitoring::hint0": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "LOW",
+      "note": "Filtering out the analyst sign-ins before counting stops a novice from counting 7 lines or 4 accounts. It's a method only."
+    },
+    "isc2.cc.d5.logging-monitoring::hint1": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "LOW",
+      "note": "Stresses 'that same source', which guards against the trap of the 10.0.0.5 Accepted line. It doesn't say whether such a line exists."
+    }
+  }
+}

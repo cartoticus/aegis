@@ -21,7 +21,8 @@ import { join } from 'node:path';
 
 const REPO = join(import.meta.dirname, '..');
 const SRC = readFileSync(join(REPO, 'index.html'), 'utf8');
-const LOOP = 'verification/verify-arc-loop.mjs', UI = 'verification/verify-mobile-ui.mjs', STEPA = 'verification/verify-step-a.mjs';
+const LOOP = 'verification/verify-arc-loop.mjs', UI = 'verification/verify-mobile-ui.mjs', STEPA = 'verification/verify-step-a.mjs', P2S = 'verification/verify-phase2.mjs';
+const LP_MOD = 'modules/d3-01-least-privilege.arc-module.json';
 
 // The last release that shipped the reorder bug. Pinned, so this fault keeps
 // meaning "the real v1.6.0" after later releases. Needs non-shallow history.
@@ -71,7 +72,7 @@ const FAULTS = [
   ['H8', 'brand pinned instead of making room',     UI, sub(ROOM, '.brand{flex:none}')],
   // ── v1.7.0 · Step A (step-a suite; layout faults in the interface suite) ──
   ['S1',  'meter counts gate-cleared as mastered',   STEPA, sub("return arcDomain1ModuleIds().filter(id=>arcCfg().fsm[id]?.state==='MASTERED').length;", 'return arcDomain1ModuleIds().filter(id=>ARC_PAST_GATE.includes(arcCfg().fsm[id]?.state)).length;')],
-  ['S2',  'NEEDS_RECALIBRATION not gate-cleared',    STEPA, sub("'PHASE_4_SPACED_QUEUE','MASTERED','NEEDS_RECALIBRATION'];\nfunction arcDomain1ModuleIds", "'PHASE_4_SPACED_QUEUE','MASTERED'];\nfunction arcDomain1ModuleIds")],
+  ['S2',  'NEEDS_RECALIBRATION not gate-cleared',    STEPA, sub("'PHASE_4_SPACED_QUEUE','MASTERED','NEEDS_RECALIBRATION'];\n/* v1.8.0: the meters", "'PHASE_4_SPACED_QUEUE','MASTERED'];\n/* v1.8.0: the meters")],
   ['S3',  'Overall averaged with Reading',           STEPA, sub('return n?Math.round(arcMasteredCount()/n*100):0; }', 'return n?Math.round((arcMasteredCount()/n*100+arcReadingPct())/2):0; }')],
   ['S4',  'meters shown without the corpus guard',   STEPA, sub("function arcLive(){ return !!arcCfg().enabled&&(ARC.status==='ready'||ARC.status==='degraded'); }", 'function arcLive(){ return !!arcCfg().enabled; }')],
   ['S5',  'meters not re-rendered on corpus load',   STEPA, sub('renderArcSettings();renderArcDash();maybeShowWelcome();', 'renderArcSettings();')],
@@ -96,6 +97,28 @@ const FAULTS = [
   ['O3',  'Command switch bypasses the daily throttle', STEPA, sub("  if(arcCfg().enabled)switchView('dash');\n", "  if(arcCfg().enabled){state.lastWelcomeSeen=null;switchView('dash');}\n")],
   ['R1',  'risk step text differs from its other copies', LOOP, sub('"Implement the chosen treatment and verify it"', '"Implement the chosen treatment and verify it works"'), RISK_MOD],
   ['W3',  'meter split text can overflow the card',  UI, sub('.arcm-detail{font-family:var(--mono);font-size:11px;color:var(--muted-2);margin-top:6px;overflow-wrap:anywhere}', '.arcm-detail{font-family:var(--mono);font-size:11px;color:var(--muted-2);margin-top:6px;white-space:nowrap}')],
+  // ── v1.8.0 · Phase 2 (phase2 suite unless noted) ──
+  ['P1',  'meters include non-D1 modules',           P2S, sub('function arcDomain1ModuleIds(){ return arcDomain1Keys().map(k=>ARC_OBJECTIVE_MAP[k]); }', 'function arcDomain1ModuleIds(){ return Object.values(ARC_OBJECTIVE_MAP); }')],
+  ['P1b', 'Reading meter counts non-D1 objectives',  P2S, sub('const ids=arcDomain1Keys(); // d1_0..d1_5', 'const ids=Object.keys(ARC_OBJECTIVE_MAP);')],
+  ['P2',  'Today card ignores non-D1 modules',       P2S, sub('const a=arcCfg(), ids=arcAllModuleIds().filter(id=>arcModule(id));', 'const a=arcCfg(), ids=arcDomain1ModuleIds().filter(id=>arcModule(id));')],
+  ['P2b', 'consolidation exits ignore non-D1',       P2S, sub('  return arcAllModuleIds().find(id=>{', '  return arcDomain1ModuleIds().find(id=>{')],
+  ['P3',  'subnet fluency guard bypassed (profile)', P2S, sub("ARC.engine.step(before, event, { profile: m.profile,", "ARC.engine.step(before, event, { profile: m.profile==='SKILL'?'CONCEPT':m.profile,")],
+  ['P3b', 'subnet fluency guard bypassed (hints/time not sent)', P2S, sub('submission: { ...scored, hints_used: ARC_UI.hintsUsed, latency_ms },', 'submission: { ...scored, hints_used: 0, latency_ms: 0 },')],
+  ['P4',  'SOC gate scores commands, not slots',     P2S, sub("if (metric === 'correct_slot_ratio') return { response: draft || [],", "if (metric === 'correct_slot_ratio') return { response: (ARC_UI.term ? ARC_UI.term.history : draft) || [],")],
+  ['P5',  'gate terminal writes drills.terminal',    P2S, sub('createTerminal({body:$(\'#arcTermBody\'),mission:false,autofocus:false,', "createTerminal({body:$('#arcTermBody'),mission:true,autofocus:false,onCleared:()=>completeDrill('terminal'),")],
+  ['P6',  'free-play terminal no longer records cleared', P2S, sub("onCleared:()=>{completeDrill('terminal');", 'onCleared:()=>{')],
+  ['P6b', 'free-play terminal loses its mission checklist', P2S, sub("termState=createTerminal({body:$('#termBody'),tasks:$('#termTasks'),mission:true,", "termState=createTerminal({body:$('#termBody'),tasks:null,mission:true,")],
+  ['P6c', 'free-play terminal loses its teaching commentary', P2S, sub("T.note=(text,cls)=>{if(T.mission)T.print(text,cls);};", 'T.note=()=>{};')],
+  ['P7',  'IR gate scored from the answer key',      P2S, sub("if (metric === 'kendall_tau') return { response: draft || [], correct: vp.correct };", "if (metric === 'kendall_tau') return { response: vp.correct.slice(), correct: vp.correct };")],
+  ['P8',  'phishing gate scores a half-classified answer', P2S, sub("if (Object.keys(a).length !== total) return 'Every item needs a category.';", '')],
+  ['P9',  'least-privilege gate ignores distractors', P2S, sub('"pass_threshold": {\n      "ratio": 1.0\n    }', '"pass_threshold": {\n      "min_correct": 4,\n      "item_count": 4\n    }'), LP_MOD],
+  ['P10', 'module with an unresolvable prerequisite still loads', P2S, sub("if (!byId.has(p)) { byId.delete(m.id); ARC.dropped.push({ id: m.id, why: `prerequisite ${p} unavailable` }); changed = true; break; }", 'if (0) {}')],
+  ['P11', 'SKILL result screen claims the gate cleared', P2S, sub("const cleared=['PHASE_3_SYNTHESIS','PHASE_4_SPACED_QUEUE'].includes(r.state);", 'const cleared=r.passed;')],
+  ['P12', 'SKILL module skips its prequestion',      P2S, sub(', has_prequestion: !!m.content?.prequestion });', ' });')],
+  ['P13', 'gate terminal prints the finding commentary', P2S, sub("T.note=(text,cls)=>{if(T.mission)T.print(text,cls);};", 'T.note=(text,cls)=>T.print(text,cls);')],
+  ['U1',  'long phishing addresses no longer wrap',  UI, sub('.arc-item .ai-txt{min-width:0;overflow-wrap:anywhere}', '')],
+  ['U2',  'gate terminal input can overflow',        UI, sub('.arc-term .term-input{min-width:0;width:100%;font-size:16px}', '.arc-term .term-input{min-width:240px;font-size:16px}')],
+  ['U3',  'labelled finding slots squeezed beside long labels', UI, sub('.arc-slots.labelled .arc-slot{flex-direction:column;align-items:stretch;gap:5px}', '.arc-slots.labelled .arc-slot span{width:200px}')],
 ];
 
 const only = process.argv.slice(2);

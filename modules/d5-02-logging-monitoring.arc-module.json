@@ -1,0 +1,194 @@
+{
+  "id": "isc2.cc.d5.logging-monitoring",
+  "version": "1.0.0",
+  "domain": "ISC2 Certified in Cybersecurity — Domain 5: Security Operations",
+  "dag_branch": "cc.d5.security-ops",
+  "profile": "CONCEPT",
+  "prerequisites": [
+    "isc2.cc.d1.cia-triad"
+  ],
+  "invalidation_policy": "REVIEW",
+  "provenance": {
+    "authored_by": "hybrid",
+    "generator_id": "arc-aegis-phase2/4.3.0",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "sources": [
+      "nist-sp800-92",
+      "cisa-event-logging",
+      "mitre-attack"
+    ]
+  },
+  "content": {
+    "title": "Logging & Monitoring: Reading the Evidence",
+    "prequestion": {
+      "prompt": "Before reading: a server records 2,000 failed logins in one night. What does that tell you on its own?",
+      "options": [
+        "The server has definitely been breached",
+        "Not enough yet — you need to know where they came from, which accounts, and whether any succeeded",
+        "Nothing — failed logins are harmless because they failed",
+        "Not sure"
+      ]
+    },
+    "reading_markdown": "## Logs are the record of what happened\n\nEvery system can write down what it does: who signed in, what was changed, which connections were made. Those **logs** are how you detect an attack in progress and how you reconstruct one afterwards. A system that does not log, or whose logs nobody reads, can be breached without anyone ever knowing.\n\n## What is worth logging\n\n- **Authentication** — sign-ins that succeed and fail, and where they came from.\n- **Privilege changes** — accounts created, added to admin groups, or given new rights.\n- **Configuration changes** — firewall rules, security settings, software installed.\n- **Access to sensitive data**, and the security tools' own alerts.\n\n## From scattered logs to a SIEM\n\nA single server's log shows one corner of the picture. A **SIEM** (security information and event management) system **collects** logs from across the organisation, **normalises** them into one format, **correlates** events from different sources, and **raises alerts** when a pattern matches a rule. Correlation is the valuable part: a failed VPN login, then a success from the same address, then a new admin account on a file server, means little in three separate logs and a great deal side by side.\n\nTwo things make correlation possible. **Synchronised clocks** — every system set from the same time source, or events cannot be put in order. And **protected logs** — sent to a separate store as they are written, so an intruder who gains admin rights cannot quietly delete the evidence. Logs are kept for a defined **retention** period, long enough to investigate an incident found months later.\n\nToo many low-value alerts cause **alert fatigue**: analysts start ignoring them. Tuning rules so alerts are rare and meaningful is part of the job.\n\n## Reading for a brute-force attack\n\nMITRE ATT&CK catalogues password attacks under **Brute Force (T1110)**. Two patterns are worth knowing by shape:\n\n- **Password guessing** (T1110.001) — many attempts against one or a few accounts, usually from the same source, in a short time.\n- **Password spraying** (T1110.003) — one or two common passwords tried against many accounts, slowly, to stay under lockout limits.\n\nWhen you investigate, answer four questions from the log itself: **where** the attempts came from, **how many** there were, **which accounts** were tried, and **over what time span**. Then ask the question that matters most: did any attempt from that source **succeed**?\n\n## Worked example\n\nA web portal's log shows 40 failed sign-ins for the account \"finance\" between 02:14:05 and 02:14:45, all from 198.51.100.23, then a successful sign-in for \"finance\" from the same address at 02:15:10. One account, one source, forty attempts in forty seconds: password guessing. The success afterwards turns a noisy attack into a confirmed compromise — the account is disabled, the session is killed, and the incident response playbook starts."
+  },
+  "gate": {
+    "type": "CLOZE",
+    "scoring_class": "B",
+    "expected_duration_s": 300,
+    "pass_threshold": {
+      "min_correct": 5,
+      "item_count": 5
+    },
+    "prompt": "An alert says someone may be guessing SSH passwords on this server. Investigate /var/log/auth.log in the terminal, then record your findings below. Only your findings are scored — the commands you type are not.",
+    "workspace": "soc-terminal",
+    "hints": [
+      "Before you count anything, filter the log down to the lines that describe the suspicious activity, so you are not mixing it with normal sign-ins.",
+      "Treat the last question separately from the counts: look for any line from that same source that records a different kind of event from the ones you counted."
+    ],
+    "validation_payload": {
+      "accuracy_metric": "correct_slot_ratio",
+      "accept": [
+        [
+          "203.0.113.66"
+        ],
+        [
+          "5",
+          "five"
+        ],
+        [
+          "3",
+          "three"
+        ],
+        [
+          "8",
+          "eight",
+          "8s",
+          "8 s",
+          "8 seconds",
+          "8 sec"
+        ],
+        [
+          "no"
+        ]
+      ],
+      "slot_labels": [
+        "Source IP address of the failed attempts",
+        "Number of failed password attempts",
+        "Number of different accounts tried",
+        "Seconds from the first to the last failed attempt",
+        "Did any attempt from that address succeed? (yes / no)"
+      ],
+      "normalisation": {
+        "strip_diacritics": false
+      }
+    },
+    "accessible_equivalent": "The auth.log is also available as a plain-text listing readable by a screen reader, with the same five labelled answer fields; scored identically as correct_slot_ratio. Commands are never required."
+  },
+  "analog_synthesis": {
+    "taxonomy_type": "REDUCTIVE",
+    "prompt": "Away from the screen, write out by hand eight lines of an invented sign-in log for a small office: some normal sign-ins and one password-spraying attempt (one password tried against many accounts). Then hand it to yourself the next morning, or to a friend, and answer the four investigation questions — where from, how many, which accounts, over what time — plus whether anything succeeded.",
+    "calibration_question": "Before checking: could you tell the spraying lines from the normal ones by looking at one line, or only by looking at several lines together — and what does that say about why a SIEM correlates events?",
+    "accessible_equivalent": "Dictate the invented log and the answers to the five questions, or read them aloud with a partner who checks each answer against the lines."
+  },
+  "drills": [
+    {
+      "id": "isc2.cc.d5.log.d1.cloze",
+      "type": "CLOZE",
+      "scoring_class": "B",
+      "interval_tier": "RECOGNITION",
+      "expected_duration_s": 45,
+      "pass_threshold": {
+        "min_correct": 2,
+        "item_count": 3
+      },
+      "prompt": "Complete: A SIEM collects logs, normalises them, ______ events across sources and raises alerts. So many low-value alerts that analysts stop reading them is alert ______. Systems must share a time source, or events cannot be put in ______.",
+      "validation_payload": {
+        "accuracy_metric": "correct_slot_ratio",
+        "accept": [
+          [
+            "correlates",
+            "correlate"
+          ],
+          [
+            "fatigue"
+          ],
+          [
+            "order",
+            "sequence",
+            "chronological order"
+          ]
+        ],
+        "normalisation": {
+          "strip_diacritics": false
+        }
+      },
+      "accessible_equivalent": "The same blanks as labelled text fields with screen-reader labels; scored identically as correct_slot_ratio.",
+      "explanation": "Correlation is what a SIEM adds over reading logs one by one; alert fatigue is why rules need tuning; without synchronised clocks a timeline is guesswork."
+    },
+    {
+      "id": "isc2.cc.d5.log.d7.classify",
+      "type": "CLASSIFY",
+      "scoring_class": "B",
+      "interval_tier": "APPLICATION",
+      "expected_duration_s": 90,
+      "pass_threshold": {
+        "min_correct": 5,
+        "item_count": 6
+      },
+      "prompt": "Sort each pattern seen in sign-in logs under the attack it most likely shows.",
+      "validation_payload": {
+        "accuracy_metric": "bucket_assignment",
+        "buckets": {
+          "Password guessing": [
+            "60 failed sign-ins for 'admin' in two minutes from one address",
+            "Repeated failures for one user's account, every few seconds, from one source"
+          ],
+          "Password spraying": [
+            "One failed sign-in each for 300 different accounts, spread over an afternoon",
+            "Two attempts per account across the whole staff directory, spaced to avoid lockouts"
+          ],
+          "Normal activity": [
+            "A user fails once, then succeeds a minute later from their usual laptop",
+            "Staff signing in from the office between 08:00 and 09:00"
+          ]
+        },
+        "normalisation": {
+          "strip_diacritics": false
+        }
+      },
+      "accessible_equivalent": "Keyboard-navigable list pairing each item with one of {Password guessing, Password spraying, Normal activity}; scored identically as bucket_assignment.",
+      "explanation": "Guessing hammers few accounts quickly; spraying touches many accounts lightly to dodge lockout; a single mistyped password followed by success from a known device is ordinary."
+    },
+    {
+      "id": "isc2.cc.d5.log.d30.freerecall",
+      "type": "FREE_RECALL",
+      "scoring_class": "C",
+      "interval_tier": "GENERATIVE",
+      "expected_duration_s": 180,
+      "pass_threshold": {
+        "min_correct": 6,
+        "item_count": 8
+      },
+      "prompt": "Without notes: say what events are worth logging, what a SIEM does with them, why clocks and log protection matter, and the questions you would answer from a log to investigate a suspected brute-force attack.",
+      "validation_payload": {
+        "accuracy_metric": "keyword_density",
+        "required_keywords": [
+          "siem",
+          "privilege",
+          "configuration",
+          "collects",
+          "source",
+          "evidence",
+          "rule",
+          "clocks"
+        ],
+        "normalisation": {
+          "strip_diacritics": false
+        }
+      },
+      "accessible_equivalent": "Spoken response transcribed via speech-to-text and scored on the same keyword set.",
+      "explanation": "Knowing what to log, why correlation needs synchronised, protected logs, and the where / how many / which accounts / when / did-it-succeed questions is the core of first-line monitoring."
+    }
+  ]
+}

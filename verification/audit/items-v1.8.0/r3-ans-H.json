@@ -1,0 +1,92 @@
+{
+  "reviewer": "H",
+  "items": {
+    "isc2.cc.d2.incident-response::gate": {
+      "answer": ["B", "E", "D", "A", "C"],
+      "confidence": 4,
+      "flag": "AMBIGUOUS",
+      "severity": "MED",
+      "note": "B before E rests only on E's wording ('the isolated workstation'). The lesson puts scoping in Detection & analysis, which comes before containment, so a learner could argue for scoping first via the SIEM and then isolating everything at once (E then B). Also, once B cuts the network, E's 'live connections' are really connection state left in memory, not active links; worth rewording. E is also much longer and more specific than the other steps, but length doesn't give away its position. Not a blocker."
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d1.cloze": {
+      "answer": ["Preparation", "Analysis", "Eradication"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "Recognition-level as intended. The '&' pairings give strong cues, which is acceptable for a RECOGNITION drill."
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d7.classify": {
+      "answer": {
+        "1": "Detection & analysis",
+        "2": "Detection & analysis",
+        "3": "Containment, eradication & recovery",
+        "4": "Post-incident activity",
+        "5": "Preparation",
+        "6": "Containment, eradication & recovery",
+        "7": "Post-incident activity",
+        "8": "Preparation"
+      },
+      "confidence": 4,
+      "flag": "AMBIGUOUS",
+      "severity": "MED",
+      "note": "Statement 7 ('Record how long detection took') contains the word 'detection', which pulls a learner toward Detection & analysis. The lesson never mentions collecting metrics in the post-incident phase, so the right placement depends on the clause 'to measure improvement'. Add metrics to the post-incident bullet in the lesson, or reword the statement. Statement 1 (severity) is supported by 'how serious it is' in the lesson."
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d30.freerecall": {
+      "answer": "The four phases are preparation, detection and analysis, containment/eradication/recovery, and post-incident activity. You contain first to stop the attack spreading and to cut off the attacker's control. Eradicating before you have contained it risks the attacker re-infecting systems or moving elsewhere while you clean. You keep a compromised machine powered on because memory holds running processes and live network connections, and that volatile evidence is lost at shutdown. A playbook is the written plan for one specific type of incident, such as ransomware or a compromised mailbox, set out as concrete steps with named owners. The post-incident lessons-learned review feeds back into preparation, so the plan and playbooks get better before the next incident.",
+      "confidence": 4,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "The prompt asks 'why you contain before you eradicate', but the lesson's own reason is weak: it only says containment stops spreading, and it gives the reason for eradicating before recovery instead. A scorer's rubric should accept 'stops spread/attacker control while you clean'."
+    },
+    "isc2.cc.d5.logging-monitoring::gate": {
+      "answer": ["203.0.113.66", "5", "3", "8", "no"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "The success trap is good: the Accepted line at 07:39:55 comes from 10.0.0.5, not the attacker. Blank 4 (seconds) could be read as an inclusive count by a few learners (8 vs 9), but 'from the first to the last' makes the difference reading natural. ATT&CK IDs in the lesson are correct (T1110, .001 guessing, .003 spraying)."
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d1.cloze": {
+      "answer": ["correlates", "fatigue", "order"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d7.classify": {
+      "answer": {
+        "1": "Password guessing",
+        "2": "Normal activity",
+        "3": "Password spraying",
+        "4": "Password guessing",
+        "5": "Normal activity",
+        "6": "Password spraying"
+      },
+      "confidence": 5,
+      "flag": "FACTUAL",
+      "severity": "LOW",
+      "note": "Statement 3 ('all with the same password') describes something sign-in logs do not normally record: failed-authentication logs don't store the attempted password. The other half of the statement (one failure each across 300 accounts over an afternoon) already identifies spraying, so drop 'all with the same password' or reword it as an inference."
+    }
+  },
+  "hints": {
+    "isc2.cc.d2.incident-response::hint0": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "MED",
+      "note": "It gives a real test (could this be undone while the attacker is still active?), but it effectively places recovery (A) after eradication (D). It doesn't echo step wording. Acceptable."
+    },
+    "isc2.cc.d2.incident-response::hint1": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "MED",
+      "note": "'Information that only exists while an earlier step's conditions still hold' points straight at E needing B's powered-on, isolated machine, so it narrows the B-E pair. It's still framed as a dependency method. It doesn't echo step text."
+    },
+    "isc2.cc.d5.logging-monitoring::hint0": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "LOW",
+      "note": "This is method only: filter before counting, which keeps the analyst's Accepted lines out of the count."
+    },
+    "isc2.cc.d5.logging-monitoring::hint1": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "LOW",
+      "note": "It tells the learner to check the same source for a different event type, which is the correct method. It doesn't reveal the answer, because the decoy Accepted lines come from a different address, so the learner still has to read the IPs."
+    }
+  }
+}

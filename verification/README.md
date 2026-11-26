@@ -27,8 +27,10 @@ npm run test:faults  # fault injection: revert each fix, require a suite to fail
 | `verify-arc-loop.mjs` | the gate gates, consolidation can't be rushed, confidence precedes feedback; §D3 (v1.7.1) keeps the risk gate's step 4 identical everywhere and submits a right and a wrong order through the real DOM |
 | `verify-fsrs-oracle.mjs` | the FSRS-6 code sliced out of `index.html` matches the reference implementation |
 | `verify-step-a.mjs` | the Domain-1 meters count honestly, the Today card is throttled and ranked, the explainer owns the first open, the overdue gate blocks at the locked thresholds (and only new material), the consolidation screen has exits. Toggle off = v1.6.1 dashboard byte-for-byte (needs history: commit `5a2e98d`). §S9 (v1.7.1): ARC on opens on Command, ARC off on Domains, and a same-day reload shows no second Today card |
-| `verify-mobile-ui.mjs` | tooltips behave on touch and mouse; objective rows, the header and the Step A cards/explainer fit every width from 300px to 1280px |
+| `verify-phase2.mjs` | (v1.8.0) the five Phase 2 modules run the full loop through the real DOM with a wrong and a right gate submission each; IR reorder right/reversed; subnet SKILL fluency (in time + unhinted passes, over-time / hinted / one wrong slot fail); SOC gate scores findings never commands, gate terminal writes no `drills.terminal`, free-play SOC Terminal still clears; least-privilege extra grant fails; phishing half-classified is refused; Domain 2–5 never move a Domain 1 meter; Today card / exits / overdue gate see every module; ARC off = v1.7.1 Domains, Range and Command byte-for-byte (needs history: commit `00f6414`) |
+| `verify-mobile-ui.mjs` | tooltips behave on touch and mouse; objective rows, the header and the Step A cards/explainer fit every width from 300px to 1280px; §6 (v1.8.0) sweeps all five Phase 2 gates and the SOC gate terminal, including a focused finding with the keyboard up |
 | `verify-rollback.mjs` | reverting to the previous release loses no learner data |
+| `phase2-audit.mjs` | (tool, not a suite) builds the answer-key-free blind task for the Phase 2 banks and scores reviewers' answers by the unanimity rule; record in `docs/ITEM-AUDIT-v1.8.0.md` |
 
 `verify-rollback.mjs` needs two checkouts. Make the old one a worktree first:
 

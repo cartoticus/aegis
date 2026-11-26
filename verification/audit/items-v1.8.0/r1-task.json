@@ -1,0 +1,511 @@
+{
+  "instructions": "see prompt",
+  "modules": [
+    {
+      "module": "isc2.cc.d2.incident-response",
+      "title": "Incident Response: the Lifecycle and the Playbook",
+      "reading": "## Why a lifecycle at all\n\nAn incident is the worst time to invent a process. People are stressed, information is partial, and the obvious move is often the wrong one. Incident response (IR) gives the team an order of work agreed in advance, so the first hour is spent executing rather than debating.\n\n## The four phases the exam tests\n\n```\nPREPARATION -> DETECTION & -> CONTAINMENT, ERADICATION -> POST-INCIDENT\n                ANALYSIS        & RECOVERY                 ACTIVITY\n     ^                                                         |\n     +---------------- lessons learned feed back --------------+\n```\n\n- **Preparation** — before anything happens: the plan, the playbooks, the contact list, the tools, the practice runs.\n- **Detection & analysis** — notice something, confirm it is a real incident rather than noise, work out its scope and how serious it is.\n- **Containment, eradication & recovery** — stop it spreading, remove the cause, then return systems to normal service.\n- **Post-incident activity** — the lessons-learned review. What worked, what did not, and what changes in the plan.\n\nThe arrow back to preparation is the point: every incident should leave the next response better than this one.\n\n## The order inside the third phase matters\n\n**Contain first.** Cutting a compromised machine off the network stops it spreading and stops the attacker steering it. Leave it **powered on** if you can: memory holds running processes and live connections, and that evidence disappears the moment the power goes.\n\n**Eradicate before you recover.** If the attacker still has a foothold — a hidden account, a scheduled task, a second infected host — anything you restore can simply be compromised again. Clean first, then rebuild.\n\n**Recover from something you trust.** A backup is only useful if it predates the compromise and has been checked. Copies kept offline are the ones an attacker could not reach.\n\n## Playbooks\n\nA **playbook** is the plan for one kind of incident — ransomware, a lost laptop, a compromised mailbox — written as concrete steps with owners. The lifecycle is the shape every playbook follows; the playbook is what a responder actually reads at 3 a.m.\n\n## A note on the source\n\nThis four-phase lifecycle comes from NIST SP 800-61 Revision 2 (2012), and it is the model the certification exams test. In April 2025 NIST replaced that guide with **Revision 3**, which no longer presents a stand-alone cycle: it maps incident response onto the six functions of the Cybersecurity Framework 2.0 (Govern, Identify, Protect, Detect, Respond, Recover). The work is the same; the framing is broader. Learn the four phases for the exam, and recognise the CSF framing when you meet it at work.\n\n## Worked example\n\nA finance manager's mailbox signs in from two countries an hour apart. **Detection & analysis:** the alert is checked against the user, who was at their desk all day, so it is real. **Containment:** the session is revoked and the password reset. **Eradication:** a hidden rule silently forwarding invoices to an outside address is found and deleted. **Recovery:** the account is re-enabled with MFA and watched for a week. **Post-incident:** the review asks why MFA was not on already, and the mailbox playbook gains a step to check forwarding rules.",
+      "items": [
+        {
+          "id": "isc2.cc.d2.incident-response::gate",
+          "bank": "gate",
+          "prompt": "07:42. A SIEM alert fires: a finance workstation is calling out to an unknown address every 60 seconds, its user reports files ending in .locked, and the encryption is starting to appear on a shared drive. Put the five response steps in the order you would carry them out.",
+          "kind": "ORDER",
+          "steps": [
+            {
+              "letter": "A",
+              "text": "Bring the data back from offline copies that have been checked and found clean"
+            },
+            {
+              "letter": "B",
+              "text": "Cut the infected workstation off the network but leave it powered on"
+            },
+            {
+              "letter": "C",
+              "text": "Hold a review of what happened and write the improvements into the response plan"
+            },
+            {
+              "letter": "D",
+              "text": "Remove the ransomware and anything it planted to survive a reboot, on every affected system"
+            },
+            {
+              "letter": "E",
+              "text": "Track down the other machines it reached and shut off the shared drive the encryption is moving through"
+            }
+          ]
+        },
+        {
+          "id": "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d1.cloze",
+          "bank": "RECOGNITION",
+          "prompt": "Complete the lifecycle: Preparation → Detection & ______ → Containment, ______ & Recovery → Post-incident activity. What is learned in the last phase feeds back into ______.",
+          "kind": "CLOZE",
+          "blanks": [
+            "Blank 1",
+            "Blank 2",
+            "Blank 3"
+          ]
+        },
+        {
+          "id": "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d7.classify",
+          "bank": "APPLICATION",
+          "prompt": "Sort each activity under the incident response phase it belongs to.",
+          "kind": "CLASSIFY",
+          "buckets": [
+            "Containment, eradication & recovery",
+            "Detection & analysis",
+            "Post-incident activity",
+            "Preparation"
+          ],
+          "statements": [
+            {
+              "n": 1,
+              "text": "Assign a severity level to a confirmed incident"
+            },
+            {
+              "n": 2,
+              "text": "Confirm a SIEM alert is not a false positive"
+            },
+            {
+              "n": 3,
+              "text": "Disconnect a compromised server from the network"
+            },
+            {
+              "n": 4,
+              "text": "Hold a blameless review of the response"
+            },
+            {
+              "n": 5,
+              "text": "Keep an out-of-band contact list for the response team"
+            },
+            {
+              "n": 6,
+              "text": "Rebuild a server from a known-good image and return it to service"
+            },
+            {
+              "n": 7,
+              "text": "Record how long detection took, to measure improvement"
+            },
+            {
+              "n": 8,
+              "text": "Write and rehearse the ransomware playbook"
+            }
+          ]
+        },
+        {
+          "id": "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d30.freerecall",
+          "bank": "GENERATIVE",
+          "prompt": "Without notes: name the four incident response phases in order, explain why you contain before you eradicate and why you keep a compromised machine powered on, say what a playbook is, and say what the final phase feeds back into.",
+          "kind": "RECALL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "isc2.cc.d2.incident-response::hint0",
+          "for": "gate",
+          "text": "For each step, ask whether it could be undone if the attacker were still active when you did it. Anything that could be undone has to wait for the work that stops them."
+        },
+        {
+          "id": "isc2.cc.d2.incident-response::hint1",
+          "for": "gate",
+          "text": "Your first move should make the situation stop getting worse without destroying what you will later need to understand it."
+        }
+      ]
+    },
+    {
+      "module": "isc2.cc.d3.least-privilege",
+      "title": "Least Privilege & Need-to-Know",
+      "reading": "## The rule\n\n**Least privilege**: every account — a person, a service, a script — gets the minimum access its job needs, and nothing more. **Need-to-know** is the same idea applied to information: even someone cleared for a kind of data only sees the records their work actually requires.\n\n## Why it matters: blast radius\n\nAccounts get compromised. A password is phished, a laptop is stolen, an insider turns. When that happens, the attacker can reach exactly what that account could reach. A tightly scoped account turns a breach into an annoyance; an over-provisioned one turns it into a headline. Least privilege is the control that is already working on the day everything else has failed.\n\n## How access goes wrong\n\n- **Convenience grants.** \"Just give them admin so they stop asking.\" Every one is a door left open for whoever steals the account.\n- **Privilege creep.** Someone moves from payroll to marketing and keeps their payroll access. Repeat over five years and a mid-level account can reach half the company. Regular access reviews strip what is no longer needed.\n- **Copying a colleague.** Cloning the predecessor's permissions inherits all of their creep too.\n\n## Two techniques\n\n- **Just-in-time access** — elevated rights are granted for a task and expire afterwards, so nobody holds admin rights while reading email.\n- **Separate admin accounts** — administrators use an ordinary account day to day and a separate privileged one only for admin work.\n\n## Destructive and self-approving rights\n\nSome permissions are dangerous out of proportion to how often they are used: deleting audit logs, changing production firewall rules, managing every user account. A right that lets someone approve their own work, or erase the record of what they did, also breaks **separation of duties**. Those should sit with a small number of people, and never with someone whose job does not require them.\n\n## Worked example\n\nA hospital porter needs to see which ward a patient is on so they can move them. They do not need diagnoses, medication or billing. The porter role gets *location only*. If that login is phished, the attacker learns where patients are — not why they are there.",
+      "items": [
+        {
+          "id": "isc2.cc.d3.least-privilege::gate",
+          "bank": "gate",
+          "prompt": "Provision a new Junior SOC Analyst (Tier 1). Tier 1 monitors alerts, triages and documents them, and escalates. They do not administer systems or close out major incidents on their own. Select exactly the permissions this job needs — no more, no fewer.",
+          "kind": "SELECT",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Add notes / triage tickets"
+            },
+            {
+              "letter": "B",
+              "text": "Approve & close major incidents alone"
+            },
+            {
+              "letter": "C",
+              "text": "Delete audit logs"
+            },
+            {
+              "letter": "D",
+              "text": "Domain Administrator"
+            },
+            {
+              "letter": "E",
+              "text": "Escalate to Tier-2"
+            },
+            {
+              "letter": "F",
+              "text": "Manage all user accounts"
+            },
+            {
+              "letter": "G",
+              "text": "Modify firewall rules in production"
+            },
+            {
+              "letter": "H",
+              "text": "Read knowledge base / playbooks"
+            },
+            {
+              "letter": "I",
+              "text": "Read SIEM dashboards & alerts"
+            }
+          ]
+        },
+        {
+          "id": "isc2.cc.d3.least-privilege::isc2.cc.d3.lp.d1.cloze",
+          "bank": "RECOGNITION",
+          "prompt": "Complete: Giving an account only the access its job requires is least ______. Permissions that pile up as someone changes roles are called privilege ______. Granting elevated rights only for the duration of a task is ______-in-time access.",
+          "kind": "CLOZE",
+          "blanks": [
+            "Blank 1",
+            "Blank 2",
+            "Blank 3"
+          ]
+        },
+        {
+          "id": "isc2.cc.d3.least-privilege::isc2.cc.d3.lp.d7.classify",
+          "bank": "APPLICATION",
+          "prompt": "A payroll clerk processes salary changes that a manager has approved. For each access, decide whether the clerk needs it or it should be removed.",
+          "kind": "CLASSIFY",
+          "buckets": [
+            "Needs it",
+            "Remove it"
+          ],
+          "statements": [
+            {
+              "n": 1,
+              "text": "Approve salary changes"
+            },
+            {
+              "n": 2,
+              "text": "Create new user accounts in the HR system"
+            },
+            {
+              "n": 3,
+              "text": "Edit salary records for approved changes"
+            },
+            {
+              "n": 4,
+              "text": "Edit the payroll system's audit log"
+            },
+            {
+              "n": 5,
+              "text": "Read the CEO's private email"
+            },
+            {
+              "n": 6,
+              "text": "Run the monthly payroll report"
+            },
+            {
+              "n": 7,
+              "text": "View the queue of approved change requests"
+            }
+          ]
+        },
+        {
+          "id": "isc2.cc.d3.least-privilege::isc2.cc.d3.lp.d30.freerecall",
+          "bank": "GENERATIVE",
+          "prompt": "Without notes: define least privilege and need-to-know, explain what 'blast radius' means for a compromised account, describe privilege creep and how it is fixed, and explain why the right to delete audit logs is especially dangerous.",
+          "kind": "RECALL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "isc2.cc.d3.least-privilege::hint0",
+          "for": "gate",
+          "text": "Read each permission as if the account had already been stolen. Ask what the thief could do with it, then whether the job described actually needs that ability."
+        },
+        {
+          "id": "isc2.cc.d3.least-privilege::hint1",
+          "for": "gate",
+          "text": "Describe the job as a list of verbs first, before you look at the options. Keep only the permissions that one of those verbs requires."
+        }
+      ]
+    },
+    {
+      "module": "isc2.cc.d4.subnetting",
+      "title": "IP Addressing & Subnetting",
+      "reading": "## Addresses have two halves\n\nAn IPv4 address is **32 bits**, written as four numbers from 0 to 255 (octets), like 10.20.30.40. The **prefix** — the /n after the address — says how many of those bits, counting from the left, name the **network**. The rest name a **host** on that network.\n\nThe **subnet mask** says the same thing in dotted form: 1-bits for the network part, 0-bits for the host part. /24 is 255.255.255.0; /16 is 255.255.0.0.\n\n## The method: find the block size\n\nMost exam problems split inside one octet. Work in that octet only:\n\n- **Host bits** = 32 minus the prefix. For /27 that is 5; the other 3 bits of the last octet belong to the network.\n- **Block size** = 256 minus the mask value in that octet. The mask octets go 128, 192, 224, 240, 248, 252 for 1 to 6 network bits.\n- Networks start at **multiples of the block size**: 0, block, 2 x block, and so on.\n\nFrom there:\n\n- **Network address** — the multiple of the block size at or just below your address. All host bits 0.\n- **Broadcast address** — the next network address minus one. All host bits 1.\n- **Usable hosts** — 2 to the power of the host bits, minus 2 (the network and broadcast addresses cannot be given to a device).\n\n## Worked example: 10.20.30.77/27\n\n```\n/27 -> 3 network bits in the last octet\nmask      255.255.255.224   (256 - 224 = block size 32)\nblocks    0, 32, 64, 96 ...  77 falls in the 64 block\nnetwork   10.20.30.64\nbroadcast 10.20.30.95       (96 - 1)\nusable    2^5 - 2 = 30 hosts  (.65 to .94)\n```\n\nCheck yourself: the network and broadcast addresses should differ by block size minus one (95 - 64 = 31). If they do not, you picked the wrong block.\n\n## Private ranges\n\nThree ranges are reserved for internal networks and are not routed on the public internet: **10.0.0.0/8**, **172.16.0.0/12** and **192.168.0.0/16**. IPv6 uses 128-bit addresses and was designed in part because the 32-bit space ran out.\n\n## Why a security professional cares\n\nSubnets are where networks are cut into trust zones. Firewall rules, access lists and segmentation are all written in terms of these ranges. A rule meant for one /27 that is accidentally written as a /24 opens the door to eight times as many hosts.",
+      "items": [
+        {
+          "id": "isc2.cc.d4.subnetting::gate",
+          "bank": "gate",
+          "prompt": "A host is configured as 172.16.45.130/26. Work out its subnet. All four answers must be right, with no hint, within the time allowed.",
+          "kind": "CLOZE",
+          "blanks": [
+            "Network address",
+            "Broadcast address",
+            "Number of usable hosts",
+            "Subnet mask (dotted decimal)"
+          ]
+        },
+        {
+          "id": "isc2.cc.d4.subnetting::isc2.cc.d4.subnet.d1.cloze",
+          "bank": "RECOGNITION",
+          "prompt": "Fill in the masks: /24 is 255.255.255.______, /25 is 255.255.255.______, /28 is 255.255.255.______.",
+          "kind": "CLOZE",
+          "blanks": [
+            "Mask octet for /24",
+            "Mask octet for /25",
+            "Mask octet for /28"
+          ]
+        },
+        {
+          "id": "isc2.cc.d4.subnetting::isc2.cc.d4.subnet.d7.cloze",
+          "bank": "APPLICATION",
+          "prompt": "Solve 192.168.10.200/28.",
+          "kind": "CLOZE",
+          "blanks": [
+            "Network address",
+            "Broadcast address",
+            "Number of usable hosts"
+          ]
+        },
+        {
+          "id": "isc2.cc.d4.subnetting::isc2.cc.d4.subnet.d30.freerecall",
+          "bank": "GENERATIVE",
+          "prompt": "Without notes: explain how to find the network address, broadcast address and usable host count for any address with a prefix between /25 and /30, using the block-size method, and say why two addresses in every subnet cannot be given to a device.",
+          "kind": "RECALL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "isc2.cc.d4.subnetting::hint0",
+          "for": "gate",
+          "text": "Ignore the first three octets: with this prefix the whole problem lives in the last one. Work out how big each block is there, then list where the blocks start."
+        },
+        {
+          "id": "isc2.cc.d4.subnetting::hint1",
+          "for": "gate",
+          "text": "Check your pair of addresses against each other: the gap between the start and end of a block is fixed by the block size, so a wrong block shows up straight away."
+        }
+      ]
+    },
+    {
+      "module": "isc2.cc.d5.security-awareness",
+      "title": "Security Awareness: Social Engineering & Passwords",
+      "reading": "## People are an attack surface\n\nMost intrusions involve a person being persuaded to do something: open a file, approve a payment, type a password into the wrong page. Training people to notice and report that is a **primary** control, not a courtesy. A trained workforce becomes a network of sensors — the idea behind the phrase \"human firewall\".\n\n## Social engineering\n\nSocial engineering manipulates people rather than machines. The channel changes; the levers do not.\n\n- **Phishing** — by email. *Spear phishing* targets one person with researched detail; *whaling* targets executives.\n- **Vishing** and **smishing** — by phone call and by text message.\n- **Pretexting** — a made-up story that makes a request seem normal (\"I'm the auditor, I need the supplier list today\").\n- **Tailgating** — following someone through a secure door before it closes.\n- **Business email compromise** — pretending to be an executive or supplier to redirect money.\n\nThe levers are **urgency** (act now), **authority** (the boss says so), **secrecy** (don't tell anyone), and **a request that skips the normal process** — a password by reply, a payment outside the usual approval, a login through a link.\n\n## How to read a suspicious message\n\nLook at three things, in this order. **Who really sent it:** the address, not the display name — a lookalike domain or a personal webmail account claiming to be an executive is a warning. **What it wants:** a credential, money, or a file opened. **Whether that request would normally arrive this way.** Legitimate services send you to the portal you already use; they do not ask for your password by email. Urgency alone is not proof — real deadlines exist — but urgency combined with an unusual request is the classic pattern.\n\nWhen in doubt, **verify through a channel you already know** (call the number in the directory, not the one in the email) and **report it**. Fast reporting is what lets the security team pull the same message from everyone else's inbox.\n\n## Passwords\n\nCurrent NIST guidance (SP 800-63B) favours **length** over forced complexity. A long passphrase of unrelated words is far harder to guess than a short word with symbols swapped in, and much easier to remember. Use a **different password for every site** so one breach does not unlock the rest, keep them in a **password manager**, and turn on **multi-factor authentication** wherever it is offered. Forced changes on a timer are no longer recommended; change a password when there is reason to think it has been exposed.\n\n## Worked example\n\nAn accounts clerk gets an email from a known supplier's name saying their bank has changed and the next invoice should go to a new account. The address is one letter off the supplier's real domain. She phones the supplier on the number already on file, who confirms they have changed nothing, and she reports the email. The payment that would have gone to the fraudsters never leaves.",
+      "items": [
+        {
+          "id": "isc2.cc.d5.security-awareness::gate",
+          "bank": "gate",
+          "prompt": "Your company's real domain is yourcompany.com. Each line shows a message's sender address, its subject and what it asks you to do. Classify every message as Phishing or Legitimate.",
+          "kind": "CLASSIFY",
+          "buckets": [
+            "Legitimate",
+            "Phishing"
+          ],
+          "statements": [
+            {
+              "n": 1,
+              "text": "dana.reyes.ceo@gmail.com · “Quick favour — are you at your desk?” · asks you to buy gift cards for a client, send the codes and keep it quiet"
+            },
+            {
+              "n": 2,
+              "text": "docs-share@dropbox-files.co · “Invoice_Q3.pdf has been shared with you” · asks you to enter your Microsoft 365 password to open it"
+            },
+            {
+              "n": 3,
+              "text": "facilities@yourcompany.com · “Fire drill Wednesday at 10am” · asks you to leave by the nearest exit when the alarm sounds"
+            },
+            {
+              "n": 4,
+              "text": "helpdesk@yourcompany.com.mailbox-support.io · “Your mailbox is full” · asks you to reply with your username and password to get more space"
+            },
+            {
+              "n": 5,
+              "text": "hr@yourcompany.com · “Benefits enrolment closes 30 November” · asks you to make your choices in the HR portal you normally use"
+            },
+            {
+              "n": 6,
+              "text": "it-support@yourcompany.com · “Scheduled maintenance this Saturday” · asks for nothing; questions go to the usual ticket portal"
+            },
+            {
+              "n": 7,
+              "text": "j.okafor@yourcompany.com · “Notes from today's design review” · asks you to read the summary; the slides are on the team drive"
+            },
+            {
+              "n": 8,
+              "text": "no-reply@calendar.yourcompany.com · “Invitation: Team retro — Thursday 3pm” · asks you to accept or decline in your calendar"
+            },
+            {
+              "n": 9,
+              "text": "payroll@yourcompany-hr.net · “Update your bank details before Friday's pay run” · asks you to sign in through the attached link with your work login"
+            },
+            {
+              "n": 10,
+              "text": "security@m1crosoft-verify.com · “URGENT: Your account will be deleted in 24 hours” · asks you to click a link and enter your password"
+            }
+          ]
+        },
+        {
+          "id": "isc2.cc.d5.security-awareness::isc2.cc.d5.sa.d1.cloze",
+          "bank": "RECOGNITION",
+          "prompt": "Complete: Social engineering by phone call is called ______. Following someone through a secure door before it shuts is ______. Inventing a believable story to make a request seem normal is ______.",
+          "kind": "CLOZE",
+          "blanks": [
+            "Blank 1",
+            "Blank 2",
+            "Blank 3"
+          ]
+        },
+        {
+          "id": "isc2.cc.d5.security-awareness::isc2.cc.d5.sa.d7.classify",
+          "bank": "APPLICATION",
+          "prompt": "Sort each password practice: does it follow current guidance, or work against it?",
+          "kind": "CLASSIFY",
+          "buckets": [
+            "Follows guidance",
+            "Works against it"
+          ],
+          "statements": [
+            {
+              "n": 1,
+              "text": "A different password for every site, kept in a password manager"
+            },
+            {
+              "n": 2,
+              "text": "A long passphrase made of four unrelated words"
+            },
+            {
+              "n": 3,
+              "text": "An eight-character word with letters swapped for symbols"
+            },
+            {
+              "n": 4,
+              "text": "Changing a password after a breach notice names that site"
+            },
+            {
+              "n": 5,
+              "text": "Forcing everyone to change passwords every 30 days"
+            },
+            {
+              "n": 6,
+              "text": "Reusing one strong password everywhere"
+            },
+            {
+              "n": 7,
+              "text": "Turning on multi-factor authentication for email"
+            }
+          ]
+        },
+        {
+          "id": "isc2.cc.d5.security-awareness::isc2.cc.d5.sa.d30.freerecall",
+          "bank": "GENERATIVE",
+          "prompt": "Without notes: name three forms of social engineering and the psychological levers they rely on, describe how you would check a suspicious message, and give the current guidance on passwords.",
+          "kind": "RECALL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "isc2.cc.d5.security-awareness::hint0",
+          "for": "gate",
+          "text": "Read the sender address character by character, all the way to the end. Ask which organisation actually controls that address, whatever name it claims."
+        },
+        {
+          "id": "isc2.cc.d5.security-awareness::hint1",
+          "for": "gate",
+          "text": "Ask how this kind of request would reach you if it were genuine. When the message wants something it would normally get through a portal you already use, that mismatch is the tell."
+        }
+      ]
+    },
+    {
+      "module": "isc2.cc.d5.logging-monitoring",
+      "title": "Logging & Monitoring: Reading the Evidence",
+      "reading": "## Logs are the record of what happened\n\nEvery system can write down what it does: who signed in, what was changed, which connections were made. Those **logs** are how you detect an attack in progress and how you reconstruct one afterwards. A system that does not log, or whose logs nobody reads, can be breached without anyone ever knowing.\n\n## What is worth logging\n\n- **Authentication** — sign-ins that succeed and fail, and where they came from.\n- **Privilege changes** — accounts created, added to admin groups, or given new rights.\n- **Configuration changes** — firewall rules, security settings, software installed.\n- **Access to sensitive data**, and the security tools' own alerts.\n\n## From scattered logs to a SIEM\n\nA single server's log shows one corner of the picture. A **SIEM** (security information and event management) system **collects** logs from across the organisation, **normalises** them into one format, **correlates** events from different sources, and **raises alerts** when a pattern matches a rule. Correlation is the valuable part: a failed VPN login, then a success from the same address, then a new admin account on a file server, means little in three separate logs and a great deal side by side.\n\nTwo things make correlation possible. **Synchronised clocks** — every system set from the same time source, or events cannot be put in order. And **protected logs** — sent to a separate store as they are written, so an intruder who gains admin rights cannot quietly delete the evidence. Logs are kept for a defined **retention** period, long enough to investigate an incident found months later.\n\nToo many low-value alerts cause **alert fatigue**: analysts start ignoring them. Tuning rules so alerts are rare and meaningful is part of the job.\n\n## Reading for a brute-force attack\n\nMITRE ATT&CK catalogues password attacks under **Brute Force (T1110)**. Two patterns are worth knowing by shape:\n\n- **Password guessing** (T1110.001) — many attempts against one or a few accounts, usually from the same source, in a short time.\n- **Password spraying** (T1110.003) — one or two common passwords tried against many accounts, slowly, to stay under lockout limits.\n\nWhen you investigate, answer four questions from the log itself: **where** the attempts came from, **how many** there were, **which accounts** were tried, and **over what time span**. Then ask the question that matters most: did any attempt from that source **succeed**?\n\n## Worked example\n\nA web portal's log shows 40 failed sign-ins for the account \"finance\" between 02:14:05 and 02:14:45, all from 198.51.100.23, then a successful sign-in for \"finance\" from the same address at 02:15:10. One account, one source, forty attempts in forty seconds: password guessing. The success afterwards turns a noisy attack into a confirmed compromise — the account is disabled, the session is killed, and the incident response playbook starts.",
+      "items": [
+        {
+          "id": "isc2.cc.d5.logging-monitoring::gate",
+          "bank": "gate",
+          "prompt": "An alert says someone may be guessing SSH passwords on this server. Investigate /var/log/auth.log in the terminal, then record your findings below. Only your findings are scored — the commands you type are not.",
+          "workspace_file": {
+            "path": "/var/log/auth.log",
+            "content": "Apr 14 07:10:02 sshd: Accepted password for analyst from 10.0.0.5 port 51122\nApr 14 07:38:41 sshd: Failed password for root from 203.0.113.66 port 40512\nApr 14 07:38:43 sshd: Failed password for root from 203.0.113.66 port 40514\nApr 14 07:38:45 sshd: Failed password for admin from 203.0.113.66 port 40516\nApr 14 07:38:47 sshd: Failed password for admin from 203.0.113.66 port 40518\nApr 14 07:38:49 sshd: Failed password for test from 203.0.113.66 port 40520\nApr 14 07:39:55 sshd: Accepted password for analyst from 10.0.0.5 port 51140"
+          },
+          "kind": "CLOZE",
+          "blanks": [
+            "Source IP address of the failed attempts",
+            "Number of failed password attempts",
+            "Number of different accounts tried",
+            "Seconds from the first to the last failed attempt"
+          ]
+        },
+        {
+          "id": "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d1.cloze",
+          "bank": "RECOGNITION",
+          "prompt": "Complete: A SIEM collects logs, normalises them, ______ events across sources and raises alerts. So many low-value alerts that analysts stop reading them is alert ______. Systems must share a time source, or events cannot be put in ______.",
+          "kind": "CLOZE",
+          "blanks": [
+            "Blank 1",
+            "Blank 2",
+            "Blank 3"
+          ]
+        },
+        {
+          "id": "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d7.classify",
+          "bank": "APPLICATION",
+          "prompt": "Sort each pattern seen in sign-in logs under the attack it most likely shows.",
+          "kind": "CLASSIFY",
+          "buckets": [
+            "Normal activity",
+            "Password guessing",
+            "Password spraying"
+          ],
+          "statements": [
+            {
+              "n": 1,
+              "text": "60 failed sign-ins for 'admin' in two minutes from one address"
+            },
+            {
+              "n": 2,
+              "text": "A user fails once, then succeeds a minute later from their usual laptop"
+            },
+            {
+              "n": 3,
+              "text": "One failed sign-in each for 300 different accounts, all with the same password, over an afternoon"
+            },
+            {
+              "n": 4,
+              "text": "Repeated failures for one user's account, every few seconds, from one source"
+            },
+            {
+              "n": 5,
+              "text": "Staff signing in from the office between 08:00 and 09:00"
+            },
+            {
+              "n": 6,
+              "text": "Two attempts per account across the whole staff directory, spaced to avoid lockouts"
+            }
+          ]
+        },
+        {
+          "id": "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d30.freerecall",
+          "bank": "GENERATIVE",
+          "prompt": "Without notes: say what events are worth logging, what a SIEM does with them, why clocks and log protection matter, and the questions you would answer from a log to investigate a suspected brute-force attack.",
+          "kind": "RECALL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "isc2.cc.d5.logging-monitoring::hint0",
+          "for": "gate",
+          "text": "Before you count anything, filter the log down to the lines that describe the suspicious activity, so you are not mixing it with normal sign-ins."
+        },
+        {
+          "id": "isc2.cc.d5.logging-monitoring::hint1",
+          "for": "gate",
+          "text": "The timestamps answer one of the questions on their own. Compare the first and last lines of the activity you isolated."
+        }
+      ]
+    }
+  ]
+}

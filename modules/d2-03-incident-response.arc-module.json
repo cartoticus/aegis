@@ -1,0 +1,167 @@
+{
+  "id": "isc2.cc.d2.incident-response",
+  "version": "1.0.0",
+  "domain": "ISC2 Certified in Cybersecurity — Domain 2: Business Continuity, Disaster Recovery & Incident Response",
+  "dag_branch": "cc.d2.bcdr",
+  "profile": "CONCEPT",
+  "prerequisites": [
+    "isc2.cc.d1.cia-triad"
+  ],
+  "invalidation_policy": "REVIEW",
+  "provenance": {
+    "authored_by": "hybrid",
+    "generator_id": "arc-aegis-phase2/4.3.0",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "sources": [
+      "nist-sp800-61r2",
+      "nist-sp800-61r3",
+      "cisa-ir-playbooks"
+    ]
+  },
+  "content": {
+    "title": "Incident Response: the Lifecycle and the Playbook",
+    "prequestion": {
+      "prompt": "Before reading: ransomware is encrypting files on a laptop right now. Which should happen first?",
+      "options": [
+        "Pull the power so the encryption stops instantly",
+        "Take it off the network and keep it running",
+        "Restore the files from last night's backup",
+        "Not sure"
+      ]
+    },
+    "reading_markdown": "## Why a lifecycle at all\n\nAn incident is the worst time to invent a process. People are stressed, information is partial, and the obvious move is often the wrong one. Incident response (IR) gives the team an order of work agreed in advance, so the first hour is spent executing rather than debating.\n\n## The four phases the exam tests\n\n```\nPREPARATION -> DETECTION & -> CONTAINMENT, ERADICATION -> POST-INCIDENT\n                ANALYSIS        & RECOVERY                 ACTIVITY\n     ^                                                         |\n     +---------------- lessons learned feed back --------------+\n```\n\n- **Preparation** — before anything happens: the plan, the playbooks, the contact list, the tools, the practice runs.\n- **Detection & analysis** — notice something, confirm it is a real incident rather than noise, work out its scope and how serious it is.\n- **Containment, eradication & recovery** — stop it spreading, remove the cause, then return systems to normal service.\n- **Post-incident activity** — the lessons-learned review. What worked, what did not, and what changes in the plan, backed by measurements such as how long the incident took to detect and to contain.\n\nThe arrow back to preparation is the point: every incident should leave the next response better than this one.\n\n## The order inside the third phase matters\n\n**Contain first.** Cutting a compromised machine off the network stops it spreading and stops the attacker steering it. Leave it **powered on** if you can: memory holds running processes and live connections, and that evidence disappears the moment the power goes.\n\n**Eradicate before you recover.** If the attacker still has a foothold — a hidden account, a scheduled task, a second infected host — anything you restore can simply be compromised again. Clean first, then rebuild.\n\n**Recover from something you trust.** A backup is only useful if it predates the compromise and has been checked. Copies kept offline are the ones an attacker could not reach.\n\n## Playbooks\n\nA **playbook** is the plan for one kind of incident — ransomware, a lost laptop, a compromised mailbox — written as concrete steps with owners. The lifecycle is the shape every playbook follows; the playbook is what a responder actually reads at 3 a.m.\n\n## A note on the source\n\nThis four-phase lifecycle comes from NIST SP 800-61 Revision 2 (2012), and it is the model the certification exams test. In April 2025 NIST replaced that guide with **Revision 3**, which no longer presents a stand-alone cycle: it maps incident response onto the six functions of the Cybersecurity Framework 2.0 (Govern, Identify, Protect, Detect, Respond, Recover). The work is the same; the framing is broader. Learn the four phases for the exam, and recognise the CSF framing when you meet it at work.\n\n## Worked example\n\nA finance manager's mailbox signs in from two countries an hour apart. **Detection & analysis:** the alert is checked against the user, who was at their desk all day, so it is real. **Containment:** the session is revoked and the password reset. **Eradication:** a hidden rule silently forwarding invoices to an outside address is found and deleted. **Recovery:** the account is re-enabled with MFA and watched for a week. **Post-incident:** the review asks why MFA was not on already, and the mailbox playbook gains a step to check forwarding rules."
+  },
+  "gate": {
+    "type": "ORDER_SEQUENCE",
+    "scoring_class": "B",
+    "expected_duration_s": 90,
+    "pass_threshold": {
+      "min_correct": 10,
+      "item_count": 10
+    },
+    "prompt": "07:42. A SIEM alert fires: a finance workstation is calling out to an unknown address every 60 seconds, its user reports files ending in .locked, and other machines may already be affected. Put the five response steps in the order you would carry them out.",
+    "hints": [
+      "For each step, ask whether it could be undone if the attacker were still active when you did it. Anything that could be undone has to wait for the work that stops them.",
+      "Some steps rely on information that only exists while an earlier step's conditions still hold. For each step, ask what must already be true, or still be available, before it can work."
+    ],
+    "validation_payload": {
+      "accuracy_metric": "kendall_tau",
+      "correct": [
+        "Cut the infected workstation off the network but leave it powered on",
+        "Use the connection records still in the running workstation's memory to find the other machines it reached, then cut those off and disable the shared drive they write to",
+        "Remove the ransomware and anything it planted to survive a reboot, on every affected system",
+        "Bring the data back from offline copies that have been checked and found clean",
+        "Hold a review of what happened and write the improvements into the response plan"
+      ]
+    },
+    "accessible_equivalent": "The same five steps as a keyboard-reorderable list with 'move up' / 'move down' controls and a screen-reader-announced position ('step 2 of 5'); scored identically as kendall_tau."
+  },
+  "analog_synthesis": {
+    "taxonomy_type": "SEQUENTIAL",
+    "prompt": "Away from the screen, write a one-page playbook for a different incident: a colleague's work phone, unlocked and signed in to company email, has been left on a train. Give one concrete action for each of the four phases, in order, and name who does it. Then draw the arrow from the last phase back to the first and write what it would change.",
+    "calibration_question": "Before checking against the reading: did your containment step come before anything that tries to fix or restore — and did your post-incident step change the plan, or just say the incident was closed?",
+    "accessible_equivalent": "Dictate the same four-phase playbook as a recorded or transcribed spoken response, or talk it through with a partner using the four phase names as prompts."
+  },
+  "drills": [
+    {
+      "id": "isc2.cc.d2.ir.d1.cloze",
+      "type": "CLOZE",
+      "scoring_class": "B",
+      "interval_tier": "RECOGNITION",
+      "expected_duration_s": 45,
+      "pass_threshold": {
+        "min_correct": 2,
+        "item_count": 3
+      },
+      "prompt": "Complete the lifecycle: ______ → Detection & ______ → Containment, ______ & Recovery → Post-incident activity.",
+      "validation_payload": {
+        "accuracy_metric": "correct_slot_ratio",
+        "accept": [
+          [
+            "preparation"
+          ],
+          [
+            "analysis"
+          ],
+          [
+            "eradication"
+          ]
+        ],
+        "normalisation": {
+          "strip_diacritics": false
+        }
+      },
+      "accessible_equivalent": "The same blanks as labelled text fields with screen-reader labels; scored identically as correct_slot_ratio.",
+      "explanation": "Preparation happens before any incident and is where lessons learned feed back; detection & analysis confirms and scopes the incident; eradication removes the cause between containing and recovering."
+    },
+    {
+      "id": "isc2.cc.d2.ir.d7.classify",
+      "type": "CLASSIFY",
+      "scoring_class": "B",
+      "interval_tier": "APPLICATION",
+      "expected_duration_s": 120,
+      "pass_threshold": {
+        "min_correct": 7,
+        "item_count": 8
+      },
+      "prompt": "Sort each activity under the incident response phase it belongs to.",
+      "validation_payload": {
+        "accuracy_metric": "bucket_assignment",
+        "buckets": {
+          "Preparation": [
+            "Write and rehearse the ransomware playbook",
+            "Keep an out-of-band contact list for the response team"
+          ],
+          "Detection & analysis": [
+            "Confirm a SIEM alert is not a false positive",
+            "Assign a severity level to a confirmed incident"
+          ],
+          "Containment, eradication & recovery": [
+            "Disconnect a compromised server from the network",
+            "Rebuild a server from a known-good image and return it to service"
+          ],
+          "Post-incident activity": [
+            "Hold a blameless review of the response",
+            "Record how long detection took, to measure improvement"
+          ]
+        },
+        "normalisation": {
+          "strip_diacritics": false
+        }
+      },
+      "accessible_equivalent": "Keyboard-navigable list pairing each item with one of {Preparation, Detection & analysis, Containment, eradication & recovery, Post-incident activity}; scored identically as bucket_assignment.",
+      "explanation": "Planning and practice happen before an incident; confirming and rating it is analysis; disconnecting, cleaning and rebuilding are the third phase; the review and its measurements come after."
+    },
+    {
+      "id": "isc2.cc.d2.ir.d30.freerecall",
+      "type": "FREE_RECALL",
+      "scoring_class": "C",
+      "interval_tier": "GENERATIVE",
+      "expected_duration_s": 180,
+      "pass_threshold": {
+        "min_correct": 6,
+        "item_count": 8
+      },
+      "prompt": "Without notes: name the four incident response phases in order, explain why you contain before you eradicate and why you keep a compromised machine powered on, say what a playbook is, and say what the final phase feeds back into.",
+      "validation_payload": {
+        "accuracy_metric": "keyword_density",
+        "required_keywords": [
+          "preparation",
+          "detection",
+          "analysis",
+          "containment",
+          "eradication",
+          "recovery",
+          "evidence",
+          "playbook"
+        ],
+        "normalisation": {
+          "strip_diacritics": false
+        }
+      },
+      "accessible_equivalent": "Spoken response transcribed via speech-to-text and scored on the same keyword set.",
+      "explanation": "Being able to say why containment comes first, why power stays on, and why lessons learned loop back to preparation is what separates knowing the lifecycle from reciting it."
+    }
+  ]
+}

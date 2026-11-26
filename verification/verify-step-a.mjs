@@ -226,7 +226,8 @@ const welcome = page => page.evaluate(() => { const c = document.getElementById(
   ok('S4 ladder 2: still consolidating does not count as finished', k2b === 'resume', k2b);
   ok('S4 ladder 3: mid-loop module → resume', await kindFor({ fsm: { [M.cia]: 'PHASE_2_GATE' } }) === 'resume');
   ok('S4 ladder 4: nothing in flight → next unstarted objective', await kindFor({ fsm: {} }) === 'next');
-  const allDone = Object.fromEntries(Object.values(M).map(id => [id, 'MASTERED']));
+  // v1.8.0: the Today card sees every ARC module, so 'caught up' means all of them.
+  const allDone = Object.fromEntries((await page.evaluate(() => arcAllModuleIds())).map(id => [id, 'MASTERED']));
   ok('S4 ladder 4: everything mastered and nothing due → caught up', await kindFor({ fsm: allDone }) === 'done');
   await ctx.close();
 }

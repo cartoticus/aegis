@@ -277,6 +277,72 @@ for (const width of [300, 320, 360, 390, 1280]) {
   await ctx.close();
 }
 
+/* ══ 6. Phase 2 gates (v1.8.0) — 300px → 1280px ══════════════════════════════
+   All five new gates, and the SOC gate's embedded terminal in particular, swept
+   at every width. Both halves again: nothing overlaps (labels vs inputs,
+   terminal prompt vs input, terminal vs the findings) AND nothing scrolls
+   sideways (the page, the modal, the terminal). Plus the phone half of the
+   keyboard trade-off: with the viewport shortened as an on-screen keyboard
+   would, a focused finding slot is still on screen. */
+{
+  const P2 = ['isc2.cc.d2.incident-response', 'isc2.cc.d3.least-privilege', 'isc2.cc.d4.subnetting',
+    'isc2.cc.d5.security-awareness', 'isc2.cc.d5.logging-monitoring'];
+  for (const width of [300, 320, 360, 390, 1280]) {
+    const { ctx, page } = await open({ width });
+    await page.evaluate(async () => { arcCfg().enabled = true; save(); await loadArcCorpus(); });
+    for (const id of P2) {
+      const short = id.split('.').pop();
+      await page.evaluate(id => { const a = arcCfg(); a.fsm['isc2.cc.d1.cia-triad'] = { ...ARC.engine.initialState('LOCKED'), state: 'MASTERED' };
+        a.fsm[id] = { ...ARC.engine.initialState('LOCKED'), state: 'PHASE_2_GATE' }; save(); closeArc(); openArcModule(id); }, id);
+      const g = await page.evaluate(() => {
+        const r = el => { if (!el) return null; const b = el.getBoundingClientRect(); return { left: b.left, right: b.right, top: b.top, bottom: b.bottom, w: b.width }; };
+        const modal = document.querySelector('#arcOverlay .lesson-modal');
+        const slots = [...document.querySelectorAll('#arcWidget .arc-slot')].map(x => [r(x.querySelector('span')), r(x.querySelector('input'))]);
+        const rows = [...document.querySelectorAll('#arcWidget .arc-item')].map(x => [r(x.querySelector('.ai-txt')), r(x.querySelector('select,input'))]);
+        const order = [...document.querySelectorAll('#arcWidget .arc-order li')].map(li => [r(li.querySelector('span')), r(li.querySelector('.arc-mv'))]);
+        const term = document.getElementById('arcTerm'), tb = document.getElementById('arcTermBody');
+        return { vw: innerWidth, scrollW: document.documentElement.scrollWidth, modal: r(modal),
+          innerScrollW: modal.scrollWidth, innerW: modal.clientWidth, slots, rows, order,
+          submit: r(document.getElementById('arcSubmit')), conf: [...document.querySelectorAll('#arcConf [data-conf]')].map(r),
+          term: r(term), termScrollW: tb ? tb.scrollWidth : 0, termW: tb ? tb.clientWidth : 0,
+          prompt: r(tb?.querySelector('.term-prompt')), input: r(tb?.querySelector('.term-input')),
+          firstSlot: r(document.querySelector('#arcWidget .arc-slot')) };
+      });
+      ok(`p2 ${short} @${width}: modal inside the viewport`, g.modal.left >= -0.5 && g.modal.right <= g.vw + 0.5, JSON.stringify(g.modal));
+      ok(`p2 ${short} @${width}: no horizontal page scroll`, g.scrollW <= g.vw, `${g.scrollW} > ${g.vw}`);
+      ok(`p2 ${short} @${width}: nothing scrolls sideways inside the modal`, g.innerScrollW <= g.innerW + 1, `${g.innerScrollW} > ${g.innerW}`);
+      ok(`p2 ${short} @${width}: slot labels never overlap their inputs`, g.slots.every(([a, b]) => !rectsOverlap(a, b)), JSON.stringify(g.slots));
+      ok(`p2 ${short} @${width}: every slot input is wide enough to type an IP (>=120px)`, g.slots.every(([, b]) => b.w >= 120), JSON.stringify(g.slots.map(x => x[1].w)));
+      ok(`p2 ${short} @${width}: item text never overlaps its control`, g.rows.every(([a, b]) => !rectsOverlap(a, b)), JSON.stringify(g.rows.slice(0, 2)));
+      ok(`p2 ${short} @${width}: ordering text never overlaps its move buttons`, g.order.every(([a, b]) => !rectsOverlap(a, b)), JSON.stringify(g.order.slice(0, 2)));
+      ok(`p2 ${short} @${width}: Submit inside the modal`, g.submit && g.submit.right <= g.modal.right + 0.5 && g.submit.left >= g.modal.left - 0.5, JSON.stringify(g.submit));
+      if (id.endsWith('logging-monitoring')) {
+        ok(`p2 soc @${width}: terminal inside the modal`, g.term && g.term.left >= g.modal.left - 0.5 && g.term.right <= g.modal.right + 0.5, JSON.stringify([g.term, g.modal]));
+        ok(`p2 soc @${width}: terminal body does not scroll sideways`, g.termScrollW <= g.termW + 1, `${g.termScrollW} > ${g.termW}`);
+        ok(`p2 soc @${width}: prompt and input do not overlap`, g.prompt && g.input && !rectsOverlap(g.prompt, g.input), JSON.stringify([g.prompt, g.input]));
+        ok(`p2 soc @${width}: command input reachable — inside the terminal and >= 80px wide`, g.input && g.input.right <= g.term.right + 0.5 && g.input.w >= 80, JSON.stringify(g.input));
+        ok(`p2 soc @${width}: findings sit below the terminal, not under it`, g.firstSlot && g.firstSlot.top >= g.term.bottom - 0.5, JSON.stringify([g.term, g.firstSlot]));
+        // run a long command so output wraps rather than widening anything
+        await page.locator('#arcTermBody .term-input:not([disabled])').fill('cat /var/log/auth.log');
+        await page.locator('#arcTermBody .term-input:not([disabled])').press('Enter');
+        const after = await page.evaluate(() => { const tb = document.getElementById('arcTermBody'); const m = document.querySelector('#arcOverlay .lesson-modal');
+          return { tsw: tb.scrollWidth, tw: tb.clientWidth, sw: document.documentElement.scrollWidth, vw: innerWidth, msw: m.scrollWidth, mw: m.clientWidth }; });
+        ok(`p2 soc @${width}: log output wraps — no sideways scroll in terminal, modal or page`, after.tsw <= after.tw + 1 && after.msw <= after.mw + 1 && after.sw <= after.vw, JSON.stringify(after));
+        if (width <= 390) {
+          // keyboard up: a phone keyboard takes ~40% of the height
+          await page.setViewportSize({ width, height: 480 });
+          await page.locator('#arcWidget .arc-in[data-slot="4"]').focus();
+          await page.waitForTimeout(150);
+          const k = await page.evaluate(() => { const b = document.querySelector('#arcWidget .arc-in[data-slot="4"]').getBoundingClientRect(); return { top: b.top, bottom: b.bottom, vh: innerHeight }; });
+          ok(`p2 soc @${width}: with the keyboard up, the focused last finding is on screen`, k.top >= 0 && k.bottom <= k.vh + 0.5, JSON.stringify(k));
+          await page.setViewportSize({ width, height: 844 });
+        }
+      }
+    }
+    await ctx.close();
+  }
+}
+
 await browser.close();
 server.close();
 ok('no page errors', errors.length === 0, errors.join(' | '));

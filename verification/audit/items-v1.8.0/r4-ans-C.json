@@ -1,0 +1,83 @@
+{
+  "reviewer": "C",
+  "items": {
+    "isc2.cc.d2.incident-response::gate": {
+      "answer": ["B","E","D","A","C"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "Taught by the lesson (contain first, keep powered on, eradicate before recover, recover from trusted offline copies). E-before-B is only weakly defensible: the beaconing host must be isolated first, and E's reliance on the host still running is satisfied either way; E must precede D since eradication may reboot and lose memory."
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d1.cloze": {
+      "answer": ["Preparation","Analysis","Eradication"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": "Directly taught in the lifecycle diagram."
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d7.classify": {
+      "answer": {"1":"Detection & analysis","2":"Detection & analysis","3":"Containment, eradication & recovery","4":"Post-incident activity","5":"Preparation","6":"Containment, eradication & recovery","7":"Post-incident activity","8":"Preparation"},
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "All taught. Nits: 'blameless' (4) is not in the lesson but the review is; 7 relies on the lesson's mention of detect/contain measurements in post-incident, which a learner might think is recorded during detection, but the 'to measure improvement' clause settles it."
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d30.freerecall": {
+      "answer": "The four phases are preparation; detection and analysis; containment, eradication and recovery; and post-incident activity. You contain first because cutting the compromised system off stops the attack spreading and stops the attacker steering it while you work out how to remove them. You leave it powered on because memory holds running processes and live network connections, evidence that is lost the moment the power goes. You eradicate before recovering so restored systems are not reinfected through a leftover foothold. A playbook is the written plan for one kind of incident, such as ransomware, set out as concrete steps with named owners. The lessons-learned review in the final phase feeds back into preparation, improving the plan and playbooks.",
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": "Every element of the prompt is covered by the lesson."
+    },
+    "isc2.cc.d5.logging-monitoring::gate": {
+      "answer": ["203.0.113.66","5","3","8","no"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "Derived from the log: 5 failures 07:38:41-07:38:49 against root/admin/test; both Accepted lines are from 10.0.0.5, so no success from the attacker. The lesson teaches the four questions plus 'did it succeed' exactly; good distractor in the 07:39:55 accepted line. Minor: 'seconds' could invite 9 from an inclusive count, but 8 is the natural elapsed time."
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d1.cloze": {
+      "answer": ["correlates","fatigue","order"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": "Directly taught."
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d7.classify": {
+      "answer": {"1":"Password guessing","2":"Normal activity","3":"Password spraying","4":"Password guessing","5":"Normal activity","6":"Password spraying"},
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": "Shapes match the lesson's definitions; normal cases are clearly benign."
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d30.freerecall": {
+      "answer": "Log successful and failed sign-ins with their source, privilege changes such as new accounts or admin-group additions, configuration changes like firewall rules or installed software, access to sensitive data, and security tools' own alerts. A SIEM collects logs from across the organisation, normalises them into one format, correlates events from different sources and raises alerts when a rule matches. Clocks must be synchronised to one time source or events cannot be put in order, and logs must be shipped to a separate protected store so an intruder with admin rights cannot erase them; keep them for a set retention period. For a suspected brute-force attack, establish where the attempts came from, how many there were, which accounts were tried, over what time span, and whether any attempt from that source succeeded.",
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": "Every element is in the lesson."
+    }
+  },
+  "hints": {
+    "isc2.cc.d2.incident-response::hint0": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "LOW",
+      "note": "Gives a reversibility test that separates contain/eradicate from recover and review; does not echo any step's wording. Distinct from hint1 (this one orders containment work before restoration; hint1 addresses evidence dependencies)."
+    },
+    "isc2.cc.d2.incident-response::hint1": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "MED",
+      "note": "Not a duplicate of hint0: it targets the dependency of E on the host still running (from B's 'leave powered on'), which pins E before D. 'Still be available' gently echoes E's 'still in the running workstation's memory' but does not quote it; narrows one item position, so MED."
+    },
+    "isc2.cc.d5.logging-monitoring::hint0": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "LOW",
+      "note": "Method only: filter before counting, which guards against counting the 10.0.0.5 Accepted lines. Distinct from hint1."
+    },
+    "isc2.cc.d5.logging-monitoring::hint1": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "LOW",
+      "note": "Steers the success check to the same source address, defusing the Accepted-from-10.0.0.5 distractor; does not give yes/no away. Not a duplicate of hint0 and echoes no blank's wording beyond 'that same source', which mirrors the blank prompt itself."
+    }
+  }
+}

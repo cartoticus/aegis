@@ -1,0 +1,99 @@
+{
+  "reviewer": "H",
+  "items": {
+    "isc2.cc.d2.incident-response::gate": {
+      "answer": ["B", "E", "D", "A", "C"],
+      "confidence": 4,
+      "flag": "AMBIGUOUS",
+      "severity": "MED",
+      "note": "E is part analysis (scoping from memory) and part containment, so a responder could argue for scoping (E) before isolating (B), as detection & analysis comes first in the lifecycle. B-first holds because E says 'still in the running workstation's memory' and 'then cut those off'. But that same wording gives the answer away: 'still in ... memory' pairs with B's 'leave it powered on', so the B-before-E link can be made from the words alone. Suggest making E's dependency on B less lexical. Not blocking."
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d1.cloze": {
+      "answer": ["Preparation", "Analysis", "Eradication"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d7.classify": {
+      "answer": {
+        "1": "Detection & analysis",
+        "2": "Detection & analysis",
+        "3": "Containment, eradication & recovery",
+        "4": "Post-incident activity",
+        "5": "Preparation",
+        "6": "Containment, eradication & recovery",
+        "7": "Post-incident activity",
+        "8": "Preparation"
+      },
+      "confidence": 4,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "Statement 7: detection timestamps are captured during detection & analysis, so 'Record how long detection took' could be read as belonging there. The lesson's post-incident section and the words 'to measure improvement' settle it as post-incident. Statement 4 says 'review', which matches the lesson's post-incident wording, so it is a mild cue."
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d30.freerecall": {
+      "answer": "The four phases are preparation, detection and analysis, containment eradication and recovery, and post-incident activity. You contain first because isolating the compromised machine stops the attack spreading and stops the attacker controlling it, while you work out how to remove them. If you eradicated without containing, the attacker could reinfect systems while you cleaned. You keep the machine powered on because memory holds running processes and live network connections, which are evidence that is lost at power-off. A playbook is the written plan for one specific type of incident, such as ransomware, with concrete steps and named owners. The post-incident lessons-learned review feeds back into preparation, improving the plan and playbooks for next time.",
+      "confidence": 4,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "The prompt asks 'why you contain before you eradicate', but the lesson only gives reasons for containing first (stops the spread and the attacker's control) and for eradicating before recovering. It never directly contrasts containment with eradication, so the rubric must accept the stop-spread/stop-control reasoning."
+    },
+    "isc2.cc.d5.logging-monitoring::gate": {
+      "answer": ["203.0.113.66", "5", "3", "8", "no"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "The data is sound: 5 failures from 203.0.113.66 between 07:38:41 and 07:38:49 (8 s), against root, admin and test. Both Accepted lines come from 10.0.0.5, a good distractor. The grader must accept '8' only, but should allow 'No', and possibly '8 seconds' or 'five'. Someone counting inclusively might answer 9. The stem only says 'guessing', and the pattern (3 accounts, one source, seconds apart) fits the lesson's guessing definition, so that is consistent."
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d1.cloze": {
+      "answer": ["correlates", "fatigue", "order"],
+      "confidence": 5,
+      "flag": "AMBIGUOUS",
+      "severity": "LOW",
+      "note": "Blank 3: 'sequence' is an equally natural answer, and blank 1 may come as 'correlate' or 'correlates'. The grader should accept these variants. The lesson wording is near-verbatim, so this is pure recognition, which is fine for the RECOGNITION tier."
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d7.classify": {
+      "answer": {
+        "1": "Password guessing",
+        "2": "Normal activity",
+        "3": "Password spraying",
+        "4": "Password guessing",
+        "5": "Normal activity",
+        "6": "Password spraying"
+      },
+      "confidence": 5,
+      "flag": "GIVEAWAY",
+      "severity": "LOW",
+      "note": "Statement 6's 'spaced to avoid lockouts' echoes the lesson's spraying definition ('stay under lockout limits'), so it can be matched by keyword. Statement 3 is the stronger discriminator. ATT&CK IDs in the lesson are correct (T1110, T1110.001 Password Guessing, T1110.003 Password Spraying)."
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d30.freerecall": {
+      "answer": "Log authentication (successful and failed sign-ins and their source), privilege changes such as new accounts or admin group additions, configuration changes, access to sensitive data, and security tool alerts. A SIEM collects logs from across the organisation, normalises them into one format, correlates events from different sources and raises alerts when a rule matches. Clocks must be synchronised to one time source so events can be put in order across systems. Logs must be forwarded to a protected separate store so an intruder with admin rights cannot delete evidence, and kept for a set retention period. For brute force, establish where the attempts came from, how many there were, which accounts were targeted, over what time span, and whether any attempt from that source succeeded.",
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": ""
+    }
+  },
+  "hints": {
+    "isc2.cc.d2.incident-response::hint0": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "LOW",
+      "note": "Gives a reversibility test that sorts D and A after containment without naming steps. It does not order B vs E or place C, so it teaches a method only."
+    },
+    "isc2.cc.d2.incident-response::hint1": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "MED",
+      "note": "'information that only exists while an earlier step's conditions still hold' / 'still be available' points straight at E's 'still in the running workstation's memory' and its dependency on B (powered on). It narrows the B-E pair and echoes E's 'still'. Acceptable, but at the edge of an item-specific pointer."
+    },
+    "isc2.cc.d5.logging-monitoring::hint0": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "LOW",
+      "note": "A filtering method. It protects against counting the 10.0.0.5 Accepted lines without giving any value."
+    },
+    "isc2.cc.d5.logging-monitoring::hint1": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "LOW",
+      "note": "Steers the learner to check for an Accepted line from the same source, which is the method. It does not reveal that the answer is 'no'. It is slightly item-specific but does not echo the blank's wording."
+    }
+  }
+}

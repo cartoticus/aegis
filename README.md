@@ -2,7 +2,7 @@
 
 ![AEGIS](docs/screenshot.png)
 
-![Version](https://img.shields.io/badge/version-1.7.0-E8B04B)
+![Version](https://img.shields.io/badge/version-1.8.0-E8B04B)
 ![PWA](https://img.shields.io/badge/PWA-installable-E8B04B)
 ![Works offline](https://img.shields.io/badge/works-offline-4FD7C9)
 ![No build](https://img.shields.io/badge/build-none-5BD6A0)

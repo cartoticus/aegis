@@ -2,6 +2,13 @@
 
 Generated from the in-app **What’s New** list in `index.html` (`npm run changelog`). Edit it there, not here.
 
+## v1.8.0 — Nov 2026
+
+- **Five new ARC objectives across Domains 2–5, each gated by a Range trainer.** Incident response (put the response in order), least privilege (provision the analyst), subnetting (a timed skill gate), phishing (classify twelve messages) and logging & SIEM (investigate in a SOC terminal, then report your findings). Turn on ARC learning mode under Progress and look for **ARC ›** on those objectives.
+- **The Range is unchanged and still free to play.** The gates borrow the trainers’ scenarios as fixed question sets; the free-play trainers keep their own scoring and their “cleared ✓”.
+- The Domain 1 meters still measure Domain 1 only — the new objectives never change those percentages. The Today card, the while-you-wait suggestions and the overdue-review check now include them.
+- Subnetting is a **skill gate**: it clears only when every answer is right, no hint is revealed, and you finish within four minutes. The result screen now says so when you were right but not yet fluent.
+
 ## v1.7.1 — Nov 2026
 
 - **AEGIS now opens on Command when ARC mode is on**, so the Today card greets you without a tap. With ARC off it still opens on Domains, and the Today card still shows only once a day.

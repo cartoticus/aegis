@@ -1,0 +1,14 @@
+PASS  d2.incident-response::gate                     A✓ B✓ C✓ H✓(AMBIGUOUS) sev=MED
+PASS  d2.incident-response::isc2.cc.d2.ir.d1.cloze   A✓ B✓ C✓ H✓ sev=LOW
+PASS  d2.incident-response::isc2.cc.d2.ir.d7.classify A✓ B✓ C✓ H✓(AMBIGUOUS) sev=MED
+PASS  d5.logging-monitoring::gate                    A✓ B✓ C✓ H✓ sev=LOW
+PASS  d5.logging-monitoring::isc2.cc.d5.log.d1.cloze A✓ B✓ C✓ H✓ sev=NONE
+PASS  d5.logging-monitoring::isc2.cc.d5.log.d7.classify A✓ B✓ C✓ H✓(FACTUAL) sev=LOW
+PASS  d2.incident-response::isc2.cc.d2.ir.d30.freerecall A8/8 B7/8 C8/8 H8/8
+FAIL  d5.logging-monitoring::isc2.cc.d5.log.d30.freerecall A7/8 B7/8 C7/8 H0/8
+PASS  d2.incident-response::hint0                    CCC/MED
+PASS  d2.incident-response::hint1                    CCC/MED
+PASS  d5.logging-monitoring::hint0                   CCC/LOW
+PASS  d5.logging-monitoring::hint1                   CCC/LOW
+
+NOT YET

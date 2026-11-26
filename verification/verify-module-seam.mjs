@@ -15,6 +15,8 @@ import { createServer } from 'node:http';
 import { readFileSync } from 'node:fs';
 
 const ROOT = process.env.APP_ROOT || import.meta.dirname + '/../';
+// v1.8.0: the corpus is the manifest — 6 Domain 1 modules + 5 Phase 2 pilots.
+const NMOD = JSON.parse(readFileSync(ROOT + '/modules/index.json', 'utf8')).modules.length;
 const PORT = 8791;
 
 /* Fault switches flipped per-test. */
@@ -71,7 +73,7 @@ await withPage(async (page, reqs, errors) => {
   await page.goto(URL);
   const r = await loadCorpus(page);
   ok('happy: status ready', r.status === 'ready', JSON.stringify(r));
-  ok('happy: all six modules', r.n === 6, String(r.n));
+  ok(`happy: all ${NMOD} modules`, r.n === NMOD, String(r.n));
   ok('happy: CIA root present', r.ids.includes('isc2.cc.d1.cia-triad'));
   ok('happy: nothing dropped', r.dropped.length === 0, JSON.stringify(r.dropped));
   ok('happy: no page errors', errors.length === 0, errors.join('|'));
@@ -132,9 +134,9 @@ await withPage(async (page) => {
   await page.goto(URL);
   const r = await loadCorpus(page);
   ok('leaf 404: degraded not dead', r.status === 'degraded', JSON.stringify(r));
-  ok('leaf 404: five modules survive', r.n === 5, String(r.n));
+  ok('leaf 404: all but one survive', r.n === NMOD - 1, String(r.n));
   ok('leaf 404: the missing one is named', r.dropped.some(d => /governance/.test(d.id)), JSON.stringify(r.dropped));
-  ok('leaf 404: reason states the count', /5 of 6/.test(r.reason || ''), r.reason);
+  ok('leaf 404: reason states the count', new RegExp(`${NMOD - 1} of ${NMOD}`).test(r.reason || ''), r.reason);
 });
 
 }
@@ -147,7 +149,7 @@ await withPage(async (page, reqs, errors) => {
   const r = await loadCorpus(page);
   ok('corrupt: degraded', r.status === 'degraded', JSON.stringify(r));
   ok('corrupt: bad module excluded', !r.ids.includes('isc2.cc.d1.control-types'), r.ids.join(','));
-  ok('corrupt: five survive', r.n === 5, String(r.n));
+  ok('corrupt: all but one survive', r.n === NMOD - 1, String(r.n));
   ok('corrupt: no unhandled error', errors.length === 0, errors.join('|'));
 });
 
@@ -161,7 +163,7 @@ await withPage(async (page) => {
   const r = await loadCorpus(page);
   ok('root lost: nothing is left standing', r.n === 0, `${r.n} survived: ${r.ids.join(',')}`);
   ok('root lost: reported unavailable', r.status === 'unavailable', JSON.stringify(r));
-  ok('root lost: every dependant is named', r.dropped.length >= 6, String(r.dropped.length));
+  ok('root lost: every dependant is named', r.dropped.length >= NMOD - 1, String(r.dropped.length));
   ok('root lost: cascade reason given', r.dropped.some(d => /prerequisite/.test(d.why)), JSON.stringify(r.dropped.slice(0, 3)));
 });
 
@@ -187,13 +189,13 @@ Object.assign(fault, reset);
     const all = await c.keys();
     return all.map(r => new URL(r.url).pathname).filter(p => p.includes('module') || p.includes('arc-core'));
   });
-  ok('offline: modules precached at install', cached.filter(p => p.includes('.arc-module.json')).length === 6, cached.join(', '));
+  ok('offline: modules precached at install', cached.filter(p => p.includes('.arc-module.json')).length === NMOD, cached.join(', '));
   ok('offline: engine precached at install', cached.some(p => p.endsWith('arc-core.mjs')), cached.join(', '));
 
   await ctx.setOffline(true);
   await page.reload();
   const r = await loadCorpus(page);
-  ok('offline: corpus loads with the network down', r.status === 'ready' && r.n === 6, JSON.stringify(r));
+  ok('offline: corpus loads with the network down', r.status === 'ready' && r.n === NMOD, JSON.stringify(r));
   const title = await page.textContent('.wordmark .name');
   ok('offline: app shell still renders', /AEGIS/.test(title.replace(/\s/g, '')), title);
   await ctx.close();
@@ -247,7 +249,7 @@ if (section(10)) {
       const all = await (await caches.open(k)).keys();
       return all.filter(r => r.url.includes('.arc-module.json')).length;
     });
-    ok('missing manifest: corpus still precached', mods === 6, String(mods));
+    ok('missing manifest: corpus still precached', mods === NMOD, String(mods));
     await ctx.close();
   } finally {
     if (moved) renameSync(MF + '.away', MF);

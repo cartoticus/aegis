@@ -1,0 +1,185 @@
+{
+  "id": "isc2.cc.d4.subnetting",
+  "version": "1.0.0",
+  "domain": "ISC2 Certified in Cybersecurity — Domain 4: Network Security",
+  "dag_branch": "cc.d4.network-security",
+  "profile": "SKILL",
+  "prerequisites": [
+    "isc2.cc.d1.cia-triad"
+  ],
+  "invalidation_policy": "REVIEW",
+  "provenance": {
+    "authored_by": "hybrid",
+    "generator_id": "arc-aegis-phase2/4.3.0",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "sources": [
+      "ietf-rfc4632",
+      "ietf-rfc1918"
+    ]
+  },
+  "content": {
+    "title": "IP Addressing & Subnetting",
+    "prequestion": {
+      "prompt": "Before reading: how many devices can be given an address on a /24 network?",
+      "options": [
+        "256",
+        "255",
+        "254",
+        "Not sure"
+      ]
+    },
+    "reading_markdown": "## Addresses have two halves\n\nAn IPv4 address is **32 bits**, written as four numbers from 0 to 255 (octets), like 10.20.30.40. The **prefix** — the /n after the address — says how many of those bits, counting from the left, name the **network**. The rest name a **host** on that network.\n\nThe **subnet mask** says the same thing in dotted form: 1-bits for the network part, 0-bits for the host part. /24 is 255.255.255.0; /16 is 255.255.0.0.\n\n## The method: find the block size\n\nMost exam problems split inside one octet. Work in that octet only:\n\n- **Host bits** = 32 minus the prefix. For /27 that is 5; the other 3 bits of the last octet belong to the network.\n- **Block size** = 256 minus the mask value in that octet. The mask octets go 128, 192, 224, 240, 248, 252 for 1 to 6 network bits.\n- Networks start at **multiples of the block size**: 0, block, 2 x block, and so on.\n\nFrom there:\n\n- **Network address** — the multiple of the block size at or just below your address. All host bits 0.\n- **Broadcast address** — the next network address minus one. All host bits 1.\n- **Usable hosts** — 2 to the power of the host bits, minus 2. The network address names the subnet itself and the broadcast address reaches every host on it at once, so neither can belong to a single device.\n\n## Worked example: 10.20.30.77/27\n\n```\n/27 -> 3 network bits in the last octet\nmask      255.255.255.224   (256 - 224 = block size 32)\nblocks    0, 32, 64, 96 ...  77 falls in the 64 block\nnetwork   10.20.30.64\nbroadcast 10.20.30.95       (96 - 1)\nusable    2^5 - 2 = 30 hosts  (.65 to .94)\n```\n\nCheck yourself: the network and broadcast addresses should differ by block size minus one (95 - 64 = 31). If they do not, you picked the wrong block.\n\n## Private ranges\n\nThree ranges are reserved for internal networks and are not routed on the public internet: **10.0.0.0/8**, **172.16.0.0/12** and **192.168.0.0/16**. IPv6 uses 128-bit addresses and was designed in part because the 32-bit space was running out.\n\n## Why a security professional cares\n\nSubnets are where networks are cut into trust zones. Firewall rules, access lists and segmentation are all written in terms of these ranges. A rule meant for one /27 that is accidentally written as a /24 opens the door to eight times as many hosts."
+  },
+  "gate": {
+    "type": "CLOZE",
+    "scoring_class": "B",
+    "expected_duration_s": 240,
+    "pass_threshold": {
+      "min_correct": 4,
+      "item_count": 4
+    },
+    "prompt": "A host is configured as 172.16.45.130/26. Work out its subnet. This is a skill gate: it clears only when all four answers are right, within 4 minutes, and without revealing a hint. You can still reveal one to practise; that attempt just will not count.",
+    "hints": [
+      "Try it in binary instead: write just the last octet of the address as eight bits and draw a line after the bits that belong to the network. Keep the left side, then set everything right of the line to all 0s and then to all 1s.",
+      "If the mask arithmetic keeps slipping, start from the host bits instead: 2 raised to that number is both the size of each block and the count of addresses in it, before the two you cannot use."
+    ],
+    "validation_payload": {
+      "accuracy_metric": "correct_slot_ratio",
+      "accept": [
+        [
+          "172.16.45.128"
+        ],
+        [
+          "172.16.45.191"
+        ],
+        [
+          "62"
+        ],
+        [
+          "255.255.255.192"
+        ]
+      ],
+      "slot_labels": [
+        "Network address",
+        "Broadcast address",
+        "Number of usable hosts",
+        "Subnet mask (dotted decimal)"
+      ],
+      "normalisation": {
+        "strip_diacritics": false
+      }
+    },
+    "accessible_equivalent": "The same four labelled text fields with screen-reader labels and no visual-only cues; scored identically as correct_slot_ratio, with the same time allowance."
+  },
+  "analog_synthesis": {
+    "taxonomy_type": "GENERATIVE",
+    "prompt": "Away from the screen, with paper only: invent your own address and prefix between /25 and /30 in a private range, and solve it — network, broadcast, usable host count and mask. Then write one firewall rule in plain words that should apply to exactly that subnet, and state which address it must start at.",
+    "calibration_question": "Before checking your arithmetic: did the gap between your network and broadcast addresses equal block size minus one — and did you have to count up through the blocks, or could you go straight to the right one?",
+    "accessible_equivalent": "Talk through the same calculation aloud, or use a screen-reader-friendly text editor, with a partner checking each step against the block-size method."
+  },
+  "drills": [
+    {
+      "id": "isc2.cc.d4.subnet.d1.cloze",
+      "type": "CLOZE",
+      "scoring_class": "B",
+      "interval_tier": "RECOGNITION",
+      "expected_duration_s": 45,
+      "pass_threshold": {
+        "min_correct": 2,
+        "item_count": 3
+      },
+      "prompt": "Fill in the masks: /24 is 255.255.255.______, /25 is 255.255.255.______, /28 is 255.255.255.______.",
+      "validation_payload": {
+        "accuracy_metric": "correct_slot_ratio",
+        "accept": [
+          [
+            "0"
+          ],
+          [
+            "128"
+          ],
+          [
+            "240"
+          ]
+        ],
+        "normalisation": {
+          "strip_diacritics": false
+        },
+        "slot_labels": [
+          "Mask octet for /24",
+          "Mask octet for /25",
+          "Mask octet for /28"
+        ]
+      },
+      "accessible_equivalent": "The same blanks as labelled text fields with screen-reader labels; scored identically as correct_slot_ratio.",
+      "explanation": "Each extra network bit in the last octet adds the next power of two to the mask: 128, then 192, 224, 240."
+    },
+    {
+      "id": "isc2.cc.d4.subnet.d7.cloze",
+      "type": "CLOZE",
+      "scoring_class": "B",
+      "interval_tier": "APPLICATION",
+      "expected_duration_s": 150,
+      "pass_threshold": {
+        "min_correct": 3,
+        "item_count": 3
+      },
+      "prompt": "Solve 192.168.10.200/28.",
+      "validation_payload": {
+        "accuracy_metric": "correct_slot_ratio",
+        "accept": [
+          [
+            "192.168.10.192"
+          ],
+          [
+            "192.168.10.207"
+          ],
+          [
+            "14"
+          ]
+        ],
+        "normalisation": {
+          "strip_diacritics": false
+        },
+        "slot_labels": [
+          "Network address",
+          "Broadcast address",
+          "Number of usable hosts"
+        ]
+      },
+      "accessible_equivalent": "The same blanks as labelled text fields with screen-reader labels; scored identically as correct_slot_ratio.",
+      "explanation": "/28 leaves 4 host bits, so the block size is 16. 200 falls in the block starting at 192; the broadcast is 207 (208 minus 1); 2^4 - 2 = 14 usable hosts."
+    },
+    {
+      "id": "isc2.cc.d4.subnet.d30.freerecall",
+      "type": "FREE_RECALL",
+      "scoring_class": "C",
+      "interval_tier": "GENERATIVE",
+      "expected_duration_s": 180,
+      "pass_threshold": {
+        "min_correct": 6,
+        "item_count": 8
+      },
+      "prompt": "Without notes: explain how to find the network address, broadcast address and usable host count for any address with a prefix between /25 and /30, using the block-size method, and say why two addresses in every subnet cannot be given to a device.",
+      "validation_payload": {
+        "accuracy_metric": "keyword_density",
+        "required_keywords": [
+          "prefix",
+          "mask",
+          "block",
+          "network",
+          "broadcast",
+          "host",
+          "usable",
+          "multiple"
+        ],
+        "normalisation": {
+          "strip_diacritics": false
+        }
+      },
+      "accessible_equivalent": "Spoken response transcribed via speech-to-text and scored on the same keyword set.",
+      "explanation": "Being able to state the block-size method in your own words — and why network and broadcast are reserved — means you can solve any subnet, not just the ones you have practised."
+    }
+  ]
+}

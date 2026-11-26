@@ -1,0 +1,99 @@
+{
+  "reviewer": "C",
+  "items": {
+    "isc2.cc.d2.incident-response::gate": {
+      "answer": ["B", "E", "D", "A", "C"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "Taught: lesson gives contain -> eradicate -> recover -> review and says a powered-on machine keeps live connections, which is what E uses. Nit: E's phrase 'the isolated workstation' is a small wording cue that B comes before E, but working out that E is still containment and goes before D (eradicate) needs real understanding."
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d1.cloze": {
+      "answer": ["Preparation", "Analysis", "Eradication"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": "Pure recognition; the lesson's diagram and list teach it directly."
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d7.classify": {
+      "answer": {
+        "1": "Detection & analysis",
+        "2": "Detection & analysis",
+        "3": "Containment, eradication & recovery",
+        "4": "Post-incident activity",
+        "5": "Preparation",
+        "6": "Containment, eradication & recovery",
+        "7": "Post-incident activity",
+        "8": "Preparation"
+      },
+      "confidence": 4,
+      "flag": "CLEAN",
+      "severity": "LOW",
+      "note": "Nit: the lesson never says that measuring detection time (7) is part of the lessons-learned review, though a learner can work it out from 'what worked, what did not'. 'Blameless' (4) and 'out-of-band' (5) are not in the lesson either, but the bucket is clear without them."
+    },
+    "isc2.cc.d2.incident-response::isc2.cc.d2.ir.d30.freerecall": {
+      "answer": "The four phases are preparation, detection and analysis, then containment, eradication and recovery, and finally post-incident activity. You contain first because cutting the machine off stops the attack spreading and stops the attacker controlling it. Cleaning while they are still active lets them come straight back. You leave a compromised machine powered on because its memory holds running processes and live connections, and that evidence is lost at power-off. A playbook is the written plan for one kind of incident, such as ransomware or a lost laptop. It lists concrete steps, each with an owner. The post-incident lessons-learned review feeds back into preparation, so the plan and playbooks get better after every incident.",
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": "Every part of the prompt is covered in the lesson."
+    },
+    "isc2.cc.d5.logging-monitoring::gate": {
+      "answer": ["203.0.113.66", "5", "3", "8", "no"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": "Accounts tried were root, admin and test. The failures run from 07:38:41 to 07:38:49, which is 8 seconds. Both 'Accepted' lines come from 10.0.0.5, so nothing from the attacking address succeeded. This works the lesson's four questions plus the success check, and the decoy accepted lines make the learner filter the log."
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d1.cloze": {
+      "answer": ["correlates", "fatigue", "order"],
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": "Recognition of terms the lesson bolds or states directly."
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d7.classify": {
+      "answer": {
+        "1": "Password guessing",
+        "2": "Normal activity",
+        "3": "Password spraying",
+        "4": "Password guessing",
+        "5": "Normal activity",
+        "6": "Password spraying"
+      },
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": "Each statement matches the shapes the lesson defines. Statement 2 (one failure, then success from the usual device) is a fair normal-activity distractor."
+    },
+    "isc2.cc.d5.logging-monitoring::isc2.cc.d5.log.d30.freerecall": {
+      "answer": "Worth logging: successful and failed sign-ins and where they came from, privilege changes such as new accounts or admin-group additions, configuration changes, access to sensitive data, and the security tools' own alerts. A SIEM collects logs from across the organisation and normalises them into one format. It then correlates events from different sources and raises alerts when a rule matches. Clocks must be synchronised to one time source, or events cannot be put in order. Logs must be sent to a separate store as they are written, so an intruder with admin rights cannot delete them. To investigate a brute-force attack, I would establish where the attempts came from, how many there were, which accounts were tried and over what time span. Then I would check whether any attempt from that source succeeded.",
+      "confidence": 5,
+      "flag": "CLEAN",
+      "severity": "NONE",
+      "note": "Every part of the prompt is covered in the lesson."
+    }
+  },
+  "hints": {
+    "isc2.cc.d2.incident-response::hint0": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "LOW",
+      "note": "Gives a test that puts the steps that depend on stopping the attacker (D, then A) after containment. It teaches a reversibility method, does not echo any step's wording, and does not overlap hint1."
+    },
+    "isc2.cc.d2.incident-response::hint1": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "LOW",
+      "note": "Points the learner at the preconditions of each step: E needs B's machine isolated but still powered on, and A needs clean systems. It is a different lens from hint0 (dependency rather than reversibility), so the two do not duplicate. It does not echo any step's wording. It pushes toward B before E but is not a shortcut."
+    },
+    "isc2.cc.d5.logging-monitoring::hint0": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "LOW",
+      "note": "Filtering out the 10.0.0.5 accepted lines before counting is the key method step, and it does not echo any blank. It is distinct from hint1, which is about the success check."
+    },
+    "isc2.cc.d5.logging-monitoring::hint1": {
+      "verdict": "CHANGES_APPROACH",
+      "leak": "LOW",
+      "note": "Tells the learner to look for a different event type from the same source, which stops them answering 'yes' because of the unrelated Accepted lines. It does not echo 'yes/no' or any count, and it does not duplicate hint0."
+    }
+  }
+}
